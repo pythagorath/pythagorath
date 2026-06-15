@@ -22,7 +22,8 @@ G4_B2 = {"g4ADDSUB", "g4ADD4", "g4PROPS", "g4EST", "g4MUL1", "g4FACT", "g4PRIME"
 G4_B3 = {"g4MUL2", "g4DIV1", "g4DIV2"}                                     # الضرب والقسمة
 G4_B4 = {"g4FRAC", "g4FREQ", "g4FRADD", "g4FRADDX", "g4FRMUL"}             # الكسور
 G4_B5 = {"g4DEC", "g4DECLINE", "g4DECADD"}                                 # الكسور العشرية
-G4_NUM = G4_B1 | G4_B2 | G4_B3 | G4_B4 | G4_B5
+G4_B6 = {"g4METRIC", "g4PERIM", "g4AREA", "g4TIME", "g4VOL"}               # القياس
+G4_NUM = G4_B1 | G4_B2 | G4_B3 | G4_B4 | G4_B5 | G4_B6
 
 # per-country G4 paths (batches 1-4). Fractions: all six in g4FRAC/g4FREQ (≤12, no Oman
 # tier — Oman's fraction wall reaches 12 too); add/sub LIKE five (no Oman); g4FRADDX
@@ -32,21 +33,27 @@ _FR = {"g4FRAC", "g4FREQ"}
 G4_PATH = {
     "SA": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4PROPS", "g4EST", "g4MUL1",
            "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD",
-           "g4DEC", "g4DECLINE", "g4DECADD"} | _FR,
+           "g4DEC", "g4DECLINE", "g4DECADD",
+           "g4METRIC", "g4PERIM", "g4AREA", "g4TIME", "g4VOL"} | _FR,
     "BH": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4PROPS", "g4EST", "g4MUL1",
            "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD",
-           "g4DEC", "g4DECADD"} | _FR,
+           "g4DEC", "g4DECADD",
+           "g4METRIC", "g4PERIM", "g4AREA"} | _FR,
     "QA": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4EST", "g4MUL1", "g4FACT",
            "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRMUL",
-           "g4DEC", "g4DECLINE"} | _FR,
+           "g4DEC", "g4DECLINE",
+           "g4METRIC", "g4PERIM", "g4AREA"} | _FR,
     "KW": {"g4PVM", "g4CMPM", "g4ROUND", "g4ADDSUB", "g4EST", "g4MUL1", "g4FACT",
            "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRADDX",
-           "g4DEC"} | _FR,
+           "g4DEC",
+           "g4METRIC", "g4PERIM", "g4AREA"} | _FR,
     "AE": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4EST", "g4MUL1", "g4MUL2",
            "g4DIV1", "g4FRADD",
-           "g4DEC", "g4DECADD"} | _FR,
+           "g4DEC", "g4DECADD",
+           "g4METRIC", "g4PERIM", "g4AREA", "g4VOL"} | _FR,
     "OM": {"g4PV4", "g4ROUND100", "g4ADD4", "g4DIV2",
-           "g4DEC"} | _FR,
+           "g4DEC",
+           "g4PERIM", "g4AREA", "g4TIME"} | _FR,
 }
 
 G4_RANGE_CAP = {
@@ -58,6 +65,9 @@ G4_RANGE_CAP = {
     # batch 3
     "g4MUL2": 99999, "g4DIV1": 9999, "g4DIV2": 99,
     # batch 4 — fractions use a DENOMINATOR cap (≤12), checked separately below
+    # batch 5 — decimals use a places/dens/value guard, checked separately below
+    # batch 6 — measurement integer ceilings
+    "g4METRIC": 9000, "g4PERIM": 300, "g4AREA": 400, "g4TIME": 60, "g4VOL": 1000,
 }
 # fractions are range-guarded by max DENOMINATOR ≤ 12, not an integer ceiling
 G4_FRAC_CODES = {"g4FRAC", "g4FREQ", "g4FRADD", "g4FRADDX", "g4FRMUL"}
@@ -94,6 +104,12 @@ G4_FAMILIES = {
     "g4DEC": {"grid", "compare", "convert"},
     "g4DECLINE": {"place", "read"},
     "g4DECADD": {"round", "add", "subtract"},
+    # batch 6 — measurement
+    "g4METRIC": {"convert", "choose", "measure"},
+    "g4PERIM": {"compute", "inverse"},
+    "g4AREA": {"multiply", "composite"},
+    "g4TIME": {"read", "elapsed"},
+    "g4VOL": {"estimate", "prism"},
 }
 
 _TRANS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
@@ -138,7 +154,7 @@ def test_four_grades_seeded(guardian_client):
 def test_g4_unit_nodes_and_content(db):
     _, units, skills = _g4_skills(db)
     assert [u.name for u in sorted(units, key=lambda u: u.order)] == [
-        "الأعداد", "العمليات", "الضرب والقسمة", "الكسور", "الكسور العشرية"]
+        "الأعداد", "العمليات", "الضرب والقسمة", "الكسور", "الكسور العشرية", "القياس"]
     assert {s.code for s in skills} == G4_NUM
     for s in skills:
         qs = db.execute(select(Question).where(Question.skill_id == s.id)).scalars().all()
@@ -205,7 +221,9 @@ def test_g4_edges_minimal_common(db):
                      ("g4FRAC", "g4FREQ"), ("g4FREQ", "g4FRADD"),
                      ("g4FRADD", "g4FRADDX"), ("g4FRADD", "g4FRMUL"),
                      # batch 5: FRAC→DEC→{DECLINE, DECADD} (fractions→decimals→decimal add)
-                     ("g4FRAC", "g4DEC"), ("g4DEC", "g4DECLINE"), ("g4DEC", "g4DECADD")}
+                     ("g4FRAC", "g4DEC"), ("g4DEC", "g4DECLINE"), ("g4DEC", "g4DECADD"),
+                     # batch 6: AREA→VOL only (volume extends area); METRIC/PERIM/AREA/TIME roots
+                     ("g4AREA", "g4VOL")}
 
 
 def test_g4_country_paths(guardian_client):
@@ -299,6 +317,30 @@ def test_g4_fraction_chain_unlocks(guardian_client):
     assert e["g4FREQ"]["unlocked"] is False
     assert {p["name"] for p in e["g4FREQ"]["prerequisites"]} == {"تمثيل الكسور والأعداد الكسرية"}
     assert {p["name"] for p in e["g4FRADDX"]["prerequisites"]} == {"جمع وطرح الكسور المتشابهة"}
+
+
+def test_g4_batch6_measurement_structure(guardian_client):
+    """Metric CONVERSION is five-country (Oman OUT — converted mass/capacity already in G3);
+    perimeter/area six (Oman ENTERS); time OM+SA; volume SA+AE. The structural rule:
+    `convert` must not leak to Oman (a non-owner) — that's why Oman is OUT of g4METRIC."""
+    paths = {c: _map_codes(guardian_client, _child(guardian_client, country=c, name=f"m{c}")["id"])
+             for c in ("SA", "BH", "KW", "QA", "AE", "OM")}
+    assert {c for c, p in paths.items() if "g4METRIC" in p} == {"SA", "BH", "KW", "QA", "AE"}
+    assert "g4METRIC" not in paths["OM"]                               # convert does NOT reach Oman
+    assert all({"g4PERIM", "g4AREA"} <= p for p in paths.values())    # perimeter+area all six
+    assert "g4PERIM" in paths["OM"] and "g4AREA" in paths["OM"]       # Oman enters in G4
+    assert {c for c, p in paths.items() if "g4TIME" in p} == {"OM", "SA"}    # time OM+SA (BH/KW/AE reserved)
+    assert {c for c, p in paths.items() if "g4VOL" in p} == {"SA", "AE"}     # volume SA+AE (new)
+
+
+def test_g4_area_is_root_volume_waits(guardian_client):
+    sa = _child(guardian_client, country="SA", name="م٦")["id"]
+    e = {x["code"]: x for x in guardian_client.get(f"/api/students/{sa}/skillmap").json()}
+    # g4AREA opens at entry — a ROOT, NOT gated on g4MUL1 (Oman has no G4 mult node)
+    assert e["g4AREA"]["unlocked"] is True
+    assert e["g4PERIM"]["unlocked"] is True and e["g4METRIC"]["unlocked"] is True
+    assert e["g4VOL"]["unlocked"] is False                            # volume waits on area
+    assert {p["name"] for p in e["g4VOL"]["prerequisites"]} == {"المساحة بالضرب والمركّبة"}
 
 
 def test_g4_isolated_from_lower_grades(guardian_client):

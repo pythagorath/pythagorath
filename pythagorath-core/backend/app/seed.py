@@ -4235,6 +4235,110 @@ NODE_COUNTRIES.update({
 # =================== end GRADE 4 batch 5 ===================
 
 
+# =================== GRADE 4 batch 6 — القياس ===================
+# Born live (gencontent_g4b6.py). Body checks 2026-06-15:
+#   • g4METRIC (convert/choose/measure) — FIVE (SA/QA/KW/AE/BH). CONVERSION is the G4
+#     advance (unifies G3's g3LEN+g3CAPMASS). **Oman OUT**: its G4 metric is «قياس»
+#     (measure-only) and it already converted mass/capacity in G3 (g3CAPMASS) → no
+#     distinct G4 act; convert must not leak to a non-owner (node-level rule, cf. g4DECLINE).
+#   • g4PERIM (compute/inverse) — SIX. Oman ENTERS perimeter in G4 (out in G3 by absence).
+#   • g4AREA (multiply/composite) — SIX. ROOT, NOT g4MUL1-dependent (unlike g3AREA3←g3MUL):
+#     Oman owns G4 area but has NO G4 multiplication node, so the cross-domain edge would
+#     break Oman's path — area uses assumed mult-facts. Ladder g1AREA→Q4→g3AREA3→g4AREA.
+#   • g4TIME (read/elapsed) — OM + SA (body-confirmed). TIME-BH/KW/AE RESERVED (no citation).
+#   • g4VOL (estimate/prism) — SA + AE. V=l×w×h. NEW act (no G3 analog). Depends g4AREA.
+# DAG: g4AREA → g4VOL only; METRIC/PERIM/AREA/TIME are roots. ZERO new widgets
+# (measure + clock reused from G3; perimeter/area/volume/time-elapsed are text).
+# =================================================================================
+
+G4_MEASURE_NODES = [
+    ("g4METRIC", "الوحدات المترية وتحويلاتها", "operational", [  # five (no Oman)
+        # family 1 — التحويل بين الوحدات (convert) — the G4 advance
+        ("convert", "حوّل: ٣ أمتار = ؟ سنتيمتراً", "٣٠٠", None),
+        ("convert", "حوّل: ٢ كيلوغرامات = ؟ غراماً", "٢٠٠٠", None),
+        ("convert", "حوّل: ٥٠٠٠ مللترات = ؟ لتراً", "٥", None),
+        # family 2 — اختيار الوحدة الملائمة (choose)
+        ("choose", "أيُّ وحدةٍ أنسب لقياس طول الملعب؟", "متر",
+         {"kind": "shape-pick", "options": [{"v": "متر"}, {"v": "سنتيمتر"}]}),
+        ("choose", "أيُّ وحدةٍ أنسب لقياس كتلة التفاحة؟", "غرام",
+         {"kind": "shape-pick", "options": [{"v": "غرام"}, {"v": "كيلوغرام"}]}),
+        ("choose", "أيُّ وحدةٍ أنسب لقياس المسافة بين مدينتين؟", "كيلومتر",
+         {"kind": "shape-pick", "options": [{"v": "كيلومتر"}, {"v": "متر"}]}),
+        # family 3 — القياس بالأداة (measure) — reuses the G3 ruler widget
+        ("measure", "كم سنتيمتراً طول هذا الجسم؟ اقرأ المسطرة.", "٧",
+         {"kind": "measure", "mode": "ruler", "length": 7, "max": 9, "unit": "سم"}),
+        ("measure", "كم سنتيمتراً طول هذا الجسم؟ اقرأ المسطرة.", "٤",
+         {"kind": "measure", "mode": "ruler", "length": 4, "max": 6, "unit": "سم"}),
+    ]),
+    ("g4PERIM", "المحيط: حساباً وضلعاً مجهولاً", "operational", [  # six
+        # family 1 — حساب المحيط (compute)
+        ("compute", "مستطيل طوله ٦ وعرضه ٤ — ما محيطه؟", "٢٠", None),
+        ("compute", "مربّع طول ضلعه ٥ — ما محيطه؟", "٢٠", None),
+        ("compute", "مستطيل طوله ١٠ وعرضه ٣ — ما محيطه؟", "٢٦", None),
+        ("compute", "مربّع طول ضلعه ٨ — ما محيطه؟", "٣٢", None),
+        # family 2 — الضلع المجهول (inverse) — the new G4 act
+        ("inverse", "مستطيل محيطه ٢٠ وطوله ٦ — ما عرضه؟", "٤", None),
+        ("inverse", "مستطيل محيطه ٢٦ وطوله ١٠ — ما عرضه؟", "٣", None),
+        ("inverse", "مستطيل محيطه ١٨ وطوله ٥ — ما عرضه؟", "٤", None),
+        ("inverse", "مستطيل محيطه ٣٠ وطوله ٩ — ما عرضه؟", "٦", None),
+    ]),
+    ("g4AREA", "المساحة بالضرب والمركّبة", "operational", [  # six — ROOT
+        # family 1 — المساحة = ضرب (multiply)
+        ("multiply", "مستطيل طوله ٦ وعرضه ٤ — ما مساحته؟", "٢٤", None),
+        ("multiply", "مربّع طول ضلعه ٥ — ما مساحته؟", "٢٥", None),
+        ("multiply", "مستطيل طوله ٧ وعرضه ٣ — ما مساحته؟", "٢١", None),
+        ("multiply", "مربّع طول ضلعه ٩ — ما مساحته؟", "٨١", None),
+        # family 2 — المركّبة (composite)
+        ("composite", "شكلٌ مركّب من مستطيلين: الأول ٤×٣ والثاني ٢×٥ — ما المساحة الكلّية؟", "٢٢", None),
+        ("composite", "شكلٌ مركّب من مستطيلين: الأول ٦×٢ والثاني ٣×٣ — ما المساحة الكلّية؟", "٢١", None),
+        ("composite", "شكلٌ مركّب من مستطيلين: الأول ٥×٤ والثاني ٢×٢ — ما المساحة الكلّية؟", "٢٤", None),
+        ("composite", "شكلٌ مركّب من مستطيلين: الأول ٧×٢ والثاني ٤×٣ — ما المساحة الكلّية؟", "٢٦", None),
+    ]),
+    ("g4TIME", "الوقت لأقرب دقيقة والزمن المنقضي", "operational", [  # OM + SA
+        # family 1 — القراءة لأقرب دقيقة (read) — reuses the G3 clock widget
+        ("read", "كم الساعة؟ اقرأ القرص واختر الوقت الرقمي.", "٣:١٥",
+         {"kind": "clock", "hour": 3, "minute": 15, "options": ["٣:١٥", "٣:٤٥", "٤:١٥"]}),
+        ("read", "كم الساعة؟ اقرأ القرص واختر الوقت الرقمي.", "٧:٤٠",
+         {"kind": "clock", "hour": 7, "minute": 40, "options": ["٧:٤٠", "٧:٢٠", "٨:٤٠"]}),
+        ("read", "كم الساعة؟ اقرأ القرص واختر الوقت الرقمي.", "١٠:٠٥",
+         {"kind": "clock", "hour": 10, "minute": 5, "options": ["١٠:٠٥", "١٠:٥٥", "١١:٠٥"]}),
+        ("read", "كم الساعة؟ اقرأ القرص واختر الوقت الرقمي.", "٥:٥٠",
+         {"kind": "clock", "hour": 5, "minute": 50, "options": ["٥:٥٠", "٥:١٠", "٦:٥٠"]}),
+        # family 2 — الزمن المنقضي (elapsed)
+        ("elapsed", "بدأ النشاط الساعة ٢:١٠ وانتهى ٢:٤٥ — كم دقيقةً استغرق؟", "٣٥", None),
+        ("elapsed", "بدأ النشاط الساعة ٤:٠٥ وانتهى ٤:٥٠ — كم دقيقةً استغرق؟", "٤٥", None),
+        ("elapsed", "خرجت الحافلة الساعة ٣:٥٠ ووصلت ٤:٢٠ — كم دقيقةً استغرقت الرحلة؟", "٣٠", None),
+        ("elapsed", "خرجت الحافلة الساعة ٨:٤٥ ووصلت ٩:١٥ — كم دقيقةً استغرقت الرحلة؟", "٣٠", None),
+    ]),
+    ("g4VOL", "الحجم: تقديراً وحجمَ المنشور", "operational", [  # SA + AE — NEW
+        # family 1 — تقدير الحجم بعدّ مكعّبات الوحدة (estimate)
+        ("estimate", "صندوقٌ مملوءٌ بمكعّبات الوحدة: ٤ في الطول و٣ في العرض و٢ طبقات — كم مكعّباً يملؤه؟", "٢٤", None),
+        ("estimate", "صندوقٌ مملوءٌ بمكعّبات الوحدة: ٥ في الطول و٢ في العرض و٣ طبقات — كم مكعّباً يملؤه؟", "٣٠", None),
+        ("estimate", "صندوقٌ مملوءٌ بمكعّبات الوحدة: ٦ في الطول و٢ في العرض و٢ طبقات — كم مكعّباً يملؤه؟", "٢٤", None),
+        ("estimate", "صندوقٌ مملوءٌ بمكعّبات الوحدة: ٣ في الطول و٣ في العرض و٢ طبقات — كم مكعّباً يملؤه؟", "١٨", None),
+        # family 2 — حجم المنشور V=ط×ع×ر (prism)
+        ("prism", "متوازي مستطيلاتٍ أبعاده ٥ و٣ و٢ — ما حجمه؟ (الطول×العرض×الارتفاع)", "٣٠", None),
+        ("prism", "متوازي مستطيلاتٍ أبعاده ٤ و٤ و٣ — ما حجمه؟ (الطول×العرض×الارتفاع)", "٤٨", None),
+        ("prism", "متوازي مستطيلاتٍ أبعاده ٦ و٢ و٥ — ما حجمه؟ (الطول×العرض×الارتفاع)", "٦٠", None),
+        ("prism", "متوازي مستطيلاتٍ أبعاده ٧ و٣ و٢ — ما حجمه؟ (الطول×العرض×الارتفاع)", "٤٢", None),
+    ]),
+]
+
+# DAG: volume extends area to 3-D — the ONLY edge; the rest are roots
+G4_MEASURE_EDGES = [
+    ("g4AREA", "g4VOL"),
+]
+
+NODE_COUNTRIES.update({
+    "g4METRIC": ("SA", "QA", "KW", "AE", "BH"),       # metric conversion — FIVE (Oman's is G3-level)
+    "g4PERIM": ("SA", "BH", "KW", "QA", "AE", "OM"),  # perimeter — SIX (Oman enters in G4)
+    "g4AREA": ("SA", "BH", "KW", "QA", "AE", "OM"),   # area — SIX (Oman enters in G4); root
+    "g4TIME": ("OM", "SA"),                           # time/elapsed — OM + SA (BH/KW/AE reserved)
+    "g4VOL": ("SA", "AE"),                            # volume — SA + AE (new act)
+})
+# =================== end GRADE 4 batch 6 ===================
+
+
 def seed(db: Session) -> None:
     if db.execute(select(Skill).limit(1)).scalars().first() is not None:
         return  # already seeded
@@ -4298,13 +4402,15 @@ def seed(db: Session) -> None:
     add_unit("الكسور", 4, G4_FRACTION_NODES, target_grade=grade4)
     # GRADE 4 — batch 5: decimal fractions (represent/compare/convert, number line, add/sub)
     add_unit("الكسور العشرية", 5, G4_DECIMAL_NODES, target_grade=grade4)
+    # GRADE 4 — batch 6: measurement (metric conversion, perimeter, area, time, volume)
+    add_unit("القياس", 6, G4_MEASURE_NODES, target_grade=grade4)
 
     for prereq_code, dependent_code in (
         EDGES + GEOMETRY_EDGES + MULDIV_EDGES + DATA_EDGES + MEASURE_EDGES + LIGHT_EDGES
         + FRACTION_EDGES + G1_EDGES + G3_EDGES + G3_ADDSUB_EDGES + G3_MULDIV_EDGES
         + G3_FRACTION_EDGES + G3_MEASURE_EDGES + G3_GEOM_EDGES + G3_DATA_NODES_EDGES
         + G4_EDGES + G4_ADDSUB_EDGES + G4_MULDIV_EDGES + G4_FRACTION_EDGES
-        + G4_DECIMAL_EDGES
+        + G4_DECIMAL_EDGES + G4_MEASURE_EDGES
     ):
         db.add(SkillPrerequisite(
             skill_id=code_to_id[dependent_code],
