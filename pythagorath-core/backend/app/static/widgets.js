@@ -250,19 +250,40 @@ function widgetNumberLine(host, v, onAnswer){
   // («٣/٤», «٥/٤» — improper above one, the enVision register). Placement is the
   // ACT (a fraction IS a number) — the gate grades the emitted string, blind.
   if(v.den){
-    const den=v.den, maxW=v.maxWhole||1;
+    const den=v.den, maxW=v.maxWhole||1, dec=!!v.dec;
+    // g4DECLINE (batch-5 extension, owner-approved + visually checked): DECIMAL labels
+    // on the SAME tenths geometry (v.dec), plus a READ mode (v.mark highlights one tick
+    // with ◆ and v.options are picked). When v.dec/v.mark are absent the fraction line
+    // (g3FRLINE/g4FRAC) is byte-identical to before.
+    const decLabel=(i)=>{ const w=Math.floor(i/den), f=i%den;     // den=10 → tenths
+      return f===0 ? toHindi(w) : toHindi(w)+'٫'+toHindi(f); };
+    const label=(i)=> i===0 ? '٠' : dec ? decLabel(i) : (toHindi(i)+'/'+toHindi(den));
+    const read = (v.mark!=null && Array.isArray(v.options));
     const hint=document.createElement('div'); hint.className='muted';
-    hint.textContent='انقر موضع الكسر على الخطّ.';
+    hint.textContent= read ? 'اقرأ موضع العلامة ◆ على الخطّ واختر العدد العشري.'
+                     : (dec ? 'انقر موضع العدد العشري على الخطّ.' : 'انقر موضع الكسر على الخطّ.');
     const line=document.createElement('div'); line.className='nline';
     for(let i=0;i<=den*maxW;i++){
-      const t=document.createElement('button'); t.className='tick';
-      t.textContent= i===0 ? '٠' : (toHindi(i)+'/'+toHindi(den));
-      t.style.fontSize='12px';
-      t.onclick=()=>{ line.querySelectorAll('.tick').forEach(x=>x.classList.remove('sel'));
-        t.classList.add('sel'); onAnswer(t.textContent); };
+      const t=document.createElement('button'); t.className='tick'; t.style.fontSize='12px';
+      if(read){
+        // read mode: label only the endpoints; mark the queried tick with ◆; ticks inert
+        t.textContent = (i===0 || i===den*maxW) ? label(i) : (i===v.mark ? '◆' : '');
+        if(i===v.mark) t.classList.add('sel');
+        t.disabled = true;
+      } else {
+        t.textContent = label(i);
+        t.onclick=()=>{ line.querySelectorAll('.tick').forEach(x=>x.classList.remove('sel'));
+          t.classList.add('sel'); onAnswer(t.textContent); };
+      }
       line.appendChild(t);
     }
     host.appendChild(hint); host.appendChild(line);
+    if(read){
+      const opts=document.createElement('div'); opts.className='btb-controls';
+      for(const o of v.options){ const b=document.createElement('button'); b.className='sec';
+        b.textContent=o; b.style.fontSize='20px'; b.onclick=()=>onAnswer(o); opts.appendChild(b); }
+      host.appendChild(opts);
+    }
     return;
   }
   const step=v.step||1;

@@ -21,24 +21,32 @@ G4_B1 = {"g4PVM", "g4PV4", "g4CMPM", "g4ROUNDM", "g4ROUND", "g4ROUND100"}   # ا
 G4_B2 = {"g4ADDSUB", "g4ADD4", "g4PROPS", "g4EST", "g4MUL1", "g4FACT", "g4PRIME"}  # العمليات
 G4_B3 = {"g4MUL2", "g4DIV1", "g4DIV2"}                                     # الضرب والقسمة
 G4_B4 = {"g4FRAC", "g4FREQ", "g4FRADD", "g4FRADDX", "g4FRMUL"}             # الكسور
-G4_NUM = G4_B1 | G4_B2 | G4_B3 | G4_B4
+G4_B5 = {"g4DEC", "g4DECLINE", "g4DECADD"}                                 # الكسور العشرية
+G4_NUM = G4_B1 | G4_B2 | G4_B3 | G4_B4 | G4_B5
 
 # per-country G4 paths (batches 1-4). Fractions: all six in g4FRAC/g4FREQ (≤12, no Oman
 # tier — Oman's fraction wall reaches 12 too); add/sub LIKE five (no Oman); g4FRADDX
 # (UNLIKE) Kuwait alone; g4FRMUL (×) Qatar alone.
 _FR = {"g4FRAC", "g4FREQ"}
+# decimals (batch 5): g4DEC all six; g4DECLINE (number line) SA/QA; g4DECADD SA/AE/BH
 G4_PATH = {
     "SA": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4PROPS", "g4EST", "g4MUL1",
-           "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD"} | _FR,
+           "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD",
+           "g4DEC", "g4DECLINE", "g4DECADD"} | _FR,
     "BH": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4PROPS", "g4EST", "g4MUL1",
-           "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD"} | _FR,
+           "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD",
+           "g4DEC", "g4DECADD"} | _FR,
     "QA": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4EST", "g4MUL1", "g4FACT",
-           "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRMUL"} | _FR,
+           "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRMUL",
+           "g4DEC", "g4DECLINE"} | _FR,
     "KW": {"g4PVM", "g4CMPM", "g4ROUND", "g4ADDSUB", "g4EST", "g4MUL1", "g4FACT",
-           "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRADDX"} | _FR,
+           "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRADDX",
+           "g4DEC"} | _FR,
     "AE": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4EST", "g4MUL1", "g4MUL2",
-           "g4DIV1", "g4FRADD"} | _FR,
-    "OM": {"g4PV4", "g4ROUND100", "g4ADD4", "g4DIV2"} | _FR,
+           "g4DIV1", "g4FRADD",
+           "g4DEC", "g4DECADD"} | _FR,
+    "OM": {"g4PV4", "g4ROUND100", "g4ADD4", "g4DIV2",
+           "g4DEC"} | _FR,
 }
 
 G4_RANGE_CAP = {
@@ -53,6 +61,9 @@ G4_RANGE_CAP = {
 }
 # fractions are range-guarded by max DENOMINATOR ≤ 12, not an integer ceiling
 G4_FRAC_CODES = {"g4FRAC", "g4FREQ", "g4FRADD", "g4FRADDX", "g4FRMUL"}
+# decimals are guarded by ≤ 2 places + dens ∈ {10,100} + a hundredths value ceiling
+G4_DEC_CODES = {"g4DEC", "g4DECLINE", "g4DECADD"}
+G4_DEC_CAP_H = {"g4DEC": 100, "g4DECLINE": 200, "g4DECADD": 10000}   # hundredths ceilings
 
 G4_FAMILIES = {
     "g4PVM": {"compose", "place", "relate"},
@@ -79,6 +90,10 @@ G4_FAMILIES = {
     "g4FRADD": {"add", "subtract", "mixedwhole"},
     "g4FRADDX": {"add", "subtract"},
     "g4FRMUL": {"unitmultiple", "times"},
+    # batch 5 — decimals
+    "g4DEC": {"grid", "compare", "convert"},
+    "g4DECLINE": {"place", "read"},
+    "g4DECADD": {"round", "add", "subtract"},
 }
 
 _TRANS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
@@ -123,7 +138,7 @@ def test_four_grades_seeded(guardian_client):
 def test_g4_unit_nodes_and_content(db):
     _, units, skills = _g4_skills(db)
     assert [u.name for u in sorted(units, key=lambda u: u.order)] == [
-        "الأعداد", "العمليات", "الضرب والقسمة", "الكسور"]
+        "الأعداد", "العمليات", "الضرب والقسمة", "الكسور", "الكسور العشرية"]
     assert {s.code for s in skills} == G4_NUM
     for s in skills:
         qs = db.execute(select(Question).where(Question.skill_id == s.id)).scalars().all()
@@ -153,6 +168,17 @@ def test_g4_range_tiers_hold(db):
                 # fractions: the guard is max DENOMINATOR ≤ 12 (not an integer ceiling)
                 dens = [int(b) for _, b in re.findall(r"(\d+)/(\d+)", blob.translate(_TRANS))]
                 assert all(d <= 12 for d in dens), (s.code, q.prompt, dens)
+            elif s.code in G4_DEC_CODES:
+                # decimals: ≤ 2 places (no thousandths), dens ∈ {10,100}, value < ceiling
+                places = re.findall(r"\d+٫(\d+)", blob)
+                assert all(len(f) <= 2 for f in places), (s.code, q.prompt, places)
+                # tenths/hundredths place value, plus the convert family's link to the
+                # standard terminating-decimal common fractions (halves/quarters/fifths)
+                dens = [int(b) for _, b in re.findall(r"(\d+)/(\d+)", blob.translate(_TRANS))]
+                assert all(d in (2, 4, 5, 10, 100) for d in dens), (s.code, q.prompt, dens)
+                vals = [int(w) * 100 + int((f + "00")[:2])
+                        for w, f in re.findall(r"(\d+)٫(\d+)", blob.translate(_TRANS))]
+                assert all(h < G4_DEC_CAP_H[s.code] for h in vals), (s.code, q.prompt, vals)
             else:
                 over = [n for n in _numbers_in(blob) if n > G4_RANGE_CAP[s.code]]
                 assert not over, (s.code, q.prompt, over)
@@ -177,7 +203,9 @@ def test_g4_edges_minimal_common(db):
                      ("g4MUL1", "g4MUL2"), ("g4MUL1", "g4DIV1"),
                      # batch 4: FRAC→FREQ→FRADD→{FRADDX, FRMUL}
                      ("g4FRAC", "g4FREQ"), ("g4FREQ", "g4FRADD"),
-                     ("g4FRADD", "g4FRADDX"), ("g4FRADD", "g4FRMUL")}
+                     ("g4FRADD", "g4FRADDX"), ("g4FRADD", "g4FRMUL"),
+                     # batch 5: FRAC→DEC→{DECLINE, DECADD} (fractions→decimals→decimal add)
+                     ("g4FRAC", "g4DEC"), ("g4DEC", "g4DECLINE"), ("g4DEC", "g4DECADD")}
 
 
 def test_g4_country_paths(guardian_client):

@@ -25,6 +25,7 @@ from app import gencontent_g4b1  # noqa: F401 — G4 batch 1: place value & larg
 from app import gencontent_g4b2  # noqa: F401 — G4 batch 2: operations (add/sub, mult, factors), born live
 from app import gencontent_g4b3  # noqa: F401 — G4 batch 3: ×2-digit & long division, born live
 from app import gencontent_g4b4  # noqa: F401 — G4 batch 4: fractions (represent/equiv/ops), born live
+from app import gencontent_g4b5  # noqa: F401 — G4 batch 5: decimal fractions (represent/line/add-sub), born live
 from app.db import SessionLocal, get_db
 from app.gate import grade, read_snapshot, recompute
 from app.models import (

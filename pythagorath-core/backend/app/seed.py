@@ -4139,6 +4139,102 @@ NODE_COUNTRIES.update({
 # =================== end GRADE 4 batch 4 ===================
 
 
+# =================== GRADE 4 batch 5 — الكسور العشرية ===================
+# Born live (gencontent_g4b5.py). Body checks 2026-06-15 — decimals widen from a
+# SINGLE Bahrain G3 node (g3DEC) to SIX in G4, plus a new add/sub act:
+#   • g4DEC (grid / compare / convert) — ALL SIX: tenths+hundredths, represent +
+#     order + link-to-common-fraction (incl. ٠٫٥=١/٢). The money lessons (QA ١١-٤,
+#     SA ف٤ الريال) are an APPLICATION → unified currency debt, not a family.
+#   • g4DECLINE (place / read) — SA + QA ONLY. «تمثيل العشرية على خط الأعداد» is an
+#     explicit country-scoped act → its OWN node (a family is node-wide; node-level is
+#     the only country scope). Two families = produce↔recognise (like Fr1), satisfying
+#     the ≥2-family gate. Reuses the number-line widget (decimal-label extension).
+#   • g4DECADD (round / add / subtract) — SA + AE + BH. SA ف١٢ standalone; AE و١١ from
+#     ف٢ ص٦٨٨ «٤٫٣١+١٩٫٦»; BH ف١٢ by EDITION PARITY (BH = AE-t2 = Obeikan/McGraw-Hill
+#     2008/2009 → same decimal-add chapter). QA/KW/OM OUT (understand/represent only).
+# DAG from the actual order (fractions → decimals → decimal add, in every owner):
+#   g4FRAC → g4DEC → {g4DECLINE, g4DECADD}.
+# =================================================================================
+
+G4_DECIMAL_NODES = [
+    ("g4DEC", "الكسور العشرية: التمثيل والمقارنة والربط بالاعتيادي", "operational", [  # six
+        # family 1 — التمثيل على الشبكة العشرية (grid) — the proven g3DEC decimal grid
+        ("grid", "اقرأ الشبكة واختر الصورة العشرية.", "٠٫٧",
+         {"kind": "fraction", "mode": "grid", "cols": 10, "rows": 1, "shaded": 7,
+          "options": ["٠٫٧", "٠٫٣", "٠٫٠٧"]}),
+        ("grid", "شبكة المئة: اختر الصورة العشرية للجزء الملوّن.", "٠٫٤٥",
+         {"kind": "fraction", "mode": "grid", "cols": 10, "rows": 10, "shaded": 45,
+          "options": ["٠٫٤٥", "٠٫٥٤", "٠٫٤"]}),
+        ("grid", "شبكة المئة: اختر الصورة العشرية للجزء الملوّن.", "٠٫٠٨",
+         {"kind": "fraction", "mode": "grid", "cols": 10, "rows": 10, "shaded": 8,
+          "options": ["٠٫٠٨", "٠٫٨", "٠٫٨٠"]}),
+        # family 2 — المقارنة والترتيب (compare) — the tenths↔hundredths place trap
+        ("compare", "انقر العدد العشري الأكبر: ٠٫٧ أم ٠٫٤٥؟", "٠٫٧",
+         {"kind": "shape-pick", "options": [{"v": "٠٫٧"}, {"v": "٠٫٤٥"}]}),
+        ("compare", "انقر العدد العشري الأكبر: ٠٫٣ أم ٠٫٥؟", "٠٫٥",
+         {"kind": "shape-pick", "options": [{"v": "٠٫٥"}, {"v": "٠٫٣"}]}),
+        # family 3 — الربط بالكسر الاعتيادي/التكافؤ (convert) — incl. ٠٫٥ = ١/٢
+        ("convert", "اكتب ٧/١٠ بالصورة العشرية.", "٠٫٧",
+         {"kind": "shape-pick", "options": [{"v": "٠٫٧"}, {"v": "٠٫٣"}]}),
+        ("convert", "اكتب ٠٫٢٥ كسراً اعتيادياً (من مئة).", "٢٥/١٠٠",
+         {"kind": "shape-pick", "options": [{"v": "٢٥/١٠٠"}, {"v": "٢٥/١٠"}]}),
+        ("convert", "ما العدد العشري المساوي لـ ١/٢؟", "٠٫٥",
+         {"kind": "shape-pick", "options": [{"v": "٠٫٥"}, {"v": "٠٫٢٥"}]}),
+    ]),
+    ("g4DECLINE", "تمثيل الكسور العشرية على خط الأعداد", "operational", [  # SA/QA only
+        # family 1 — الموضعة (place — produce: locate a given decimal)
+        ("place", "انقر موضع ٠٫٧ على الخطّ.", "٠٫٧",
+         {"kind": "number-line", "den": 10, "maxWhole": 1, "dec": True}),
+        ("place", "انقر موضع ٠٫٣ على الخطّ.", "٠٫٣",
+         {"kind": "number-line", "den": 10, "maxWhole": 1, "dec": True}),
+        ("place", "انقر موضع ١٫٥ على الخطّ (أكبر من ١).", "١٫٥",
+         {"kind": "number-line", "den": 10, "maxWhole": 2, "dec": True}),
+        ("place", "انقر موضع ١٫٢ على الخطّ (أكبر من ١).", "١٫٢",
+         {"kind": "number-line", "den": 10, "maxWhole": 2, "dec": True}),
+        # family 2 — القراءة (read — recognise: name the marked position)
+        ("read", "ما العدد العشري عند العلامة ◆ على الخطّ؟", "٠٫٦",
+         {"kind": "number-line", "den": 10, "maxWhole": 1, "dec": True,
+          "mark": 6, "options": ["٠٫٦", "٠٫٧"]}),
+        ("read", "ما العدد العشري عند العلامة ◆ على الخطّ؟", "٠٫٤",
+         {"kind": "number-line", "den": 10, "maxWhole": 1, "dec": True,
+          "mark": 4, "options": ["٠٫٤", "٠٫٣"]}),
+        ("read", "ما العدد العشري عند العلامة ◆ على الخطّ؟", "١٫٣",
+         {"kind": "number-line", "den": 10, "maxWhole": 2, "dec": True,
+          "mark": 13, "options": ["١٫٣", "١٫٤"]}),
+        ("read", "ما العدد العشري عند العلامة ◆ على الخطّ؟", "١٫٧",
+         {"kind": "number-line", "den": 10, "maxWhole": 2, "dec": True,
+          "mark": 17, "options": ["١٫٧", "١٫٦"]}),
+    ]),
+    ("g4DECADD", "جمع الكسور العشرية وطرحها", "operational", [  # SA/AE/BH
+        # family 1 — تقريب العشرية (round) — SA ف١٢ lead-in
+        ("round", "قرّب ٣٫٤٧ إلى أقرب عددٍ صحيح.", "٣", None),
+        ("round", "قرّب ٧٫٨٢ إلى أقرب جزءٍ من عشرة.", "٧٫٨", None),
+        # family 2 — الجمع بمحاذاة الفاصلة (add) — AE ص٦٨٨ verbatim
+        ("add", "٤٫٣١ + ١٩٫٦ = ؟", "٢٣٫٩١", None),
+        ("add", "٢٫٥ + ٣٫٧٥ = ؟", "٦٫٢٥", None),
+        ("add", "١٢٫٤ + ٧٫٣٥ = ؟", "١٩٫٧٥", None),
+        # family 3 — الطرح بمحاذاة الفاصلة (subtract)
+        ("subtract", "٨٫٥ − ٣٫٢٥ = ؟", "٥٫٢٥", None),
+        ("subtract", "٩٫٦ − ٤٫٨٧ = ؟", "٤٫٧٣", None),
+        ("subtract", "٢٠٫٥ − ٧٫٢٥ = ؟", "١٣٫٢٥", None),
+    ]),
+]
+
+# DAG from the actual country order: represent → {number-line, add/subtract}
+G4_DECIMAL_EDGES = [
+    ("g4FRAC", "g4DEC"),
+    ("g4DEC", "g4DECLINE"),
+    ("g4DEC", "g4DECADD"),
+]
+
+NODE_COUNTRIES.update({
+    "g4DEC": ("SA", "BH", "KW", "QA", "AE", "OM"),    # decimals — SIX (was Bahrain-only in G3)
+    "g4DECLINE": ("SA", "QA"),                        # decimal number line — SA + QA only
+    "g4DECADD": ("SA", "AE", "BH"),                   # add/sub decimals — SA + AE + BH (edition parity)
+})
+# =================== end GRADE 4 batch 5 ===================
+
+
 def seed(db: Session) -> None:
     if db.execute(select(Skill).limit(1)).scalars().first() is not None:
         return  # already seeded
@@ -4200,12 +4296,15 @@ def seed(db: Session) -> None:
     add_unit("الضرب والقسمة", 3, G4_MULDIV_NODES, target_grade=grade4)
     # GRADE 4 — batch 4: fractions (represent, equivalence, operations)
     add_unit("الكسور", 4, G4_FRACTION_NODES, target_grade=grade4)
+    # GRADE 4 — batch 5: decimal fractions (represent/compare/convert, number line, add/sub)
+    add_unit("الكسور العشرية", 5, G4_DECIMAL_NODES, target_grade=grade4)
 
     for prereq_code, dependent_code in (
         EDGES + GEOMETRY_EDGES + MULDIV_EDGES + DATA_EDGES + MEASURE_EDGES + LIGHT_EDGES
         + FRACTION_EDGES + G1_EDGES + G3_EDGES + G3_ADDSUB_EDGES + G3_MULDIV_EDGES
         + G3_FRACTION_EDGES + G3_MEASURE_EDGES + G3_GEOM_EDGES + G3_DATA_NODES_EDGES
         + G4_EDGES + G4_ADDSUB_EDGES + G4_MULDIV_EDGES + G4_FRACTION_EDGES
+        + G4_DECIMAL_EDGES
     ):
         db.add(SkillPrerequisite(
             skill_id=code_to_id[dependent_code],
