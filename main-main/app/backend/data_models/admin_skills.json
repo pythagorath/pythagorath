@@ -1,0 +1,58 @@
+{
+    "title": "admin_skills",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "name": {
+            "type": "string",
+            "description": "Skill name"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description"
+        },
+        "grade_id": {
+            "type": "integer",
+            "description": "Grade ID"
+        },
+        "subject_id": {
+            "type": "integer",
+            "description": "Subject ID"
+        },
+        "domain": {
+            "type": "string",
+            "description": "Domain category"
+        },
+        "difficulty_level": {
+            "type": "integer",
+            "description": "Difficulty level 1-5"
+        },
+        "mastery_threshold": {
+            "type": "number",
+            "description": "Mastery threshold 0-1"
+        },
+        "prerequisites": {
+            "type": "string",
+            "description": "JSON array of prerequisite skill IDs"
+        },
+        "status": {
+            "type": "string",
+            "description": "Status"
+        },
+        "country_id": {
+            "type": "integer",
+            "description": "Country ID"
+        },
+        "curriculum_id": {
+            "type": "integer",
+            "description": "Curriculum ID"
+        }
+    },
+    "required": [
+        "id",
+        "name"
+    ]
+}

@@ -1,0 +1,40 @@
+{
+    "title": "lessons",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "title": {
+            "type": "string",
+            "description": "Lesson title"
+        },
+        "subject_id": {
+            "type": "integer",
+            "description": "Foreign key to subjects"
+        },
+        "grade": {
+            "type": "string",
+            "description": "Grade level"
+        },
+        "video_url": {
+            "type": "string",
+            "description": "Video URL or content link"
+        },
+        "duration_minutes": {
+            "type": "integer",
+            "description": "Lesson duration in minutes"
+        },
+        "order_index": {
+            "type": "integer",
+            "description": "Order within subject"
+        }
+    },
+    "required": [
+        "id",
+        "title",
+        "subject_id",
+        "grade"
+    ]
+}

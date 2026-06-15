@@ -1,0 +1,62 @@
+[
+    {
+        "name": "الرياضيات",
+        "grade_id": 1,
+        "semester_id": 1,
+        "slug": "math-g1",
+        "description": "مادة الرياضيات للصف الأول",
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "العلوم",
+        "grade_id": 1,
+        "semester_id": 1,
+        "slug": "science-g1",
+        "description": "مادة العلوم للصف الأول",
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "اللغة العربية",
+        "grade_id": 1,
+        "semester_id": 1,
+        "slug": "arabic-g1",
+        "description": "مادة اللغة العربية للصف الأول",
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الرياضيات",
+        "grade_id": 2,
+        "semester_id": 3,
+        "slug": "math-g2",
+        "description": "مادة الرياضيات للصف الثاني",
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الرياضيات",
+        "grade_id": 3,
+        "semester_id": 5,
+        "slug": "math-g1-eg",
+        "description": "مادة الرياضيات للصف الأول - مصر",
+        "status": "published",
+        "country_id": 2,
+        "curriculum_id": 2
+    },
+    {
+        "name": "العلوم",
+        "grade_id": 3,
+        "semester_id": 5,
+        "slug": "science-g1-eg",
+        "description": "مادة العلوم للصف الأول - مصر",
+        "status": "published",
+        "country_id": 2,
+        "curriculum_id": 2
+    }
+]

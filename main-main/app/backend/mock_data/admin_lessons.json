@@ -1,0 +1,82 @@
+[
+    {
+        "name": "العد من 1 إلى 5",
+        "unit_id": 1,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "العد من 6 إلى 10",
+        "unit_id": 1,
+        "display_order": 2,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "مقارنة الأعداد",
+        "unit_id": 1,
+        "display_order": 3,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "جمع الأعداد حتى 5",
+        "unit_id": 2,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "طرح الأعداد حتى 5",
+        "unit_id": 2,
+        "display_order": 2,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "المربع والمثلث",
+        "unit_id": 3,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "العد حتى 50",
+        "unit_id": 4,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "العد حتى 100",
+        "unit_id": 4,
+        "display_order": 2,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "جدول الضرب 2",
+        "unit_id": 5,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "العد - منهج مصري",
+        "unit_id": 6,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 2,
+        "curriculum_id": 2
+    }
+]

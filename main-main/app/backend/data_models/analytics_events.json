@@ -1,0 +1,35 @@
+{
+    "title": "analytics_events",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "event_type": {
+            "type": "string",
+            "description": "Event type: question_answered, mission_completed, mastery_changed, retention_reviewed, misconception_detected"
+        },
+        "event_data": {
+            "type": "string",
+            "description": "JSON payload with event details"
+        },
+        "skill_id": {
+            "type": "integer",
+            "description": "Related skill ID"
+        },
+        "session_id": {
+            "type": "integer",
+            "description": "Related session ID"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "event_type"
+    ]
+}

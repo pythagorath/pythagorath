@@ -1,0 +1,51 @@
+{
+    "title": "learning_paths",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID of creator"
+        },
+        "curriculum_upload_id": {
+            "type": "integer",
+            "description": "Related curriculum upload"
+        },
+        "title": {
+            "type": "string",
+            "description": "Path title"
+        },
+        "grade_number": {
+            "type": "integer",
+            "description": "Grade number"
+        },
+        "subject_name": {
+            "type": "string",
+            "description": "Subject name"
+        },
+        "semester": {
+            "type": "integer",
+            "description": "Semester number"
+        },
+        "status": {
+            "type": "string",
+            "description": "Path status"
+        },
+        "total_nodes": {
+            "type": "integer",
+            "description": "Total nodes count"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "title",
+        "grade_number",
+        "subject_name",
+        "semester",
+        "status"
+    ]
+}

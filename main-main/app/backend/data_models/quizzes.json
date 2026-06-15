@@ -1,0 +1,37 @@
+{
+    "title": "quizzes",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "title": {
+            "type": "string",
+            "description": "Quiz title"
+        },
+        "lesson_id": {
+            "type": "integer",
+            "description": "Foreign key to lessons"
+        },
+        "subject_id": {
+            "type": "integer",
+            "description": "Foreign key to subjects"
+        },
+        "grade": {
+            "type": "string",
+            "description": "Grade level"
+        },
+        "difficulty": {
+            "type": "string",
+            "description": "easy, medium, hard"
+        }
+    },
+    "required": [
+        "id",
+        "title",
+        "lesson_id",
+        "subject_id",
+        "grade"
+    ]
+}

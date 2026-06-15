@@ -1,0 +1,32 @@
+{
+    "title": "curriculum_skills",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "lesson_id": {
+            "type": "integer",
+            "description": "FK to curriculum_lessons"
+        },
+        "name": {
+            "type": "string",
+            "description": "Skill name in Arabic"
+        },
+        "skill_type": {
+            "type": "string",
+            "description": "Type: knowledge, application, analysis"
+        },
+        "difficulty_level": {
+            "type": "integer",
+            "description": "1-5 difficulty"
+        }
+    },
+    "required": [
+        "id",
+        "lesson_id",
+        "name",
+        "skill_type"
+    ]
+}

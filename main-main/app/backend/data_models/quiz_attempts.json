@@ -1,0 +1,32 @@
+{
+    "title": "quiz_attempts",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "quiz_id": {
+            "type": "integer",
+            "description": "Foreign key to quizzes"
+        },
+        "score": {
+            "type": "integer",
+            "description": "Score percentage 0-100"
+        },
+        "answers": {
+            "type": "string",
+            "description": "JSON string of answers given"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "quiz_id",
+        "score"
+    ]
+}

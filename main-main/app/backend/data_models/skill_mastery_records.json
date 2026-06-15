@@ -1,0 +1,57 @@
+{
+    "title": "skill_mastery_records",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "skill_id": {
+            "type": "integer",
+            "description": "Skill ID reference"
+        },
+        "mastery_level": {
+            "type": "number",
+            "description": "Mastery level 0.0 to 1.0"
+        },
+        "confidence_score": {
+            "type": "number",
+            "description": "Confidence score 0.0 to 1.0"
+        },
+        "attempts_count": {
+            "type": "integer",
+            "description": "Total attempts"
+        },
+        "correct_count": {
+            "type": "integer",
+            "description": "Correct answers count"
+        },
+        "streak": {
+            "type": "integer",
+            "description": "Current streak"
+        },
+        "last_practiced_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Last practice timestamp"
+        },
+        "mastered_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When skill was mastered"
+        },
+        "status": {
+            "type": "string",
+            "description": "Status: not_started, learning, practicing, mastered, needs_review"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "skill_id"
+    ]
+}

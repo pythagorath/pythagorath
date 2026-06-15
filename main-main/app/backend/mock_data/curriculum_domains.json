@@ -1,0 +1,74 @@
+[
+    {
+        "name": "الأعداد والعمليات",
+        "name_en": "Numbers and Operations",
+        "subject_id": 1,
+        "grade": "الصف الأول",
+        "semester": "الفصل الأول",
+        "order_index": 1,
+        "description": "مفاهيم الأعداد والعد والعمليات الأساسية"
+    },
+    {
+        "name": "الهندسة",
+        "name_en": "Geometry",
+        "subject_id": 1,
+        "grade": "الصف الأول",
+        "semester": "الفصل الأول",
+        "order_index": 2,
+        "description": "الأشكال الهندسية والمكانية"
+    },
+    {
+        "name": "القياس",
+        "name_en": "Measurement",
+        "subject_id": 1,
+        "grade": "الصف الأول",
+        "semester": "الفصل الثاني",
+        "order_index": 3,
+        "description": "الطول والوزن والوقت"
+    },
+    {
+        "name": "الأنماط والجبر",
+        "name_en": "Patterns and Algebra",
+        "subject_id": 1,
+        "grade": "الصف الأول",
+        "semester": "الفصل الثاني",
+        "order_index": 4,
+        "description": "التعرف على الأنماط والعلاقات"
+    },
+    {
+        "name": "الأعداد والعمليات",
+        "name_en": "Numbers and Operations",
+        "subject_id": 1,
+        "grade": "الصف الثاني",
+        "semester": "الفصل الأول",
+        "order_index": 1,
+        "description": "الجمع والطرح ضمن 100"
+    },
+    {
+        "name": "الهندسة",
+        "name_en": "Geometry",
+        "subject_id": 1,
+        "grade": "الصف الثاني",
+        "semester": "الفصل الأول",
+        "order_index": 2,
+        "description": "الأشكال ثنائية وثلاثية الأبعاد"
+    },
+    {
+        "name": "القياس والبيانات",
+        "name_en": "Measurement and Data",
+        "subject_id": 1,
+        "grade": "الصف الثاني",
+        "semester": "الفصل الثاني",
+        "order_index": 3,
+        "description": "قياس الطول والوقت وقراءة البيانات"
+    },
+    {
+        "name": "الضرب والقسمة",
+        "name_en": "Multiplication and Division",
+        "subject_id": 1,
+        "grade": "الصف الثاني",
+        "semester": "الفصل الثاني",
+        "order_index": 4,
+        "description": "مقدمة في الضرب والقسمة"
+    }
+]

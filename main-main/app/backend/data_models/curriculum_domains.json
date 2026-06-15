@@ -1,0 +1,45 @@
+{
+    "title": "curriculum_domains",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "name": {
+            "type": "string",
+            "description": "Domain name e.g. الأعداد والعمليات"
+        },
+        "name_en": {
+            "type": "string",
+            "description": "English name for reference"
+        },
+        "subject_id": {
+            "type": "integer",
+            "description": "Reference to subjects table"
+        },
+        "grade": {
+            "type": "string",
+            "description": "Grade level e.g. الصف الأول"
+        },
+        "semester": {
+            "type": "string",
+            "description": "Semester e.g. الفصل الأول"
+        },
+        "order_index": {
+            "type": "integer",
+            "description": "Display order"
+        },
+        "description": {
+            "type": "string",
+            "description": "Domain description"
+        }
+    },
+    "required": [
+        "id",
+        "name",
+        "subject_id",
+        "grade",
+        "semester"
+    ]
+}

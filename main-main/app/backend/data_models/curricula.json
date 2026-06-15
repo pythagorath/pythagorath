@@ -1,0 +1,40 @@
+{
+    "title": "curricula",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "country_id": {
+            "type": "integer",
+            "description": "FK to countries"
+        },
+        "name_ar": {
+            "type": "string",
+            "description": "Curriculum name in Arabic"
+        },
+        "name_en": {
+            "type": "string",
+            "description": "Curriculum name in English"
+        },
+        "academic_year": {
+            "type": "string",
+            "description": "Academic year e.g. 2025-2026"
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether curriculum is active"
+        },
+        "display_order": {
+            "type": "integer",
+            "description": "Display order"
+        }
+    },
+    "required": [
+        "id",
+        "country_id",
+        "name_ar",
+        "name_en"
+    ]
+}

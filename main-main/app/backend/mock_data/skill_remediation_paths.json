@@ -1,0 +1,58 @@
+[
+    {
+        "skill_id": 2,
+        "prerequisite_skill_id": 1,
+        "remediation_type": "review",
+        "description": "مراجعة العد من 1-10 قبل الانتقال لـ 11-20",
+        "order_index": 1
+    },
+    {
+        "skill_id": 3,
+        "prerequisite_skill_id": 1,
+        "remediation_type": "practice",
+        "description": "تدريب على ترتيب الأعداد قبل المقارنة",
+        "order_index": 1
+    },
+    {
+        "skill_id": 4,
+        "prerequisite_skill_id": 1,
+        "remediation_type": "review",
+        "description": "مراجعة العد قبل الجمع",
+        "order_index": 1
+    },
+    {
+        "skill_id": 5,
+        "prerequisite_skill_id": 4,
+        "remediation_type": "review",
+        "description": "مراجعة الجمع قبل الطرح",
+        "order_index": 1
+    },
+    {
+        "skill_id": 9,
+        "prerequisite_skill_id": 4,
+        "remediation_type": "review",
+        "description": "مراجعة الجمع ضمن 10 أولاً",
+        "order_index": 1
+    },
+    {
+        "skill_id": 9,
+        "prerequisite_skill_id": 2,
+        "remediation_type": "visual_aid",
+        "description": "استخدام القيمة المكانية مع أدوات بصرية",
+        "order_index": 2
+    },
+    {
+        "skill_id": 10,
+        "prerequisite_skill_id": 5,
+        "remediation_type": "review",
+        "description": "مراجعة الطرح ضمن 10",
+        "order_index": 1
+    },
+    {
+        "skill_id": 12,
+        "prerequisite_skill_id": 4,
+        "remediation_type": "decompose",
+        "description": "تحليل الضرب كجمع متكرر",
+        "order_index": 1
+    }
+]

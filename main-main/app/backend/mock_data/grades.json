@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "curriculum_id": 1,
+        "grade_number": 1,
+        "name_ar": "الصف الأول",
+        "name_en": "Grade 1",
+        "stage": "primary",
+        "is_active": true,
+        "display_order": 1
+    },
+    {
+        "id": 2,
+        "curriculum_id": 1,
+        "grade_number": 2,
+        "name_ar": "الصف الثاني",
+        "name_en": "Grade 2",
+        "stage": "primary",
+        "is_active": true,
+        "display_order": 2
+    },
+    {
+        "id": 3,
+        "curriculum_id": 1,
+        "grade_number": 3,
+        "name_ar": "الصف الثالث",
+        "name_en": "Grade 3",
+        "stage": "primary",
+        "is_active": true,
+        "display_order": 3
+    },
+    {
+        "id": 4,
+        "curriculum_id": 1,
+        "grade_number": 4,
+        "name_ar": "الصف الرابع",
+        "name_en": "Grade 4",
+        "stage": "primary",
+        "is_active": true,
+        "display_order": 4
+    },
+    {
+        "id": 5,
+        "curriculum_id": 1,
+        "grade_number": 5,
+        "name_ar": "الصف الخامس",
+        "name_en": "Grade 5",
+        "stage": "middle",
+        "is_active": true,
+        "display_order": 5
+    },
+    {
+        "id": 6,
+        "curriculum_id": 1,
+        "grade_number": 6,
+        "name_ar": "الصف السادس",
+        "name_en": "Grade 6",
+        "stage": "middle",
+        "is_active": true,
+        "display_order": 6
+    },
+    {
+        "id": 7,
+        "curriculum_id": 1,
+        "grade_number": 7,
+        "name_ar": "الصف السابع",
+        "name_en": "Grade 7",
+        "stage": "middle",
+        "is_active": true,
+        "display_order": 7
+    },
+    {
+        "id": 8,
+        "curriculum_id": 1,
+        "grade_number": 8,
+        "name_ar": "الصف الثامن",
+        "name_en": "Grade 8",
+        "stage": "middle",
+        "is_active": true,
+        "display_order": 8
+    },
+    {
+        "id": 9,
+        "curriculum_id": 1,
+        "grade_number": 9,
+        "name_ar": "الصف التاسع",
+        "name_en": "Grade 9",
+        "stage": "secondary",
+        "is_active": true,
+        "display_order": 9
+    },
+    {
+        "id": 10,
+        "curriculum_id": 1,
+        "grade_number": 10,
+        "name_ar": "الصف العاشر",
+        "name_en": "Grade 10",
+        "stage": "secondary",
+        "is_active": true,
+        "display_order": 10
+    },
+    {
+        "id": 11,
+        "curriculum_id": 1,
+        "grade_number": 11,
+        "name_ar": "الصف الحادي عشر",
+        "name_en": "Grade 11",
+        "stage": "secondary",
+        "is_active": true,
+        "display_order": 11
+    },
+    {
+        "id": 12,
+        "curriculum_id": 1,
+        "grade_number": 12,
+        "name_ar": "الصف الثاني عشر",
+        "name_en": "Grade 12",
+        "stage": "secondary",
+        "is_active": true,
+        "display_order": 12
+    }
+]

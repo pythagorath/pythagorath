@@ -1,0 +1,44 @@
+{
+    "title": "grades",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "curriculum_id": {
+            "type": "integer",
+            "description": "FK to curricula"
+        },
+        "grade_number": {
+            "type": "integer",
+            "description": "Grade number 1-12"
+        },
+        "name_ar": {
+            "type": "string",
+            "description": "Grade name in Arabic"
+        },
+        "name_en": {
+            "type": "string",
+            "description": "Grade name in English"
+        },
+        "stage": {
+            "type": "string",
+            "description": "Education stage: primary, middle, secondary"
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether grade is active"
+        },
+        "display_order": {
+            "type": "integer",
+            "description": "Display order"
+        }
+    },
+    "required": [
+        "id",
+        "curriculum_id",
+        "grade_number",
+        "name_ar"
+    ]
+}

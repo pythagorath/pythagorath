@@ -1,0 +1,32 @@
+{
+    "title": "curriculum_units",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "curriculum_upload_id": {
+            "type": "integer",
+            "description": "FK to curriculum_uploads"
+        },
+        "name": {
+            "type": "string",
+            "description": "Unit name in Arabic"
+        },
+        "order_index": {
+            "type": "integer",
+            "description": "Display order"
+        },
+        "description": {
+            "type": "string",
+            "description": "Unit description"
+        }
+    },
+    "required": [
+        "id",
+        "curriculum_upload_id",
+        "name",
+        "order_index"
+    ]
+}

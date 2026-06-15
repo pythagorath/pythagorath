@@ -1,0 +1,36 @@
+{
+    "title": "weakness_records",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "skill": {
+            "type": "string",
+            "description": "Skill name"
+        },
+        "subject_id": {
+            "type": "integer",
+            "description": "Foreign key to subjects"
+        },
+        "error_count": {
+            "type": "integer",
+            "description": "Number of errors in this skill"
+        },
+        "resolved": {
+            "type": "boolean",
+            "description": "Whether weakness is resolved"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "skill",
+        "error_count"
+    ]
+}

@@ -1,0 +1,15 @@
+venv/
+*.log
+node_modules/
+build/
+__pycache__
+dist
+vite.config.ts.timestamp-*
+
+# Secrets — never commit local environment files
+.env
+.env.*
+!.env.example
+
+# Local-disk storage uploads (dev fallback when OSS is not configured)
+app/backend/uploads/

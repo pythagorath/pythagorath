@@ -1,0 +1,50 @@
+{
+    "title": "path_nodes",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID of creator"
+        },
+        "learning_path_id": {
+            "type": "integer",
+            "description": "Parent learning path ID"
+        },
+        "node_type": {
+            "type": "string",
+            "description": "Type of node"
+        },
+        "title": {
+            "type": "string",
+            "description": "Node title"
+        },
+        "order_index": {
+            "type": "integer",
+            "description": "Order position"
+        },
+        "parent_node_id": {
+            "type": "integer",
+            "description": "Parent node ID for nesting"
+        },
+        "content_config": {
+            "type": "string",
+            "description": "JSON content configuration"
+        },
+        "duration_minutes": {
+            "type": "integer",
+            "description": "Duration in minutes"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "learning_path_id",
+        "node_type",
+        "title",
+        "order_index"
+    ]
+}

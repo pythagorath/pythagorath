@@ -1,0 +1,45 @@
+{
+    "title": "student_profiles",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "Atoms Cloud auth user ID"
+        },
+        "name": {
+            "type": "string",
+            "description": "Student display name"
+        },
+        "grade": {
+            "type": "integer",
+            "description": "Grade level (1-12)"
+        },
+        "semester": {
+            "type": "integer",
+            "description": "Current semester (1 or 2)"
+        },
+        "guardian_contact": {
+            "type": "string",
+            "description": "Parent/guardian phone or email"
+        },
+        "avatar_color": {
+            "type": "string",
+            "description": "Avatar color for profile display"
+        },
+        "status": {
+            "type": "string",
+            "description": "Account status: active, inactive"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "name",
+        "grade",
+        "semester"
+    ]
+}

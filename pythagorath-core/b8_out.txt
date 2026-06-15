@@ -1,0 +1,26 @@
+......F                                                                  [100%]
+================================== FAILURES ===================================
+_________________________ test_variation_guard_batch8 _________________________
+
+    def test_variation_guard_batch8():
+        rng = random.Random(99)
+        for code, floor in FLOORS.items():
+            fams = list(generators.REGISTRY[code])
+            draws = set()
+            for i in range(50):
+                pr, ans, vis = generators.REGISTRY[code][fams[i % len(fams)]](rng, {})
+                draws.add((pr, ans, json.dumps(vis, ensure_ascii=False) if vis else ""))
+>           assert len(draws) >= floor, (code, len(draws))
+E           AssertionError: ('g3CAPMASS', 28)
+E           assert 28 >= 30
+E            +  where 28 = len({('\u062d\u0648\u0651\u0644: \u0661 \u0643\u064a\u0644\u0648\u063a\u0631\u0627\u0645 = \u061f \u063a\u0631\u0627\u0645\u0627\u064b', '\u0661\u0660\u0660\u0660', ''), ('\u062d\u0648\u0651\u0644: \u0661 \u0644\u062a\u0631 = \u061f \u0645\u0644\u0644\u062a\u0631\u0627\u064b', '\u0661\u0660\u0660\u0660', ''), ('\u062d\u0648\u0651\u0644: \u0661\u0660\u0660\u0660 \u063a\u0631\u0627\u0645 = \u061f \u0643\u064a\u0644\u0648\u063a\u0631\u0627\u0645\u0627... \u0645\u0644\u0644\u062a\u0631 = \u061f \u0644\u062a\u0631\u0627\u064b', '\u0661', ''), ('\u062d\u0648\u0651\u0644: \u0662 \u0643\u064a\u0644\u0648\u063a\u0631\u0627\u0645 = \u061f \u063a\u0631\u0627\u0645\u0627\u064b', '\u0662\u0660\u0660\u0660', ''), ('\u062d\u0648\u0651\u0644: \u0662 \u0644\u062a\u0631 = \u061f \u0645\u0644\u0644\u062a\u0631\u0627\u064b', '\u0662\u0660\u0660\u0660', ''), ...})
+
+tests\test_g3b8_generators.py:181: AssertionError
+============================== warnings summary ===============================
+..\..\pythagorath-v2\backend\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\user\Downloads\main-main\pythagorath-v2\backend\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_g3b8_generators.py::test_variation_guard_batch8 - Assertion...

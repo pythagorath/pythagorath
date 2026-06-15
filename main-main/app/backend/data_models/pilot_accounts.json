@@ -1,0 +1,39 @@
+{
+    "title": "pilot_accounts",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "account_type": {
+            "type": "string",
+            "description": "student_grade1, student_grade2, parent, admin, reviewer, editor"
+        },
+        "display_name": {
+            "type": "string",
+            "description": "Display name for the demo account"
+        },
+        "email": {
+            "type": "string",
+            "description": "Demo email"
+        },
+        "grade_level": {
+            "type": "integer",
+            "description": "1 or 2 for students"
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether account is active"
+        },
+        "notes": {
+            "type": "string",
+            "description": "Notes about this pilot account"
+        }
+    },
+    "required": [
+        "id",
+        "account_type",
+        "display_name"
+    ]
+}

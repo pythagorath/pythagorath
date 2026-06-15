@@ -1,0 +1,40 @@
+{
+    "title": "semesters",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "grade_id": {
+            "type": "integer",
+            "description": "FK to grades"
+        },
+        "semester_number": {
+            "type": "integer",
+            "description": "1 or 2"
+        },
+        "name_ar": {
+            "type": "string",
+            "description": "Semester name in Arabic"
+        },
+        "name_en": {
+            "type": "string",
+            "description": "Semester name in English"
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether semester is active"
+        },
+        "display_order": {
+            "type": "integer",
+            "description": "Display order"
+        }
+    },
+    "required": [
+        "id",
+        "grade_id",
+        "semester_number",
+        "name_ar"
+    ]
+}

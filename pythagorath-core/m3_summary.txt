@@ -1,0 +1,382 @@
+====== A1 «الجمع بالحمل البسيط ضمن ١٠٠» fams=['aggregative', 'magnitude', 'decompositional']
+  [aggregative] ابنِ ٤٧، أضِف ٥ آحاد، واربط العشرة المكتملة في قضيب. المجموع؟ => ٥٢ | base-ten-blocks:{"start": 47, "add": 5, "carry": true}
+  [aggregative] ابنِ ٣٨، أضِف ٢٧ (اجمع الآحاد ١٥ ← اربط عشرة) ثم القضبان. المجموع؟ => ٦٥ | base-ten-blocks:{"start": 38, "add": 27, "carry": true}
+  [magnitude] على الخطّ: ابدأ من ٤٧، اقفز ٥ للأمام (تعبر ٥٠). أين تقف؟ => ٥٢ | number-line:{"min": 45, "max": 55, "start": 47, "jump": 5}
+  [magnitude] على الخطّ: ابدأ من ٣٨، اقفز ٦ للأمام (تعبر ٤٠). أين تقف؟ => ٤٤ | number-line:{"min": 36, "max": 46, "start": 38, "jump": 6}
+  [decompositional] اجمع بالخانات (بحمل): ٤٧ + ٥ => ٥٢ | decomposition:{"mode": "place-add", "a": 47, "b": 5}
+  [decompositional] اجمع بالخانات (بحمل): ٣٨ + ٢٧ => ٦٥ | decomposition:{"mode": "place-add", "a": 38, "b": 27}
+====== A3 «الجمع حتى ١٠٠٠ بإعادة التجميع» fams=['aggregative', 'magnitude', 'decompositional']
+  [aggregative] ابنِ ٢٦٥، أضِف ٨٥ (اربط العشرة، ثم اربط عشر قضبان في لوح مئة). المجموع؟ => ٣٥٠ | base-ten-blocks:{"start": 265, "add": 85, "carry": true}
+  [aggregative] ابنِ ١٤٧، أضِف ٢٨٦ (حمل الآحاد ثم العشرات إلى المئات). المجموع؟ => ٤٣٣ | base-ten-blocks:{"start": 147, "add": 286, "carry": true}
+  [magnitude] على الخطّ: ابدأ من ٢٩٧، اقفز ٨ للأمام (تعبر ٣٠٠). أين تقف؟ => ٣٠٥ | number-line:{"min": 294, "max": 308, "start": 297, "jump": 8}
+  [magnitude] على الخطّ: ابدأ من ٤٩٦، اقفز ٧ للأمام (تعبر ٥٠٠). أين تقف؟ => ٥٠٣ | number-line:{"min": 493, "max": 507, "start": 496, "jump": 7}
+  [decompositional] اجمع بالخانات (بحمل): ٣٤٧ + ٢٨٥ => ٦٣٢ | decomposition:{"mode": "place-add", "a": 347, "b": 285}
+  [decompositional] اجمع بالخانات (بحمل): ٤٥٦ + ١٧٨ => ٦٣٤ | decomposition:{"mode": "place-add", "a": 456, "b": 178}
+====== A4 «الطرح حتى ١٠٠٠ بإعادة التجميع» fams=['aggregative', 'magnitude', 'decompositional']
+  [aggregative] اطرح ٨٥ من ٣٤٢ بالألواح والقضبان (افتح قضيباً للاستلاف). الباقي؟ => ٢٥٧ | subtract-blocks:{"minuend": 342, "subtract": 85}
+  [aggregative] اطرح ١٥٧ من ٤٢٣ بالألواح (افتح لوحاً ثم قضيباً — استلاف متسلسل). الباقي؟ => ٢٦٦ | subtract-blocks:{"minuend": 423, "subtract": 157}
+  [magnitude] على الخطّ: ابدأ من ٣٠٣، اقفز ٨ للخلف (تعبر ٣٠٠). أين تقف؟ => ٢٩٥ | number-line:{"min": 292, "max": 306, "start": 303, "jump": 8, "back": true}
+  [magnitude] على الخطّ: ابدأ من ٥٠٤، اقفز ٩ للخلف (تعبر ٥٠٠). أين تقف؟ => ٤٩٥ | number-line:{"min": 492, "max": 506, "start": 504, "jump": 9, "back": true}
+  [decompositional] اطرح بالخانات: ٤٣٢ − ١٥٧ => ٢٧٥ | decomposition:{"mode": "place-sub", "minuend": 432, "subtrahend": 157}
+  [decompositional] اطرح بالخانات: ٦٠٥ − ٢٤٨ => ٣٥٧ | decomposition:{"mode": "place-sub", "minuend": 605, "subtrahend": 248}
+====== B1 «التفكيك غير القياسي» fams=['aggregative', 'decompositional']
+  [aggregative] ٤٧: افتح قضيباً إلى ١٠ آحاد (القيمة تبقى ٤٧). كم الآحاد الآن؟ => ١٧ | regroup-blocks:{"rods": 4, "cubes": 7, "ask": "ones"}
+  [aggregative] ٥٢: افتح قضيباً (القيمة تبقى ٥٢). كم الآحاد الآن؟ => ١٢ | regroup-blocks:{"rods": 5, "cubes": 2, "ask": "ones"}
+  [decompositional] تفكيك غير قياسي: ٤٧ = ٣٠ + ؟ => ١٧ | decomposition:{"mode": "expand", "whole": 47, "tens": 30}
+  [decompositional] تفكيك غير قياسي: ٦٣ = ٥٠ + ؟ => ١٣ | decomposition:{"mode": "expand", "whole": 63, "tens": 50}
+====== B5 «الطرح بلا استلاف» fams=['aggregative', 'magnitude', 'decompositional']
+  [aggregative] اطرح ٢٤ من ٥٦ بالقضبان (الآحاد تكفي — لا تحتاج فتحاً). => ٣٢ | subtract-blocks:{"minuend": 56, "subtract": 24}
+  [aggregative] اطرح ٣٥ من ٦٨ بالقضبان. => ٣٣ | subtract-blocks:{"minuend": 68, "subtract": 35}
+  [magnitude] على الخطّ: ابدأ من ٥٦، اقفز ٢٤ للخلف. => ٣٢ | number-line:{"min": 0, "max": 80, "start": 56, "jump": 24, "back": true}
+  [magnitude] على الخطّ: ابدأ من ٧٩، اقفز ٤٣ للخلف. => ٣٦ | number-line:{"min": 0, "max": 80, "start": 79, "jump": 43, "back": true}
+  [decompositional] اطرح بالخانات: ٥٦ − ٢٤ => ٣٢ | decomposition:{"mode": "place-sub", "minuend": 56, "subtrahend": 24}
+  [decompositional] اطرح بالخانات: ٨٨ − ٣٥ => ٥٣ | decomposition:{"mode": "place-sub", "minuend": 88, "subtrahend": 35}
+====== C1 «القيمة المكانية» fams=['aggregative', 'magnitude', 'decompositional']
+  [aggregative] ابنِ العدد ٦٣ بالقضبان (عشرات) والمكعّبات (آحاد). => ٦٣ | base-ten-blocks:{"target": 63}
+  [aggregative] ابنِ العدد ٥٨ بالقضبان والمكعّبات. => ٥٨ | base-ten-blocks:{"target": 58}
+  [magnitude] على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٤٧. => ٥٠ | number-line:{"min": 0, "max": 100, "step": 10, "target": 47}
+  [magnitude] على خطّ ٠..١٠٠، انقر العقد ٨٠. => ٨٠ | number-line:{"min": 0, "max": 100, "step": 10, "target": 80}
+  [decompositional] فكِّك إلى عشرات وآحاد: ٤٧ = ٤٠ + ؟ => ٧ | decomposition:{"mode": "expand", "whole": 47, "tens": 40}
+  [decompositional] فكِّك: ٥٨ = ٥٠ + ؟ => ٨ | decomposition:{"mode": "expand", "whole": 58, "tens": 50}
+====== C3 «تجميع العشرات (الوحدنة)» fams=['aggregative', 'decompositional']
+  [aggregative] اربط ١٠ مكعّبات مفردة في قضيب (القيمة تبقى ١٠). كم قضيب؟ => ١ | regroup-blocks:{"rods": 0, "cubes": 10, "ask": "tens"}
+  [aggregative] لديك ٢٠ مكعّباً مفرداً، اربطها. كم قضيب عشرة؟ => ٢ | regroup-blocks:{"rods": 0, "cubes": 20, "ask": "tens"}
+  [decompositional] ١٠ آحاد = ؟ عشرة => ١ | decomposition:{"mode": "unit-convert", "qty": 10, "from": "آحاد", "to": "عشرة", "answer": 1}
+  [decompositional] ٣ عشرات = ؟ آحاد => ٣٠ | decomposition:{"mode": "unit-convert", "qty": 3, "from": "عشرات", "to": "آحاد", "answer": 30}
+====== C4 «العدّ بالعشرات» fams=['sequential', 'aggregative']
+  [sequential] أكمل التتابع: ٤٠، ٥٠، ٦٠، ؟ => ٧٠ | sequence:{"terms": [40, 50, 60]}
+  [sequential] أكمل التتابع: ٧٠، ٨٠، ٩٠، ؟ => ١٠٠ | sequence:{"terms": [70, 80, 90]}
+  [aggregative] ابنِ ٦ قضبان عشرة، وشاهد القيمة تتسلّق بالعشرات. => ٦٠ | base-ten-blocks:{"target": 60}
+  [aggregative] ابنِ ٨ قضبان عشرة. => ٨٠ | base-ten-blocks:{"target": 80}
+====== C5 «القيمة المنزلية حتى ١٠٠٠» fams=['aggregative', 'magnitude', 'decompositional']
+  [aggregative] ابنِ العدد ٣٤٧ بالألواح (مئات) والقضبان (عشرات) والمكعّبات (آحاد). => ٣٤٧ | base-ten-blocks:{"target": 347}
+  [aggregative] ابنِ العدد ٥٠٦ بالألواح والقضبان والمكعّبات (لا عشرات). => ٥٠٦ | base-ten-blocks:{"target": 506}
+  [magnitude] على خطّ ٠..١٠٠٠، انقر أقرب مئة إلى ٣٤٧. => ٣٠٠ | number-line:{"min": 0, "max": 1000, "step": 100, "target": 347}
+  [magnitude] على خطّ ٠..١٠٠٠، انقر أقرب مئة إلى ٦٨٠. => ٧٠٠ | number-line:{"min": 0, "max": 1000, "step": 100, "target": 680}
+  [decompositional] فكّك ٣٤٧ = ؟ + ٤٠ + ٧ — أدخِل قيمة المئات. => ٣٠٠ | decomposition:{"mode": "expand3", "parts": [300, 40, 7], "blank": 0}
+  [decompositional] فكّك ٢٥٨ = ٢٠٠ + ٥٠ + ؟ — أدخِل قيمة الآحاد. => ٨ | decomposition:{"mode": "expand3", "parts": [200, 50, 8], "blank": 2}
+====== D1 «الجمع بالعدّ التصاعدي» fams=['magnitude']
+  [magnitude] على الخطّ: ابدأ من ١٣، عُدّ صعوداً ٤ (داخل العقد). أين تقف؟ => ١٧ | number-line:{"min": 11, "max": 19, "start": 13, "jump": 4}
+  [magnitude] على الخطّ: ابدأ من ٨، عُدّ صعوداً ٥ (تعبر العقد ١٠). أين تقف؟ => ١٣ | number-line:{"min": 6, "max": 15, "start": 8, "jump": 5}
+====== D2 «الطرح بالعدّ التنازلي» fams=['magnitude']
+  [magnitude] على الخطّ: ابدأ من ١٧، اقفز ٣ للخلف (داخل العقد). أين تقف؟ => ١٤ | number-line:{"min": 0, "max": 20, "start": 17, "jump": 3, "back": true}
+  [magnitude] على الخطّ: ابدأ من ١٣، اقفز ٤ للخلف (تعبر العقد ١٠). أين تقف؟ => ٩ | number-line:{"min": 0, "max": 20, "start": 13, "jump": 4, "back": true}
+====== DA4 «التمثيل بالنقاط» fams=['نقاط']
+  [نقاط] في التمثيل بالنقاط: كم عددُ النقاط عند القيمة «٣»؟ => ٤ | chart:{"mode": "read", "type": "lineplot", "data": [["١", 2], ["٢", 1], ["٣", 4], ["٤", 2]], "ask": "count", "cat": 
+  [نقاط] في التمثيل بالنقاط: أيُّ قيمةٍ لها أكثرُ النقاط؟ => ٣ | chart:{"mode": "read", "type": "lineplot", "data": [["١", 2], ["٢", 1], ["٣", 4], ["٤", 2]], "ask": "most"}
+====== E1 «العدّ من نقطة كيفية» fams=['sequential']
+  [sequential] أكمل التتابع (داخل العقد): ٦٣، ٦٤، ٦٥، ؟ => ٦٦ | sequence:{"terms": [63, 64, 65]}
+  [sequential] أكمل التتابع (يعبر العقد): ٨٨، ٨٩، ؟ => ٩٠ | sequence:{"terms": [88, 89]}
+====== E2 «العدّ التنازلي من نقطة كيفية» fams=['sequential']
+  [sequential] أكمل التنازل (داخل العقد): ٥٧، ٥٦، ؟ => ٥٥ | sequence:{"terms": [57, 56]}
+  [sequential] أكمل التنازل (يعبر العقد للأسفل): ٤١، ٤٠، ؟ => ٣٩ | sequence:{"terms": [41, 40]}
+====== F1 «خصائص الجمع» fams=['decompositional']
+  [decompositional] إذا كان ٣ + ٨ = ١١، فكم يساوي ٨ + ٣؟ (التبديل) => ١١ | -
+  [decompositional] استعمل التجميع: (٢ + ٨) + ٥ = ؟ => ١٥ | -
+====== F11 «العلاقة بين الجمع والطرح» fams=['decompositional']
+  [decompositional] إذا كان ٥ + ٧ = ١٢، فكم يساوي ١٢ − ٥؟ (فكّر بالجمع) => ٧ | -
+  [decompositional] إذا كان ٨ + ٦ = ١٤، فكم يساوي ١٤ − ٨؟ => ٦ | -
+====== F13 «عائلات الحقائق» fams=['decompositional']
+  [decompositional] من العائلة (٣، ٥، ٨): أكمل ٨ − ٥ = ؟ => ٣ | -
+  [decompositional] من العائلة (٦، ٧، ١٣): أكمل ١٣ − ٦ = ؟ => ٧ | -
+====== F4 «المضاعفات (الدوبل)» fams=['aggregative', 'magnitude']
+  [aggregative] املأ الإطار: ضِعف ٤ (٤ + ٤). => ٨ | ten-frame:{"start": 4, "add": 4}
+  [aggregative] املأ الإطار: ضِعف ٦ (٦ + ٦). => ١٢ | ten-frame:{"start": 6, "add": 6}
+  [magnitude] على الخطّ: ابدأ من ٧، اقفز ٧ (ضِعف ٧). => ١٤ | number-line:{"min": 0, "max": 20, "start": 7, "jump": 7}
+  [magnitude] على الخطّ: ابدأ من ٨، اقفز ٨ (ضِعف ٨). => ١٦ | number-line:{"min": 0, "max": 20, "start": 8, "jump": 8}
+====== F5 «قريب المضاعفات» fams=['aggregative', 'decompositional']
+  [aggregative] املأ الإطار: ٧ + ٨ (ضِعف ٧ زائد ١). => ١٥ | ten-frame:{"start": 7, "add": 8}
+  [aggregative] املأ الإطار: ٥ + ٦ (ضِعف ٥ زائد ١). => ١١ | ten-frame:{"start": 5, "add": 6}
+  [decompositional] قرّب المضاعفات: ٧ + ٨ = (٧ + ٧) + ١ = ؟ => ١٥ | decomposition:{"mode": "place-add", "a": 7, "b": 8}
+  [decompositional] قرّب المضاعفات: ٥ + ٦ = (٥ + ٥) + ١ = ؟ => ١١ | decomposition:{"mode": "place-add", "a": 5, "b": 6}
+====== F7 «جمع ثلاثة أعداد» fams=['decompositional']
+  [decompositional] اجمع (ابحث عن العشرة): ٤ + ٦ + ٣ = ؟ => ١٣ | -
+  [decompositional] اجمع (ابحث عن الضِعف): ٥ + ٥ + ٧ = ؟ => ١٧ | -
+====== F9 «الطرح باستعمال المضاعفات» fams=['aggregative', 'magnitude']
+  [aggregative] اطرح بالقضبان مستعيناً بالضِعف: ١٢ − ٦. => ٦ | subtract-blocks:{"minuend": 12, "subtract": 6}
+  [aggregative] اطرح بالقضبان: ١٦ − ٨ (ضِعف ٨). => ٨ | subtract-blocks:{"minuend": 16, "subtract": 8}
+  [magnitude] على الخطّ: ابدأ من ١٤، اقفز ٧ للخلف (ضِعف ٧). => ٧ | number-line:{"min": 0, "max": 20, "start": 14, "jump": 7, "back": true}
+  [magnitude] على الخطّ: ابدأ من ١٨، اقفز ٩ للخلف (ضِعف ٩). => ٩ | number-line:{"min": 0, "max": 20, "start": 18, "jump": 9, "back": true}
+====== Fr1 «تجزئة الكلّ وتسمية الكسر» fams=['تسمية', 'تجزئة']
+  [تسمية] ما الكسر الملوّن؟ انقر الإجابة. => ٣/٤ | fraction:{"mode": "name", "parts": 4, "shaded": 3, "options": ["١/٤", "٢/٤", "٣/٤"]}
+  [تسمية] ما الكسر الملوّن؟ انقر الإجابة. => ١/٣ | fraction:{"mode": "name", "parts": 3, "shaded": 1, "options": ["١/٣", "٢/٣", "٣/٣"]}
+  [تجزئة] ظلِّل ١ من ٢ أجزاء متساوية (النصف). => ١/٢ | fraction:{"mode": "shade", "parts": 2, "target": 1}
+  [تجزئة] ظلِّل ٣ من ٤ أجزاء متساوية. => ٣/٤ | fraction:{"mode": "shade", "parts": 4, "target": 3}
+====== N10 «ترتيب الأعداد» fams=['decompositional']
+  [decompositional] رتّب تصاعدياً: ٤٧، ٢٧، ٧٤ — ما العدد الأصغر؟ => ٢٧ | -
+  [decompositional] رتّب تصاعدياً: ٦٣، ٣٦، ٦٨ — ما العدد الأكبر؟ => ٦٨ | -
+====== N11 «تقدير الكميات (أقرب عشرة)» fams=['magnitude']
+  [magnitude] على خطّ ٠..١٠٠، انقر أقرب عقد (عشرة) إلى ٤٣. => ٤٠ | number-line:{"min": 0, "max": 100, "step": 10, "target": 43}
+  [magnitude] على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٤٧. => ٥٠ | number-line:{"min": 0, "max": 100, "step": 10, "target": 47}
+====== N4 «العدّ بالقفز (٢ و٥)» fams=['sequential', 'magnitude']
+  [sequential] أكمل العدّ بالقفز ٢: ٢، ٤، ٦، ؟ => ٨ | sequence:{"terms": [2, 4, 6]}
+  [sequential] أكمل العدّ بالقفز ٥: ٥، ١٠، ١٥، ؟ => ٢٠ | sequence:{"terms": [5, 10, 15]}
+  [magnitude] على الخطّ: ابدأ من ٦، اقفز ٢ للأمام. => ٨ | number-line:{"min": 0, "max": 20, "start": 6, "jump": 2}
+  [magnitude] على الخطّ: ابدأ من ١٠، اقفز ٥ للأمام. => ١٥ | number-line:{"min": 0, "max": 20, "start": 10, "jump": 5}
+====== N9 «مقارنة الأعداد» fams=['decompositional']
+  [decompositional] أيّهما أكبر: ٣٦ أم ٦٣؟ (قارن العشرات) اكتب الأكبر. => ٦٣ | -
+  [decompositional] أيّهما أكبر: ٥٤ أم ٥٨؟ (العشرات متساوية — قارن الآحاد) اكتب الأكبر. => ٥٨ | -
+====== Q2 «قراءة الساعة» fams=['قراءة']
+  [قراءة] كم الساعة؟ اقرأ القرص واختر. => الثالثة تماماً | clock:{"hour": 3, "minute": 0, "options": ["الثانية تماماً", "الثالثة تماماً", "الرابعة تماماً"]}
+  [قراءة] كم الساعة؟ => السادسة والنصف | clock:{"hour": 6, "minute": 30, "options": ["السادسة تماماً", "السادسة والنصف", "السابعة والنصف"]}
+====== Q3 «النقود» fams=['تعرّف', 'إجمالي']
+  [تعرّف] ما قيمة هذه العملة؟ (بالبيسة) => ٥٠ | money:{"mode": "identify", "coin": 50, "options": [25, 50, 100]}
+  [تعرّف] ما قيمة هذه العملة؟ => ٢٥ | money:{"mode": "identify", "coin": 25, "options": [10, 25, 50]}
+  [إجمالي] اجمع قيمة هذه العملات (بالبيسة). => ٢٠ | money:{"mode": "total", "coins": [5, 5, 10]}
+  [إجمالي] اجمع قيمة هذه العملات. => ٣٥ | money:{"mode": "total", "coins": [25, 10]}
+====== Q4 «المساحة بمربّعات الوحدة» fams=['مساحة']
+  [مساحة] كم مربّع وحدةٍ يغطّي هذا المستطيل؟ عُدّ المربّعات. => ١٢ | array:{"rows": 3, "cols": 4, "square": true}
+  [مساحة] كم مربّع وحدةٍ مساحةُ هذا المستطيل؟ => ٦ | array:{"rows": 2, "cols": 3, "square": true}
+====== T1 «جمع العشرات» fams=['aggregative', 'decompositional']
+  [aggregative] ابدأ بـ٤٠، أضِف ٣٠ بقضبان العشرات. => ٧٠ | base-ten-blocks:{"start": 40, "add": 30}
+  [aggregative] ابدأ بـ٧٠، أضِف ٣٠ (تكتمل المئة). => ١٠٠ | base-ten-blocks:{"start": 70, "add": 30}
+  [decompositional] اجمع العشرات بالخانات: ٤٠ + ٣٠. => ٧٠ | decomposition:{"mode": "place-add", "a": 40, "b": 30}
+  [decompositional] اجمع العشرات: ٦٠ + ٣٠. => ٩٠ | decomposition:{"mode": "place-add", "a": 60, "b": 30}
+====== T10 «تقدير ناتج الطرح» fams=['decompositional']
+  [decompositional] قرّب كلّ عدد لأقرب عشرة ثم اطرح: ٦٨ − ٣١ ≈ ؟ => ٤٠ | -
+  [decompositional] قرّب ثم اطرح: ٥٢ − ١٩ ≈ ؟ => ٣٠ | -
+====== T5 «جمع أكثر من عددين من رقمين» fams=['decompositional']
+  [decompositional] اجمع (بلا حمل): ٢٣ + ١٥ + ٣١ = ؟ => ٦٩ | -
+  [decompositional] اجمع (مع حمل): ١٧ + ٢٥ + ١٤ = ؟ => ٥٦ | -
+====== T6 «تقدير ناتج الجمع» fams=['decompositional']
+  [decompositional] قرّب كلّ عدد لأقرب عشرة ثم اجمع: ٤٧ + ٣٢ ≈ ؟ => ٨٠ | -
+  [decompositional] قرّب ثم اجمع: ٦٨ + ٢١ ≈ ؟ => ٩٠ | -
+====== g1ADDSTR «استراتيجيات الجمع حتى ٢٠» fams=['counting', 'bridging', 'derived', 'property']
+  [counting] على الخطّ: ابدأ من ٩ وعُدّ ٣ للأمام. => ١٢ | number-line:{"min": 0, "max": 20, "start": 9, "jump": 3}
+  [counting] ابدأ من الأكبر وعُدّ تصاعدياً: ٨ + ٣ = ؟ (٩، ١٠، ...) => ١١ | -
+  [bridging] جسرُ العشرة: أكمل ٨ إلى عشرة ثم زد الباقي — ٨ + ٥ = ؟ (مثِّل على الإطار) => ١٣ | ten-frame:{"start": 8, "add": 5}
+  [bridging] فكِّك لتعبر العشرة: ٧ + ٥ = ٧ + ٣ + ٢ = ١٠ + ٢ = ؟ => ١٢ | -
+  [derived] الشفع: ٧ + ٧ = ؟ => ١٤ | -
+  [derived] بما أنّ ٦ + ٦ = ١٢، فما ٦ + ٧؟ => ١٣ | -
+  [property] إن كان ٩ + ٤ = ١٣، فما ٤ + ٩؟ => ١٣ | -
+  [property] أعد الترتيب لتسهّل: ٢ + ٩ + ٨ = (٢ + ٨) + ٩ = ؟ => ١٩ | -
+====== g1AREA «المساحة: مقارنة التغطية» fams=['coverage']
+  [coverage] انقر ما يغطّي مساحةً أكبر. => السجادة | measure:{"mode": "compare", "items": [{"v": "السجادة", "w": 150, "h": 90}, {"v": "المنديل", "w": 60, "h": 45}]}
+  [coverage] انقر ما يغطّي مساحةً أكبر. => الباب | measure:{"mode": "compare", "items": [{"v": "الباب", "w": 70, "h": 170}, {"v": "النافذة", "w": 60, "h": 60}]}
+====== g1BOND «تكوين وتفكيك الأعداد حتى ١٠» fams=['aggregative', 'decompositional']
+  [aggregative] في الإطار ٥ ملوّنة — املأ حتى يصير المجموع ٨: كم أضفت؟ => ٣ | ten-frame:{"start": 5, "ask": "added"}
+  [aggregative] في الإطار ٣ ملوّنة — املأ حتى يصير المجموع ٧: كم أضفت؟ => ٤ | ten-frame:{"start": 3, "ask": "added"}
+  [decompositional] أكمل: ٧ = ٤ + ؟ => ٣ | -
+  [decompositional] أكمل: ٩ = ٣ + ؟ => ٦ | -
+====== g1CAP «السعة: مقارنةً وقياساً» fams=['compare', 'measure']
+  [compare] انقر الأكثر سعةً. => الإبريق | measure:{"mode": "compare", "items": [{"v": "الإبريق", "w": 60, "h": 110}, {"v": "الكوب", "w": 40, "h": 50}]}
+  [compare] انقر الأقلّ سعةً. => الفنجان | measure:{"mode": "compare", "items": [{"v": "القارورة", "w": 36, "h": 130}, {"v": "الفنجان", "w": 40, "h": 40}]}
+  [measure] املأ الإناء بالأكواب: كم كوباً يملؤه؟ => ٣ | measure:{"cups": 3}
+  [measure] املأ الإناء بالأكواب: كم كوباً يملؤه؟ => ٥ | measure:{"cups": 5}
+====== g1CLK «قراءة الساعة الكاملة» fams=['dial', 'digital']
+  [dial] انظر إلى عقربَي الساعة: كم الساعة؟ => الثالثة تماماً | clock:{"hour": 3, "minute": 0, "options": ["الثالثة تماماً", "الرابعة تماماً", "الثانية تماماً"]}
+  [dial] انظر إلى عقربَي الساعة: كم الساعة؟ => السابعة تماماً | clock:{"hour": 7, "minute": 0, "options": ["السابعة تماماً", "السادسة تماماً", "الثامنة تماماً"]}
+  [digital] أيُّ وقتٍ رقميٍّ يطابق القرص؟ => ٥:٠٠ | clock:{"hour": 5, "minute": 0, "options": ["٥:٠٠", "٦:٠٠", "٤:٠٠"]}
+  [digital] أيُّ وقتٍ رقميٍّ يطابق القرص؟ => ٩:٠٠ | clock:{"hour": 9, "minute": 0, "options": ["٩:٠٠", "٨:٠٠", "١٠:٠٠"]}
+====== g1CLS «التصنيف بخاصية» fams=['sorting', 'rule']
+  [sorting] افرز العناصر في السلّتين: أحمر / أزرق. => نعم | sort-bins:{"bins": ["أحمر", "أزرق"], "items": [{"e": "🍎", "bin": 0}, {"e": "🔵", "bin": 1}, {"e": "🍓", "bin": 0}, {"e": "
+  [sorting] افرز العناصر في السلّتين: حيوانات / فواكه. => نعم | sort-bins:{"bins": ["حيوانات", "فواكه"], "items": [{"e": "🐱", "bin": 0}, {"e": "🍌", "bin": 1}, {"e": "🐰", "bin": 0}, {"e
+  [rule] المجموعة: 🍎 🍓 🌹 — ما قاعدتها؟ => كلّها حمراء | shape-pick:{"options": [{"v": "كلّها حمراء"}, {"v": "كلّها طعام"}]}
+  [rule] المجموعة: 🐦 🦋 ✈️ — ما قاعدتها؟ => كلّها تطير | shape-pick:{"options": [{"v": "كلّها تطير"}, {"v": "كلّها حيوانات"}]}
+====== g1DATA «تنظيم البيانات وعدُّها» fams=['organize', 'read']
+  [organize] نظِّم البيانات: افرز العناصر في فئتَي «فواكه/حيوانات». => نعم | sort-bins:{"bins": ["فواكه", "حيوانات"], "items": [{"e": "🍎", "bin": 0}, {"e": "🐱", "bin": 1}, {"e": "🍌", "bin": 0}, {"e
+  [organize] عُدَّ التفاحات وسجِّل بعلامات العدّ: ٧. => ٧ | chart:{"mode": "build", "type": "tally", "target": 7}
+  [read] من الجدول: كم عدد فئة «موز»؟ => ٦ | chart:{"mode": "read", "type": "pictograph", "data": [["تفاح", 4], ["موز", 6], ["عنب", 3]], "ask": "count", "cat": "
+  [read] من الجدول: كم عدد فئة «قطط»؟ => ٥ | chart:{"mode": "read", "type": "pictograph", "data": [["قطط", 5], ["عصافير", 2], ["أسماك", 7]], "ask": "count", "cat
+====== g1DIG2 «جمع وطرح الأعداد من رقمين (بلا إعادة تجميع)» fams=['aggregative', 'decompositional']
+  [aggregative] ابدأ بـ٣٤، أضِف ٢ بالقضبان. => ٣٦ | base-ten-blocks:{"start": 34, "add": 2}
+  [aggregative] ابدأ بـ٤٥، أضِف ٢٣ بالقضبان. => ٦٨ | base-ten-blocks:{"start": 45, "add": 23}
+  [decompositional] اجمع بالخانات: ٣٦ + ٢١ => ٥٧ | decomposition:{"mode": "place-add", "a": 36, "b": 21}
+  [decompositional] اجمع بالخانات: ٤٢ + ٧ => ٤٩ | decomposition:{"mode": "place-add", "a": 42, "b": 7}
+====== g1HALFH «نصف الساعة» fams=['dial', 'digital']
+  [dial] العقرب القصير بين رقمين: كم الساعة؟ => الثالثة والنصف | clock:{"hour": 3, "minute": 30, "options": ["الثالثة والنصف", "الرابعة والنصف", "الثانية والنصف"]}
+  [dial] العقرب القصير بين رقمين: كم الساعة؟ => السابعة والنصف | clock:{"hour": 7, "minute": 30, "options": ["السابعة والنصف", "الثامنة والنصف", "السادسة والنصف"]}
+  [digital] أيُّ وقتٍ رقميٍّ يطابق القرص؟ => ٤:٣٠ | clock:{"hour": 4, "minute": 30, "options": ["٤:٣٠", "٥:٣٠", "٣:٣٠"]}
+  [digital] أيُّ وقتٍ رقميٍّ يطابق القرص؟ => ٨:٣٠ | clock:{"hour": 8, "minute": 30, "options": ["٨:٣٠", "٧:٣٠", "٩:٣٠"]}
+====== g1LEN «الطول: مقارنةً وقياساً» fams=['compare', 'measure']
+  [compare] انقر الأطول. => المسطرة | measure:{"mode": "compare", "items": [{"v": "القلم", "w": 120, "h": 16}, {"v": "المسطرة", "w": 190, "h": 16}]}
+  [compare] انقر الأقصر. => الخيط | measure:{"mode": "compare", "items": [{"v": "الحبل", "w": 210, "h": 14}, {"v": "الخيط", "w": 90, "h": 14}]}
+  [measure] قِس الجسم: كم مشبكاً يبلغ طوله؟ => ٤ | measure:{"mode": "ruler", "length": 4, "max": 6, "unit": "مشبك"}
+  [measure] قِس الجسم: كم مشبكاً يبلغ طوله؟ => ٧ | measure:{"mode": "ruler", "length": 7, "max": 9, "unit": "مشبك"}
+====== g1MASS «الوزن: مقارنةً وقياساً» fams=['compare', 'measure']
+  [compare] انظر إلى ميل الميزان: انقر الأثقل. => البطيخة | measure:{"mode": "heavier", "left": {"v": "البطيخة", "e": "🍉"}, "right": {"v": "التفاحة", "e": "🍎"}, "heavier": "left"
+  [compare] انظر إلى ميل الميزان: انقر الأثقل. => الكتاب | measure:{"mode": "heavier", "left": {"v": "البالون", "e": "🎈"}, "right": {"v": "الكتاب", "e": "📚"}, "heavier": "right"
+  [measure] زِنِ الجسم: أضف مكعّبات حتى يتّزن الميزان — كم مكعّباً؟ => ٣ | measure:{"mode": "balance", "mass": 3, "unit": "مكعب", "unitOne": "مكعباً"}
+  [measure] زِنِ الجسم: أضف مكعّبات حتى يتّزن الميزان — كم مكعّباً؟ => ٥ | measure:{"mode": "balance", "mass": 5, "unit": "مكعب", "unitOne": "مكعباً"}
+====== g1N10 «الأعداد حتى ١٠» fams=['aggregative', 'symbolic', 'comparative']
+  [aggregative] عُدَّ التفاحات بالنقر على كلٍّ منها: كم عددها؟ => ٧ | element-count:{"objects": "🍎", "label": "التفاحات", "n": 7}
+  [aggregative] عُدَّ العصافير بالنقر على كلٍّ منها: كم عددها؟ => ٤ | element-count:{"objects": "🐤", "label": "العصافير", "n": 4}
+  [symbolic] اكتب رمز العدد: «خمسة» => ٥ | -
+  [symbolic] اكتب رمز العدد: «تسعة» => ٩ | -
+  [comparative] اكتب العدد الأكبر: ٧ أم ٤؟ => ٧ | -
+  [comparative] اكتب العدد الأصغر: ٣ أم ٨؟ => ٣ | -
+====== g1N100 «الأعداد حتى ١٠٠» fams=['sequential', 'comparative']
+  [sequential] أكمل التتابع (داخل العقد): ٣٤، ٣٥، ٣٦، ؟ => ٣٧ | sequence:{"terms": [34, 35, 36]}
+  [sequential] أكمل التتابع (داخل العقد): ٦٩، ٧٠، ٧١، ؟ => ٧٢ | sequence:{"terms": [69, 70, 71]}
+  [comparative] اكتب العدد الأكبر: ٦٧ أم ٧٦؟ => ٧٦ | -
+  [comparative] اكتب العدد الأصغر: ٨٩ أم ٩٨؟ => ٨٩ | -
+====== g1N120 «الأعداد حتى ١٢٠ (امتداد إماراتي)» fams=['sequential', 'symbolic']
+  [sequential] أكمل التتابع (داخل العقد): ٩٩، ١٠٠، ١٠١، ؟ => ١٠٢ | sequence:{"terms": [99, 100, 101]}
+  [sequential] أكمل التتابع (يعبر العقد): ١١٧، ١١٨، ١١٩، ؟ => ١٢٠ | sequence:{"terms": [117, 118, 119]}
+  [symbolic] اكتب رمز العدد: «مئة وخمسة عشر» => ١١٥ | -
+  [symbolic] اكتب رمز العدد: «مئة وعشرون» => ١٢٠ | -
+====== g1N20 «الأعداد من ١١ إلى ٢٠ وموضعتها» fams=['aggregative', 'sequential']
+  [aggregative] املأ الإطار: أضِف ٤ إلى ١٠. => ١٤ | ten-frame:{"start": 10, "add": 4}
+  [aggregative] املأ الإطار: أضِف ٧ إلى ١٠. => ١٧ | ten-frame:{"start": 10, "add": 7}
+  [sequential] أكمل التتابع (داخل العقد): ١٤، ١٥، ١٦، ؟ => ١٧ | sequence:{"terms": [14, 15, 16]}
+  [sequential] أكمل التتابع (يعبر العقد): ١٧، ١٨، ١٩، ؟ => ٢٠ | sequence:{"terms": [17, 18, 19]}
+====== g1ORDINAL «الأعداد الترتيبية» fams=['identify', 'name']
+  [identify] في الصفّ: انقر الشكل الثالث. => ج | shape-pick:{"options": [{"v": "أ", "shape": "circle"}, {"v": "ب", "shape": "triangle"}, {"v": "ج", "shape": "square"}, {"
+  [identify] في الصفّ: انقر الشكل الأول. => أ | shape-pick:{"options": [{"v": "أ", "shape": "square"}, {"v": "ب", "shape": "circle"}, {"v": "ج", "shape": "triangle"}]}
+  [name] في الطابور: سالم يقف بعد الثاني مباشرةً — ما ترتيبه؟ اكتب الرقم. => ٣ | -
+  [name] في الصفّ: قطة، أرنب، نجمة، كرة — ما ترتيب النجمة؟ اكتب الرقم. => ٣ | -
+====== g1PICT «التمثيل بالصور وقراءته» fams=['read', 'build']
+  [read] في مخطّط الصور: أيُّ فئةٍ هي الأكثر؟ => ب | chart:{"mode": "read", "type": "pictograph", "data": [["أ", 4], ["ب", 7], ["ج", 2]], "ask": "most"}
+  [read] في مخطّط الصور: كم عدد فئة «موز»؟ => ٥ | chart:{"mode": "read", "type": "pictograph", "data": [["تفاح", 3], ["موز", 5], ["عنب", 4]], "ask": "count", "cat": "
+  [build] ابنِ التمثيل: التفاحات = ٦. => ٦ | chart:{"mode": "build", "type": "tally", "target": 6}
+  [build] ابنِ التمثيل: العصافير = ٤. => ٤ | chart:{"mode": "build", "type": "tally", "target": 4}
+====== g1POS «العلاقات المكانية» fams=['axis', 'topology']
+  [axis] انقر ما هو فوق الشجرة. => العصفور | position-scene:{"anchor": "🌳", "objects": [{"v": "العصفور", "e": "🐦", "pos": "above"}, {"v": "الأرنب", "e": "🐰", "pos": "belo
+  [axis] انقر ما هو تحت الكرسي. => القطة | position-scene:{"anchor": "🪑", "objects": [{"v": "القطة", "e": "🐱", "pos": "below"}, {"v": "القبعة", "e": "🎩", "pos": "above"
+  [topology] انقر ما هو داخل الصندوق. => الكرة | position-scene:{"anchor": "📦", "objects": [{"v": "الكرة", "e": "⚽", "pos": "inside"}, {"v": "القطة", "e": "🐱", "pos": "outsid
+  [topology] انقر ما هو خارج الصندوق. => الأرنب | position-scene:{"anchor": "📦", "objects": [{"v": "الأرنب", "e": "🐰", "pos": "outside"}, {"v": "الكرة", "e": "⚽", "pos": "insi
+====== g1PV «الآحاد والعشرات (القيمة المكانية)» fams=['aggregative', 'decompositional']
+  [aggregative] ابنِ العدد ٣٤ بالقضبان والمكعّبات. => ٣٤ | base-ten-blocks:{"target": 34}
+  [aggregative] ابنِ العدد ٦٧ بالقضبان والمكعّبات. => ٦٧ | base-ten-blocks:{"target": 67}
+  [decompositional] ٤٧ = ؟ عشرات و٧ آحاد — كم العشرات؟ => ٤ | -
+  [decompositional] ٨٢ = ؟ عشرات و٢ آحاد — كم العشرات؟ => ٨ | -
+====== g1REGR «إعادة التجميع في الجمع (الحمل المبكر)» fams=['aggregative', 'decompositional']
+  [aggregative] ابدأ بـ١٥، أضِف ٥ بالقضبان. => ٢٠ | base-ten-blocks:{"start": 15, "add": 5, "carry": true}
+  [aggregative] ابدأ بـ٨، أضِف ١٣ بالقضبان. => ٢١ | base-ten-blocks:{"start": 8, "add": 13, "carry": true}
+  [decompositional] اجمع بالخانات (بحمل): ١٩ + ٣ => ٢٢ | decomposition:{"mode": "place-add", "a": 19, "b": 3}
+  [decompositional] اجمع بالخانات (بحمل): ١٥ + ٧ => ٢٢ | decomposition:{"mode": "place-add", "a": 15, "b": 7}
+====== g1REL «علاقة الجمع بالطرح وعائلات الحقائق» fams=['inverse', 'family', 'missing']
+  [inverse] بما أنّ ٣ + ٤ = ٧، فما ناتج ٧ − ٤؟ => ٣ | -
+  [inverse] بما أنّ ٢ + ٦ = ٨، فما ناتج ٨ − ٦؟ => ٢ | -
+  [family] عائلة الحقائق (٢، ٥، ٧): ٢ + ٥ = ٧ · ٥ + ٢ = ٧ · ٧ − ٢ = ٥ · ٧ − ٥ = ؟ => ٢ | -
+  [family] عائلة الحقائق (٤، ٣، ٧): ٣ + ٤ = ٧ · ٧ − ٤ = ٣ · ٧ − ٣ = ٤ · ٤ + ٣ = ؟ => ٧ | -
+  [missing] أوجد الحدّ المفقود: ؟ + ٤ = ٩ => ٥ | -
+  [missing] أوجد الحدّ المفقود: ٣ + ؟ = ٩ => ٦ | -
+====== g1SHP2 «الأشكال المستوية» fams=['recognize', 'elements', 'compose']
+  [recognize] ما اسم هذا الشكل؟ انقر الإجابة. => مستطيل | shape-pick:{"show": "rectangle", "options": [{"v": "مستطيل", "shape": "rectangle"}, {"v": "مربع", "shape": "square"}, {"v
+  [recognize] ما اسم هذا الشكل؟ انقر الإجابة. => مثلث | shape-pick:{"show": "triangle", "options": [{"v": "مثلث", "shape": "triangle"}, {"v": "دائرة", "shape": "circle"}, {"v": 
+  [elements] انقر أضلاع الشكل لتعدّها. كم ضلعاً؟ => ٤ | element-count:{"shape": "square", "element": "sides", "n": 4}
+  [elements] انقر رؤوس الشكل لتعدّها. كم رأساً؟ => ٣ | element-count:{"shape": "triangle", "element": "vertices", "n": 3}
+  [compose] ركِّب المربع من المثلثين. => نعم | shape-compose:{"target": "square", "pieces": ["triangle", "triangle"]}
+  [compose] ركِّب المستطيل من المربعين. => نعم | shape-compose:{"target": "rectangle", "pieces": ["square", "square"]}
+====== g1SKIP «العدّ القفزي (٢/٥/١٠)» fams=['sequential', 'aggregative']
+  [sequential] أكمل العدّ بالقفز ٢: ٢، ٤، ٦، ؟ => ٨ | sequence:{"terms": [2, 4, 6]}
+  [sequential] أكمل العدّ بالقفز ٥: ٥، ١٠، ١٥، ؟ => ٢٠ | sequence:{"terms": [5, 10, 15]}
+  [aggregative] عُدّ بالقفز: ٤ أزواج جوارب في كلٍّ منها ٢ — كم المجموع؟ => ٨ | array:{"rows": 4, "cols": 2}
+  [aggregative] عُدّ بالقفز: ٣ قطع من فئة ٥ فلوس في كلٍّ منها ٥ — كم المجموع؟ => ١٥ | array:{"rows": 3, "cols": 5}
+====== g1SUB «مفهوم الطرح ضمن ١٠» fams=['aggregative', 'symbolic', 'decompositional']
+  [aggregative] كان على الشجرة ٩ عصافير فطار ٤ — خُذها من المكعّبات: كم بقي؟ => ٥ | subtract-blocks:{"minuend": 9, "subtract": 4}
+  [aggregative] خُذ ٢ من ٧ مكعّبات: كم الباقي؟ => ٥ | subtract-blocks:{"minuend": 7, "subtract": 2}
+  [symbolic] أكمل: ٨ − ٣ = ؟ => ٥ | -
+  [symbolic] أكمل: ٦ − ٠ = ؟ => ٦ | -
+  [decompositional] الكلُّ ٩، وأحد الجزأين ٤ — فما الجزء الآخر؟ => ٥ | decomposition:{"mode": "part-whole", "whole": 9, "part": 4}
+  [decompositional] الكلُّ ١٠، وأحد الجزأين ٣ — فما الجزء الآخر؟ => ٧ | decomposition:{"mode": "part-whole", "whole": 10, "part": 3}
+====== g1SUBSTR «استراتيجيات الطرح حتى ٢٠» fams=['counting', 'bridging', 'derived', 'inverse']
+  [counting] على الخطّ: ابدأ من ١٣ وعُدّ ٢ للخلف. => ١١ | number-line:{"min": 0, "max": 20, "start": 13, "jump": 2, "back": true}
+  [counting] عُدّ تنازلياً: ١٢ − ٣ = ؟ (١١، ١٠، ...) => ٩ | -
+  [bridging] الإنقاصُ من العشرة: آحادك لا تكفي — افتح العشرة لتطرح. ١٣ − ٥ = ؟ => ٨ | subtract-blocks:{"minuend": 13, "subtract": 5}
+  [bridging] الإنقاصُ من العشرة: آحادك لا تكفي — افتح العشرة لتطرح. ١٥ − ٧ = ؟ => ٨ | subtract-blocks:{"minuend": 15, "subtract": 7}
+  [derived] بما أنّ ٧ + ٧ = ١٤، فما ١٤ − ٧؟ => ٧ | -
+  [derived] بما أنّ ٨ + ٨ = ١٦، فما ١٦ − ٨؟ => ٨ | -
+  [inverse] اطرح بالتفكير جمعاً: ٩ − ٥ = ؟ (فكّر: ٥ + ؟ = ٩) => ٤ | -
+  [inverse] اطرح بالتفكير جمعاً: ١٣ − ٩ = ؟ (فكّر: ٩ + ؟ = ١٣) => ٤ | -
+====== g1TENS «جمع العشرات وطرحها» fams=['aggregative', 'decompositional']
+  [aggregative] بالقضبان: ٣٠ + ٢٠ = ؟ => ٥٠ | base-ten-blocks:{"start": 30, "add": 20}
+  [aggregative] بالقضبان: ٤٠ + ٣٠ = ؟ => ٧٠ | base-ten-blocks:{"start": 40, "add": 30}
+  [decompositional] ٣ عشرات + ٢ عشرات = ؟ (اكتب العدد) => ٥٠ | -
+  [decompositional] ٦ عشرات − ٤ عشرات = ؟ (اكتب العدد) => ٢٠ | -
+====== g3ADD3 «جمع وطرح الأعداد ضمن ١٠٠٠» fams=['algorithm', 'partial', 'multi']
+  [algorithm] اجمع عمودياً (بإعادة التجميع): ٤٥٦ + ٣٦٧ = ؟ => ٨٢٣ | -
+  [algorithm] اطرح عمودياً (بإعادة التجميع): ٧٠٣ − ٤٥٨ = ؟ => ٢٤٥ | -
+  [partial] اجمع بالخانات (نواتج جزئية): ٢٦٣ + ٤٨٩ => ٧٥٢ | decomposition:{"mode": "place-add", "a": 263, "b": 489}
+  [partial] اجمع بالخانات (نواتج جزئية): ١٧٥ + ٢٤٨ => ٤٢٣ | decomposition:{"mode": "place-add", "a": 175, "b": 248}
+  [multi] اجمع الأعداد الثلاثة: ١٢٥ + ٢٣٠ + ٣١٤ = ؟ => ٦٦٩ | -
+  [multi] اجمع الأعداد الثلاثة: ١٤٦ + ٢٠٨ + ١١٧ = ؟ => ٤٧١ | -
+====== g3BIG «الأعداد حتى ستة أرقام» fams=['compose', 'place']
+  [compose] كوِّن العدد: ٢ مئات ألوف و٤ عشرات ألوف و٥ آلاف و٣ مئات و١ عشرات و٧ آحاد. => ٢٤٥٣١٧ | -
+  [compose] كوِّن العدد: ٨ مئات ألوف و٣ آلاف و٥ عشرات. => ٨٠٣٠٥٠ | -
+  [place] ما قيمة الرقم ٢ في العدد ٢٤٥٣١٧؟ => ٢٠٠٠٠٠ | -
+  [place] ما قيمة الرقم ٩ في العدد ٣٩١٧٥٠؟ => ٩٠٠٠٠ | -
+====== g3DIV «فهم القسمة» fams=['share', 'measure', 'inverse']
+  [share] وزِّع ٤٠ بالتساوي على ٥ مجموعات — كم في كلِّ مجموعة؟ => ٨ | groups:{"mode": "share", "total": 40, "groups": 5}
+  [share] وزِّع ٢٤ بالتساوي على ٤ مجموعات — كم في كلٍّ منها؟ => ٦ | groups:{"mode": "share", "total": 24, "groups": 4}
+  [measure] كم مجموعةً من ٦ في ٤٢؟ (اطرح ٦ متكرِّراً وعُدَّ المجموعات) => ٧ | groups:{"mode": "measure", "total": 42, "per": 6}
+  [measure] كم مجموعةً من ٨ في ٣٢؟ => ٤ | groups:{"mode": "measure", "total": 32, "per": 8}
+  [inverse] إذا كان ٧ × ٤ = ٢٨ فإنَّ ٢٨ ÷ ٧ = ؟ => ٤ | -
+  [inverse] ٦ × ٩ = ٥٤ — فما ٥٤ ÷ ٦؟ => ٩ | -
+====== g3DIVF «حقائق القسمة» fams=['think-mul', 'family', 'rules']
+  [think-mul] ٢٧ ÷ ٣ = ؟ (فكِّر: ٣ × ؟ = ٢٧) => ٩ | -
+  [think-mul] ٥٦ ÷ ٨ = ؟ (فكِّر: ٨ × ؟ = ٥٦) => ٧ | -
+  [family] أكمل الحقيقة الرابعة في العائلة: ٣×٩=٢٧، ٩×٣=٢٧، ٢٧÷٣=٩، ؟ => ٢٧ ÷ ٩ = ٣ | shape-pick:{"options": [{"v": "٢٧ ÷ ٩ = ٣"}, {"v": "٢٧ − ٩ = ١٨"}]}
+  [family] العدد الناقص في جدول الضرب: ٧ × ؟ = ٦٣ => ٩ | -
+  [rules] ٨ ÷ ١ = ؟ => ٨ | -
+  [rules] ٠ ÷ ٧ = ؟ => ٠ | -
+====== g3F12 «الضرب في ١١ و١٢» fams=['eleven', 'distribute']
+  [eleven] نمط الأحد عشر (الرقم يتكرر): ٧ × ١١ = ؟ => ٧٧ | -
+  [eleven] ٩ × ١١ = ؟ => ٩٩ | -
+  [distribute] بالتوزيع: ٤ × ١٢ = (٤ × ١٠) + (٤ × ٢) = ؟ => ٤٨ | -
+  [distribute] ٦ × ١٢ = (٦ × ١٠) + (٦ × ٢) = ؟ => ٧٢ | -
+====== g3FACTOM «حقائق الضرب والقسمة المتكاملة (عُمان)» fams=['dual', 'open-array', 'missing']
+  [dual] ٤ × ٩ = ٣٦ — فما ٣٦ ÷ ٤؟ => ٩ | -
+  [dual] من جدول الأربعة: ٤٨ ÷ ٤ = ؟ => ١٢ | -
+  [open-array] المصفوفة المفتوحة: ١٧ × ٤ = (١٠ × ٤) + (٧ × ٤) = ؟ => ٦٨ | -
+  [open-array] ١٣ × ٩ = (١٠ × ٩) + (٣ × ٩) = ؟ => ١١٧ | -
+  [missing] ؟ × ٤ = ٣٢ — ما العدد؟ => ٨ | -
+  [missing] ما العدد الذي إذا ضُرِب في ٩ كان الناتج ٣٦؟ => ٤ | -
+====== g3MUL «فهم الضرب» fams=['repeated', 'array', 'modeling']
+  [repeated] كوِّن ٤ مجموعاتٍ في كلٍّ منها ٦ — كم الإجمالي؟ => ٢٤ | groups:{"mode": "form", "groups": 4, "per": 6}
+  [repeated] اكتبها جمعاً متكرراً ثم احسب: ٣ × ٧ = ٧ + ٧ + ٧ = ؟ => ٢١ | -
+  [array] صُفَّ مصفوفة: ٤ صفوف × ٧ أعمدة — كم الإجمالي؟ => ٢٨ | array:{"rows": 4, "cols": 7}
+  [array] بالإبدال (اقلب المصفوفة): إذا كان ٧ × ٤ = ٢٨ فكم ٤ × ٧؟ => ٢٨ | -
+  [modeling] أيُّ جملةٍ تمثِّل: «٥ أطباقٍ في كلِّ طبقٍ ٣ تمرات»؟ => ٥ × ٣ | shape-pick:{"options": [{"v": "٥ × ٣"}, {"v": "٥ + ٣"}]}
+  [modeling] أيُّ قصةٍ تناسب الجملة ٤ × ٦؟ => ٤ سلالٍ في كلِّ سلةٍ ٦ تفاحات | shape-pick:{"options": [{"v": "٤ سلالٍ في كلِّ سلةٍ ٦ تفاحات"}, {"v": "٤ تفاحاتٍ أُكلت منها ٦"}]}
+====== g3MULF1 «حقائق الضرب بالأنماط» fams=['skip', 'zero-one', 'nine']
+  [skip] بنمط الخمسة (٥، ١٠، ١٥، ...): ٦ × ٥ = ؟ => ٣٠ | -
+  [skip] بقفز الاثنين: ٧ × ٢ = ؟ => ١٤ | -
+  [zero-one] ٨ × ١ = ؟ => ٨ | -
+  [zero-one] ٠ × ٦ = ؟ => ٠ | -
+  [nine] نمط التسعة: ٩ × ٤ = (١٠ × ٤) − ٤ = ؟ => ٣٦ | -
+  [nine] ٩ × ٧ = ؟ (لاحظ: رقما الناتج يجمعان إلى ٩) => ٦٣ | -
+====== g3MULF2 «اشتقاق حقائق الضرب الصعبة» fams=['distribute', 'double', 'associate', 'pattern']
+  [distribute] اشتق بالتوزيع: ٧ × ٦ = (٧ × ٥) + (٧ × ١) = ؟ => ٤٢ | -
+  [distribute] بالتوزيع: ٨ × ٧ = (٨ × ٥) + (٨ × ٢) = ؟ => ٥٦ | -
+  [double] الضعف المضاعف: ٦ × ٤ = ضِعف (٦ × ٢) = ؟ => ٢٤ | -
+  [double] ٩ × ٦ = ضِعف (٩ × ٣) = ؟ => ٥٤ | -
+  [associate] بالتجميع: (٢ × ٣) × ٤ = ٢ × (٣ × ٤) = ؟ => ٢٤ | -
+  [associate] اختر التجميع الأسهل ثم احسب: ٥ × ٢ × ٧ = ؟ => ٧٠ | -
+  [pattern] في جدول الضرب، صفُّ الثلاثة: ٣، ٦، ٩، ١٢، ؟ => ١٥ | -
+  [pattern] على لوحة المئة، مضاعفات الثمانية: ٨، ١٦، ٢٤، ؟ => ٣٢ | -
+====== g3OPS4 «جمع وطرح الأعداد الكبيرة (٤ أرقام)» fams=['algorithm', 'partial']
+  [algorithm] اجمع عمودياً (بإعادة التجميع): ٤٤٧٨ + ١٣٨٣ = ؟ => ٥٨٦١ | -
+  [algorithm] اجمع عمودياً (بإعادة التجميع): ٣٩٨٧ + ٣٩٢٨ = ؟ => ٧٩١٥ | -
+  [partial] حلّل ثم اجمع: ٢٣٦١ + ١٤٢٧ = (٢٠٠٠+١٠٠٠) + (٣٠٠+٤٠٠) + (٦٠+٢٠) + (١+٧) = ؟ => ٣٧٨٨ | -
+  [partial] حلّل ثم اجمع: ٥١٣٦ + ٢٧٤٢ = (٥٠٠٠+٢٠٠٠) + (١٠٠+٧٠٠) + (٣٠+٤٠) + (٦+٢) = ؟ => ٧٨٧٨ | -
+====== g3PROPS «خواص الجمع والطرح وطرائقهما» fams=['property', 'mental', 'relation']
+  [property] بخاصية الإبدال (الترتيب): ٥٧ + ٣٥ = ٣٥ + ؟ => ٥٧ | -
+  [property] بخاصية التجميع: (١٨ + ١٤) + ١٥ = ١٨ + (١٤ + ؟) => ١٥ | -
+  [mental] متمِّم المئة: ٧٢ + ؟ = ١٠٠ => ٢٨ | -
+  [mental] ذهنياً بمتمّمات المئة: ٢٠٠ − ١٧٨ = ؟ => ٢٢ | -
+  [relation] إذا كان ٢٦ + ٤٧ = ٧٣ فإنَّ ٧٣ − ٤٧ = ؟ => ٢٦ | -
+  [relation] المعادلة الناقصة: ؟ − ٣٤ = ٥٨ => ٩٢ | -
+====== g3PV «القيمة المنزلية ضمن الألوف» fams=['compose', 'place', 'pattern']
+  [compose] كوِّن العدد: ٣ آلاف و٤ مئات و٧ عشرات و٢ آحاد. => ٣٤٧٢ | -
+  [compose] كوِّن العدد: ٥ آلاف و١ عشرات و٨ آحاد. => ٥٠١٨ | -
+  [place] ما قيمة الرقم ٧ في العدد ٤٧٢٥؟ => ٧٠٠ | -
+  [place] ما قيمة الرقم ٨ في العدد ٨٣٥٦؟ => ٨٠٠٠ | -
+  [pattern] أكمل النمط: ٣٢٠٠، ٣٣٠٠، ٣٤٠٠، ؟ => ٣٥٠٠ | -
+  [pattern] أكمل النمط: ٢٤٥٠، ٣٤٥٠، ٤٤٥٠، ؟ => ٥٤٥٠ | -
+====== g3PV5 «القيمة المنزلية ضمن عشرات الألوف» fams=['compose', 'place']
+  [compose] كوِّن العدد: ٢ عشرات ألوف و٤ آلاف و٥ مئات و١ عشرات و٣ آحاد. => ٢٤٥١٣ | -
+  [compose] كوِّن العدد: ٧ عشرات ألوف و٢ مئات و٦ آحاد. => ٧٠٢٠٦ | -
+  [place] ما قيمة الرقم ٢ في العدد ٢٥٤١٣؟ => ٢٠٠٠٠ | -
+  [place] ما قيمة الرقم ٧ في العدد ٤٧٢٥٠؟ => ٧٠٠٠ | -
+====== g3ROUND «التقريب إلى أقرب عشرة ومئة» fams=['rounding', 'inverse']
+  [rounding] قرِّب ٤٧٢ إلى أقرب عشرة. => ٤٧٠ | number-line:{"min": 0, "max": 1000, "step": 10, "target": 472}
+  [rounding] قرِّب ٣٤٥ إلى أقرب عشرة. => ٣٥٠ | -
+  [inverse] أيُّ الأعداد يؤول إلى ٤٦٠ عند تقريبه إلى أقرب عشرة؟ => ٤٥٧ | shape-pick:{"options": [{"v": "٤٥٧"}, {"v": "٤٥٣"}, {"v": "٤٦٧"}]}
+  [inverse] أيُّ الأعداد يؤول إلى ٨٢٠ عند تقريبه إلى أقرب عشرة؟ => ٨٢٣ | shape-pick:{"options": [{"v": "٨٢٣"}, {"v": "٨٢٧"}, {"v": "٨١٣"}]}
+====== g3ROUND4 «التقريب إلى أقرب ألف» fams=['rounding', 'inverse']
+  [rounding] قرِّب ٣٤٥٢ إلى أقرب ألف. => ٣٠٠٠ | number-line:{"min": 0, "max": 9999, "step": 1000, "target": 3452}
+  [rounding] قرِّب ٧٦٨٠ إلى أقرب ألف. => ٨٠٠٠ | -
+  [inverse] أيُّ الأعداد يؤول إلى ٥٠٠٠ عند تقريبه إلى أقرب ألف؟ => ٥٣٢٠ | shape-pick:{"options": [{"v": "٥٣٢٠"}, {"v": "٥٧٠٠"}, {"v": "٤٣٠٠"}]}
+  [inverse] أيُّ الأعداد يؤول إلى ٨٠٠٠ عند تقريبه إلى أقرب ألف؟ => ٧٦٤٩ | shape-pick:{"options": [{"v": "٧٦٤٩"}, {"v": "٧٤٩٩"}, {"v": "٨٦٠٠"}]}

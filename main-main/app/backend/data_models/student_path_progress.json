@@ -1,0 +1,41 @@
+{
+    "title": "student_path_progress",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "Student user ID"
+        },
+        "learning_path_id": {
+            "type": "integer",
+            "description": "FK to learning_paths"
+        },
+        "node_id": {
+            "type": "integer",
+            "description": "FK to path_nodes"
+        },
+        "status": {
+            "type": "string",
+            "description": "locked, in_progress, completed"
+        },
+        "score": {
+            "type": "integer",
+            "description": "Score if assessment node"
+        },
+        "completed_at": {
+            "type": "string",
+            "description": "ISO timestamp when completed"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "learning_path_id",
+        "node_id",
+        "status"
+    ]
+}

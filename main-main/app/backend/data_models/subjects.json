@@ -1,0 +1,56 @@
+{
+    "title": "subjects",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "curriculum_id": {
+            "type": "integer",
+            "description": "FK to curricula"
+        },
+        "name_ar": {
+            "type": "string",
+            "description": "Subject name in Arabic"
+        },
+        "name_en": {
+            "type": "string",
+            "description": "Subject name in English"
+        },
+        "code": {
+            "type": "string",
+            "description": "Subject code e.g. MATH, ARA"
+        },
+        "color": {
+            "type": "string",
+            "description": "Display color hex"
+        },
+        "icon": {
+            "type": "string",
+            "description": "Icon name"
+        },
+        "grade_range_start": {
+            "type": "integer",
+            "description": "First grade this subject applies to"
+        },
+        "grade_range_end": {
+            "type": "integer",
+            "description": "Last grade this subject applies to"
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether subject is active"
+        },
+        "display_order": {
+            "type": "integer",
+            "description": "Display order"
+        }
+    },
+    "required": [
+        "id",
+        "curriculum_id",
+        "name_ar",
+        "code"
+    ]
+}

@@ -1,0 +1,54 @@
+{
+    "title": "interactions",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "name": {
+            "type": "string",
+            "description": "Interaction name"
+        },
+        "interaction_type": {
+            "type": "string",
+            "description": "Type of interaction"
+        },
+        "config_json": {
+            "type": "string",
+            "description": "JSON configuration"
+        },
+        "skill_id": {
+            "type": "integer",
+            "description": "Skill ID"
+        },
+        "grade_id": {
+            "type": "integer",
+            "description": "Grade ID"
+        },
+        "subject_id": {
+            "type": "integer",
+            "description": "Subject ID"
+        },
+        "difficulty": {
+            "type": "integer",
+            "description": "Difficulty 1-5"
+        },
+        "status": {
+            "type": "string",
+            "description": "Status"
+        },
+        "country_id": {
+            "type": "integer",
+            "description": "Country ID"
+        },
+        "curriculum_id": {
+            "type": "integer",
+            "description": "Curriculum ID"
+        }
+    },
+    "required": [
+        "id",
+        "name"
+    ]
+}

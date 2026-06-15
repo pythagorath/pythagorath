@@ -1,0 +1,203 @@
+/* ============================================================================
+   فيثاغورث — نظام التصميم (هوية العلامة)
+   البرتقالي #F39A1F + الفيروزي #29A9E0 + القاع #155E7D + شخصية الطفل العُماني.
+   مبني للهاتف أولاً، يتوسّع للتابلت/اللابتوب/الديسكتوب. عربي RTL.
+   بصري بحت — لا يمسّ المنطق. مشترك بين تطبيق الطفل/الأم ولوحة المدير والهبوط.
+   ============================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Readex+Pro:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap');
+
+:root{
+  /* brand */
+  --orange:#F39A1F; --orange-d:#D97E0A; --orange-l:#FFF1DA; --orange-2:#FBE3BC;
+  --cyan:#29A9E0;   --cyan-d:#1B7FB0;   --cyan-l:#E4F3FB;   --cyan-2:#CBE9F7;
+  --deep:#155E7D;
+  /* surfaces */
+  --bg:#FBFCFE; --card:#FFFFFF; --ink:#1E2630; --muted:#7C8893; --line:#EAEEF2;
+  /* states */
+  --ok:#27B16E; --ok-l:#E5F6EE; --no:#E2654E; --no-l:#FBEAE4; --gold:#FFC23C; --gold-l:#FFF4D8;
+  /* radii / shadow */
+  --r:16px; --r-lg:22px; --r-pill:999px;
+  --sh:0 10px 26px rgba(21,94,125,.08); --sh-w:0 14px 32px rgba(217,126,10,.14);
+  --fun:"Baloo Bhaijaan 2","Tajawal",system-ui,sans-serif;
+  --ui:"Readex Pro","Tajawal",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:var(--ui); color:var(--ink); background:var(--bg);
+  background-image:
+    radial-gradient(680px 280px at 100% -6%, var(--orange-l) 0, transparent 60%),
+    radial-gradient(640px 280px at -6% 0%, var(--cyan-l) 0, transparent 58%);
+  background-attachment:fixed;
+  -webkit-text-size-adjust:100%;
+}
+/* faint math-equation backdrop (brand motif) */
+.mathbg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.mathbg span{position:absolute;font-family:var(--fun);font-weight:800;opacity:.05;user-select:none}
+.app{position:relative;z-index:1}
+
+/* ---------- header / brand ---------- */
+header.brand{
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;
+  padding:12px 16px;background:rgba(255,255,255,.86);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand .logo{display:flex;align-items:center;gap:10px;font-family:var(--fun);font-weight:800;color:var(--orange-d);font-size:20px}
+.brand .logo .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--orange),var(--cyan));display:grid;place-items:center;color:#fff;font-weight:800}
+.brand .tag{color:var(--muted);font-size:13px;font-weight:500}
+.brand .spacer{flex:1}
+
+main{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:18px 16px 40px}
+@media(min-width:1100px){ main{max-width:980px} }
+
+/* ---------- cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;margin-bottom:16px;box-shadow:var(--sh)}
+@media(min-width:680px){ .card{padding:22px} }
+h1,h2,h3{margin:0 0 12px} h2{font-size:19px;font-weight:700}
+.muted{color:var(--muted)}
+
+/* ---------- buttons / inputs ---------- */
+button{font-family:var(--ui);font-size:16px;font-weight:700;padding:11px 18px;border:0;border-radius:14px;background:var(--orange);color:#fff;cursor:pointer;box-shadow:0 8px 16px rgba(243,154,31,.26);transition:transform .06s,filter .15s}
+button:hover{filter:brightness(1.03)} button:active{transform:translateY(1px)}
+button:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+button.sec{background:#EEF2F5;color:#42525E;box-shadow:none}
+button.cyan{background:var(--cyan);box-shadow:0 8px 16px rgba(41,169,224,.26)}
+button.ghost{background:transparent;color:var(--cyan-d);border:1.5px solid var(--cyan-2);box-shadow:none}
+button.danger{background:var(--no-l);color:#B53B27;box-shadow:none}
+.muteBtn{background:#EEF2F5;color:#42525E;font-size:14px;padding:7px 12px;box-shadow:none}
+input[type=text],input[type=password],input[type=email],select,textarea{
+  font-family:var(--ui);font-size:16px;padding:11px 13px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);width:100%;max-width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+/* ---------- badges / chips / pills ---------- */
+.badge{display:inline-block;font-size:13px;font-weight:700;padding:5px 13px;border-radius:var(--r-pill)}
+.fam-aggregative{background:var(--ok-l);color:#15734A}
+.fam-magnitude{background:var(--cyan-l);color:var(--cyan-d)}
+.fam-decompositional{background:var(--orange-l);color:var(--orange-d)}
+.fam-sequential{background:#EEE9FB;color:#5B3FB0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chip{font-weight:700;font-size:14px;padding:7px 13px;border-radius:12px}
+
+/* ---------- skill rows / map ---------- */
+.skill{width:100%;text-align:right;display:flex;align-items:center;gap:12px;padding:13px 14px;margin-bottom:9px;border-radius:14px;border:2px solid var(--line);background:#fff;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.skill:hover:not(:disabled){border-color:var(--cyan-2);box-shadow:var(--sh)}
+.skill:disabled{cursor:not-allowed;background:#FAFBFC}
+.skill .nm{flex:1;font-size:16px;font-weight:700} .skill .code{color:#B9C2CB;font-size:13px}
+.st{font-size:13px;font-weight:800;padding:5px 11px;border-radius:var(--r-pill);white-space:nowrap}
+.st.locked{background:#EEF1F4;color:#93A0AB} .st.avail{background:var(--orange-l);color:var(--orange-d)}
+.st.und{background:var(--cyan-l);color:var(--cyan-d)} .st.mast{background:var(--gold-l);color:#8A5A00}
+.need{color:#93A0AB;font-size:12px;margin-top:3px}
+
+/* ---------- question / feedback ---------- */
+.q{display:flex;flex-direction:column;gap:8px;padding:14px 0;border-bottom:1px solid #F0F3F6}
+.q:last-child{border-bottom:0}
+.prompt{font-family:var(--fun);font-size:21px;font-weight:700;line-height:1.5}
+@media(min-width:680px){ .prompt{font-size:23px} }
+.fb{font-weight:800} .fb.ok{color:var(--ok)} .fb.no,.fb.soft{color:var(--no)}
+.understood{background:var(--cyan-l);color:var(--cyan-d);font-size:18px;font-weight:800;padding:12px;border-radius:14px;text-align:center}
+.mastered{background:linear-gradient(180deg,var(--gold-l),#FFE9B6);color:#8A5A00;font-size:22px;font-weight:800;padding:16px;border-radius:14px;text-align:center}
+.bar{height:12px;background:#EEF1F4;border-radius:var(--r-pill);overflow:hidden;margin-top:6px}
+.bar>div,.bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--orange));transition:width .3s}
+
+/* ---------- mascot + toast (celebration) ---------- */
+.mascot{flex:none;display:grid;place-items:center}
+.mascot img,.mascot svg{display:block}
+.welcome{display:flex;align-items:center;gap:14px;background:linear-gradient(110deg,var(--orange),#FFB44D);color:#fff;border-radius:var(--r-lg);padding:14px 18px;box-shadow:var(--sh-w);margin-bottom:16px}
+.welcome .mascot{width:62px} .welcome .mascot img{width:62px}
+.welcome .nm{font-family:var(--fun);font-weight:800;font-size:22px;line-height:1.1}
+.welcome .tag{font-weight:700;opacity:.95;font-size:14px;margin-top:3px}
+.toast{position:fixed;left:50%;top:18%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--gold);color:var(--ink);font-family:var(--fun);font-weight:800;font-size:19px;padding:12px 18px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.16);z-index:100;opacity:0;transition:opacity .25s,top .25s;pointer-events:none;text-align:center;max-width:92%}
+.toast.show{opacity:1;top:14%} .toast.big{border-color:var(--ok)}
+.toast .m{width:34px;height:34px;flex:none}.toast .m img{width:34px}
+
+/* ============================================================================
+   الودجات السبع — مصقولة بألوان الهوية (الفيروزي للبداية/الموضع، البرتقالي للوصول)
+   ============================================================================ */
+.widget{margin:10px 0}
+/* number line — fit-to-width, no horizontal scroll (phone-first) */
+.nline{display:flex;gap:3px;align-items:flex-end;border-bottom:3px solid var(--cyan-2);width:100%;overflow-x:hidden;padding-bottom:0}
+.tick{flex:1 1 22px;min-width:0;max-width:48px;background:#fff;border:1px solid var(--line);color:#5A6772;font-weight:800;font-size:13px;padding:8px 1px;border-radius:9px 9px 0 0;cursor:pointer}
+.tick.start{background:var(--cyan);color:#fff;border-color:var(--cyan)}
+.tick.sel{background:var(--orange);color:#fff;border-color:var(--orange);transform:translateY(-4px);box-shadow:0 6px 14px rgba(243,154,31,.4)}
+/* ten-frame */
+.frames{display:flex;gap:14px;margin:8px 0;flex-wrap:wrap}
+.frame{display:grid;grid-template-columns:repeat(5,clamp(26px,8vw,34px));grid-template-rows:repeat(2,clamp(26px,8vw,34px));gap:3px;padding:6px;background:var(--cyan-l);border:2px solid var(--cyan-2);border-radius:10px}
+.cell{border:1px solid #D6E7F0;border-radius:50%;background:#fff;cursor:pointer}
+.cell.filled-start{background:var(--cyan)} .cell.filled-add{background:var(--orange);cursor:pointer}
+/* decomposition / bonds */
+.decomp{background:var(--orange-l);border:2px solid var(--orange-2);border-radius:14px;padding:14px;text-align:center}
+.bond{font-size:25px;font-weight:800;display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+.bond .split{display:inline-flex;flex-direction:column;align-items:center}
+.bond .parts{display:flex;gap:6px;font-size:18px;margin-top:4px}
+.bond .part{border:1px dashed var(--orange-d);border-radius:7px;padding:2px 8px}
+.bond .part.comp{background:var(--ok-l);border-color:var(--ok);color:#15734A}
+.bond .part.q,.blank{background:#fff;color:var(--orange-d)}
+.eq{font-size:21px;font-weight:800;margin-top:8px}
+.blank{border:1px dashed var(--orange);border-radius:7px;padding:0 10px}
+.keypad{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:12px}
+.keypad button{min-width:44px;background:#fff;color:var(--ink);border:1.5px solid var(--cyan-2);box-shadow:none;font-weight:800}
+.keypad button:hover{border-color:var(--cyan);background:var(--cyan-l)}
+/* base-ten / subtract / regroup blocks */
+.btb-controls{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px}
+.btb-area{display:flex;gap:16px;align-items:flex-end;min-height:108px;padding:12px;background:var(--cyan-l);border:2px solid var(--cyan-2);border-radius:12px;flex-wrap:wrap}
+.btb-rods{display:flex;gap:6px;align-items:flex-end}
+.btb-cubes{display:grid;grid-template-columns:repeat(5,18px);grid-auto-rows:18px;gap:3px;align-content:flex-end}
+.btb-flats{display:flex;gap:6px;align-items:flex-end}
+.flat{width:46px;height:100px;border:1px solid var(--cyan-d);border-radius:3px;background-color:var(--cyan);background-image:linear-gradient(rgba(255,255,255,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.55) 1px,transparent 1px);background-size:9px 9px}
+.rod{width:18px;height:100px;background:repeating-linear-gradient(var(--cyan),var(--cyan) 8px,var(--cyan-d) 8px,var(--cyan-d) 10px);border:1px solid var(--cyan-d);border-radius:3px}
+.cube{width:18px;height:18px;background:var(--orange);border:1px solid var(--orange-d);border-radius:4px}
+.flat.removable,.rod.removable,.cube.removable{cursor:pointer}
+.flat.removable:hover,.rod.removable:hover,.cube.removable:hover{outline:2px solid var(--no)}
+/* fractions */
+.frac-bar{display:flex;border:2px solid var(--ink,#334155);border-radius:8px;overflow:hidden;max-width:300px;height:58px;margin:8px 0;background:#fff}
+/* logical border: the old physical border-right + :last-child was an LTR assumption —
+   in RTL the last child is the LEFTMOST segment, so an INTERIOR divider was removed
+   (2 segments → no divider at all; G2 shading masked it). inline-start is direction-safe. */
+.frac-seg{flex:1;border-inline-start:1px solid var(--ink,#334155);background:#fff;transition:background .12s}
+.frac-seg:first-child{border-inline-start:none}
+.frac-seg.on{background:var(--orange)}
+.frac-seg[data-i]{cursor:pointer}
+.frac-seg[data-i]:hover{outline:2px solid var(--cyan)}
+/* sequence */
+.seqtrack{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.seqcard{min-width:46px;padding:10px 12px;border:2px solid var(--cyan-2);border-radius:10px;background:var(--cyan-l);font-size:22px;font-weight:800;text-align:center;color:var(--cyan-d)}
+.seqcard.seqq{border:2px dashed var(--orange);background:var(--orange-l);color:var(--orange-d)}
+
+/* ---------- responsive helpers ---------- */
+.grid2{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:760px){ .grid2{grid-template-columns:1fr 1fr} }
+img.kid{display:block;height:auto}
+
+/* ============================================================================
+   السمات الثلاث — كلها على هوية فيثاغورث (البرتقالي/الفيروزي/الشخصية).
+   تختلف في المعالجة فقط (الخط، الاستدارة، الظلال، الخلفية، الترويسة).
+   المدير يضبط [data-theme] على <html>؛ الافتراضي = متدرّج.
+   ============================================================================ */
+/* متدرّج (الافتراضي) — متوازن: عناوين مرحة Baloo، استدارة وسطى، خلفية فاتحة بلمسات */
+[data-theme="mutadarrij"]{ /* = :root defaults */ }
+
+/* أمين — دافئ كالبوستر: أكثر استدارة، كريمي دافئ، Baloo بارز، ظلّ أدفأ */
+[data-theme="ameen"]{
+  --bg:#FFFBF2; --r:18px; --r-lg:26px; --r-pill:999px;
+  --sh:0 14px 30px rgba(217,126,10,.16); --sh-w:0 16px 34px rgba(217,126,10,.20);
+  --fun:"Baloo Bhaijaan 2","Tajawal",sans-serif;
+}
+[data-theme="ameen"] body{ background-image:
+  radial-gradient(760px 320px at 100% -6%, #FFE6BF 0, transparent 60%),
+  radial-gradient(680px 300px at -6% 0%, #D6F0FB 0, transparent 58%); }
+[data-theme="ameen"] button{ border-radius:16px }
+[data-theme="ameen"] .card{ border-color:#F4E7D2 }
+
+/* مطوّر — عصري نظيف: مسطّح، زوايا أدقّ، Readex للعناوين، ظلال خفيفة، أبيض */
+[data-theme="mutawwar"]{
+  --bg:#FBFCFD; --r:11px; --r-lg:14px;
+  --sh:0 8px 20px rgba(33,48,58,.06); --sh-w:0 10px 22px rgba(33,48,58,.08);
+  --fun:"Readex Pro","Tajawal",sans-serif;
+}
+[data-theme="mutawwar"] button{ border-radius:11px; box-shadow:none }
+[data-theme="mutawwar"] button.cyan{ box-shadow:none }
+[data-theme="mutawwar"] .welcome{ background:#fff; color:var(--ink); border:1px solid var(--line); box-shadow:var(--sh) }
+[data-theme="mutawwar"] .welcome .nm{ color:var(--orange-d) } [data-theme="mutawwar"] .welcome .tag{ color:var(--muted) }
+[data-theme="mutawwar"] .toast{ border-radius:13px }
+[data-theme="mutawwar"] .decomp{ border-radius:12px }

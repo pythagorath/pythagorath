@@ -1,0 +1,31 @@
+{
+    "title": "student_progress",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "lesson_id": {
+            "type": "integer",
+            "description": "Foreign key to lessons"
+        },
+        "completed": {
+            "type": "boolean",
+            "description": "Whether lesson is completed"
+        },
+        "completed_at": {
+            "type": "string",
+            "description": "Completion timestamp"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "lesson_id"
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "title": "point_transactions",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "points": {
+            "type": "integer",
+            "description": "Points earned or lost"
+        },
+        "reason": {
+            "type": "string",
+            "description": "Reason for points change"
+        },
+        "reference_id": {
+            "type": "integer",
+            "description": "Reference to lesson/quiz id"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "points",
+        "reason"
+    ]
+}

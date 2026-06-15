@@ -1,0 +1,18 @@
+# Local dev Postgres — mirrors the production sovereign Postgres on Oman Data Park,
+# so dev and prod run the SAME engine/migrations. Bring it up, point DATABASE_URL at
+# it, and the app's startup runs `alembic upgrade head` automatically.
+#
+#   docker compose -f docker-compose.postgres.yml up -d
+#   export DATABASE_URL=postgresql+psycopg://pyth:pyth@localhost:5432/pythagorath
+#   uvicorn app.main:app --app-dir .   # auto-migrates + seeds
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: pyth
+      POSTGRES_PASSWORD: pyth
+      POSTGRES_DB: pythagorath
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+volumes:
+  pgdata:

@@ -1,0 +1,27 @@
+{
+    "title": "user_roles",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "role": {
+            "type": "string",
+            "description": "student, parent, teacher, admin"
+        },
+        "linked_student_id": {
+            "type": "string",
+            "description": "For parents - linked student user_id"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "role"
+    ]
+}

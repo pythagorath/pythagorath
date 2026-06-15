@@ -1,0 +1,64 @@
+{
+    "title": "learning_sessions",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "session_type": {
+            "type": "string",
+            "description": "Type: practice, quiz, review, diagnostic"
+        },
+        "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Session start time"
+        },
+        "ended_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Session end time"
+        },
+        "duration_seconds": {
+            "type": "integer",
+            "description": "Duration in seconds"
+        },
+        "questions_attempted": {
+            "type": "integer",
+            "description": "Questions attempted"
+        },
+        "questions_correct": {
+            "type": "integer",
+            "description": "Questions correct"
+        },
+        "skills_practiced": {
+            "type": "string",
+            "description": "JSON array of skill IDs"
+        },
+        "missions_completed": {
+            "type": "integer",
+            "description": "Missions completed"
+        },
+        "xp_earned": {
+            "type": "integer",
+            "description": "XP earned"
+        },
+        "engagement_score": {
+            "type": "number",
+            "description": "Engagement score 0.0 to 1.0"
+        },
+        "device_type": {
+            "type": "string",
+            "description": "Device: mobile, tablet, desktop"
+        }
+    },
+    "required": [
+        "id",
+        "user_id"
+    ]
+}

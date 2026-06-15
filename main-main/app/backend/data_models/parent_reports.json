@@ -1,0 +1,44 @@
+{
+    "title": "parent_reports",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "Parent user ID"
+        },
+        "child_user_id": {
+            "type": "string",
+            "description": "Child user ID being reported about"
+        },
+        "report_type": {
+            "type": "string",
+            "description": "Type: confusion, usability, feedback, suggestion"
+        },
+        "description": {
+            "type": "string",
+            "description": "Detailed description"
+        },
+        "severity": {
+            "type": "string",
+            "description": "low, medium, high"
+        },
+        "page_context": {
+            "type": "string",
+            "description": "Which page"
+        },
+        "status": {
+            "type": "string",
+            "description": "open, reviewed, resolved"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "report_type",
+        "description"
+    ]
+}

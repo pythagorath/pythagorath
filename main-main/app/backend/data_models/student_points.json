@@ -1,0 +1,31 @@
+{
+    "title": "student_points",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "points": {
+            "type": "integer",
+            "description": "Total points accumulated"
+        },
+        "streak_days": {
+            "type": "integer",
+            "description": "Consecutive days of activity"
+        },
+        "last_activity_date": {
+            "type": "string",
+            "description": "Last activity date YYYY-MM-DD"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "points"
+    ]
+}

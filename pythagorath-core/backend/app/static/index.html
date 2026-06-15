@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>فيثاغورث — متعة تعلّم الرياضيات</title>
+<link rel="stylesheet" href="/static/brand.css">
+<style media="not all"><!-- legacy styles superseded by brand.css -->
+  :root { --orange:#F39A24; --ink:#1A1A1A; --bg:#FFFDF8; --ok:#10b981; --no:#ef4444; }
+  * { box-sizing:border-box; font-family:"Tajawal",system-ui,Arial,sans-serif; }
+  body { margin:0; background:var(--bg); color:var(--ink); }
+  header { padding:16px 22px; border-bottom:1px solid #eee; font-weight:800; color:var(--orange); font-size:22px; }
+  main { max-width:720px; margin:0 auto; padding:22px; }
+  .card { background:#fff; border:1px solid #eee; border-radius:14px; padding:18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.04); }
+  input[type=text]{ font-size:18px; padding:10px 12px; border:2px solid #ddd; border-radius:10px; width:180px; }
+  button { font-size:17px; font-weight:700; padding:10px 18px; border:0; border-radius:10px; background:var(--orange); color:#fff; cursor:pointer; }
+  button:disabled{ opacity:.5; cursor:not-allowed; }
+  button.sec{ background:#eee; color:#333; }
+  .skill { width:100%; text-align:right; display:flex; align-items:center; gap:12px; padding:12px 14px; margin-bottom:8px; border-radius:12px; border:2px solid #eee; background:#fff; cursor:pointer; }
+  .skill:disabled{ cursor:not-allowed; background:#fafafa; }
+  .skill .nm{ flex:1; font-size:17px; font-weight:700; }
+  .skill .code{ color:#aaa; font-size:13px; }
+  .st{ font-size:14px; font-weight:800; padding:4px 10px; border-radius:999px; white-space:nowrap; }
+  .st.locked{ background:#f3f4f6; color:#9ca3af; } .st.avail{ background:#fff3e0; color:#b45309; }
+  .st.und{ background:#dbeafe; color:#1e40af; } .st.mast{ background:#d1fae5; color:#065f46; }
+  .need{ color:#9ca3af; font-size:12px; }
+  .badge { display:inline-block; font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px; }
+  .fam-aggregative{ background:#dcfce7; color:#166534; } .fam-magnitude{ background:#dbeafe; color:#1e40af; }
+  .fam-decompositional{ background:#fef3c7; color:#92400e; } .fam-sequential{ background:#ede9fe; color:#5b21b6; }
+  .q { display:flex; flex-direction:column; gap:8px; padding:14px 0; border-bottom:1px solid #f0f0f0; }
+  .q:last-child{ border-bottom:0; } .prompt{ font-size:18px; font-weight:700; }
+  .row{ display:flex; gap:10px; align-items:center; }
+  .fb{ font-weight:800; } .fb.ok{ color:var(--ok);} .fb.no{ color:var(--no);}
+  .chips{ display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; }
+  .understood{ background:#d1fae5; color:#065f46; font-size:18px; font-weight:800; padding:10px; border-radius:12px; text-align:center; }
+  .mastered{ background:var(--orange); color:#fff; font-size:24px; font-weight:800; padding:16px; border-radius:12px; text-align:center; }
+  .bar{ height:14px; background:#eee; border-radius:999px; overflow:hidden; margin-top:6px; } .bar>div{ height:100%; background:var(--orange); transition:width .25s; }
+  .muted{ color:#888; } h2{ font-size:18px; margin:0 0 12px; }
+  .fb.soft{ color:#b45309; }   /* gentle guidance, not harsh red */
+  .muteBtn{ background:#eee; color:#444; font-size:14px; padding:6px 12px; }
+  .toast{ position:fixed; left:50%; top:20%; transform:translateX(-50%); background:#fff; border:2px solid var(--orange); color:var(--ink); font-weight:800; font-size:21px; padding:14px 24px; border-radius:16px; box-shadow:0 8px 28px rgba(0,0,0,.16); z-index:100; opacity:0; transition:opacity .25s, top .25s; pointer-events:none; text-align:center; max-width:90%; }
+  .toast.show{ opacity:1; top:15%; }
+  .toast.big{ border-color:var(--ok); font-size:25px; }
+  /* ---- visual widgets ---- */
+  .widget{ margin:8px 0; }
+  /* number line */
+  /* phone-first: the line FITS the width (ticks share it, shrinking as needed) — no horizontal scroll */
+  .nline{ display:flex; gap:2px; align-items:flex-end; border-bottom:3px solid #cbd5e1; padding-bottom:0; width:100%; overflow-x:hidden; }
+  .tick{ flex:1 1 22px; min-width:0; max-width:46px; background:#fff; border:1px solid #e5e7eb; color:#475569; font-weight:700; font-size:13px; padding:8px 1px; border-radius:6px 6px 0 0; cursor:pointer; }
+  .tick.start{ background:#10b981; color:#fff; border-color:#10b981; }
+  .tick.sel{ background:var(--orange); color:#fff; border-color:var(--orange); transform:translateY(-4px); }
+  /* ten-frame */
+  .frames{ display:flex; gap:16px; margin:8px 0; }
+  .frame{ display:grid; grid-template-columns:repeat(5,34px); grid-template-rows:repeat(2,34px); gap:3px; padding:6px; background:#f8fafc; border:2px solid #cbd5e1; border-radius:8px; }
+  .cell{ border:1px solid #e2e8f0; border-radius:50%; background:#fff; }
+  .cell.filled-start{ background:#3b82f6; }
+  .cell.filled-add{ background:var(--orange); cursor:pointer; }
+  .cell:not(.filled-start){ cursor:pointer; }
+  /* decomposition */
+  .decomp{ background:#fffbeb; border:2px solid #fde68a; border-radius:10px; padding:12px; text-align:center; }
+  .bond{ font-size:26px; font-weight:800; display:flex; gap:8px; justify-content:center; align-items:center; }
+  .bond .split{ display:inline-flex; flex-direction:column; align-items:center; }
+  .bond .parts{ display:flex; gap:6px; font-size:18px; margin-top:4px; }
+  .bond .part{ border:1px dashed #d97706; border-radius:6px; padding:2px 8px; }
+  .bond .part.comp{ background:#dcfce7; border-color:#16a34a; color:#166534; }
+  .bond .part.q, .blank{ background:#fff; color:var(--orange); }
+  .eq{ font-size:22px; font-weight:800; margin-top:8px; }
+  .blank{ border:1px dashed var(--orange); border-radius:6px; padding:0 10px; }
+  .keypad{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:10px; }
+  .keypad button{ min-width:40px; background:#fff; color:#333; border:1px solid #ddd; }
+  /* base-ten blocks */
+  .btb-controls{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+  .btb-area{ display:flex; gap:18px; align-items:flex-end; min-height:108px; padding:10px; background:#f8fafc; border:2px solid #cbd5e1; border-radius:8px; }
+  .btb-rods{ display:flex; gap:6px; align-items:flex-end; }
+  .btb-cubes{ display:grid; grid-template-columns:repeat(5,18px); grid-auto-rows:18px; gap:3px; align-content:flex-end; }
+  .btb-flats{ display:flex; gap:6px; align-items:flex-end; }
+  .flat{ width:46px; height:100px; border:1px solid #1d4ed8; border-radius:3px; background-color:#3b82f6; background-image:linear-gradient(rgba(255,255,255,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.55) 1px,transparent 1px); background-size:9px 9px; }
+  .rod{ width:18px; height:100px; background:repeating-linear-gradient(#3b82f6,#3b82f6 8px,#2563eb 8px,#2563eb 10px); border:1px solid #1d4ed8; border-radius:3px; }
+  .cube{ width:18px; height:18px; background:var(--orange); border:1px solid #d97706; border-radius:3px; }
+  .frac-bar{ display:flex; border:2px solid #334155; border-radius:8px; overflow:hidden; max-width:300px; height:58px; margin:8px 0; background:#fff; }
+  .frac-seg{ flex:1; border-right:1px solid #334155; background:#fff; }
+  .frac-seg:last-child{ border-right:none; }
+  .frac-seg.on{ background:var(--orange); }
+  .frac-seg[data-i]{ cursor:pointer; }
+  /* sequence track */
+  .seqtrack{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:8px 0; }
+  .seqcard{ min-width:46px; padding:10px 12px; border:2px solid #cbd5e1; border-radius:8px; background:#f8fafc; font-size:22px; font-weight:800; text-align:center; }
+  .seqcard.seqq{ border:2px dashed var(--orange); background:#fff7ed; color:var(--orange); }
+  .rod.removable, .cube.removable{ cursor:pointer; }
+  .rod.removable:hover{ outline:2px solid var(--no); }
+  .cube.removable:hover{ outline:2px solid var(--no); }
+</style>
+</head>
+<body>
+<div class="mathbg" aria-hidden="true">
+  <span style="left:6%;top:13%;font-size:30px;color:var(--orange)">+</span>
+  <span style="left:24%;top:42%;font-size:26px;color:var(--cyan)">÷</span>
+  <span style="left:47%;top:16%;font-size:34px;color:var(--orange)">×</span>
+  <span style="left:70%;top:48%;font-size:26px;color:var(--cyan)">=</span>
+  <span style="left:88%;top:22%;font-size:30px;color:var(--orange)">√</span>
+  <span style="left:14%;top:74%;font-size:28px;color:var(--cyan)">٧</span>
+  <span style="left:58%;top:80%;font-size:30px;color:var(--orange)">−</span>
+  <span style="left:82%;top:84%;font-size:26px;color:var(--cyan)">٥</span>
+</div>
+<header class="brand">
+  <div class="logo"><span class="mark">π</span> فيثاغورث</div>
+  <span class="tag">متعة تعلّم الرياضيات</span>
+  <span class="spacer"></span>
+  <button id="muteBtn" class="muteBtn" onclick="toggleMute()">🔊 الصوت</button>
+</header>
+<main>
+  <!-- guardian auth -->
+  <div id="authView">
+    <div class="welcome">
+      <div class="mascot"><img class="kid" src="/static/mascot.svg" alt="" width="62"></div>
+      <div><div class="nm">أهلاً بك في فيثاغورث</div><div class="tag">متعة تعلّم الرياضيات — حسابٌ بالفهم لا بالحفظ</div></div>
+    </div>
+    <div class="card">
+    <div class="row" style="gap:8px;margin-bottom:10px">
+      <button id="tabLogin" onclick="showAuthTab('login')">دخول</button>
+      <button id="tabRegister" class="sec" onclick="showAuthTab('register')">حساب ولي أمر جديد</button>
+    </div>
+    <div id="loginForm">
+      <div class="row" style="flex-wrap:wrap;gap:8px">
+        <input id="loginEmail" type="text" placeholder="البريد" />
+        <input id="loginPass" type="password" placeholder="كلمة السر" />
+        <button onclick="doLogin()">دخول</button>
+      </div>
+    </div>
+    <div id="registerForm" style="display:none">
+      <div class="row" style="flex-wrap:wrap;gap:8px">
+        <input id="regEmail" type="text" placeholder="بريد ولي الأمر" />
+        <input id="regPass" type="password" placeholder="كلمة سر (٨ أحرف فأكثر)" />
+        <button onclick="doRegister()">إنشاء حساب</button>
+      </div>
+      <p class="muted" style="font-size:13px;margin:6px 0 0">حساب ولي الأمر يدير ملفات أطفاله ويتابع تقدّمهم.</p>
+    </div>
+    <div id="authMsg" style="color:#b91c1c;font-weight:700;margin-top:8px"></div>
+    </div>
+  </div>
+
+  <!-- my children -->
+  <div class="card" id="childrenView" style="display:none">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px">
+      <h2 style="margin:0">أطفالي</h2>
+      <span><span class="muted" id="acctEmail" style="font-size:13px"></span>
+        <button class="sec" onclick="doLogout()">خروج</button></span>
+    </div>
+    <div id="subBanner" style="margin-bottom:12px"></div>
+    <div id="childList"></div>
+    <div style="margin-top:12px;border-top:1px solid #eee;padding-top:12px">
+      <div style="font-weight:700;margin-bottom:6px">إضافة طفل جديد</div>
+      <div class="row" style="flex-wrap:wrap;gap:8px">
+        <input id="childName" type="text" placeholder="اسم الطفل" />
+        <select id="childGrade" style="font-size:16px;padding:8px;border:2px solid #ddd;border-radius:8px">
+          <option value="">— اختر الصف المستهدف —</option>
+        </select>
+        <select id="childCountry" style="font-size:16px;padding:8px;border:2px solid #ddd;border-radius:8px">
+          <option value="">— الصياغة الافتراضية —</option>
+          <option value="SA">السعودية</option><option value="AE">الإمارات</option>
+          <option value="QA">قطر</option><option value="KW">الكويت</option>
+          <option value="OM">عُمان</option><option value="BH">البحرين</option>
+        </select>
+      </div>
+      <div style="margin-top:8px;font-size:13px">
+        <label><input type="checkbox" id="consentChk"/> أوافق على
+          <a href="#" onclick="document.getElementById('consentText').style.display='block';return false">شروط موافقة ولي الأمر</a></label>
+        <div id="consentText" class="muted" style="display:none;margin-top:6px;border:1px solid #eee;border-radius:8px;padding:8px"></div>
+      </div>
+      <div style="margin-top:8px"><button onclick="createChild()">➕ أضف طفلاً</button></div>
+      <div id="childErr" style="color:#b91c1c;font-weight:700;margin-top:6px"></div>
+    </div>
+  </div>
+
+  <!-- parent dashboard (read-only progress for one child) -->
+  <div class="card" id="reportView" style="display:none">
+    <div class="row" style="justify-content:space-between;margin-bottom:10px">
+      <h2 id="reportTitle" style="margin:0"></h2>
+      <button class="sec" onclick="loadChildren()">‹ أطفالي</button>
+    </div>
+    <div id="reportTotals" class="chips" style="margin-bottom:12px"></div>
+    <div id="reportSkills"></div>
+  </div>
+
+  <div class="card" id="mapView" style="display:none">
+    <div class="row" style="justify-content:space-between; margin-bottom:12px">
+      <h2 id="mapTitle" style="margin:0"></h2>
+      <span><button class="sec" onclick="loadChildren()">‹ أطفالي</button>
+        <button onclick="startDiagnostic()">🔍 تشخيص</button></span>
+    </div>
+    <div id="placeMsg" style="display:none; background:#dbeafe; color:#1e40af; font-weight:700; padding:10px; border-radius:10px; margin-bottom:12px"></div>
+    <div id="map"></div>
+  </div>
+
+  <div class="card" id="diagnosticView" style="display:none">
+    <div class="row" style="justify-content:space-between">
+      <h2 style="margin:0">جلسة التشخيص — أثبِت فهمك (من القمة نزولاً)</h2>
+      <button class="sec" onclick="backToMap()">إلغاء</button>
+    </div>
+    <p class="muted">كل مهارة لها <b>مسباران من عائلتين</b> — تُجتاز فقط بإصابة الاثنين (لا بإجابة واحدة). أجِب ما تعرفه.</p>
+    <div id="probes"></div>
+    <button onclick="submitDiagnostic()" style="margin-top:8px">أنهِ التشخيص</button>
+  </div>
+
+  <div id="practiceView" style="display:none">
+    <div class="card">
+      <button class="sec" onclick="backToMap()">‹ رجوع للخريطة</button>
+      <div style="font-weight:800; font-size:18px; margin-top:10px" id="skillName"></div>
+      <div id="gateNeed" style="margin-top:6px"></div>
+      <div class="chips" id="chips"></div>
+      <div class="understood" id="understood" style="display:none">فهم المهارة ✓</div>
+      <div id="fluency" style="display:none; margin-top:10px">
+        <div id="fluencyText"></div><div class="bar"><div id="fluencyBar" style="width:0%"></div></div>
+      </div>
+      <div class="mastered" id="mastered" style="display:none; margin-top:10px">أتقن المهارة 🏆</div>
+    </div>
+    <div class="card" id="questions"></div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script src="/static/widgets.js"></script>
+<script>
+// FAM_AR, toHindi, mountWidget and the seven widget functions live in widgets.js
+// (shared with the admin preview).
+let student=null, skill=null, questions=[], lastPlacement=null;
+// practice (one-question-at-a-time) state
+let practiceQueue=[], qIdx=0, qShownAt=0, pendingAns=null, qTimerStarted=false;
+// motivation/audio state (display layer — reads gate state, never changes it)
+let prevSnap=null, prevUnlocked=null;
+let muted = localStorage.getItem('pyth_mute')==='1', arVoice=null;
+
+let account=null, consentInfo=null;   // guardian session + current consent text/version
+
+async function api(path, opts){ const r=await fetch(path,opts); if(!r.ok){ let m=await r.text(), reason=null; try{ const d=JSON.parse(m).detail; if(d&&typeof d==='object'){ reason=d.reason||null; m=d.message||m; } else if(d){ m=d; } }catch(_){} const e=new Error(m); e.status=r.status; e.reason=reason; throw e; } return r.status===204?null:r.json(); }
+function show(id){ for(const v of ['authView','childrenView','reportView','mapView','practiceView','diagnosticView']) document.getElementById(v).style.display = (v===id?'':'none'); }
+
+// ===== AUDIO — isolated behind speak(). Web Speech now (zero-cost, proves the
+// reading↔understanding separation for early grades); swappable later for a warmer
+// recorded/server TTS WITHOUT touching callers. It speaks the DISPLAYED prompt, which
+// the server already resolved to the child's country phrasing — so audio follows the
+// wording automatically. NOTE(future): Arabic Web Speech quality varies; fine for the
+// trial, upgrade the voice for market after hearing children's feedback.
+function audioOn(){ return !muted && 'speechSynthesis' in window; }
+function updateMuteBtn(){ const b=document.getElementById('muteBtn'); if(b) b.textContent = muted?'🔇 مكتوم':'🔊 الصوت'; }
+function toggleMute(){ muted=!muted; localStorage.setItem('pyth_mute', muted?'1':'0'); if(muted) cancelSpeech(); updateMuteBtn(); }
+function pickVoice(){ try{ arVoice = speechSynthesis.getVoices().find(v=>/^ar/i.test(v.lang))||null; }catch(e){} }
+if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=pickVoice; pickVoice(); }
+function speechText(t){ return String(t).replace(/\+/g,' زائد ').replace(/[−–-]/g,' ناقص ').replace(/=/g,' يساوي ').replace(/؟/g,' '); }
+function cancelSpeech(){ if('speechSynthesis' in window){ try{ speechSynthesis.cancel(); }catch(e){} } }
+function speak(text, onend){
+  if(!audioOn()){ if(onend) onend(); return; }
+  cancelSpeech();
+  const u=new SpeechSynthesisUtterance(speechText(text));
+  u.lang='ar-SA'; if(arVoice) u.voice=arVoice; u.rate=0.95;
+  if(onend){ u.onend=onend; u.onerror=onend; }
+  try{ speechSynthesis.speak(u); }catch(e){ if(onend) onend(); }
+}
+// The speed timer measures THINKING, not LISTENING: it starts when narration ENDS or
+// at the first interaction (whichever comes first), never counting the audio time.
+function startQTimer(){ if(!qTimerStarted){ qShownAt=performance.now(); qTimerStarted=true; } }
+
+// ===== QUIET MOTIVATION — reads achievement moments from the gate snapshot (res) and
+// the map's unlocked flags; NEVER changes them. Single correct = quiet confirm; wrong =
+// gentle guidance (no answer reveal); celebration ONLY for understanding / fluency /
+// unlocking a node.
+let _toastTimer=null;
+const MASCOT='<span class="m"><img src="/static/mascot.svg" alt=""></span>';
+function toast(html, big){
+  const t=document.getElementById('toast'); t.innerHTML=html;
+  t.className='toast'+(big?' big':'')+' show';
+  clearTimeout(_toastTimer); _toastTimer=setTimeout(()=>{ t.className='toast'+(big?' big':''); }, 2400);
+}
+function reactToAnswer(qid, res){
+  const fb=document.getElementById('fb-'+qid);
+  if(fb){
+    if(res.is_correct){ fb.textContent='أحسنت ✓'; fb.className='fb ok'; }
+    else { fb.textContent='لا بأس — فكّر وحاول مرّة أخرى 🙂'; fb.className='fb soft'; }
+  }
+  if(prevSnap){
+    if(res.understood && !prevSnap.understood){ toast(MASCOT+' 🎉 فهمتَ المهارة!', false); speak('أحسنت، فهمتها'); }
+    else if(res.mastered && !prevSnap.mastered){ toast(MASCOT+' 🏆 أتقنتَ المهارة!', true); speak('رائع، أتقنتها'); }
+    else if(!res.understood && res.understanding.families_passed.length > prevSnap.understanding.families_passed.length){
+      if(fb){ fb.textContent='طريقة جديدة، أحسنت ✓'; }   // quiet positive (a step, not a feat)
+    }
+  }
+  prevSnap = res;
+}
+
+// ---- guardian auth ----
+function showAuthTab(t){
+  document.getElementById('loginForm').style.display = t==='login'?'':'none';
+  document.getElementById('registerForm').style.display = t==='register'?'':'none';
+  document.getElementById('tabLogin').className = t==='login'?'':'sec';
+  document.getElementById('tabRegister').className = t==='register'?'':'sec';
+  document.getElementById('authMsg').textContent='';
+}
+async function doRegister(){
+  const email=document.getElementById('regEmail').value.trim(), password=document.getElementById('regPass').value;
+  try{
+    await api('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    await api('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    await afterLogin();
+  }catch(e){ document.getElementById('authMsg').textContent=e.message; }
+}
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim(), password=document.getElementById('loginPass').value;
+  try{
+    await api('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    await afterLogin();
+  }catch(e){ document.getElementById('authMsg').textContent=e.message; }
+}
+async function doLogout(){ try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){} account=null; student=null; show('authView'); showAuthTab('login'); }
+async function afterLogin(){
+  account = await api('/api/auth/me');
+  document.getElementById('acctEmail').textContent = account.email + (account.role==='admin'?' (مدير)':'');
+  try{ consentInfo = await api('/api/consent'); document.getElementById('consentText').textContent = consentInfo.text; }catch(e){}
+  await loadSubscription();
+  await loadChildren();
+}
+
+// ---- subscription (commercial) ----
+let subscription=null;
+async function loadSubscription(){ try{ subscription = await api('/api/subscription'); }catch(e){ subscription=null; } renderSubBanner(); }
+function renderSubBanner(){
+  const b=document.getElementById('subBanner'); if(!b) return;
+  if(subscription && subscription.has_access){
+    const until = subscription.access_until ? ' حتى '+subscription.access_until.slice(0,10) : '';
+    b.innerHTML=`<span class="badge" style="background:#d1fae5;color:#065f46;font-size:14px">اشتراكك نشط (${subscription.status})${until}</span>`;
+  } else {
+    b.innerHTML=`<div style="background:#fff3e0;color:#b45309;padding:10px;border-radius:10px">لا اشتراك نشط — المحتوى المدفوع مقفل (العيّنة المجانية متاحة).
+      <button onclick="showSubscribe()">ابدأ التجربة / اشترك</button></div>`;
+  }
+}
+async function showSubscribe(){
+  const b=document.getElementById('subBanner');
+  let plans=[]; try{ plans=await api('/api/plans'); }catch(e){}
+  if(!plans.length){ b.innerHTML='<div class="muted" style="background:#f9fafb;padding:10px;border-radius:10px">لا خطط متاحة بعد — يضبطها المدير.</div>'; return; }
+  b.innerHTML='<div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:10px"><b>اختر خطة:</b></div>';
+  const box=b.firstChild;
+  for(const p of plans){
+    const row=document.createElement('div'); row.style='display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap';
+    row.innerHTML=`<span style="flex:1">${p.name} — ${toHindi((p.price/1000).toFixed(3))} ${p.currency}${p.trial_days?` · تجربة ${toHindi(p.trial_days)} يوم`:''}</span>`;
+    if(p.trial_days>0){ const t=document.createElement('button'); t.className='sec'; t.textContent='ابدأ التجربة'; t.onclick=()=>doSubscribe('trial',p.id); row.appendChild(t); }
+    const s=document.createElement('button'); s.textContent='اشترك'; s.onclick=()=>doSubscribe('checkout',p.id); row.appendChild(s);
+    box.appendChild(row);
+  }
+}
+async function doSubscribe(kind, planId){
+  try{ subscription = await api(`/api/subscription/${kind}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan_id:planId})});
+    renderSubBanner();
+  }catch(e){ alert(e.message); }
+}
+
+// ---- my children (each owned by this guardian) ----
+async function loadChildren(){
+  await loadGrades();                       // populate the mandatory target-grade picker
+  const kids = await api('/api/students');
+  const box=document.getElementById('childList'); box.innerHTML='';
+  if(!kids.length) box.innerHTML='<p class="muted">لا أطفال بعد — أضِف طفلاً للبدء.</p>';
+  for(const k of kids){
+    const row=document.createElement('div');
+    row.style='display:flex;align-items:center;gap:8px;padding:10px;border:2px solid #eee;border-radius:12px;margin-bottom:8px';
+    row.innerHTML=`<span class="nm" style="flex:1;font-weight:700">${k.name} ${k.country?`<span class="code">${k.country}</span>`:''}</span>`;
+    const learn=document.createElement('button'); learn.textContent='▶ ابدأ'; learn.onclick=()=>selectChild(k);
+    const rep=document.createElement('button'); rep.className='sec'; rep.textContent='👁 تقدّمه'; rep.onclick=()=>openReport(k);
+    row.appendChild(rep); row.appendChild(learn); box.appendChild(row);
+  }
+  show('childrenView');
+}
+async function loadGrades(){
+  const sel=document.getElementById('childGrade'); if(!sel || sel.dataset.loaded) return;
+  try{ const grades=await api('/api/grades');
+    for(const g of grades){ const o=document.createElement('option'); o.value=g.id; o.textContent=g.name; sel.appendChild(o); }
+    sel.dataset.loaded='1';
+  }catch(e){}
+}
+async function createChild(){
+  const err=document.getElementById('childErr'); err.textContent='';
+  const name=document.getElementById('childName').value.trim(); if(!name){ err.textContent='أدخل اسم الطفل.'; return; }
+  const grade_id=parseInt(document.getElementById('childGrade').value,10);
+  if(!grade_id){ err.textContent='اختر الصف المستهدف.'; return; }   // grade is MANDATORY
+  if(!document.getElementById('consentChk').checked){ err.textContent='يجب الموافقة على شروط ولي الأمر قبل إنشاء الملف.'; return; }
+  const country=document.getElementById('childCountry').value || null;
+  try{ await api('/api/students',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name,grade_id,country,consent_version: consentInfo && consentInfo.version})});
+    document.getElementById('childName').value=''; document.getElementById('consentChk').checked=false;
+    await loadChildren();
+  }catch(e){ err.textContent=e.message; }
+}
+function selectChild(k){ student=k; lastPlacement=null; backToMap(); }
+
+// ---- parent dashboard (read-only) ----
+async function openReport(k){
+  const r = await api(`/api/students/${k.id}/report`);
+  document.getElementById('reportTitle').textContent = `تقدّم ${r.child.name}`;
+  const t=r.totals;
+  const chip=(txt,cls)=>`<span class="chip ${cls}" style="font-size:15px">${txt}</span>`;
+  document.getElementById('reportTotals').innerHTML =
+    chip(`🏆 أتقن ${toHindi(t.mastered)}`, 'st mast') +
+    chip(`✓ فهم ${toHindi(t.understood)}`, 'st und') +
+    chip(`▶ متاح الآن ${toHindi(t.available)}`, 'st avail') +
+    chip(`🔒 مقفل ${toHindi(t.locked)}`, 'st locked') +
+    `<span class="chip" style="background:#fff;border:1px solid var(--line);color:var(--muted);font-size:15px">من ${toHindi(t.nodes)} مهارة</span>`;
+  const box=document.getElementById('reportSkills'); box.innerHTML='';
+  for(const s of r.skills){
+    const cls = s.status==='mastered'?'mast':(s.status==='understood'?'und':(s.unlocked?'avail':'locked'));
+    const d=document.createElement('div'); d.className='skill'; d.style.cursor='default';
+    d.innerHTML=`<span class="st ${cls}">${s.label}</span><span class="nm">${s.name} <span class="code">${s.code||''}</span></span>`;
+    box.appendChild(d);
+  }
+  show('reportView');
+}
+
+async function backToMap(){
+  const map=await api(`/api/students/${student.id}/skillmap`);
+  document.getElementById('mapTitle').textContent = `خريطة المهارات — أهلاً ${student.name}`;
+  const box=document.getElementById('map'); box.innerHTML='';
+  for(const s of map){
+    const b=document.createElement('button'); b.className='skill'; b.disabled = !s.unlocked;
+    let st, cls;
+    if(!s.unlocked){ st='🔒 مقفلة'; cls='locked'; }
+    else if(s.status==='mastered'){ st='🏆 أُتقنت'; cls='mast'; }
+    else if(s.status==='understood'){ st='✓ فُهمت'; cls='und'; }
+    else { st='▶ متاحة'; cls='avail'; }
+    const unmet = s.prerequisites.filter(p=>!p.satisfied).map(p=>p.name);
+    b.innerHTML = `<span class="st ${cls}">${st}</span>
+      <span class="nm">${s.name} <span class="code">${s.code||''}</span>
+      ${(!s.unlocked && unmet.length)?`<div class="need">يحتاج: ${unmet.join('، ')}</div>`:''}</span>`;
+    if(s.unlocked) b.onclick = ()=>openSkill(s.id, s.name);
+    box.appendChild(b);
+  }
+  // celebrate newly-unlocked nodes (compare to the previous map's unlocked set — read-only)
+  const unlockedNow = new Set(map.filter(s=>s.unlocked).map(s=>s.id));
+  if(prevUnlocked){
+    const opened = map.filter(s=>s.unlocked && !prevUnlocked.has(s.id)).map(s=>s.name);
+    if(opened.length){ toast('🔓 فتحتَ مهارة جديدة: '+opened.join('، '), false); speak('فتحت مهارة جديدة'); }
+  }
+  prevUnlocked = unlockedNow;
+  const pm=document.getElementById('placeMsg');
+  if(lastPlacement){ pm.textContent=lastPlacement; pm.style.display=''; } else pm.style.display='none';
+  show('mapView');
+}
+
+async function startDiagnostic(){
+  const probes=await api(`/api/students/${student.id}/diagnostic/probes`);
+  const box=document.getElementById('probes'); box.innerHTML=''; let cur=null;
+  for(const p of probes){
+    if(p.skill_id!==cur){ cur=p.skill_id; const h=document.createElement('div');
+      h.style='font-weight:800; margin:14px 0 6px; border-top:1px solid #eee; padding-top:10px';
+      h.innerHTML=`${p.skill_name} <span class="code">${p.code||''}</span>`; box.appendChild(h); }
+    const d=document.createElement('div'); d.className='q';
+    d.innerHTML=`<div class="row" style="justify-content:space-between">
+        <span class="badge fam-${p.family}">${FAM_AR[p.family]||p.family||''}</span>
+        <button class="muteBtn" type="button" onclick="speak(this.closest('.q').querySelector('.prompt').textContent)">🔊</button></div>
+      <div class="prompt">${p.prompt}</div>`;
+    box.appendChild(d);
+    renderQInput(d, {id:p.question_id, family:p.family, prompt:p.prompt, visual:p.visual}, 'diagnostic');
+  }
+  show('diagnosticView');
+}
+
+async function submitDiagnostic(){
+  const answers=[];
+  document.querySelectorAll('[id^=probe-]').forEach(inp=>{ const v=inp.value.trim();
+    if(v) answers.push({question_id:+inp.id.split('-')[1], answer:v}); });
+  const res=await api(`/api/students/${student.id}/diagnostic`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers})});
+  lastPlacement = res.placement
+    ? `🔍 التشخيص: أثبتَّ فهم ${toHindi(res.understood_codes.length)} مهارة. ابدأ من «${res.placement.name}». (فُهمت بالتنسيب — تبقى الطلاقة بالممارسة)`
+    : '🔍 التشخيص: أثبتَّ فهم الشبكة كلّها — مارِس للطلاقة.';
+  await backToMap();
+}
+
+// Round-robin the questions across families so consecutive questions are from
+// DIFFERENT families — the child meets ≥2 families early (understanding needs two),
+// and never sees one family repeat back-to-back. Single-family nodes just alternate
+// their two distinct items.
+function interleaveByFamily(qs){
+  const groups={}, order=[];
+  for(const q of qs){ const f=q.family||'_'; if(!groups[f]){ groups[f]=[]; order.push(f); } groups[f].push(q); }
+  const out=[];
+  for(let i=0; out.length<qs.length && i<200; i++){ for(const f of order){ if(groups[f][i]) out.push(groups[f][i]); } }
+  return out;
+}
+
+async function openSkill(id, name){
+  skill={id,name};
+  try{ questions=await api(`/api/students/${student.id}/skills/${id}/questions`); }
+  catch(e){
+    if(e.status===402){ alert(e.message); await loadChildren(); showSubscribe(); return; }
+    if(e.status===403 && e.reason==='path'){ alert(e.message); await backToMap(); return; }  // not in this child's curriculum
+    throw e;
+  }
+  practiceQueue=interleaveByFamily(questions); qIdx=0;
+  document.getElementById('skillName').textContent = `المهارة: ${name}`;
+  const progress = await api(`/api/students/${student.id}/skills/${id}/progress`);
+  prevSnap = progress;                 // baseline for detecting achievement transitions
+  renderGate(progress);
+  renderCurrent();
+  show('practiceView');
+}
+
+// Show exactly ONE question. The per-question timer (qShownAt) starts HERE, so
+// "shown → submitted" measures real answering time with no idle from other questions,
+// and time spent reading the previous feedback is NOT charged to this question.
+function renderCurrent(){
+  pendingAns=null;
+  const qbox=document.getElementById('questions'); qbox.innerHTML='';
+  if(!practiceQueue.length){ qbox.innerHTML='<div class="muted">لا أسئلة.</div>'; return; }
+  const q=practiceQueue[qIdx % practiceQueue.length];
+  const d=document.createElement('div'); d.className='q';
+  d.innerHTML=`<div class="row" style="justify-content:space-between">
+      <span class="badge fam-${q.family}">${FAM_AR[q.family]||q.family||''}</span>
+      <button class="muteBtn" type="button" onclick="speak(document.getElementById('curPrompt').textContent)">🔊 استمع</button></div>
+    <div class="prompt" id="curPrompt">${q.prompt}</div>`;
+  qbox.appendChild(d);
+  renderQInput(d, q, 'practice');
+  // speed timer starts at narration-end OR first interaction (whichever first) — not at
+  // display — so listening time never pollutes the fluency speed measurement.
+  qShownAt = performance.now(); qTimerStarted = false;
+  d.addEventListener('pointerdown', ()=>{ cancelSpeech(); startQTimer(); }, {once:true});
+  if(audioOn()) speak(q.prompt, startQTimer); else startQTimer();
+}
+
+function showNext(){
+  const qbox=document.getElementById('questions');
+  if(document.getElementById('nextBtn')) return;
+  const b=document.createElement('button'); b.id='nextBtn'; b.textContent='السؤال التالي ›';
+  b.style.marginTop='10px';
+  b.onclick=()=>{ qIdx++; renderCurrent(); };   // clears card (removes this button) + resets timer
+  qbox.appendChild(b);
+}
+
+// Shared input renderer. Practice: the widget selects a PENDING answer; an explicit
+// «إرسال» commits it ONCE (one deliberate answer per shown question → clean timing).
+// Diagnostic is unchanged (batch list, hidden inputs, no timing).
+function renderQInput(host, q, mode){
+  if(q.visual){
+    const w=document.createElement('div'); w.className='widget'; host.appendChild(w);
+    const fb=document.createElement('span'); fb.className='fb'; fb.id='fb-'+q.id; host.appendChild(fb);
+    if(mode==='diagnostic'){
+      const hidden=document.createElement('input'); hidden.type='hidden'; hidden.id='probe-'+q.id; host.appendChild(hidden);
+      mountWidget(w, q, (ans)=>{ hidden.value=String(ans); fb.textContent='تم تحديد: '+toHindi(ans); fb.className='fb ok'; });
+    } else {
+      mountWidget(w, q, (ans)=>{ pendingAns=ans; fb.textContent='اخترت: '+toHindi(ans); fb.className='fb'; });
+      host.appendChild(submitButton(q, ()=>pendingAns));
+    }
+  } else if(mode==='practice'){
+    const row=document.createElement('div'); row.className='row';
+    const inp=document.createElement('input'); inp.type='text'; inp.id='ans-'+q.id; inp.placeholder='إجابتك';
+    row.appendChild(inp); row.appendChild(submitButton(q, ()=>inp.value));
+    const fb=document.createElement('span'); fb.className='fb'; fb.id='fb-'+q.id; row.appendChild(fb);
+    host.appendChild(row);
+  } else {
+    const inp=document.createElement('input'); inp.type='text'; inp.id='probe-'+q.id;
+    inp.placeholder='إجابتك (أو اتركه فارغاً)'; host.appendChild(inp);
+  }
+}
+
+function submitButton(q, getAns){
+  const b=document.createElement('button'); b.textContent='إرسال'; b.id='submit-'+q.id;
+  b.onclick=()=>{ const a=getAns(); if(a==null || String(a).trim()==='') return; b.disabled=true; sendAns(q, a); };
+  return b;
+}
+
+async function sendAns(q, ans){
+  ans=String(ans).trim(); if(!ans) return;
+  const elapsed_ms = Math.round(performance.now() - qShownAt);   // shown→submitted (no idle)
+  // live-generated items carry instance_id (answered ONCE, graded server-side
+  // against the instance's own stored answer); fixed items keep question_id.
+  const ref = q.instance_id ? {instance_id:q.instance_id} : {question_id:q.id};
+  let res;
+  try{
+    res=await api('/api/answers',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({student_id:student.id, ...ref, answer:ans, elapsed_ms})});
+  }catch(e){
+    const b=document.getElementById('submit-'+q.id); if(b) b.disabled=false;   // let them retry
+    if(e.status===402){ alert(e.message); showSubscribe(); return; }            // commercial
+    if(e.status===403 && e.reason==='path'){ alert(e.message); await backToMap(); return; }  // not in curriculum
+    if(e.status===403 && e.reason==='locked'){ alert(e.message); return; }      // prerequisite unmet
+    throw e;
+  }
+  reactToAnswer(q.id, res);   // quiet confirm / gentle guidance / celebration (reads res)
+  renderGate(res);
+  showNext();
+}
+
+function renderGate(p){
+  // Once understood (by practice OR diagnostic), hide the understanding-progress block.
+  document.getElementById('gateNeed').style.display = p.understood?'none':'';
+  document.getElementById('chips').style.display = p.understood?'none':'';
+  const u=p.understanding, chips=document.getElementById('chips'); chips.innerHTML='';
+  if(u.mode==='families'){
+    for(const f of u.families_passed){ const c=document.createElement('span'); c.className='badge fam-'+f; c.textContent='✓ '+(FAM_AR[f]||f); chips.appendChild(c); }
+    if(u.families_passed.length===0){ const c=document.createElement('span'); c.className='muted'; c.textContent='لا عائلات بعد'; chips.appendChild(c); }
+    document.getElementById('gateNeed').innerHTML=`العائلات المُتقَنة: <b>${toHindi(u.progress)}</b> من <b>${toHindi(u.needed)}</b> مطلوبة للفهم`;
+  } else {
+    document.getElementById('gateNeed').innerHTML=`أمثلة صحيحة متمايزة: <b>${toHindi(u.progress)}</b> من <b>${toHindi(u.needed)}</b> (تعميم داخل العائلة الواحدة)`;
+  }
+  document.getElementById('understood').style.display = p.understood?'':'none';
+  const flBox=document.getElementById('fluency');
+  if(p.understood && !p.mastered && p.fluency){
+    const f=p.fluency; flBox.style.display='';
+    const sec = (f.speed_ceiling_ms/1000);
+    const avg = f.avg_ms!=null ? `، متوسط زمنك ${toHindi((f.avg_ms/1000).toFixed(1))}ث` : '';
+    document.getElementById('fluencyText').innerHTML=`طور الطلاقة: صحيحة <b>${toHindi(f.correct)}</b> وسريعة <b>${toHindi(f.fast)}</b> من آخر <b>${toHindi(f.window)}</b> — تحتاج <b>${toHindi(f.needed)}</b> بدقّة وسرعة (≤ ${toHindi(sec)}ث للسؤال)${avg}`;
+    document.getElementById('fluencyBar').style.width=Math.round((f.window/f.needed)*100)+'%';
+  } else flBox.style.display='none';
+  document.getElementById('mastered').style.display = p.mastered?'':'none';
+}
+
+// ---- on load: apply the active theme, then resume session / show login ----
+updateMuteBtn();
+(async()=>{
+  try{ const t=await api('/api/theme'); document.documentElement.dataset.theme=t.theme; }catch(e){}
+  try{ await afterLogin(); }catch(e){ show('authView'); showAuthTab('login'); }
+})();
+</script>
+</body>
+</html>

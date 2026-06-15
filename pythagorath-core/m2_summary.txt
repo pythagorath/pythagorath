@@ -1,0 +1,160 @@
+======== DA3 الاحتمال
+  [حتمية] كيس فيه كرات حمراء فقط. سحب كرة حمراء حدثٌ: => أكيد  | likelihood:{'scenario': 'bag', 'balls': [['red', 5]], 'ask': 'certainty', 'event': 'red'}
+  [حتمية] كيس فيه كرات زرقاء فقط. سحب كرة حمراء حدثٌ: => مستحيل  | likelihood:{'scenario': 'bag', 'balls': [['blue', 5]], 'ask': 'certainty', 'event': 'red'}
+  [مقارنة] كيس فيه ٥ حمراء و٢ زرقاء. أيّ لون أكثر إمكانية للسحب؟ => أحمر  | likelihood:{'scenario': 'bag', 'balls': [['red', 5], ['blue', 2]], 'ask': 'more'}
+  [مقارنة] كيس فيه ٣ خضراء و٦ صفراء. أيّ لون أكثر إمكانية؟ => أصفر  | likelihood:{'scenario': 'bag', 'balls': [['green', 3], ['yellow', 6]], 'ask': 'more'}
+  [حتمية] كيس فيه ٤ حمراء، ٤ زرقاء. سحب كرة حمراء حدثٌ: => ممكن  | likelihood:{'scenario': 'bag', 'balls': [['red', 4], ['blue', 4]], 'ask': 'certainty', 'event': 'red'}
+  [مقارنة] كيس فيه ٦ خضراء، ٢ صفراء. أيّ لون أكثر إمكانية للسحب؟ => أخضر  | likelihood:{'scenario': 'bag', 'balls': [['green', 6], ['yellow', 2]], 'ask': 'more'}
+======== Fr2 مقارنة الكسور
+  [مقارنة] انقر الكسر الأكبر. => ١/٢  | fraction:{'mode': 'compare', 'a': {'parts': 2, 'shaded': 1}, 'b': {'parts': 4, 'shaded': 1}}
+  [مقارنة] انقر الكسر الأكبر. => ١/٣  | fraction:{'mode': 'compare', 'a': {'parts': 3, 'shaded': 1}, 'b': {'parts': 5, 'shaded': 1}}
+  [مقارنة] انقر الكسر الأكبر. => ١/٢  | fraction:{'mode': 'compare', 'a': {'parts': 2, 'shaded': 1}, 'b': {'parts': 3, 'shaded': 1}}
+  [مقارنة] انقر الكسر الأكبر. => ١/٣  | fraction:{'mode': 'compare', 'a': {'parts': 3, 'shaded': 1}, 'b': {'parts': 4, 'shaded': 1}}
+  [مقارنة] انقر الكسر الأكبر. => ١/٢  | fraction:{'mode': 'compare', 'a': {'parts': 4, 'shaded': 1}, 'b': {'parts': 2, 'shaded': 1}}
+  [مقارنة] انقر الكسر الأكبر. => ٣/٤  | fraction:{'mode': 'compare', 'a': {'parts': 4, 'shaded': 3}, 'b': {'parts': 4, 'shaded': 1}}
+  [مقارنة] انقر الكسر الأكبر. => ٢/٣  | fraction:{'mode': 'compare', 'a': {'parts': 3, 'shaded': 2}, 'b': {'parts': 3, 'shaded': 1}}
+  [مقارنة] انقر الكسر الأكبر. => ١/٢  | fraction:{'mode': 'compare', 'a': {'parts': 2, 'shaded': 1}, 'b': {'parts': 5, 'shaded': 1}}
+======== Fr3 كسر المجموعة الوحدي
+  [مجموعة] ما ١/٢ من ٨؟ وزِّعها على ٢ مجموعتين وخذ مجموعة. => ٤  | groups:{'mode': 'share', 'total': 8, 'groups': 2}
+  [مجموعة] ما ١/٣ من ٦؟ وزِّعها على ٣ مجموعات وخذ مجموعة. => ٢  | groups:{'mode': 'share', 'total': 6, 'groups': 3}
+  [مجموعة] ما ١/٢ من ٦؟ وزِّعها على ٢ مجموعات وخذ مجموعة. => ٣  | groups:{'mode': 'share', 'total': 6, 'groups': 2}
+  [مجموعة] ما ١/٤ من ٨؟ وزِّعها على ٤ مجموعات وخذ مجموعة. => ٢  | groups:{'mode': 'share', 'total': 8, 'groups': 4}
+  [مجموعة] ما ١/٣ من ٩؟ وزِّعها على ٣ مجموعات وخذ مجموعة. => ٣  | groups:{'mode': 'share', 'total': 9, 'groups': 3}
+  [مجموعة] ما ١/٢ من ١٠؟ وزِّعها على ٢ مجموعات وخذ مجموعة. => ٥  | groups:{'mode': 'share', 'total': 10, 'groups': 2}
+  [مجموعة] ما ١/٥ من ١٠؟ وزِّعها على ٥ مجموعات وخذ مجموعة. => ٢  | groups:{'mode': 'share', 'total': 10, 'groups': 5}
+  [مجموعة] ما ١/٤ من ١٢؟ وزِّعها على ٤ مجموعات وخذ مجموعة. => ٣  | groups:{'mode': 'share', 'total': 12, 'groups': 4}
+======== Q1 القياس بالوحدة
+  [طول] كم سنتيمتراً طول هذا الجسم؟ انقر نهايته على المسطرة. => ٦  | measure:{'mode': 'ruler', 'length': 6, 'max': 10}
+  [طول] كم سنتيمتراً طول هذا الجسم؟ => ٤  | measure:{'mode': 'ruler', 'length': 4, 'max': 10}
+  [كتلة] كم غراماً كتلة الجسم؟ أضِف أثقالاً حتى يتّزن الميزان. => ٥  | measure:{'mode': 'balance', 'mass': 5}
+  [كتلة] كم غراماً كتلة الجسم؟ => ٣  | measure:{'mode': 'balance', 'mass': 3}
+  [سعة] كم كوباً يملأ هذا الإناء؟ اسكب الأكواب حتى يمتلئ. => ٤  | measure:{'mode': 'container', 'cups': 4}
+  [سعة] كم كوباً يملأ هذا الإناء؟ => ٢  | measure:{'mode': 'container', 'cups': 2}
+======== Q5 ترتيب الزمن وتسلسله
+  [ترتيب] رتّب زمنياً: الاستيقاظُ، الذهابُ للمدرسة، النومُ — ما أوّلُ حدثٍ في اليوم؟ => الاستيقاظ  | -
+  [ترتيب] أيُّ وحدةٍ زمنيةٍ أطول: الدقيقةُ أم الساعةُ؟ اكتب الأطول. => الساعة  | -
+  [ترتيب] رتّب زمنياً: الفطورُ، الغداءُ، العشاءُ — ما آخرُ وجبة؟ => العشاء  | -
+  [ترتيب] أيُّ وحدةٍ أطول: اليومُ أم الأسبوعُ؟ اكتب الأطول. => الأسبوع  | -
+  [ترتيب] أيّامُ الأسبوع: ما اليومُ الذي يأتي بعد السبت؟ => الأحد  | -
+  [ترتيب] أيُّ وحدةٍ أقصر: الساعةُ أم الدقيقةُ؟ اكتب الأقصر. => الدقيقة  | -
+======== S1 حل مسألة من خطوة واحدة
+  [نمذجة] لدى سالم ٧ تفّاحات، أعطى ٣. كم بقي؟ => ٤  | -
+  [نمذجة] في الصفّ ٥ أولاد و٤ بنات. كم العدد الكلّي؟ => ٩  | -
+  [نمذجة] في الحديقة ٨ ورود، ذبلت ٣. كم بقي؟ => ٥  | -
+  [نمذجة] مع أحمد ٦ كرات، أعطاه صديقه ٤. كم لديه؟ => ١٠  | -
+  [نمذجة] في السلّة ٩ تفّاحات، أكل ٢. كم بقي؟ => ٧  | -
+  [نمذجة] في الصفّ ٧ بنين و٥ بنات. كم العدد الكلّي؟ => ١٢  | -
+======== S2 حل مسألة من خطوتين
+  [نمذجة] لدى نورة ١٠ ريالات، اشترت بـ٣ ثم بـ٢. كم بقي؟ => ٥  | -
+  [نمذجة] معه ٦ أقلام، اشترى ٥ ثم أعطى ٤. كم لديه الآن؟ => ٧  | -
+  [نمذجة] مع سارة ١٢ ريالاً، اشترت بـ٤ ثم بـ٣. كم بقي؟ => ٥  | -
+  [نمذجة] في الصندوق ٨ كرات، أضاف ٥ ثم أخذ ٦. كم بقي؟ => ٧  | -
+  [نمذجة] مع خالد ١٠ أقلام، أعطى ٣ ثم اشترى ٤. كم لديه؟ => ١١  | -
+  [نمذجة] في المزرعة ٦ دجاجات، اشترى ٧ ثم باع ٥. كم بقي؟ => ٨  | -
+======== P الأنماط
+  [نمط] أكمل النمط المتكرّر: ٣، ٥، ٣، ٥، ؟ => ٣  | pattern:{'itemType': 'number', 'seq': [3, 5, 3, 5], 'options': [3, 5, 7]}
+  [نمط] أكمل النمط المتكرّر بالأشكال: => دائرة  | pattern:{'itemType': 'shape', 'seq': ['triangle', 'circle', 'triangle', 'circle', 'triangle'], 'options
+  [نمط] أكمل النمط المتنامي: ١، ٢، ٤، ٧، ؟ (يكبر الفرق) => ١١  | pattern:{'itemType': 'number', 'seq': [1, 2, 4, 7], 'options': [10, 11, 13]}
+  [نمط] أكمل النمط: ٢، ٤، ٢، ٤، ؟ => ٢  | pattern:{'itemType': 'number', 'seq': [2, 4, 2, 4], 'options': [2, 4, 6]}
+  [نمط] أكمل نمط الأشكال: => مثلث  | pattern:{'itemType': 'shape', 'seq': ['square', 'triangle', 'square', 'triangle', 'square'], 'options':
+  [نمط] أكمل النمط: ١، ٣، ٥، ٧، ؟ => ٩  | pattern:{'itemType': 'number', 'seq': [1, 3, 5, 7], 'options': [8, 9, 10]}
+======== Ord الأعداد الترتيبية
+  [ترتيبي] في الصفّ: انقر الشكل الثالث. => ج  | shape-pick:{'options': [{'v': 'أ', 'shape': 'circle'}, {'v': 'ب', 'shape': 'triangle'}, {'v': 'ج', 'shape'
+  [ترتيبي] في الصفّ: انقر الشكل الثاني. => ب  | shape-pick:{'options': [{'v': 'أ', 'shape': 'square'}, {'v': 'ب', 'shape': 'circle'}, {'v': 'ج', 'shape': 
+  [ترتيبي] في الصفّ: انقر الشكل الأول. => أ  | shape-pick:{'options': [{'v': 'أ', 'shape': 'triangle'}, {'v': 'ب', 'shape': 'circle'}, {'v': 'ج', 'shape'
+  [ترتيبي] في الصفّ: انقر الشكل الرابع. => د  | shape-pick:{'options': [{'v': 'أ', 'shape': 'circle'}, {'v': 'ب', 'shape': 'square'}, {'v': 'ج', 'shape': 
+  [ترتيبي] في الصفّ: انقر الشكل الأول. => أ  | shape-pick:{'options': [{'v': 'أ', 'shape': 'square'}, {'v': 'ب', 'shape': 'triangle'}, {'v': 'ج', 'shape'
+  [ترتيبي] في الصفّ: انقر الشكل الثالث. => ج  | shape-pick:{'options': [{'v': 'أ', 'shape': 'triangle'}, {'v': 'ب', 'shape': 'square'}, {'v': 'ج', 'shape'
+======== G1 تمييز الأشكال المستوية
+  [تعرّف] ما اسم هذا الشكل؟ انقر الإجابة. => مربع  | shape-pick:{'show': 'square', 'options': [{'v': 'مربع', 'shape': 'square'}, {'v': 'مثلث', 'shape': 'triang
+  [تعرّف] ما اسم هذا الشكل؟ => مثلث  | shape-pick:{'show': 'triangle', 'options': [{'v': 'مستطيل', 'shape': 'rectangle'}, {'v': 'مثلث', 'shape': 
+  [تعرّف] ما اسم هذا الشكل؟ انقر الإجابة. => مربع  | shape-pick:{'show': 'square', 'options': [{'v': 'مربع', 'shape': 'square'}, {'v': 'دائرة', 'shape': 'circl
+  [تعرّف] ما اسم هذا الشكل؟ انقر الإجابة. => مثلث  | shape-pick:{'show': 'triangle', 'options': [{'v': 'مثلث', 'shape': 'triangle'}, {'v': 'مربع', 'shape': 'sq
+  [تعرّف] ما اسم هذا الشكل؟ انقر الإجابة. => دائرة  | shape-pick:{'show': 'circle', 'options': [{'v': 'دائرة', 'shape': 'circle'}, {'v': 'مربع', 'shape': 'squar
+  [تعرّف] ما اسم هذا الشكل؟ انقر الإجابة. => مستطيل  | shape-pick:{'show': 'rectangle', 'options': [{'v': 'مستطيل', 'shape': 'rectangle'}, {'v': 'مربع', 'shape':
+======== G2 تمييز المجسمات
+  [تعرّف] ما اسم هذا المجسم؟ => مكعب  | shape-pick:{'show': 'cube', 'options': [{'v': 'مكعب', 'shape': 'cube'}, {'v': 'كرة', 'shape': 'sphere'}, {
+  [تعرّف] ما اسم هذا المجسم؟ => كرة  | shape-pick:{'show': 'sphere', 'options': [{'v': 'هرم', 'shape': 'pyramid'}, {'v': 'كرة', 'shape': 'sphere'
+  [تعرّف] ما اسم هذا المجسم؟ انقر الإجابة. => مكعب  | shape-pick:{'show': 'cube', 'options': [{'v': 'مكعب', 'shape': 'cube'}, {'v': 'كرة', 'shape': 'sphere'}, {
+  [تعرّف] ما اسم هذا المجسم؟ انقر الإجابة. => كرة  | shape-pick:{'show': 'sphere', 'options': [{'v': 'كرة', 'shape': 'sphere'}, {'v': 'مكعب', 'shape': 'cube'},
+  [تعرّف] ما اسم هذا المجسم؟ انقر الإجابة. => أسطوانة  | shape-pick:{'show': 'cylinder', 'options': [{'v': 'أسطوانة', 'shape': 'cylinder'}, {'v': 'مخروط', 'shape':
+  [تعرّف] ما اسم هذا المجسم؟ انقر الإجابة. => هرم  | shape-pick:{'show': 'pyramid', 'options': [{'v': 'هرم', 'shape': 'pyramid'}, {'v': 'مكعب', 'shape': 'cube'
+======== G3 أوجه وأحرف ورؤوس المجسمات
+  [عدّ] انقر أوجه المكعب لتعدّها. كم وجهاً؟ => ٦  | element-count:{'solid': 'cube', 'element': 'faces', 'n': 6}
+  [عدّ] انقر رؤوس المكعب لتعدّها. كم رأساً؟ => ٨  | element-count:{'solid': 'cube', 'element': 'vertices', 'n': 8}
+  [عدّ] انقر أحرف المجسم لتعدّها. كم حرفاً؟ => ١٢  | element-count:{'solid': 'cube', 'element': 'edges', 'n': 12}
+  [عدّ] انقر أوجه المجسم لتعدّها. كم وجهاً؟ => ٥  | element-count:{'solid': 'pyramid', 'element': 'faces', 'n': 5}
+  [عدّ] انقر رؤوس المجسم لتعدّها. كم رأساً؟ => ٥  | element-count:{'solid': 'pyramid', 'element': 'vertices', 'n': 5}
+  [عدّ] انقر أحرف المجسم لتعدّها. كم حرفاً؟ => ٨  | element-count:{'solid': 'pyramid', 'element': 'edges', 'n': 8}
+======== A2 الطرح بالاستلاف البسيط ضمن ١٠٠
+  [aggregative] اطرح ٧ من ٥٢ بالقضبان: الآحاد لا تكفي — افتح قضيباً ثم خذ. => ٤٥  | subtract-blocks:{'minuend': 52, 'subtract': 7}
+  [aggregative] اطرح ٢٨ من ٦٣ بالقضبان (افتح قضيباً للاستلاف). => ٣٥  | subtract-blocks:{'minuend': 63, 'subtract': 28}
+  [magnitude] على الخطّ: ابدأ من ٥٢، اقفز ٧ للخلف — انقر الوصول. => ٤٥  | number-line:{'min': 0, 'max': 70, 'start': 52, 'jump': 7, 'back': True}
+  [magnitude] على الخطّ: ابدأ من ٦٣، اقفز ٢٨ للخلف. => ٣٥  | number-line:{'min': 0, 'max': 70, 'start': 63, 'jump': 28, 'back': True}
+  [decompositional] اطرح بالخانات (افتح عشرة للاستلاف): ٥٢ − ٧ => ٤٥  | decomposition:{'mode': 'place-sub', 'minuend': 52, 'subtrahend': 7}
+  [decompositional] اطرح بالخانات: ٦٣ − ٢٨ => ٣٥  | decomposition:{'mode': 'place-sub', 'minuend': 63, 'subtrahend': 28}
+  [aggregative] اطرح ٣٦ من ٧٢ بالقضبان. => ٣٦  | subtract-blocks:{'minuend': 72, 'subtract': 36}
+  [decompositional] اطرح بالخانات: ٨١ − ٢٧ => ٥٤  | decomposition:{'mode': 'place-sub', 'minuend': 81, 'subtrahend': 27}
+======== B2 تكوين العشرة
+  [aggregative] املأ الإطار: أضِف ٥ نقاط إلى ٨، وشاهد العشرة تكتمل وتفيض. => ١٣  | ten-frame:{'start': 8, 'add': 5}
+  [aggregative] املأ الإطار: أضِف ٥ نقاط إلى ٧. => ١٢  | ten-frame:{'start': 7, 'add': 5}
+  [magnitude] على الخطّ: ابدأ من ٨، اقفز ٥ — انقر موضع وصولك. => ١٣  | number-line:{'min': 0, 'max': 20, 'start': 8, 'jump': 5}
+  [magnitude] على الخطّ: ابدأ من ٧، اقفز ٥ — انقر موضع وصولك. => ١٢  | number-line:{'min': 0, 'max': 20, 'start': 7, 'jump': 5}
+  [decompositional] فكِّك لتُكمل العشرة: ٨ + ٥ = ١٠ + ؟ => ٣  | decomposition:{'a': 8, 'b': 5, 'make': 10}
+  [decompositional] فكِّك لتُكمل العشرة: ٩ + ٦ = ١٠ + ؟ => ٥  | decomposition:{'a': 9, 'b': 6, 'make': 10}
+  [aggregative] املأ الإطار: أضِف ٧ إلى ٦. => ١٣  | ten-frame:{'start': 6, 'add': 7}
+  [decompositional] فكِّك لتُكمل العشرة: ٧ + ٦ = ١٠ + ؟ => ٣  | decomposition:{'a': 7, 'b': 6, 'make': 10}
+======== B3 الطرح خلال العشرة
+  [aggregative] اطرح ٧ من ١٢ بالقضبان: افتح العشرة ثم خذ. => ٥  | subtract-blocks:{'minuend': 12, 'subtract': 7}
+  [aggregative] اطرح ٨ من ١٤ بالقضبان (افتح العشرة). => ٦  | subtract-blocks:{'minuend': 14, 'subtract': 8}
+  [magnitude] على الخطّ: ابدأ من ١٢، اقفز ٧ للخلف. => ٥  | number-line:{'min': 0, 'max': 20, 'start': 12, 'jump': 7, 'back': True}
+  [magnitude] على الخطّ: ابدأ من ١٥، اقفز ٩ للخلف. => ٦  | number-line:{'min': 0, 'max': 20, 'start': 15, 'jump': 9, 'back': True}
+  [decompositional] اطرح خلال العشرة: ١٢ − ٧ => ٥  | decomposition:{'mode': 'place-sub', 'minuend': 12, 'subtrahend': 7}
+  [decompositional] اطرح خلال العشرة: ١٤ − ٦ => ٨  | decomposition:{'mode': 'place-sub', 'minuend': 14, 'subtrahend': 6}
+  [aggregative] اطرح ٦ من ١٣ بالقضبان. => ٧  | subtract-blocks:{'minuend': 13, 'subtract': 6}
+  [magnitude] على الخطّ: ابدأ من ١٦، اقفز ٨ للخلف. => ٨  | number-line:{'min': 0, 'max': 100, 'start': 16, 'jump': 8, 'back': True}
+======== B4 الجمع بلا إعادة تجميع
+  [aggregative] ابدأ بـ٢٣، أضِف ٤٥ بالقضبان والمكعّبات (بلا تبديل). => ٦٨  | base-ten-blocks:{'start': 23, 'add': 45}
+  [aggregative] ابدأ بـ٣١، أضِف ٢٧. => ٥٨  | base-ten-blocks:{'start': 31, 'add': 27}
+  [magnitude] على الخطّ: ابدأ من ٢٣، اقفز ٤٥ للأمام. => ٦٨  | number-line:{'min': 0, 'max': 80, 'start': 23, 'jump': 45}
+  [magnitude] على الخطّ: ابدأ من ٣١، اقفز ٢٧ للأمام. => ٥٨  | number-line:{'min': 0, 'max': 80, 'start': 31, 'jump': 27}
+  [decompositional] اجمع بالخانات: ٢٣ + ٤٥ => ٦٨  | decomposition:{'mode': 'place-add', 'a': 23, 'b': 45}
+  [decompositional] اجمع بالخانات: ٥٢ + ٣٦ => ٨٨  | decomposition:{'mode': 'place-add', 'a': 52, 'b': 36}
+  [aggregative] ابدأ بـ٤٢، أضِف ٣٥ بالقضبان. => ٧٧  | base-ten-blocks:{'start': 42, 'add': 35}
+  [decompositional] اجمع بالخانات: ٦١ + ٢٧ => ٨٨  | decomposition:{'mode': 'place-add', 'a': 61, 'b': 27}
+======== F12 الأعداد المفقودة
+  [decompositional] أوجد العدد المفقود: ٧ + ؟ = ١٢. => ٥  | -
+  [decompositional] أوجد العدد المفقود: ؟ + ٦ = ١٤. => ٨  | -
+  [decompositional] أوجد المفقود: ٤ + ؟ = ١١. => ٧  | -
+  [decompositional] أوجد المفقود: ؟ + ٨ = ١٣. => ٥  | -
+  [decompositional] أوجد المفقود: ٩ + ؟ = ١٥. => ٦  | -
+  [decompositional] أوجد المفقود: ؟ − ٣ = ٥. => ٨  | -
+  [decompositional] أوجد المفقود: ١٢ − ؟ = ٤. => ٨  | -
+  [decompositional] أوجد المفقود: ؟ + ٦ = ١٢. => ٦  | -
+======== g1ADD مفهوم الجمع ضمن ١٠
+  [aggregative] في الغصن ٣ عصافير، حطّت ٤ أخرى — املأ الإطار: كم صارت؟ => ٧  | ten-frame:{'start': 3, 'add': 4}
+  [aggregative] مع سالم ٥ كرات، أعطته أخته كرتين — مثِّل على الإطار: كم معه الآن؟ => ٧  | ten-frame:{'start': 5, 'add': 2}
+  [aggregative] في السلة ٦ تفاحات، أضافت أمي ٤ — أكمل الإطار: كم المجموع؟ => ١٠  | ten-frame:{'start': 6, 'add': 4}
+  [aggregative] املأ الإطار: أضِف ٦ إلى ٢. => ٨  | ten-frame:{'start': 2, 'add': 6}
+  [symbolic] أكمل: ٣ + ٤ = ؟ => ٧  | -
+  [symbolic] أكمل: ٥ + ٠ = ؟ => ٥  | -
+  [symbolic] بالشكل الرأسي — العلويّ ٦ والسفليّ ٢: ما ناتج الجمع؟ => ٨  | -
+  [symbolic] أكمل: ٤ + ٤ = ؟ => ٨  | -
+======== g1HALF الأجزاء المتساوية والنصف
+  [judge] انظر إلى تقسيم الشريط: هل الأجزاء متساوية؟ => متساوية  | fraction:{'mode': 'judge', 'widths': [1, 1]}
+  [judge] انظر إلى تقسيم الشريط: هل الأجزاء متساوية؟ => غير متساوية  | fraction:{'mode': 'judge', 'widths': [2, 1]}
+  [judge] انظر إلى تقسيم الشريط: هل الأجزاء متساوية؟ => متساوية  | fraction:{'mode': 'judge', 'widths': [1, 1, 1, 1]}
+  [name] ما الكسر الملوّن؟ انقر الإجابة. => ١/٢  | fraction:{'mode': 'name', 'parts': 2, 'shaded': 1, 'options': ['١/٢', '٢/٢']}
+  [name] ما الكسر الملوّن؟ انقر الإجابة. => ٢/٢  | fraction:{'mode': 'name', 'parts': 2, 'shaded': 2, 'options': ['١/٢', '٢/٢']}
+  [name] ما الكسر الملوّن؟ انقر الإجابة. => ١/٢  | fraction:{'mode': 'name', 'parts': 2, 'shaded': 1, 'options': ['٠/٢', '١/٢', '٢/٢']}
+  [shade] ظلِّل ١ من ٢ أجزاء متساوية. => ١/٢  | fraction:{'mode': 'shade', 'parts': 2, 'target': 1}
+  [shade] شارِك زميلك بالتساوي: ظلِّل نصيبه — نصف الشريط. => ١/٢  | fraction:{'mode': 'shade', 'parts': 2, 'target': 1}
+======== g1QRT الربع (والثلث حالةً)
+  [name] ما الكسر الملوّن؟ انقر الإجابة. => ١/٤  | fraction:{'mode': 'name', 'parts': 4, 'shaded': 1, 'options': ['١/٤', '٢/٤', '٣/٤']}
+  [name] ما الكسر الملوّن؟ انقر الإجابة. => ٣/٤  | fraction:{'mode': 'name', 'parts': 4, 'shaded': 3, 'options': ['١/٤', '٢/٤', '٣/٤']}
+  [name] ما الكسر الملوّن؟ انقر الإجابة. => ١/٣  | fraction:{'mode': 'name', 'parts': 3, 'shaded': 1, 'options': ['١/٣', '٢/٣', '٣/٣']}
+  [name] ما الكسر الملوّن؟ انقر الإجابة. => ٢/٤  | fraction:{'mode': 'name', 'parts': 4, 'shaded': 2, 'options': ['١/٤', '٢/٤', '٣/٤']}
+  [shade] ظلِّل ١ من ٤ أجزاء متساوية. => ١/٤  | fraction:{'mode': 'shade', 'parts': 4, 'target': 1}
+  [shade] ظلِّل ٢ من ٤ أجزاء متساوية. => ٢/٤  | fraction:{'mode': 'shade', 'parts': 4, 'target': 2}
+  [shade] ظلِّل ١ من ٣ أجزاء متساوية. => ١/٣  | fraction:{'mode': 'shade', 'parts': 3, 'target': 1}
+  [shade] ظلِّل ٣ من ٤ أجزاء متساوية. => ٣/٤  | fraction:{'mode': 'shade', 'parts': 4, 'target': 3}

@@ -1,0 +1,74 @@
+[
+    {
+        "account_type": "student_grade1",
+        "display_name": "أحمد - طالب صف أول",
+        "email": "ahmed.g1@pilot.test",
+        "grade_level": 1,
+        "is_active": true,
+        "notes": "Demo student Grade 1 - tests basic arithmetic and counting"
+    },
+    {
+        "account_type": "student_grade1",
+        "display_name": "سارة - طالبة صف أول",
+        "email": "sara.g1@pilot.test",
+        "grade_level": 1,
+        "is_active": true,
+        "notes": "Demo student Grade 1 - tests shapes and patterns"
+    },
+    {
+        "account_type": "student_grade2",
+        "display_name": "محمد - طالب صف ثاني",
+        "email": "mohammed.g2@pilot.test",
+        "grade_level": 2,
+        "is_active": true,
+        "notes": "Demo student Grade 2 - tests multiplication and division"
+    },
+    {
+        "account_type": "student_grade2",
+        "display_name": "نور - طالبة صف ثاني",
+        "email": "noor.g2@pilot.test",
+        "grade_level": 2,
+        "is_active": true,
+        "notes": "Demo student Grade 2 - tests time and money"
+    },
+    {
+        "account_type": "parent",
+        "display_name": "ولي أمر أحمد",
+        "email": "parent.ahmed@pilot.test",
+        "grade_level": null,
+        "is_active": true,
+        "notes": "Parent account linked to Ahmed Grade 1"
+    },
+    {
+        "account_type": "parent",
+        "display_name": "ولي أمر محمد",
+        "email": "parent.mohammed@pilot.test",
+        "grade_level": null,
+        "is_active": true,
+        "notes": "Parent account linked to Mohammed Grade 2"
+    },
+    {
+        "account_type": "admin",
+        "display_name": "مدير النظام",
+        "email": "admin@pilot.test",
+        "grade_level": null,
+        "is_active": true,
+        "notes": "Full admin access for pilot testing"
+    },
+    {
+        "account_type": "reviewer",
+        "display_name": "مراجع أكاديمي",
+        "email": "reviewer@pilot.test",
+        "grade_level": null,
+        "is_active": true,
+        "notes": "Academic reviewer - tests approval workflow"
+    },
+    {
+        "account_type": "editor",
+        "display_name": "محرر المحتوى",
+        "email": "editor@pilot.test",
+        "grade_level": null,
+        "is_active": true,
+        "notes": "Content editor - tests skill and question creation"
+    }
+]

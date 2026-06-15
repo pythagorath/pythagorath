@@ -1,0 +1,115 @@
+[
+    {
+        "skill_id": 1,
+        "question_text": "ما العدد الذي يأتي بعد 3؟",
+        "question_type": "multiple_choice",
+        "difficulty": "easy",
+        "options": "[\"2\",\"4\",\"5\",\"1\"]",
+        "correct_answer": "4",
+        "explanation": "العدد الذي يأتي بعد 3 في العد التصاعدي هو 4",
+        "misconception_type": "counting_sequence",
+        "status": "published"
+    },
+    {
+        "skill_id": 1,
+        "question_text": "رتب الأعداد تصاعدياً: 3، 1، 5، 2، 4",
+        "question_type": "multiple_choice",
+        "difficulty": "medium",
+        "options": "[\"1,2,3,4,5\",\"5,4,3,2,1\",\"2,1,3,5,4\",\"1,3,2,4,5\"]",
+        "correct_answer": "1,2,3,4,5",
+        "explanation": "الترتيب التصاعدي يعني من الأصغر إلى الأكبر",
+        "misconception_type": "ordering",
+        "status": "published"
+    },
+    {
+        "skill_id": 1,
+        "question_text": "كم عدد الكرات؟ 🔴🔴🔴🔴🔴🔴",
+        "question_type": "multiple_choice",
+        "difficulty": "easy",
+        "options": "[\"5\",\"6\",\"7\",\"4\"]",
+        "correct_answer": "6",
+        "explanation": "عدد الكرات هو 6",
+        "visual_type": "counting_objects",
+        "misconception_type": "counting_accuracy",
+        "status": "published"
+    },
+    {
+        "skill_id": 3,
+        "question_text": "أيهما أكبر: 7 أم 4؟",
+        "question_type": "multiple_choice",
+        "difficulty": "easy",
+        "options": "[\"7\",\"4\",\"متساويان\"]",
+        "correct_answer": "7",
+        "explanation": "7 أكبر من 4 لأنها تأتي بعدها في العد",
+        "misconception_type": "comparison",
+        "status": "published"
+    },
+    {
+        "skill_id": 4,
+        "question_text": "2 + 3 = ؟",
+        "question_type": "multiple_choice",
+        "difficulty": "easy",
+        "options": "[\"4\",\"5\",\"6\",\"3\"]",
+        "correct_answer": "5",
+        "explanation": "2 + 3 = 5",
+        "misconception_type": "addition_basic",
+        "status": "published"
+    },
+    {
+        "skill_id": 4,
+        "question_text": "1 + 4 = ؟",
+        "question_type": "multiple_choice",
+        "difficulty": "easy",
+        "options": "[\"3\",\"4\",\"5\",\"6\"]",
+        "correct_answer": "5",
+        "explanation": "1 + 4 = 5",
+        "misconception_type": "addition_basic",
+        "status": "published"
+    },
+    {
+        "skill_id": 5,
+        "question_text": "6 + 4 = ؟",
+        "question_type": "multiple_choice",
+        "difficulty": "medium",
+        "options": "[\"9\",\"10\",\"11\",\"8\"]",
+        "correct_answer": "10",
+        "explanation": "6 + 4 = 10",
+        "misconception_type": "addition_to_ten",
+        "status": "published"
+    },
+    {
+        "skill_id": 6,
+        "question_text": "9 - 4 = ؟",
+        "question_type": "multiple_choice",
+        "difficulty": "medium",
+        "options": "[\"4\",\"5\",\"6\",\"3\"]",
+        "correct_answer": "5",
+        "explanation": "9 - 4 = 5",
+        "misconception_type": "subtraction_basic",
+        "status": "published"
+    },
+    {
+        "skill_id": 7,
+        "question_text": "ما اسم هذا الشكل؟ (شكل له 4 أضلاع متساوية)",
+        "question_type": "multiple_choice",
+        "difficulty": "easy",
+        "options": "[\"مربع\",\"مستطيل\",\"مثلث\",\"دائرة\"]",
+        "correct_answer": "مربع",
+        "explanation": "المربع له 4 أضلاع متساوية و4 زوايا قائمة",
+        "visual_type": "shape",
+        "misconception_type": "shape_identification",
+        "status": "published"
+    },
+    {
+        "skill_id": 7,
+        "question_text": "كم عدد أضلاع المثلث؟",
+        "question_type": "multiple_choice",
+        "difficulty": "easy",
+        "options": "[\"2\",\"3\",\"4\",\"5\"]",
+        "correct_answer": "3",
+        "explanation": "المثلث له 3 أضلاع",
+        "visual_type": "shape",
+        "misconception_type": "shape_properties",
+        "status": "published"
+    }
+]

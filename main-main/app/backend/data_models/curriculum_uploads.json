@@ -1,0 +1,43 @@
+{
+    "title": "curriculum_uploads",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "grade_number": {
+            "type": "integer",
+            "description": "Grade number 1-12"
+        },
+        "subject_name": {
+            "type": "string",
+            "description": "Subject name in Arabic"
+        },
+        "semester": {
+            "type": "integer",
+            "description": "Semester 1 or 2"
+        },
+        "title": {
+            "type": "string",
+            "description": "Upload title"
+        },
+        "status": {
+            "type": "string",
+            "description": "draft or published"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "Admin user who uploaded"
+        }
+    },
+    "required": [
+        "id",
+        "grade_number",
+        "subject_name",
+        "semester",
+        "title",
+        "status",
+        "user_id"
+    ]
+}

@@ -1,0 +1,35 @@
+...........F............................................................ [ 39%]
+........................................................................ [ 79%]
+......................................                                   [100%]
+================================== FAILURES ===================================
+____________________ test_country_phrasing_shown_to_child _____________________
+
+guardian_client = <starlette.testclient.TestClient object at 0x0000024E53553B60>
+admin_client = <starlette.testclient.TestClient object at 0x0000024E5363F200>
+
+    def test_country_phrasing_shown_to_child(guardian_client, admin_client):
+        b4 = _node(admin_client, "B4")
+        created = admin_client.post(f"/api/admin/skills/{b4['id']}/questions", json={
+            "family": "decompositional", "prompt": "\u0627\u062c\u0645\u0639 \u0628\u0627\u0644\u062e\u0627\u0646\u0627\u062a: \u0664\u0661 + \u0662\u0667", "answer": "\u0666\u0668",
+            "visual": {"kind": "decomposition", "mode": "place-add", "a": 41, "b": 27},
+        }).json()
+        admin_client.put(f"/api/admin/questions/{created['id']}/phrasing/QA", json={"prompt": "\u0635\u064a\u0627\u063a\u0629 \u0642\u0637\u0631\u064a\u0629 \u0664\u0661 + \u0662\u0667"})
+        admin_client.post(f"/api/admin/questions/{created['id']}/publish")
+        # Wording now follows the CHILD's own country (no spoofable query param). B4 \u2208 both paths.
+        qa_child = _new_child(guardian_client, "qa", "QA")
+        om_child = _new_child(guardian_client, "om", "OM")
+        qa = guardian_client.get(f"/api/students/{qa_child['id']}/skills/{b4['id']}/questions").json()
+        om = guardian_client.get(f"/api/students/{om_child['id']}/skills/{b4['id']}/questions").json()
+>       assert next(q for q in qa if q["id"] == created["id"])["prompt"] == "\u0635\u064a\u0627\u063a\u0629 \u0642\u0637\u0631\u064a\u0629 \u0664\u0661 + \u0662\u0667"
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       StopIteration
+
+tests\test_api_e2e.py:84: StopIteration
+============================== warnings summary ===============================
+..\..\pythagorath-v2\backend\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\user\Downloads\main-main\pythagorath-v2\backend\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_api_e2e.py::test_country_phrasing_shown_to_child - StopIter...

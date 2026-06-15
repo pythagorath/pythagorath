@@ -1,0 +1,63 @@
+{
+    "title": "curriculum_questions",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "skill_id": {
+            "type": "integer",
+            "description": "Skill ID reference"
+        },
+        "question_type": {
+            "type": "string",
+            "description": "Type of question"
+        },
+        "question_text_ar": {
+            "type": "string",
+            "description": "Question text in Arabic"
+        },
+        "options_json": {
+            "type": "string",
+            "description": "JSON options"
+        },
+        "correct_answer": {
+            "type": "string",
+            "description": "Correct answer"
+        },
+        "explanation_ar": {
+            "type": "string",
+            "description": "Explanation in Arabic"
+        },
+        "difficulty": {
+            "type": "string",
+            "description": "Difficulty level"
+        },
+        "points": {
+            "type": "integer",
+            "description": "Points value"
+        },
+        "interaction_type": {
+            "type": "string",
+            "description": "Interaction type"
+        },
+        "config_json": {
+            "type": "string",
+            "description": "Configuration JSON"
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether active"
+        },
+        "display_order": {
+            "type": "integer",
+            "description": "Display order"
+        }
+    },
+    "required": [
+        "id",
+        "skill_id",
+        "question_type"
+    ]
+}

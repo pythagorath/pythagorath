@@ -1,0 +1,7110 @@
+{
+ "E1": {
+  "name": "العدّ من نقطة كيفية",
+  "qs": [
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (داخل العقد): ٦٣، ٦٤، ٦٥، ؟",
+    "a": "٦٦",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      63,
+      64,
+      65
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (يعبر العقد): ٨٨، ٨٩، ؟",
+    "a": "٩٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      88,
+      89
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (داخل العقد): ٤١، ٤٢، ٤٣، ؟",
+    "a": "٤٤",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      41,
+      42,
+      43
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (داخل العقد): ٧٢، ٧٣، ؟",
+    "a": "٧٤",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      72,
+      73
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (داخل العقد): ١٥، ١٦، ١٧، ؟",
+    "a": "١٨",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      15,
+      16,
+      17
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (يعبر العقد): ٥٨، ٥٩، ؟",
+    "a": "٦٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      58,
+      59
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (يعبر العقد): ٢٧، ٢٨، ٢٩، ؟",
+    "a": "٣٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      27,
+      28,
+      29
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (يعبر العقد): ٧٨، ٧٩، ؟",
+    "a": "٨٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      78,
+      79
+     ]
+    }
+   }
+  ]
+ },
+ "E2": {
+  "name": "العدّ التنازلي من نقطة كيفية",
+  "qs": [
+   {
+    "f": "sequential",
+    "p": "أكمل التنازل (داخل العقد): ٥٧، ٥٦، ؟",
+    "a": "٥٥",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      57,
+      56
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التنازل (يعبر العقد للأسفل): ٤١، ٤٠، ؟",
+    "a": "٣٩",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      41,
+      40
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التنازل (داخل العقد): ٦٤، ٦٣، ٦٢، ؟",
+    "a": "٦١",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      64,
+      63,
+      62
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التنازل (داخل العقد): ٨٨، ٨٧، ؟",
+    "a": "٨٦",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      88,
+      87
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التنازل (داخل العقد): ٣٥، ٣٤، ؟",
+    "a": "٣٣",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      35,
+      34
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التنازل (يعبر العقد): ٦١، ٦٠، ؟",
+    "a": "٥٩",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      61,
+      60
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التنازل (يعبر العقد): ٢١، ٢٠، ؟",
+    "a": "١٩",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      21,
+      20
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التنازل (يعبر العقد): ٩١، ٩٠، ؟",
+    "a": "٨٩",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      91,
+      90
+     ]
+    }
+   }
+  ]
+ },
+ "C4": {
+  "name": "العدّ بالعشرات",
+  "qs": [
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع: ٤٠، ٥٠، ٦٠، ؟",
+    "a": "٧٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      40,
+      50,
+      60
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع: ٧٠، ٨٠، ٩٠، ؟",
+    "a": "١٠٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      70,
+      80,
+      90
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع: ٢٠، ٣٠، ٤٠، ؟",
+    "a": "٥٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      20,
+      30,
+      40
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع تنازلياً: ٨٠، ٧٠، ٦٠، ؟",
+    "a": "٥٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      80,
+      70,
+      60
+     ]
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ ٦ قضبان عشرة، وشاهد القيمة تتسلّق بالعشرات.",
+    "a": "٦٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 60
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ ٨ قضبان عشرة.",
+    "a": "٨٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 80
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ١٠: ١٠، ٢٠، ٣٠، ؟",
+    "a": "٤٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      10,
+      20,
+      30
+     ]
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٥٠ بالقضبان والمكعّبات.",
+    "a": "٥٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 50
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ١٠٠: ١٠٠، ٢٠٠، ٣٠٠، ؟",
+    "a": "٤٠٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      100,
+      200,
+      300
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ١٠٠: ٣٠٠، ٤٠٠، ٥٠٠، ؟",
+    "a": "٦٠٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      300,
+      400,
+      500
+     ]
+    }
+   }
+  ]
+ },
+ "C3": {
+  "name": "تجميع العشرات (الوحدنة)",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "اربط ١٠ مكعّبات مفردة في قضيب (القيمة تبقى ١٠). كم قضيب؟",
+    "a": "١",
+    "v": {
+     "kind": "regroup-blocks",
+     "rods": 0,
+     "cubes": 10,
+     "ask": "tens"
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "لديك ٢٠ مكعّباً مفرداً، اربطها. كم قضيب عشرة؟",
+    "a": "٢",
+    "v": {
+     "kind": "regroup-blocks",
+     "rods": 0,
+     "cubes": 20,
+     "ask": "tens"
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "١٠ آحاد = ؟ عشرة",
+    "a": "١",
+    "v": {
+     "kind": "decomposition",
+     "mode": "unit-convert",
+     "qty": 10,
+     "from": "آحاد",
+     "to": "عشرة",
+     "answer": 1
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "٣ عشرات = ؟ آحاد",
+    "a": "٣٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "unit-convert",
+     "qty": 3,
+     "from": "عشرات",
+     "to": "آحاد",
+     "answer": 30
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "٤٠ آحاد = ؟ عشرات",
+    "a": "٤",
+    "v": {
+     "kind": "decomposition",
+     "mode": "unit-convert",
+     "qty": 40,
+     "from": "آحاد",
+     "to": "عشرات",
+     "answer": 4
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "٧ عشرات = ؟ آحاد",
+    "a": "٧٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "unit-convert",
+     "qty": 7,
+     "from": "عشرات",
+     "to": "آحاد",
+     "answer": 70
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "٢٠ آحاد = ؟ عشرات",
+    "a": "٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "unit-convert",
+     "qty": 20,
+     "from": "آحاد",
+     "to": "عشرات",
+     "answer": 2
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "٥ عشرات = ؟ آحاد",
+    "a": "٥٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "unit-convert",
+     "qty": 5,
+     "from": "عشرات",
+     "to": "آحاد",
+     "answer": 50
+    }
+   }
+  ]
+ },
+ "C1": {
+  "name": "القيمة المكانية",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٦٣ بالقضبان (عشرات) والمكعّبات (آحاد).",
+    "a": "٦٣",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 63
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٥٨ بالقضبان والمكعّبات.",
+    "a": "٥٨",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 58
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٤٧.",
+    "a": "٥٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 47
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر العقد ٨٠.",
+    "a": "٨٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 80
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "فكِّك إلى عشرات وآحاد: ٤٧ = ٤٠ + ؟",
+    "a": "٧",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand",
+     "whole": 47,
+     "tens": 40
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "فكِّك: ٥٨ = ٥٠ + ؟",
+    "a": "٨",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand",
+     "whole": 58,
+     "tens": 50
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٢٧ بالقضبان (عشرات) والمكعّبات (آحاد).",
+    "a": "٢٧",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 27
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "فكِّك: ٧٤ = ٧٠ + ؟",
+    "a": "٤",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand",
+     "whole": 74,
+     "tens": 70
+    }
+   }
+  ]
+ },
+ "B1": {
+  "name": "التفكيك غير القياسي",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "٤٧: افتح قضيباً إلى ١٠ آحاد (القيمة تبقى ٤٧). كم الآحاد الآن؟",
+    "a": "١٧",
+    "v": {
+     "kind": "regroup-blocks",
+     "rods": 4,
+     "cubes": 7,
+     "ask": "ones"
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "٥٢: افتح قضيباً (القيمة تبقى ٥٢). كم الآحاد الآن؟",
+    "a": "١٢",
+    "v": {
+     "kind": "regroup-blocks",
+     "rods": 5,
+     "cubes": 2,
+     "ask": "ones"
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "تفكيك غير قياسي: ٤٧ = ٣٠ + ؟",
+    "a": "١٧",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand",
+     "whole": 47,
+     "tens": 30
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "تفكيك غير قياسي: ٦٣ = ٥٠ + ؟",
+    "a": "١٣",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand",
+     "whole": 63,
+     "tens": 50
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "٦٨: افتح قضيباً (القيمة تبقى ٦٨). كم الآحاد الآن؟",
+    "a": "١٨",
+    "v": {
+     "kind": "regroup-blocks",
+     "rods": 6,
+     "cubes": 8,
+     "ask": "ones"
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "٣٤: افتح قضيباً (القيمة تبقى ٣٤). كم الآحاد الآن؟",
+    "a": "١٤",
+    "v": {
+     "kind": "regroup-blocks",
+     "rods": 3,
+     "cubes": 4,
+     "ask": "ones"
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "تفكيك غير قياسي: ٥٨ = ٤٠ + ؟",
+    "a": "١٨",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand",
+     "whole": 58,
+     "tens": 40
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "تفكيك غير قياسي: ٧٢ = ٦٠ + ؟",
+    "a": "١٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand",
+     "whole": 72,
+     "tens": 60
+    }
+   }
+  ]
+ },
+ "B5": {
+  "name": "الطرح بلا استلاف",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "اطرح ٢٤ من ٥٦ بالقضبان (الآحاد تكفي — لا تحتاج فتحاً).",
+    "a": "٣٢",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 56,
+     "subtract": 24
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح ٣٥ من ٦٨ بالقضبان.",
+    "a": "٣٣",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 68,
+     "subtract": 35
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٥٦، اقفز ٢٤ للخلف.",
+    "a": "٣٢",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 80,
+     "start": 56,
+     "jump": 24,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٧٩، اقفز ٤٣ للخلف.",
+    "a": "٣٦",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 80,
+     "start": 79,
+     "jump": 43,
+     "back": true
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اطرح بالخانات: ٥٦ − ٢٤",
+    "a": "٣٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-sub",
+     "minuend": 56,
+     "subtrahend": 24
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اطرح بالخانات: ٨٨ − ٣٥",
+    "a": "٥٣",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-sub",
+     "minuend": 88,
+     "subtrahend": 35
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح بالقضبان: ٤٧ − ٠ (طرح الصفر).",
+    "a": "٤٧",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 47,
+     "subtract": 0
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح بالقضبان: ٤٧ − ٤٧ (طرح الكل).",
+    "a": "٠",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 47,
+     "subtract": 47
+    }
+   }
+  ]
+ },
+ "D1": {
+  "name": "الجمع بالعدّ التصاعدي",
+  "qs": [
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٣، عُدّ صعوداً ٤ (داخل العقد). أين تقف؟",
+    "a": "١٧",
+    "v": {
+     "kind": "number-line",
+     "min": 11,
+     "max": 19,
+     "start": 13,
+     "jump": 4
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٨، عُدّ صعوداً ٥ (تعبر العقد ١٠). أين تقف؟",
+    "a": "١٣",
+    "v": {
+     "kind": "number-line",
+     "min": 6,
+     "max": 15,
+     "start": 8,
+     "jump": 5
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٢٢، اقفز ٥ للأمام.",
+    "a": "٢٧",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 22,
+     "jump": 5
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٥١، اقفز ٤ للأمام.",
+    "a": "٥٥",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 51,
+     "jump": 4
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٦٣، اقفز ٥ للأمام.",
+    "a": "٦٨",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 63,
+     "jump": 5
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٣٧، اقفز ٦ للأمام (تعبر العقد).",
+    "a": "٤٣",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 37,
+     "jump": 6
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٢٨، اقفز ٧ للأمام (تعبر العقد).",
+    "a": "٣٥",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 28,
+     "jump": 7
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٦، اقفز ٨ للأمام (تعبر العقد).",
+    "a": "٢٤",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 16,
+     "jump": 8
+    }
+   }
+  ]
+ },
+ "D2": {
+  "name": "الطرح بالعدّ التنازلي",
+  "qs": [
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٧، اقفز ٣ للخلف (داخل العقد). أين تقف؟",
+    "a": "١٤",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 17,
+     "jump": 3,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٣، اقفز ٤ للخلف (تعبر العقد ١٠). أين تقف؟",
+    "a": "٩",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 13,
+     "jump": 4,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٢٧، اقفز ٥ للخلف.",
+    "a": "٢٢",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 27,
+     "jump": 5,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٥٥، اقفز ٤ للخلف.",
+    "a": "٥١",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 55,
+     "jump": 4,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٦٨، اقفز ٥ للخلف.",
+    "a": "٦٣",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 68,
+     "jump": 5,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٤٣، اقفز ٦ للخلف.",
+    "a": "٣٧",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 43,
+     "jump": 6,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٣٥، اقفز ٧ للخلف.",
+    "a": "٢٨",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 35,
+     "jump": 7,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٢٤، اقفز ٨ للخلف.",
+    "a": "١٦",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 24,
+     "jump": 8,
+     "back": true
+    }
+   }
+  ]
+ },
+ "A1": {
+  "name": "الجمع بالحمل البسيط ضمن ١٠٠",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "ابنِ ٤٧، أضِف ٥ آحاد، واربط العشرة المكتملة في قضيب. المجموع؟",
+    "a": "٥٢",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 47,
+     "add": 5,
+     "carry": true
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ ٣٨، أضِف ٢٧ (اجمع الآحاد ١٥ ← اربط عشرة) ثم القضبان. المجموع؟",
+    "a": "٦٥",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 38,
+     "add": 27,
+     "carry": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٤٧، اقفز ٥ للأمام (تعبر ٥٠). أين تقف؟",
+    "a": "٥٢",
+    "v": {
+     "kind": "number-line",
+     "min": 45,
+     "max": 55,
+     "start": 47,
+     "jump": 5
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٣٨، اقفز ٦ للأمام (تعبر ٤٠). أين تقف؟",
+    "a": "٤٤",
+    "v": {
+     "kind": "number-line",
+     "min": 36,
+     "max": 46,
+     "start": 38,
+     "jump": 6
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ٤٧ + ٥",
+    "a": "٥٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 47,
+     "b": 5
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ٣٨ + ٢٧",
+    "a": "٦٥",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 38,
+     "b": 27
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "بالنواتج الجزئية: (٣٠+٤٠) ثم (٧+٨)، ثم اجمعهما: ٣٧ + ٤٨ = ؟",
+    "a": "٨٥",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 37,
+     "b": 48
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ٤٦ + ٢٨",
+    "a": "٧٤",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 46,
+     "b": 28
+    }
+   }
+  ]
+ },
+ "C5": {
+  "name": "القيمة المنزلية حتى ١٠٠٠",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٣٤٧ بالألواح (مئات) والقضبان (عشرات) والمكعّبات (آحاد).",
+    "a": "٣٤٧",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 347
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٥٠٦ بالألواح والقضبان والمكعّبات (لا عشرات).",
+    "a": "٥٠٦",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 506
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠٠، انقر أقرب مئة إلى ٣٤٧.",
+    "a": "٣٠٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 1000,
+     "step": 100,
+     "target": 347
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠٠، انقر أقرب مئة إلى ٦٨٠.",
+    "a": "٧٠٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 1000,
+     "step": 100,
+     "target": 680
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "فكّك ٣٤٧ = ؟ + ٤٠ + ٧ — أدخِل قيمة المئات.",
+    "a": "٣٠٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand3",
+     "parts": [
+      300,
+      40,
+      7
+     ],
+     "blank": 0
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "فكّك ٢٥٨ = ٢٠٠ + ٥٠ + ؟ — أدخِل قيمة الآحاد.",
+    "a": "٨",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand3",
+     "parts": [
+      200,
+      50,
+      8
+     ],
+     "blank": 2
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٧٢٨ بالألواح (مئات) والقضبان والمكعّبات.",
+    "a": "٧٢٨",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 728
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٤٠٥ بالألواح (مئات) والقضبان والمكعّبات.",
+    "a": "٤٠٥",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 405
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠٠، انقر أقرب مئة إلى ٤٣٧.",
+    "a": "٤٠٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 1000,
+     "step": 100,
+     "target": 437
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "فكّك ٥٣٢ = ٥٠٠ + ؟ + ٢ — أدخِل قيمة العشرات.",
+    "a": "٣٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "expand3",
+     "parts": [
+      500,
+      30,
+      2
+     ],
+     "blank": 1
+    }
+   }
+  ]
+ },
+ "A3": {
+  "name": "الجمع حتى ١٠٠٠ بإعادة التجميع",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "ابنِ ٢٦٥، أضِف ٨٥ (اربط العشرة، ثم اربط عشر قضبان في لوح مئة). المجموع؟",
+    "a": "٣٥٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 265,
+     "add": 85,
+     "carry": true
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ ١٤٧، أضِف ٢٨٦ (حمل الآحاد ثم العشرات إلى المئات). المجموع؟",
+    "a": "٤٣٣",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 147,
+     "add": 286,
+     "carry": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٢٩٧، اقفز ٨ للأمام (تعبر ٣٠٠). أين تقف؟",
+    "a": "٣٠٥",
+    "v": {
+     "kind": "number-line",
+     "min": 294,
+     "max": 308,
+     "start": 297,
+     "jump": 8
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٤٩٦، اقفز ٧ للأمام (تعبر ٥٠٠). أين تقف؟",
+    "a": "٥٠٣",
+    "v": {
+     "kind": "number-line",
+     "min": 493,
+     "max": 507,
+     "start": 496,
+     "jump": 7
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ٣٤٧ + ٢٨٥",
+    "a": "٦٣٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 347,
+     "b": 285
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ٤٥٦ + ١٧٨",
+    "a": "٦٣٤",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 456,
+     "b": 178
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ١٥٨، أضِف ٧٦ (اربط العشرة ثم المئة عند اكتمالها).",
+    "a": "٢٣٤",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 158,
+     "add": 76,
+     "carry": true
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات: ٢٦٥ + ١٨٧",
+    "a": "٤٥٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 265,
+     "b": 187
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات: ٣٤٨ + ٢٧٦",
+    "a": "٦٢٤",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 348,
+     "b": 276
+    }
+   }
+  ]
+ },
+ "A4": {
+  "name": "الطرح حتى ١٠٠٠ بإعادة التجميع",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "اطرح ٨٥ من ٣٤٢ بالألواح والقضبان (افتح قضيباً للاستلاف). الباقي؟",
+    "a": "٢٥٧",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 342,
+     "subtract": 85
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح ١٥٧ من ٤٢٣ بالألواح (افتح لوحاً ثم قضيباً — استلاف متسلسل). الباقي؟",
+    "a": "٢٦٦",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 423,
+     "subtract": 157
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٣٠٣، اقفز ٨ للخلف (تعبر ٣٠٠). أين تقف؟",
+    "a": "٢٩٥",
+    "v": {
+     "kind": "number-line",
+     "min": 292,
+     "max": 306,
+     "start": 303,
+     "jump": 8,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٥٠٤، اقفز ٩ للخلف (تعبر ٥٠٠). أين تقف؟",
+    "a": "٤٩٥",
+    "v": {
+     "kind": "number-line",
+     "min": 492,
+     "max": 506,
+     "start": 504,
+     "jump": 9,
+     "back": true
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اطرح بالخانات: ٤٣٢ − ١٥٧",
+    "a": "٢٧٥",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-sub",
+     "minuend": 432,
+     "subtrahend": 157
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اطرح بالخانات: ٦٠٥ − ٢٤٨",
+    "a": "٣٥٧",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-sub",
+     "minuend": 605,
+     "subtrahend": 248
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح ٧٦ من ٤١٤ بالقضبان.",
+    "a": "٣٣٨",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 414,
+     "subtract": 76
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اطرح بالخانات: ٥٢٣ − ١٦٨",
+    "a": "٣٥٥",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-sub",
+     "minuend": 523,
+     "subtrahend": 168
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اطرح بالخانات: ٧٠٠ − ٢٥٦",
+    "a": "٤٤٤",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-sub",
+     "minuend": 700,
+     "subtrahend": 256
+    }
+   }
+  ]
+ },
+ "N4": {
+  "name": "العدّ بالقفز (٢ و٥)",
+  "qs": [
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ٢: ٢، ٤، ٦، ؟",
+    "a": "٨",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      2,
+      4,
+      6
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ٥: ٥، ١٠، ١٥، ؟",
+    "a": "٢٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      5,
+      10,
+      15
+     ]
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٦، اقفز ٢ للأمام.",
+    "a": "٨",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 6,
+     "jump": 2
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٠، اقفز ٥ للأمام.",
+    "a": "١٥",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 10,
+     "jump": 5
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ٢: ٤، ٦، ٨، ؟",
+    "a": "١٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      4,
+      6,
+      8
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ٥: ١٠، ١٥، ٢٠، ؟",
+    "a": "٢٥",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      10,
+      15,
+      20
+     ]
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٢، اقفز ٢ للأمام.",
+    "a": "١٤",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 12,
+     "jump": 2
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٥، اقفز ٥ للأمام.",
+    "a": "١٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 5,
+     "jump": 5
+    }
+   }
+  ]
+ },
+ "N9": {
+  "name": "مقارنة الأعداد",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "أيّهما أكبر: ٣٦ أم ٦٣؟ (قارن العشرات) اكتب الأكبر.",
+    "a": "٦٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أكبر: ٥٤ أم ٥٨؟ (العشرات متساوية — قارن الآحاد) اكتب الأكبر.",
+    "a": "٥٨",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أكبر: ٢٨ أم ٨٢؟ اكتب الأكبر.",
+    "a": "٨٢",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أصغر: ٤٦ أم ٦٤؟ اكتب الأصغر.",
+    "a": "٤٦",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أكبر: ٧١ أم ٧٥؟ (العشرات متساوية)",
+    "a": "٧٥",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أصغر: ٣٩ أم ٣٣؟",
+    "a": "٣٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أكبر: ٥٠ أم ٤٩؟",
+    "a": "٥٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أصغر: ٦٧ أم ٦٠؟",
+    "a": "٦٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أكبر: ٣٤٧ أم ٤١٢؟ (قارن المئات)",
+    "a": "٤١٢",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أيّهما أصغر: ٥٣٠ أم ٥٠٣؟ (المئات متساوية)",
+    "a": "٥٠٣",
+    "v": null
+   }
+  ]
+ },
+ "N10": {
+  "name": "ترتيب الأعداد",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "رتّب تصاعدياً: ٤٧، ٢٧، ٧٤ — ما العدد الأصغر؟",
+    "a": "٢٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب تصاعدياً: ٦٣، ٣٦، ٦٨ — ما العدد الأكبر؟",
+    "a": "٦٨",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب: ٣٥، ٥٣، ١٥ — ما الأصغر؟",
+    "a": "١٥",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب: ٤٢، ٢٤، ٤٨ — ما الأكبر؟",
+    "a": "٤٨",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب: ٦٠، ٦، ٦٦ — ما الأصغر؟",
+    "a": "٦",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب: ٧٧، ٧٠، ٧٤ — ما الأكبر؟",
+    "a": "٧٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب: ٢٠، ٥٠، ٣٠ — ما الأكبر؟",
+    "a": "٥٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب: ٩١، ١٩، ٩٩ — ما الأصغر؟",
+    "a": "١٩",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب: ٣٠٥، ٣٥٠، ١٣٥ — ما الأصغر؟",
+    "a": "١٣٥",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "رتّب: ٤١٧، ٤٧١، ١٧٤ — ما الأكبر؟",
+    "a": "٤٧١",
+    "v": null
+   }
+  ]
+ },
+ "N11": {
+  "name": "تقدير الكميات (أقرب عشرة)",
+  "qs": [
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد (عشرة) إلى ٤٣.",
+    "a": "٤٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 43
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٤٧.",
+    "a": "٥٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 47
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٦٢.",
+    "a": "٦٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 62
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٦٨.",
+    "a": "٧٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 68
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٣٤.",
+    "a": "٣٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 34
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٧٧.",
+    "a": "٨٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 77
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٢٣.",
+    "a": "٢٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 23
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على خطّ ٠..١٠٠، انقر أقرب عقد إلى ٥١.",
+    "a": "٥٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "step": 10,
+     "target": 51
+    }
+   }
+  ]
+ },
+ "F1": {
+  "name": "خصائص الجمع",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٣ + ٨ = ١١، فكم يساوي ٨ + ٣؟ (التبديل)",
+    "a": "١١",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "استعمل التجميع: (٢ + ٨) + ٥ = ؟",
+    "a": "١٥",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٤ + ٩ = ١٣، فكم ٩ + ٤؟ (التبديل)",
+    "a": "١٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٧ + ٦ = ١٣، فكم ٦ + ٧؟",
+    "a": "١٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "استعمل التجميع: (٣ + ٧) + ٤ = ؟",
+    "a": "١٤",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "استعمل التجميع: ٥ + (٥ + ٨) = ؟",
+    "a": "١٨",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٨ + ٥ = ١٣، فكم ٥ + ٨؟",
+    "a": "١٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "استعمل التجميع: (٦ + ٤) + ٧ = ؟",
+    "a": "١٧",
+    "v": null
+   }
+  ]
+ },
+ "F4": {
+  "name": "المضاعفات (الدوبل)",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: ضِعف ٤ (٤ + ٤).",
+    "a": "٨",
+    "v": {
+     "kind": "ten-frame",
+     "start": 4,
+     "add": 4
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: ضِعف ٦ (٦ + ٦).",
+    "a": "١٢",
+    "v": {
+     "kind": "ten-frame",
+     "start": 6,
+     "add": 6
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٧، اقفز ٧ (ضِعف ٧).",
+    "a": "١٤",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 7,
+     "jump": 7
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٨، اقفز ٨ (ضِعف ٨).",
+    "a": "١٦",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 8,
+     "jump": 8
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: أضِف ٣ إلى ٣.",
+    "a": "٦",
+    "v": {
+     "kind": "ten-frame",
+     "start": 3,
+     "add": 3
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: أضِف ٥ إلى ٥.",
+    "a": "١٠",
+    "v": {
+     "kind": "ten-frame",
+     "start": 5,
+     "add": 5
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٦، اقفز ٦ للأمام.",
+    "a": "١٢",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 6,
+     "jump": 6
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٩، اقفز ٩ للأمام.",
+    "a": "١٨",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 9,
+     "jump": 9
+    }
+   }
+  ]
+ },
+ "F5": {
+  "name": "قريب المضاعفات",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: ٧ + ٨ (ضِعف ٧ زائد ١).",
+    "a": "١٥",
+    "v": {
+     "kind": "ten-frame",
+     "start": 7,
+     "add": 8
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: ٥ + ٦ (ضِعف ٥ زائد ١).",
+    "a": "١١",
+    "v": {
+     "kind": "ten-frame",
+     "start": 5,
+     "add": 6
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب المضاعفات: ٧ + ٨ = (٧ + ٧) + ١ = ؟",
+    "a": "١٥",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 7,
+     "b": 8
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب المضاعفات: ٥ + ٦ = (٥ + ٥) + ١ = ؟",
+    "a": "١١",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 5,
+     "b": 6
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: أضِف ٥ إلى ٤.",
+    "a": "٩",
+    "v": {
+     "kind": "ten-frame",
+     "start": 4,
+     "add": 5
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: أضِف ٩ إلى ٨.",
+    "a": "١٧",
+    "v": {
+     "kind": "ten-frame",
+     "start": 8,
+     "add": 9
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات: ٦ + ٧",
+    "a": "١٣",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 6,
+     "b": 7
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات: ٣ + ٤",
+    "a": "٧",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 3,
+     "b": 4
+    }
+   }
+  ]
+ },
+ "F7": {
+  "name": "جمع ثلاثة أعداد",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "اجمع (ابحث عن العشرة): ٤ + ٦ + ٣ = ؟",
+    "a": "١٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع (ابحث عن الضِعف): ٥ + ٥ + ٧ = ؟",
+    "a": "١٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع (ابحث عن العشرة): ٧ + ٣ + ٥ = ؟",
+    "a": "١٥",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع (ابحث عن الضِعف): ٤ + ٦ + ٤ = ؟",
+    "a": "١٤",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع: ٨ + ٢ + ٦ = ؟",
+    "a": "١٦",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع: ٥ + ٤ + ٥ = ؟",
+    "a": "١٤",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع: ٣ + ٣ + ٩ = ؟",
+    "a": "١٥",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع: ٢ + ٧ + ٨ = ؟",
+    "a": "١٧",
+    "v": null
+   }
+  ]
+ },
+ "F9": {
+  "name": "الطرح باستعمال المضاعفات",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "اطرح بالقضبان مستعيناً بالضِعف: ١٢ − ٦.",
+    "a": "٦",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 12,
+     "subtract": 6
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح بالقضبان: ١٦ − ٨ (ضِعف ٨).",
+    "a": "٨",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 16,
+     "subtract": 8
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٤، اقفز ٧ للخلف (ضِعف ٧).",
+    "a": "٧",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 14,
+     "jump": 7,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٨، اقفز ٩ للخلف (ضِعف ٩).",
+    "a": "٩",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 18,
+     "jump": 9,
+     "back": true
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح ٥ من ١٠ بالقضبان.",
+    "a": "٥",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 10,
+     "subtract": 5
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح ٩ من ١٨ بالقضبان.",
+    "a": "٩",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 18,
+     "subtract": 9
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ٨، اقفز ٤ للخلف.",
+    "a": "٤",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 8,
+     "jump": 4,
+     "back": true
+    }
+   },
+   {
+    "f": "magnitude",
+    "p": "على الخطّ: ابدأ من ١٢، اقفز ٦ للخلف.",
+    "a": "٦",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 100,
+     "start": 12,
+     "jump": 6,
+     "back": true
+    }
+   }
+  ]
+ },
+ "F11": {
+  "name": "العلاقة بين الجمع والطرح",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٥ + ٧ = ١٢، فكم يساوي ١٢ − ٥؟ (فكّر بالجمع)",
+    "a": "٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٨ + ٦ = ١٤، فكم يساوي ١٤ − ٨؟",
+    "a": "٦",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "تحقّق من الطرح بالجمع: لإيجاد ٦٣ − ٢٨ احسب ٣٥ + ٢٨ =",
+    "a": "٦٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٦ + ٨ = ١٤، فكم ١٤ − ٦؟",
+    "a": "٨",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٩ + ٤ = ١٣، فكم ١٣ − ٩؟",
+    "a": "٤",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "إذا كان ١٢ − ٧ = ٥، فأكمل ٥ + ٧ = ؟",
+    "a": "١٢",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "تحقّق من الطرح بالجمع: لإيجاد ٥٢ − ١٧ احسب ٣٥ + ١٧ =",
+    "a": "٥٢",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "إذا كان ٧ + ٥ = ١٢، فكم ١٢ − ٧؟",
+    "a": "٥",
+    "v": null
+   }
+  ]
+ },
+ "F13": {
+  "name": "عائلات الحقائق",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "من العائلة (٣، ٥، ٨): أكمل ٨ − ٥ = ؟",
+    "a": "٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "من العائلة (٦، ٧، ١٣): أكمل ١٣ − ٦ = ؟",
+    "a": "٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "من العائلة (٢، ٦، ٨): أكمل ٨ − ٦ = ؟",
+    "a": "٢",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "من العائلة (٣، ٤، ٧): أكمل ٣ + ٤ = ؟",
+    "a": "٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "من العائلة (٥، ٨، ١٣): أكمل ١٣ − ٨ = ؟",
+    "a": "٥",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "من العائلة (٦، ٩، ١٥): أكمل ٩ + ٦ = ؟",
+    "a": "١٥",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "من العائلة (٤، ٧، ١١): أكمل ١١ − ٤ = ؟",
+    "a": "٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "من العائلة (٢، ٥، ٧): أكمل ٢ + ٥ = ؟",
+    "a": "٧",
+    "v": null
+   }
+  ]
+ },
+ "T1": {
+  "name": "جمع العشرات",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ٤٠، أضِف ٣٠ بقضبان العشرات.",
+    "a": "٧٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 40,
+     "add": 30
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ٧٠، أضِف ٣٠ (تكتمل المئة).",
+    "a": "١٠٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 70,
+     "add": 30
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع العشرات بالخانات: ٤٠ + ٣٠.",
+    "a": "٧٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 40,
+     "b": 30
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع العشرات: ٦٠ + ٣٠.",
+    "a": "٩٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 60,
+     "b": 30
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ٢٠، أضِف ٥٠ بالقضبان.",
+    "a": "٧٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 20,
+     "add": 50
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ٥٠، أضِف ٤٠ بالقضبان.",
+    "a": "٩٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 50,
+     "add": 40
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات: ٣٠ + ٣٠",
+    "a": "٦٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 30,
+     "b": 30
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات: ٢٠ + ٢٠",
+    "a": "٤٠",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 20,
+     "b": 20
+    }
+   }
+  ]
+ },
+ "T5": {
+  "name": "جمع أكثر من عددين من رقمين",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "اجمع (بلا حمل): ٢٣ + ١٥ + ٣١ = ؟",
+    "a": "٦٩",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع (مع حمل): ١٧ + ٢٥ + ١٤ = ؟",
+    "a": "٥٦",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع (بلا حمل): ١٢ + ٢٣ + ١١ = ؟",
+    "a": "٤٦",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع (مع حمل): ١٥ + ١٧ + ١٦ = ؟",
+    "a": "٤٨",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع أربعة أعداد: ١٠ + ٢٠ + ١٥ + ١٢ = ؟",
+    "a": "٥٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع (مع حمل): ٢٤ + ١٨ + ٣١ = ؟",
+    "a": "٧٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع (بلا حمل): ٣١ + ١٤ + ٢٢ = ؟",
+    "a": "٦٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع أربعة أعداد: ١١ + ١١ + ١١ + ١١ = ؟",
+    "a": "٤٤",
+    "v": null
+   }
+  ]
+ },
+ "T6": {
+  "name": "تقدير ناتج الجمع",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "قرّب كلّ عدد لأقرب عشرة ثم اجمع: ٤٧ + ٣٢ ≈ ؟",
+    "a": "٨٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اجمع: ٦٨ + ٢١ ≈ ؟",
+    "a": "٩٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اجمع: ٣٢ + ٢٧ ≈ ؟",
+    "a": "٦٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اجمع: ٤٨ + ٤١ ≈ ؟",
+    "a": "٩٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اجمع: ٦٣ + ١٩ ≈ ؟",
+    "a": "٨٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اجمع: ٢٢ + ٢٤ ≈ ؟",
+    "a": "٤٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اجمع: ٥١ + ٢٤ ≈ ؟",
+    "a": "٧٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اجمع: ١٨ + ١١ ≈ ؟",
+    "a": "٣٠",
+    "v": null
+   }
+  ]
+ },
+ "T10": {
+  "name": "تقدير ناتج الطرح",
+  "qs": [
+   {
+    "f": "decompositional",
+    "p": "قرّب كلّ عدد لأقرب عشرة ثم اطرح: ٦٨ − ٣١ ≈ ؟",
+    "a": "٤٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اطرح: ٥٢ − ١٩ ≈ ؟",
+    "a": "٣٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اطرح: ٨٨ − ٢١ ≈ ؟",
+    "a": "٧٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اطرح: ٧٣ − ١٢ ≈ ؟",
+    "a": "٦٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اطرح: ٥٨ − ٢١ ≈ ؟",
+    "a": "٤٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اطرح: ٤٩ − ١٨ ≈ ؟",
+    "a": "٣٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اطرح: ٩١ − ٥٢ ≈ ؟",
+    "a": "٤٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "قرّب ثم اطرح: ٦٤ − ٤٣ ≈ ؟",
+    "a": "٢٠",
+    "v": null
+   }
+  ]
+ },
+ "DA4": {
+  "name": "التمثيل بالنقاط",
+  "qs": [
+   {
+    "f": "نقاط",
+    "p": "في التمثيل بالنقاط: كم عددُ النقاط عند القيمة «٣»؟",
+    "a": "٤",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "lineplot",
+     "data": [
+      [
+       "١",
+       2
+      ],
+      [
+       "٢",
+       1
+      ],
+      [
+       "٣",
+       4
+      ],
+      [
+       "٤",
+       2
+      ]
+     ],
+     "ask": "count",
+     "cat": "٣"
+    }
+   },
+   {
+    "f": "نقاط",
+    "p": "في التمثيل بالنقاط: أيُّ قيمةٍ لها أكثرُ النقاط؟",
+    "a": "٣",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "lineplot",
+     "data": [
+      [
+       "١",
+       2
+      ],
+      [
+       "٢",
+       1
+      ],
+      [
+       "٣",
+       4
+      ],
+      [
+       "٤",
+       2
+      ]
+     ],
+     "ask": "most"
+    }
+   },
+   {
+    "f": "نقاط",
+    "p": "في التمثيل بالنقاط: كم عددُ النقاط عند «٤»؟",
+    "a": "٤",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "lineplot",
+     "data": [
+      [
+       "٢",
+       3
+      ],
+      [
+       "٣",
+       1
+      ],
+      [
+       "٤",
+       4
+      ],
+      [
+       "٥",
+       2
+      ]
+     ],
+     "ask": "count",
+     "cat": "٤"
+    }
+   },
+   {
+    "f": "نقاط",
+    "p": "في التمثيل بالنقاط: أيُّ قيمةٍ لها أكثرُ النقاط؟",
+    "a": "٤",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "lineplot",
+     "data": [
+      [
+       "٢",
+       3
+      ],
+      [
+       "٣",
+       1
+      ],
+      [
+       "٤",
+       4
+      ],
+      [
+       "٥",
+       2
+      ]
+     ],
+     "ask": "most"
+    }
+   },
+   {
+    "f": "نقاط",
+    "p": "في التمثيل بالنقاط: كم عددُ النقاط عند «٢»؟",
+    "a": "٥",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "lineplot",
+     "data": [
+      [
+       "١",
+       1
+      ],
+      [
+       "٢",
+       5
+      ],
+      [
+       "٣",
+       2
+      ],
+      [
+       "٤",
+       3
+      ]
+     ],
+     "ask": "count",
+     "cat": "٢"
+    }
+   },
+   {
+    "f": "نقاط",
+    "p": "في التمثيل بالنقاط: أيُّ قيمةٍ لها أكثرُ النقاط؟",
+    "a": "٢",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "lineplot",
+     "data": [
+      [
+       "١",
+       1
+      ],
+      [
+       "٢",
+       5
+      ],
+      [
+       "٣",
+       2
+      ],
+      [
+       "٤",
+       3
+      ]
+     ],
+     "ask": "most"
+    }
+   },
+   {
+    "f": "نقاط",
+    "p": "في التمثيل بالنقاط: كم عددُ النقاط عند «١»؟",
+    "a": "٢",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "lineplot",
+     "data": [
+      [
+       "١",
+       2
+      ],
+      [
+       "٢",
+       1
+      ],
+      [
+       "٣",
+       4
+      ],
+      [
+       "٤",
+       2
+      ]
+     ],
+     "ask": "count",
+     "cat": "١"
+    }
+   },
+   {
+    "f": "نقاط",
+    "p": "في التمثيل بالنقاط: أيُّ قيمةٍ لها أكثرُ النقاط؟",
+    "a": "٧",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "lineplot",
+     "data": [
+      [
+       "٥",
+       4
+      ],
+      [
+       "٦",
+       2
+      ],
+      [
+       "٧",
+       5
+      ],
+      [
+       "٨",
+       1
+      ]
+     ],
+     "ask": "most"
+    }
+   }
+  ]
+ },
+ "Q2": {
+  "name": "قراءة الساعة",
+  "qs": [
+   {
+    "f": "قراءة",
+    "p": "كم الساعة؟ اقرأ القرص واختر.",
+    "a": "الثالثة تماماً",
+    "v": {
+     "kind": "clock",
+     "hour": 3,
+     "minute": 0,
+     "options": [
+      "الثانية تماماً",
+      "الثالثة تماماً",
+      "الرابعة تماماً"
+     ]
+    }
+   },
+   {
+    "f": "قراءة",
+    "p": "كم الساعة؟",
+    "a": "السادسة والنصف",
+    "v": {
+     "kind": "clock",
+     "hour": 6,
+     "minute": 30,
+     "options": [
+      "السادسة تماماً",
+      "السادسة والنصف",
+      "السابعة والنصف"
+     ]
+    }
+   },
+   {
+    "f": "قراءة",
+    "p": "كم الساعة؟ اقرأ القرص واختر.",
+    "a": "الرابعة تماماً",
+    "v": {
+     "kind": "clock",
+     "hour": 4,
+     "minute": 0,
+     "options": [
+      "الرابعة تماماً",
+      "الخامسة تماماً",
+      "الرابعة والنصف"
+     ]
+    }
+   },
+   {
+    "f": "قراءة",
+    "p": "كم الساعة؟ اقرأ القرص واختر.",
+    "a": "التاسعة تماماً",
+    "v": {
+     "kind": "clock",
+     "hour": 9,
+     "minute": 0,
+     "options": [
+      "التاسعة تماماً",
+      "العاشرة تماماً",
+      "التاسعة والنصف"
+     ]
+    }
+   },
+   {
+    "f": "قراءة",
+    "p": "كم الساعة؟ اقرأ القرص واختر.",
+    "a": "الثانية والنصف",
+    "v": {
+     "kind": "clock",
+     "hour": 2,
+     "minute": 30,
+     "options": [
+      "الثانية والنصف",
+      "الثالثة والنصف",
+      "الثانية تماماً"
+     ]
+    }
+   },
+   {
+    "f": "قراءة",
+    "p": "كم الساعة؟ اقرأ القرص واختر.",
+    "a": "الحادية عشرة تماماً",
+    "v": {
+     "kind": "clock",
+     "hour": 11,
+     "minute": 0,
+     "options": [
+      "الحادية عشرة تماماً",
+      "الثانية عشرة تماماً",
+      "الحادية عشرة والنصف"
+     ]
+    }
+   },
+   {
+    "f": "قراءة",
+    "p": "كم الساعة؟ اقرأ القرص واختر.",
+    "a": "الثالثة والربع",
+    "v": {
+     "kind": "clock",
+     "hour": 3,
+     "minute": 15,
+     "options": [
+      "الثالثة والربع",
+      "الثالثة تماماً",
+      "الرابعة والربع"
+     ]
+    }
+   },
+   {
+    "f": "قراءة",
+    "p": "كم الساعة؟ اقرأ القرص واختر.",
+    "a": "السابعة و٥ دقيقة",
+    "v": {
+     "kind": "clock",
+     "hour": 7,
+     "minute": 5,
+     "options": [
+      "السابعة و٥ دقيقة",
+      "السابعة تماماً",
+      "الثامنة و٥ دقيقة"
+     ]
+    }
+   }
+  ]
+ },
+ "Q3": {
+  "name": "النقود",
+  "qs": [
+   {
+    "f": "تعرّف",
+    "p": "ما قيمة هذه العملة؟ (بالبيسة)",
+    "a": "٥٠",
+    "v": {
+     "kind": "money",
+     "mode": "identify",
+     "coin": 50,
+     "options": [
+      25,
+      50,
+      100
+     ]
+    }
+   },
+   {
+    "f": "تعرّف",
+    "p": "ما قيمة هذه العملة؟",
+    "a": "٢٥",
+    "v": {
+     "kind": "money",
+     "mode": "identify",
+     "coin": 25,
+     "options": [
+      10,
+      25,
+      50
+     ]
+    }
+   },
+   {
+    "f": "إجمالي",
+    "p": "اجمع قيمة هذه العملات (بالبيسة).",
+    "a": "٢٠",
+    "v": {
+     "kind": "money",
+     "mode": "total",
+     "coins": [
+      5,
+      5,
+      10
+     ]
+    }
+   },
+   {
+    "f": "إجمالي",
+    "p": "اجمع قيمة هذه العملات.",
+    "a": "٣٥",
+    "v": {
+     "kind": "money",
+     "mode": "total",
+     "coins": [
+      25,
+      10
+     ]
+    }
+   },
+   {
+    "f": "تعرّف",
+    "p": "ما قيمة هذه العملة؟ (بالبيسة)",
+    "a": "١٠٠",
+    "v": {
+     "kind": "money",
+     "mode": "identify",
+     "coin": 100,
+     "options": [
+      50,
+      100,
+      25
+     ]
+    }
+   },
+   {
+    "f": "إجمالي",
+    "p": "اجمع قيمة هذه العملات (بالبيسة).",
+    "a": "٦٠",
+    "v": {
+     "kind": "money",
+     "mode": "total",
+     "coins": [
+      25,
+      25,
+      10
+     ]
+    }
+   },
+   {
+    "f": "إجمالي",
+    "p": "اجمع قيمة هذه الأوراق النقدية.",
+    "a": "١٥",
+    "v": {
+     "kind": "money",
+     "mode": "total",
+     "coins": [
+      5,
+      10
+     ],
+     "paper": true
+    }
+   },
+   {
+    "f": "تعرّف",
+    "p": "ما قيمة هذه الورقة النقدية؟",
+    "a": "٢٠",
+    "v": {
+     "kind": "money",
+     "mode": "identify",
+     "coin": 20,
+     "options": [
+      10,
+      20,
+      50
+     ],
+     "paper": true
+    }
+   }
+  ]
+ },
+ "Q4": {
+  "name": "المساحة بمربّعات الوحدة",
+  "qs": [
+   {
+    "f": "مساحة",
+    "p": "كم مربّع وحدةٍ يغطّي هذا المستطيل؟ عُدّ المربّعات.",
+    "a": "١٢",
+    "v": {
+     "kind": "array",
+     "rows": 3,
+     "cols": 4,
+     "square": true
+    }
+   },
+   {
+    "f": "مساحة",
+    "p": "كم مربّع وحدةٍ مساحةُ هذا المستطيل؟",
+    "a": "٦",
+    "v": {
+     "kind": "array",
+     "rows": 2,
+     "cols": 3,
+     "square": true
+    }
+   },
+   {
+    "f": "مساحة",
+    "p": "كم مربّع وحدةٍ مساحةُ مستطيلٍ ٢×٤؟ عُدّ المربّعات.",
+    "a": "٨",
+    "v": {
+     "kind": "array",
+     "rows": 2,
+     "cols": 4,
+     "square": true
+    }
+   },
+   {
+    "f": "مساحة",
+    "p": "كم مربّع وحدةٍ مساحةُ مستطيلٍ ٤×٣؟ عُدّ المربّعات.",
+    "a": "١٢",
+    "v": {
+     "kind": "array",
+     "rows": 4,
+     "cols": 3,
+     "square": true
+    }
+   },
+   {
+    "f": "مساحة",
+    "p": "كم مربّع وحدةٍ مساحةُ مستطيلٍ ٢×٥؟ عُدّ المربّعات.",
+    "a": "١٠",
+    "v": {
+     "kind": "array",
+     "rows": 2,
+     "cols": 5,
+     "square": true
+    }
+   },
+   {
+    "f": "مساحة",
+    "p": "كم مربّع وحدةٍ مساحةُ مستطيلٍ ٣×٣؟ عُدّ المربّعات.",
+    "a": "٩",
+    "v": {
+     "kind": "array",
+     "rows": 3,
+     "cols": 3,
+     "square": true
+    }
+   },
+   {
+    "f": "مساحة",
+    "p": "كم مربّع وحدةٍ مساحةُ مستطيلٍ ٤×٤؟ عُدّ المربّعات.",
+    "a": "١٦",
+    "v": {
+     "kind": "array",
+     "rows": 4,
+     "cols": 4,
+     "square": true
+    }
+   },
+   {
+    "f": "مساحة",
+    "p": "كم مربّع وحدةٍ مساحةُ مستطيلٍ ٢×٦؟ عُدّ المربّعات.",
+    "a": "١٢",
+    "v": {
+     "kind": "array",
+     "rows": 2,
+     "cols": 6,
+     "square": true
+    }
+   }
+  ]
+ },
+ "Fr1": {
+  "name": "تجزئة الكلّ وتسمية الكسر",
+  "qs": [
+   {
+    "f": "تسمية",
+    "p": "ما الكسر الملوّن؟ انقر الإجابة.",
+    "a": "٣/٤",
+    "v": {
+     "kind": "fraction",
+     "mode": "name",
+     "parts": 4,
+     "shaded": 3,
+     "options": [
+      "١/٤",
+      "٢/٤",
+      "٣/٤"
+     ]
+    }
+   },
+   {
+    "f": "تسمية",
+    "p": "ما الكسر الملوّن؟ انقر الإجابة.",
+    "a": "١/٣",
+    "v": {
+     "kind": "fraction",
+     "mode": "name",
+     "parts": 3,
+     "shaded": 1,
+     "options": [
+      "١/٣",
+      "٢/٣",
+      "٣/٣"
+     ]
+    }
+   },
+   {
+    "f": "تجزئة",
+    "p": "ظلِّل ١ من ٢ أجزاء متساوية (النصف).",
+    "a": "١/٢",
+    "v": {
+     "kind": "fraction",
+     "mode": "shade",
+     "parts": 2,
+     "target": 1
+    }
+   },
+   {
+    "f": "تجزئة",
+    "p": "ظلِّل ٣ من ٤ أجزاء متساوية.",
+    "a": "٣/٤",
+    "v": {
+     "kind": "fraction",
+     "mode": "shade",
+     "parts": 4,
+     "target": 3
+    }
+   },
+   {
+    "f": "تسمية",
+    "p": "ما الكسر الملوّن؟ انقر الإجابة.",
+    "a": "١/٤",
+    "v": {
+     "kind": "fraction",
+     "mode": "name",
+     "parts": 4,
+     "shaded": 1,
+     "options": [
+      "١/٤",
+      "٢/٤",
+      "٣/٤"
+     ]
+    }
+   },
+   {
+    "f": "تسمية",
+    "p": "ما الكسر الملوّن؟ انقر الإجابة.",
+    "a": "٢/٥",
+    "v": {
+     "kind": "fraction",
+     "mode": "name",
+     "parts": 5,
+     "shaded": 2,
+     "options": [
+      "١/٥",
+      "٢/٥",
+      "٣/٥"
+     ]
+    }
+   },
+   {
+    "f": "تجزئة",
+    "p": "ظلِّل ٢ من ٣ أجزاء متساوية.",
+    "a": "٢/٣",
+    "v": {
+     "kind": "fraction",
+     "mode": "shade",
+     "parts": 3,
+     "target": 2
+    }
+   },
+   {
+    "f": "تجزئة",
+    "p": "ظلِّل ٤ من ٥ أجزاء متساوية.",
+    "a": "٤/٥",
+    "v": {
+     "kind": "fraction",
+     "mode": "shade",
+     "parts": 5,
+     "target": 4
+    }
+   }
+  ]
+ },
+ "g1N10": {
+  "name": "الأعداد حتى ١٠",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "عُدَّ التفاحات بالنقر على كلٍّ منها: كم عددها؟",
+    "a": "٧",
+    "v": {
+     "kind": "element-count",
+     "objects": "🍎",
+     "label": "التفاحات",
+     "n": 7
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "عُدَّ العصافير بالنقر على كلٍّ منها: كم عددها؟",
+    "a": "٤",
+    "v": {
+     "kind": "element-count",
+     "objects": "🐤",
+     "label": "العصافير",
+     "n": 4
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "أظهِر العدد ٦ بملء خانات لوحة العشرة.",
+    "a": "٦",
+    "v": {
+     "kind": "ten-frame",
+     "start": 0
+    }
+   },
+   {
+    "f": "symbolic",
+    "p": "اكتب رمز العدد: «خمسة»",
+    "a": "٥",
+    "v": null
+   },
+   {
+    "f": "symbolic",
+    "p": "اكتب رمز العدد: «تسعة»",
+    "a": "٩",
+    "v": null
+   },
+   {
+    "f": "symbolic",
+    "p": "اكتب رمز العدد: «صفر»",
+    "a": "٠",
+    "v": null
+   },
+   {
+    "f": "comparative",
+    "p": "اكتب العدد الأكبر: ٧ أم ٤؟",
+    "a": "٧",
+    "v": null
+   },
+   {
+    "f": "comparative",
+    "p": "اكتب العدد الأصغر: ٣ أم ٨؟",
+    "a": "٣",
+    "v": null
+   }
+  ]
+ },
+ "g1N20": {
+  "name": "الأعداد من ١١ إلى ٢٠ وموضعتها",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: أضِف ٤ إلى ١٠.",
+    "a": "١٤",
+    "v": {
+     "kind": "ten-frame",
+     "start": 10,
+     "add": 4
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "املأ الإطار: أضِف ٧ إلى ١٠.",
+    "a": "١٧",
+    "v": {
+     "kind": "ten-frame",
+     "start": 10,
+     "add": 7
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "أظهِر العدد ١٣ بملء خانات لوحة العشرة.",
+    "a": "١٣",
+    "v": {
+     "kind": "ten-frame",
+     "start": 0
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "أظهِر العدد ١٨ بملء خانات لوحة العشرة.",
+    "a": "١٨",
+    "v": {
+     "kind": "ten-frame",
+     "start": 0
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (داخل العقد): ١٤، ١٥، ١٦، ؟",
+    "a": "١٧",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      14,
+      15,
+      16
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (يعبر العقد): ١٧، ١٨، ١٩، ؟",
+    "a": "٢٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      17,
+      18,
+      19
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "ما العدد الواقع بين ١٦ و١٨؟",
+    "a": "١٧",
+    "v": null
+   },
+   {
+    "f": "sequential",
+    "p": "ما العدد الذي يسبق ٢٠ مباشرةً؟",
+    "a": "١٩",
+    "v": null
+   }
+  ]
+ },
+ "g1SUB": {
+  "name": "مفهوم الطرح ضمن ١٠",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "كان على الشجرة ٩ عصافير فطار ٤ — خُذها من المكعّبات: كم بقي؟",
+    "a": "٥",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 9,
+     "subtract": 4
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "خُذ ٢ من ٧ مكعّبات: كم الباقي؟",
+    "a": "٥",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 7,
+     "subtract": 2
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "خُذ ٦ من ١٠ مكعّبات: كم الباقي؟",
+    "a": "٤",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 10,
+     "subtract": 6
+    }
+   },
+   {
+    "f": "symbolic",
+    "p": "أكمل: ٨ − ٣ = ؟",
+    "a": "٥",
+    "v": null
+   },
+   {
+    "f": "symbolic",
+    "p": "أكمل: ٦ − ٠ = ؟",
+    "a": "٦",
+    "v": null
+   },
+   {
+    "f": "symbolic",
+    "p": "بالشكل الرأسي — العلويّ ٥ والسفليّ ٥: ما ناتج الطرح؟",
+    "a": "٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "الكلُّ ٩، وأحد الجزأين ٤ — فما الجزء الآخر؟",
+    "a": "٥",
+    "v": {
+     "kind": "decomposition",
+     "mode": "part-whole",
+     "whole": 9,
+     "part": 4
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "الكلُّ ١٠، وأحد الجزأين ٣ — فما الجزء الآخر؟",
+    "a": "٧",
+    "v": {
+     "kind": "decomposition",
+     "mode": "part-whole",
+     "whole": 10,
+     "part": 3
+    }
+   }
+  ]
+ },
+ "g1BOND": {
+  "name": "تكوين وتفكيك الأعداد حتى ١٠",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "في الإطار ٥ ملوّنة — املأ حتى يصير المجموع ٨: كم أضفت؟",
+    "a": "٣",
+    "v": {
+     "kind": "ten-frame",
+     "start": 5,
+     "ask": "added"
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "في الإطار ٣ ملوّنة — املأ حتى يصير المجموع ٧: كم أضفت؟",
+    "a": "٤",
+    "v": {
+     "kind": "ten-frame",
+     "start": 3,
+     "ask": "added"
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "في الإطار ٦ ملوّنة — املأ حتى يصير المجموع ١٠: كم أضفت؟",
+    "a": "٤",
+    "v": {
+     "kind": "ten-frame",
+     "start": 6,
+     "ask": "added"
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "في الإطار ٢ ملوّنة — املأ حتى يصير المجموع ٩: كم أضفت؟",
+    "a": "٧",
+    "v": {
+     "kind": "ten-frame",
+     "start": 2,
+     "ask": "added"
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "أكمل: ٧ = ٤ + ؟",
+    "a": "٣",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أكمل: ٩ = ٣ + ؟",
+    "a": "٦",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أكمل أزواج العشرة: ٦ + ؟ = ١٠",
+    "a": "٤",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "أكمل أزواج العشرة: ٨ + ؟ = ١٠",
+    "a": "٢",
+    "v": null
+   }
+  ]
+ },
+ "g1REL": {
+  "name": "علاقة الجمع بالطرح وعائلات الحقائق",
+  "qs": [
+   {
+    "f": "inverse",
+    "p": "بما أنّ ٣ + ٤ = ٧، فما ناتج ٧ − ٤؟",
+    "a": "٣",
+    "v": null
+   },
+   {
+    "f": "inverse",
+    "p": "بما أنّ ٢ + ٦ = ٨، فما ناتج ٨ − ٦؟",
+    "a": "٢",
+    "v": null
+   },
+   {
+    "f": "inverse",
+    "p": "بما أنّ ٩ − ٤ = ٥، فما ناتج ٥ + ٤؟",
+    "a": "٩",
+    "v": null
+   },
+   {
+    "f": "family",
+    "p": "عائلة الحقائق (٢، ٥، ٧): ٢ + ٥ = ٧ · ٥ + ٢ = ٧ · ٧ − ٢ = ٥ · ٧ − ٥ = ؟",
+    "a": "٢",
+    "v": null
+   },
+   {
+    "f": "family",
+    "p": "عائلة الحقائق (٤، ٣، ٧): ٣ + ٤ = ٧ · ٧ − ٤ = ٣ · ٧ − ٣ = ٤ · ٤ + ٣ = ؟",
+    "a": "٧",
+    "v": null
+   },
+   {
+    "f": "missing",
+    "p": "أوجد الحدّ المفقود: ؟ + ٤ = ٩",
+    "a": "٥",
+    "v": null
+   },
+   {
+    "f": "missing",
+    "p": "أوجد الحدّ المفقود: ٣ + ؟ = ٩",
+    "a": "٦",
+    "v": null
+   },
+   {
+    "f": "missing",
+    "p": "أوجد الحدّ المفقود: ٩ − ؟ = ٥",
+    "a": "٤",
+    "v": null
+   }
+  ]
+ },
+ "g1ADDSTR": {
+  "name": "استراتيجيات الجمع حتى ٢٠",
+  "qs": [
+   {
+    "f": "counting",
+    "p": "على الخطّ: ابدأ من ٩ وعُدّ ٣ للأمام.",
+    "a": "١٢",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 9,
+     "jump": 3
+    }
+   },
+   {
+    "f": "counting",
+    "p": "ابدأ من الأكبر وعُدّ تصاعدياً: ٨ + ٣ = ؟ (٩، ١٠، ...)",
+    "a": "١١",
+    "v": null
+   },
+   {
+    "f": "bridging",
+    "p": "جسرُ العشرة: أكمل ٨ إلى عشرة ثم زد الباقي — ٨ + ٥ = ؟ (مثِّل على الإطار)",
+    "a": "١٣",
+    "v": {
+     "kind": "ten-frame",
+     "start": 8,
+     "add": 5
+    }
+   },
+   {
+    "f": "bridging",
+    "p": "فكِّك لتعبر العشرة: ٧ + ٥ = ٧ + ٣ + ٢ = ١٠ + ٢ = ؟",
+    "a": "١٢",
+    "v": null
+   },
+   {
+    "f": "derived",
+    "p": "الشفع: ٧ + ٧ = ؟",
+    "a": "١٤",
+    "v": null
+   },
+   {
+    "f": "derived",
+    "p": "بما أنّ ٦ + ٦ = ١٢، فما ٦ + ٧؟",
+    "a": "١٣",
+    "v": null
+   },
+   {
+    "f": "property",
+    "p": "إن كان ٩ + ٤ = ١٣، فما ٤ + ٩؟",
+    "a": "١٣",
+    "v": null
+   },
+   {
+    "f": "property",
+    "p": "أعد الترتيب لتسهّل: ٢ + ٩ + ٨ = (٢ + ٨) + ٩ = ؟",
+    "a": "١٩",
+    "v": null
+   }
+  ]
+ },
+ "g1SUBSTR": {
+  "name": "استراتيجيات الطرح حتى ٢٠",
+  "qs": [
+   {
+    "f": "counting",
+    "p": "على الخطّ: ابدأ من ١٣ وعُدّ ٢ للخلف.",
+    "a": "١١",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 20,
+     "start": 13,
+     "jump": 2,
+     "back": true
+    }
+   },
+   {
+    "f": "counting",
+    "p": "عُدّ تنازلياً: ١٢ − ٣ = ؟ (١١، ١٠، ...)",
+    "a": "٩",
+    "v": null
+   },
+   {
+    "f": "bridging",
+    "p": "الإنقاصُ من العشرة: آحادك لا تكفي — افتح العشرة لتطرح. ١٣ − ٥ = ؟",
+    "a": "٨",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 13,
+     "subtract": 5
+    }
+   },
+   {
+    "f": "bridging",
+    "p": "الإنقاصُ من العشرة: آحادك لا تكفي — افتح العشرة لتطرح. ١٥ − ٧ = ؟",
+    "a": "٨",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 15,
+     "subtract": 7
+    }
+   },
+   {
+    "f": "derived",
+    "p": "بما أنّ ٧ + ٧ = ١٤، فما ١٤ − ٧؟",
+    "a": "٧",
+    "v": null
+   },
+   {
+    "f": "derived",
+    "p": "بما أنّ ٨ + ٨ = ١٦، فما ١٦ − ٨؟",
+    "a": "٨",
+    "v": null
+   },
+   {
+    "f": "inverse",
+    "p": "اطرح بالتفكير جمعاً: ٩ − ٥ = ؟ (فكّر: ٥ + ؟ = ٩)",
+    "a": "٤",
+    "v": null
+   },
+   {
+    "f": "inverse",
+    "p": "اطرح بالتفكير جمعاً: ١٣ − ٩ = ؟ (فكّر: ٩ + ؟ = ١٣)",
+    "a": "٤",
+    "v": null
+   }
+  ]
+ },
+ "g1PV": {
+  "name": "الآحاد والعشرات (القيمة المكانية)",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٣٤ بالقضبان والمكعّبات.",
+    "a": "٣٤",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 34
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابنِ العدد ٦٧ بالقضبان والمكعّبات.",
+    "a": "٦٧",
+    "v": {
+     "kind": "base-ten-blocks",
+     "target": 67
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اربط كلَّ ١٠ مكعّبات في قضيب: لديك ٢٠ مكعّباً — كم قضيب عشرة تصنع؟",
+    "a": "٢",
+    "v": {
+     "kind": "regroup-blocks",
+     "rods": 0,
+     "cubes": 20,
+     "ask": "tens"
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اربط كلَّ ١٠ مكعّبات في قضيب: لديك ٣٠ مكعّباً — كم قضيب عشرة تصنع؟",
+    "a": "٣",
+    "v": {
+     "kind": "regroup-blocks",
+     "rods": 0,
+     "cubes": 30,
+     "ask": "tens"
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "٤٧ = ؟ عشرات و٧ آحاد — كم العشرات؟",
+    "a": "٤",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "٨٢ = ؟ عشرات و٢ آحاد — كم العشرات؟",
+    "a": "٨",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "العدد المكوَّن من عشرة واحدة و٧ آحاد = ؟",
+    "a": "١٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "العدد المكوَّن من عشرة واحدة و٤ آحاد = ؟",
+    "a": "١٤",
+    "v": null
+   }
+  ]
+ },
+ "g1N100": {
+  "name": "الأعداد حتى ١٠٠",
+  "qs": [
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (داخل العقد): ٣٤، ٣٥، ٣٦، ؟",
+    "a": "٣٧",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      34,
+      35,
+      36
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (داخل العقد): ٦٩، ٧٠، ٧١، ؟",
+    "a": "٧٢",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      69,
+      70,
+      71
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكثر بعشرة من ٤٥ = ؟",
+    "a": "٥٥",
+    "v": null
+   },
+   {
+    "f": "sequential",
+    "p": "أقل بعشرة من ٦٠ = ؟",
+    "a": "٥٠",
+    "v": null
+   },
+   {
+    "f": "comparative",
+    "p": "اكتب العدد الأكبر: ٦٧ أم ٧٦؟",
+    "a": "٧٦",
+    "v": null
+   },
+   {
+    "f": "comparative",
+    "p": "اكتب العدد الأصغر: ٨٩ أم ٩٨؟",
+    "a": "٨٩",
+    "v": null
+   },
+   {
+    "f": "comparative",
+    "p": "رتّب من الأصغر إلى الأكبر واكتب الأوسط: ٤٥، ٥٤، ٤٩",
+    "a": "٤٩",
+    "v": null
+   },
+   {
+    "f": "comparative",
+    "p": "رتّب من الأصغر إلى الأكبر واكتب الأوسط: ٧٢، ٢٧، ٧٠",
+    "a": "٧٠",
+    "v": null
+   }
+  ]
+ },
+ "g1SKIP": {
+  "name": "العدّ القفزي (٢/٥/١٠)",
+  "qs": [
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ٢: ٢، ٤، ٦، ؟",
+    "a": "٨",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      2,
+      4,
+      6
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ٥: ٥، ١٠، ١٥، ؟",
+    "a": "٢٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      5,
+      10,
+      15
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ١٠: ٢٠، ٣٠، ٤٠، ؟",
+    "a": "٥٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      20,
+      30,
+      40
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل العدّ بالقفز ٥: ٣٥، ٤٠، ٤٥، ؟",
+    "a": "٥٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      35,
+      40,
+      45
+     ]
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "عُدّ بالقفز: ٤ أزواج جوارب في كلٍّ منها ٢ — كم المجموع؟",
+    "a": "٨",
+    "v": {
+     "kind": "array",
+     "rows": 4,
+     "cols": 2
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "عُدّ بالقفز: ٣ قطع من فئة ٥ فلوس في كلٍّ منها ٥ — كم المجموع؟",
+    "a": "١٥",
+    "v": {
+     "kind": "array",
+     "rows": 3,
+     "cols": 5
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "عُدّ بالقفز: ٥ أزواج أحذية في كلٍّ منها ٢ — كم المجموع؟",
+    "a": "١٠",
+    "v": {
+     "kind": "array",
+     "rows": 5,
+     "cols": 2
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "عُدّ بالقفز: ٤ حزم من ١٠ أقلام في كلٍّ منها ١٠ — كم المجموع؟",
+    "a": "٤٠",
+    "v": {
+     "kind": "array",
+     "rows": 4,
+     "cols": 10
+    }
+   }
+  ]
+ },
+ "g1ORDINAL": {
+  "name": "الأعداد الترتيبية",
+  "qs": [
+   {
+    "f": "identify",
+    "p": "في الصفّ: انقر الشكل الثالث.",
+    "a": "ج",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "أ",
+       "shape": "circle"
+      },
+      {
+       "v": "ب",
+       "shape": "triangle"
+      },
+      {
+       "v": "ج",
+       "shape": "square"
+      },
+      {
+       "v": "د",
+       "shape": "circle"
+      }
+     ]
+    }
+   },
+   {
+    "f": "identify",
+    "p": "في الصفّ: انقر الشكل الأول.",
+    "a": "أ",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "أ",
+       "shape": "square"
+      },
+      {
+       "v": "ب",
+       "shape": "circle"
+      },
+      {
+       "v": "ج",
+       "shape": "triangle"
+      }
+     ]
+    }
+   },
+   {
+    "f": "identify",
+    "p": "في الصفّ: انقر الشكل الرابع.",
+    "a": "د",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "أ",
+       "shape": "circle"
+      },
+      {
+       "v": "ب",
+       "shape": "square"
+      },
+      {
+       "v": "ج",
+       "shape": "circle"
+      },
+      {
+       "v": "د",
+       "shape": "triangle"
+      },
+      {
+       "v": "هـ",
+       "shape": "square"
+      }
+     ]
+    }
+   },
+   {
+    "f": "identify",
+    "p": "في الصفّ: انقر الشكل الخامس.",
+    "a": "هـ",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "أ",
+       "shape": "triangle"
+      },
+      {
+       "v": "ب",
+       "shape": "circle"
+      },
+      {
+       "v": "ج",
+       "shape": "square"
+      },
+      {
+       "v": "د",
+       "shape": "circle"
+      },
+      {
+       "v": "هـ",
+       "shape": "triangle"
+      }
+     ]
+    }
+   },
+   {
+    "f": "name",
+    "p": "في الطابور: سالم يقف بعد الثاني مباشرةً — ما ترتيبه؟ اكتب الرقم.",
+    "a": "٣",
+    "v": null
+   },
+   {
+    "f": "name",
+    "p": "في الصفّ: قطة، أرنب، نجمة، كرة — ما ترتيب النجمة؟ اكتب الرقم.",
+    "a": "٣",
+    "v": null
+   },
+   {
+    "f": "name",
+    "p": "نورة سادسةٌ، ومريم قبلها مباشرةً — ما ترتيب مريم؟ اكتب الرقم.",
+    "a": "٥",
+    "v": null
+   },
+   {
+    "f": "name",
+    "p": "آخر متسابق في سباقٍ من ٧ — ما ترتيبه؟ اكتب الرقم.",
+    "a": "٧",
+    "v": null
+   }
+  ]
+ },
+ "g1TENS": {
+  "name": "جمع العشرات وطرحها",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "بالقضبان: ٣٠ + ٢٠ = ؟",
+    "a": "٥٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 30,
+     "add": 20
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "بالقضبان: ٤٠ + ٣٠ = ؟",
+    "a": "٧٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 40,
+     "add": 30
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "بالقضبان: خُذ ٢٠ من ٥٠ = ؟",
+    "a": "٣٠",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 50,
+     "subtract": 20
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "بالقضبان: خُذ ٤٠ من ٧٠ = ؟",
+    "a": "٣٠",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 70,
+     "subtract": 40
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "٣ عشرات + ٢ عشرات = ؟ (اكتب العدد)",
+    "a": "٥٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "٦ عشرات − ٤ عشرات = ؟ (اكتب العدد)",
+    "a": "٢٠",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "ذهنياً: ٤٧ + ١٠ = ؟",
+    "a": "٥٧",
+    "v": null
+   },
+   {
+    "f": "decompositional",
+    "p": "ذهنياً: ٦٣ − ١٠ = ؟",
+    "a": "٥٣",
+    "v": null
+   }
+  ]
+ },
+ "g1DIG2": {
+  "name": "جمع وطرح الأعداد من رقمين (بلا إعادة تجميع)",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ٣٤، أضِف ٢ بالقضبان.",
+    "a": "٣٦",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 34,
+     "add": 2
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ٤٥، أضِف ٢٣ بالقضبان.",
+    "a": "٦٨",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 45,
+     "add": 23
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح ٤ من ٥٧ بالقضبان.",
+    "a": "٥٣",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 57,
+     "subtract": 4
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "اطرح ٢٣ من ٦٨ بالقضبان.",
+    "a": "٤٥",
+    "v": {
+     "kind": "subtract-blocks",
+     "minuend": 68,
+     "subtract": 23
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات: ٣٦ + ٢١",
+    "a": "٥٧",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 36,
+     "b": 21
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات: ٤٢ + ٧",
+    "a": "٤٩",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 42,
+     "b": 7
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اطرح بالخانات: ٥٨ − ٢٥",
+    "a": "٣٣",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-sub",
+     "minuend": 58,
+     "subtrahend": 25
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اطرح بالخانات: ٧٦ − ٣",
+    "a": "٧٣",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-sub",
+     "minuend": 76,
+     "subtrahend": 3
+    }
+   }
+  ]
+ },
+ "g1REGR": {
+  "name": "إعادة التجميع في الجمع (الحمل المبكر)",
+  "qs": [
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ١٥، أضِف ٥ بالقضبان.",
+    "a": "٢٠",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 15,
+     "add": 5,
+     "carry": true
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ٨، أضِف ١٣ بالقضبان.",
+    "a": "٢١",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 8,
+     "add": 13,
+     "carry": true
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ١٧، أضِف ٦ بالقضبان.",
+    "a": "٢٣",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 17,
+     "add": 6,
+     "carry": true
+    }
+   },
+   {
+    "f": "aggregative",
+    "p": "ابدأ بـ٢٦، أضِف ٧ بالقضبان.",
+    "a": "٣٣",
+    "v": {
+     "kind": "base-ten-blocks",
+     "start": 26,
+     "add": 7,
+     "carry": true
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ١٩ + ٣",
+    "a": "٢٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 19,
+     "b": 3
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ١٥ + ٧",
+    "a": "٢٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 15,
+     "b": 7
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ٢٨ + ٦",
+    "a": "٣٤",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 28,
+     "b": 6
+    }
+   },
+   {
+    "f": "decompositional",
+    "p": "اجمع بالخانات (بحمل): ١٧ + ٥",
+    "a": "٢٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 17,
+     "b": 5
+    }
+   }
+  ]
+ },
+ "g1N120": {
+  "name": "الأعداد حتى ١٢٠ (امتداد إماراتي)",
+  "qs": [
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (داخل العقد): ٩٩، ١٠٠، ١٠١، ؟",
+    "a": "١٠٢",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      99,
+      100,
+      101
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "أكمل التتابع (يعبر العقد): ١١٧، ١١٨، ١١٩، ؟",
+    "a": "١٢٠",
+    "v": {
+     "kind": "sequence",
+     "terms": [
+      117,
+      118,
+      119
+     ]
+    }
+   },
+   {
+    "f": "sequential",
+    "p": "ما العدد الذي قبل ١١١ مباشرةً؟",
+    "a": "١١٠",
+    "v": null
+   },
+   {
+    "f": "sequential",
+    "p": "ما العدد الذي بعد ١١٩ مباشرةً؟",
+    "a": "١٢٠",
+    "v": null
+   },
+   {
+    "f": "symbolic",
+    "p": "اكتب رمز العدد: «مئة وخمسة عشر»",
+    "a": "١١٥",
+    "v": null
+   },
+   {
+    "f": "symbolic",
+    "p": "اكتب رمز العدد: «مئة وعشرون»",
+    "a": "١٢٠",
+    "v": null
+   },
+   {
+    "f": "symbolic",
+    "p": "اكتب رمز العدد: «مئة وسبعة»",
+    "a": "١٠٧",
+    "v": null
+   },
+   {
+    "f": "symbolic",
+    "p": "اكتب رمز العدد: «مئة واثنا عشر»",
+    "a": "١١٢",
+    "v": null
+   }
+  ]
+ },
+ "g1POS": {
+  "name": "العلاقات المكانية",
+  "qs": [
+   {
+    "f": "axis",
+    "p": "انقر ما هو فوق الشجرة.",
+    "a": "العصفور",
+    "v": {
+     "kind": "position-scene",
+     "anchor": "🌳",
+     "objects": [
+      {
+       "v": "العصفور",
+       "e": "🐦",
+       "pos": "above"
+      },
+      {
+       "v": "الأرنب",
+       "e": "🐰",
+       "pos": "below"
+      },
+      {
+       "v": "الكرة",
+       "e": "⚽",
+       "pos": "right"
+      }
+     ]
+    }
+   },
+   {
+    "f": "axis",
+    "p": "انقر ما هو تحت الكرسي.",
+    "a": "القطة",
+    "v": {
+     "kind": "position-scene",
+     "anchor": "🪑",
+     "objects": [
+      {
+       "v": "القطة",
+       "e": "🐱",
+       "pos": "below"
+      },
+      {
+       "v": "القبعة",
+       "e": "🎩",
+       "pos": "above"
+      },
+      {
+       "v": "الحذاء",
+       "e": "👟",
+       "pos": "left"
+      }
+     ]
+    }
+   },
+   {
+    "f": "axis",
+    "p": "انقر ما هو يمين البيت.",
+    "a": "السيارة",
+    "v": {
+     "kind": "position-scene",
+     "anchor": "🏠",
+     "objects": [
+      {
+       "v": "السيارة",
+       "e": "🚗",
+       "pos": "right"
+      },
+      {
+       "v": "الشجرة",
+       "e": "🌳",
+       "pos": "left"
+      },
+      {
+       "v": "الطائر",
+       "e": "🐦",
+       "pos": "above"
+      }
+     ]
+    }
+   },
+   {
+    "f": "axis",
+    "p": "انقر ما هو يسار الشجرة.",
+    "a": "الدراجة",
+    "v": {
+     "kind": "position-scene",
+     "anchor": "🌳",
+     "objects": [
+      {
+       "v": "الدراجة",
+       "e": "🚲",
+       "pos": "left"
+      },
+      {
+       "v": "الكرة",
+       "e": "⚽",
+       "pos": "right"
+      },
+      {
+       "v": "السحابة",
+       "e": "☁️",
+       "pos": "above"
+      }
+     ]
+    }
+   },
+   {
+    "f": "topology",
+    "p": "انقر ما هو داخل الصندوق.",
+    "a": "الكرة",
+    "v": {
+     "kind": "position-scene",
+     "anchor": "📦",
+     "objects": [
+      {
+       "v": "الكرة",
+       "e": "⚽",
+       "pos": "inside"
+      },
+      {
+       "v": "القطة",
+       "e": "🐱",
+       "pos": "outside"
+      },
+      {
+       "v": "الحذاء",
+       "e": "👟",
+       "pos": "below"
+      }
+     ]
+    }
+   },
+   {
+    "f": "topology",
+    "p": "انقر ما هو خارج الصندوق.",
+    "a": "الأرنب",
+    "v": {
+     "kind": "position-scene",
+     "anchor": "📦",
+     "objects": [
+      {
+       "v": "الأرنب",
+       "e": "🐰",
+       "pos": "outside"
+      },
+      {
+       "v": "الكرة",
+       "e": "⚽",
+       "pos": "inside"
+      }
+     ]
+    }
+   },
+   {
+    "f": "topology",
+    "p": "انقر ما هو بين الشجرتين.",
+    "a": "الأرنب",
+    "v": {
+     "kind": "position-scene",
+     "mode": "between",
+     "anchor": "🌳",
+     "objects": [
+      {
+       "v": "الأرنب",
+       "e": "🐰",
+       "pos": "between"
+      },
+      {
+       "v": "العصفور",
+       "e": "🐦",
+       "pos": "outside"
+      }
+     ]
+    }
+   },
+   {
+    "f": "topology",
+    "p": "انقر ما هو بين السيارتين.",
+    "a": "الكرة",
+    "v": {
+     "kind": "position-scene",
+     "mode": "between",
+     "anchor": "🚗",
+     "objects": [
+      {
+       "v": "الكرة",
+       "e": "⚽",
+       "pos": "between"
+      },
+      {
+       "v": "القطة",
+       "e": "🐱",
+       "pos": "outside"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g1CLS": {
+  "name": "التصنيف بخاصية",
+  "qs": [
+   {
+    "f": "sorting",
+    "p": "افرز العناصر في السلّتين: أحمر / أزرق.",
+    "a": "نعم",
+    "v": {
+     "kind": "sort-bins",
+     "bins": [
+      "أحمر",
+      "أزرق"
+     ],
+     "items": [
+      {
+       "e": "🍎",
+       "bin": 0
+      },
+      {
+       "e": "🔵",
+       "bin": 1
+      },
+      {
+       "e": "🍓",
+       "bin": 0
+      },
+      {
+       "e": "💙",
+       "bin": 1
+      },
+      {
+       "e": "🌹",
+       "bin": 0
+      }
+     ]
+    }
+   },
+   {
+    "f": "sorting",
+    "p": "افرز العناصر في السلّتين: حيوانات / فواكه.",
+    "a": "نعم",
+    "v": {
+     "kind": "sort-bins",
+     "bins": [
+      "حيوانات",
+      "فواكه"
+     ],
+     "items": [
+      {
+       "e": "🐱",
+       "bin": 0
+      },
+      {
+       "e": "🍌",
+       "bin": 1
+      },
+      {
+       "e": "🐰",
+       "bin": 0
+      },
+      {
+       "e": "🍎",
+       "bin": 1
+      }
+     ]
+    }
+   },
+   {
+    "f": "sorting",
+    "p": "افرز العناصر في السلّتين: يطير / لا يطير.",
+    "a": "نعم",
+    "v": {
+     "kind": "sort-bins",
+     "bins": [
+      "يطير",
+      "لا يطير"
+     ],
+     "items": [
+      {
+       "e": "🐦",
+       "bin": 0
+      },
+      {
+       "e": "🐟",
+       "bin": 1
+      },
+      {
+       "e": "🦋",
+       "bin": 0
+      },
+      {
+       "e": "🐢",
+       "bin": 1
+      }
+     ]
+    }
+   },
+   {
+    "f": "sorting",
+    "p": "افرز العناصر في السلّتين: طعام / ألعاب.",
+    "a": "نعم",
+    "v": {
+     "kind": "sort-bins",
+     "bins": [
+      "طعام",
+      "ألعاب"
+     ],
+     "items": [
+      {
+       "e": "🍞",
+       "bin": 0
+      },
+      {
+       "e": "⚽",
+       "bin": 1
+      },
+      {
+       "e": "🍌",
+       "bin": 0
+      },
+      {
+       "e": "🧸",
+       "bin": 1
+      },
+      {
+       "e": "🍎",
+       "bin": 0
+      }
+     ]
+    }
+   },
+   {
+    "f": "rule",
+    "p": "المجموعة: 🍎 🍓 🌹 — ما قاعدتها؟",
+    "a": "كلّها حمراء",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "كلّها حمراء"
+      },
+      {
+       "v": "كلّها طعام"
+      }
+     ]
+    }
+   },
+   {
+    "f": "rule",
+    "p": "المجموعة: 🐦 🦋 ✈️ — ما قاعدتها؟",
+    "a": "كلّها تطير",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "كلّها تطير"
+      },
+      {
+       "v": "كلّها حيوانات"
+      }
+     ]
+    }
+   },
+   {
+    "f": "rule",
+    "p": "انقر الدخيل الذي لا ينتمي للمجموعة.",
+    "a": "ج",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "أ",
+       "shape": "circle"
+      },
+      {
+       "v": "ب",
+       "shape": "circle"
+      },
+      {
+       "v": "ج",
+       "shape": "triangle"
+      },
+      {
+       "v": "د",
+       "shape": "circle"
+      }
+     ]
+    }
+   },
+   {
+    "f": "rule",
+    "p": "انقر الدخيل الذي لا ينتمي للمجموعة.",
+    "a": "ب",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "أ",
+       "shape": "square"
+      },
+      {
+       "v": "ب",
+       "shape": "circle"
+      },
+      {
+       "v": "ج",
+       "shape": "square"
+      },
+      {
+       "v": "د",
+       "shape": "square"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g1SHP2": {
+  "name": "الأشكال المستوية",
+  "qs": [
+   {
+    "f": "recognize",
+    "p": "ما اسم هذا الشكل؟ انقر الإجابة.",
+    "a": "مستطيل",
+    "v": {
+     "kind": "shape-pick",
+     "show": "rectangle",
+     "options": [
+      {
+       "v": "مستطيل",
+       "shape": "rectangle"
+      },
+      {
+       "v": "مربع",
+       "shape": "square"
+      },
+      {
+       "v": "مثلث",
+       "shape": "triangle"
+      }
+     ]
+    }
+   },
+   {
+    "f": "recognize",
+    "p": "ما اسم هذا الشكل؟ انقر الإجابة.",
+    "a": "مثلث",
+    "v": {
+     "kind": "shape-pick",
+     "show": "triangle",
+     "options": [
+      {
+       "v": "مثلث",
+       "shape": "triangle"
+      },
+      {
+       "v": "دائرة",
+       "shape": "circle"
+      },
+      {
+       "v": "مربع",
+       "shape": "square"
+      }
+     ]
+    }
+   },
+   {
+    "f": "recognize",
+    "p": "ما اسم هذا الشكل؟ انقر الإجابة.",
+    "a": "دائرة",
+    "v": {
+     "kind": "shape-pick",
+     "show": "circle",
+     "options": [
+      {
+       "v": "دائرة",
+       "shape": "circle"
+      },
+      {
+       "v": "مستطيل",
+       "shape": "rectangle"
+      },
+      {
+       "v": "مثلث",
+       "shape": "triangle"
+      }
+     ]
+    }
+   },
+   {
+    "f": "elements",
+    "p": "انقر أضلاع الشكل لتعدّها. كم ضلعاً؟",
+    "a": "٤",
+    "v": {
+     "kind": "element-count",
+     "shape": "square",
+     "element": "sides",
+     "n": 4
+    }
+   },
+   {
+    "f": "elements",
+    "p": "انقر رؤوس الشكل لتعدّها. كم رأساً؟",
+    "a": "٣",
+    "v": {
+     "kind": "element-count",
+     "shape": "triangle",
+     "element": "vertices",
+     "n": 3
+    }
+   },
+   {
+    "f": "elements",
+    "p": "انقر أضلاع الشكل لتعدّها. كم ضلعاً؟",
+    "a": "٤",
+    "v": {
+     "kind": "element-count",
+     "shape": "rectangle",
+     "element": "sides",
+     "n": 4
+    }
+   },
+   {
+    "f": "compose",
+    "p": "ركِّب المربع من المثلثين.",
+    "a": "نعم",
+    "v": {
+     "kind": "shape-compose",
+     "target": "square",
+     "pieces": [
+      "triangle",
+      "triangle"
+     ]
+    }
+   },
+   {
+    "f": "compose",
+    "p": "ركِّب المستطيل من المربعين.",
+    "a": "نعم",
+    "v": {
+     "kind": "shape-compose",
+     "target": "rectangle",
+     "pieces": [
+      "square",
+      "square"
+     ]
+    }
+   }
+  ]
+ },
+ "g1LEN": {
+  "name": "الطول: مقارنةً وقياساً",
+  "qs": [
+   {
+    "f": "compare",
+    "p": "انقر الأطول.",
+    "a": "المسطرة",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "القلم",
+       "w": 120,
+       "h": 16
+      },
+      {
+       "v": "المسطرة",
+       "w": 190,
+       "h": 16
+      }
+     ]
+    }
+   },
+   {
+    "f": "compare",
+    "p": "انقر الأقصر.",
+    "a": "الخيط",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "الحبل",
+       "w": 210,
+       "h": 14
+      },
+      {
+       "v": "الخيط",
+       "w": 90,
+       "h": 14
+      }
+     ]
+    }
+   },
+   {
+    "f": "compare",
+    "p": "انقر الأطول من الثلاثة.",
+    "a": "ج",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 80,
+       "h": 16
+      },
+      {
+       "v": "ب",
+       "w": 150,
+       "h": 16
+      },
+      {
+       "v": "ج",
+       "w": 220,
+       "h": 16
+      }
+     ]
+    }
+   },
+   {
+    "f": "compare",
+    "p": "انقر الأوسط طولاً.",
+    "a": "ج",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 200,
+       "h": 16
+      },
+      {
+       "v": "ب",
+       "w": 70,
+       "h": 16
+      },
+      {
+       "v": "ج",
+       "w": 140,
+       "h": 16
+      }
+     ]
+    }
+   },
+   {
+    "f": "measure",
+    "p": "قِس الجسم: كم مشبكاً يبلغ طوله؟",
+    "a": "٤",
+    "v": {
+     "kind": "measure",
+     "mode": "ruler",
+     "length": 4,
+     "max": 6,
+     "unit": "مشبك"
+    }
+   },
+   {
+    "f": "measure",
+    "p": "قِس الجسم: كم مشبكاً يبلغ طوله؟",
+    "a": "٧",
+    "v": {
+     "kind": "measure",
+     "mode": "ruler",
+     "length": 7,
+     "max": 9,
+     "unit": "مشبك"
+    }
+   },
+   {
+    "f": "measure",
+    "p": "قِس الجسم: كم قدماً يبلغ طوله؟",
+    "a": "٥",
+    "v": {
+     "kind": "measure",
+     "mode": "ruler",
+     "length": 5,
+     "max": 7,
+     "unit": "قدم"
+    }
+   },
+   {
+    "f": "measure",
+    "p": "بمَ تقيس طول كتابك؟",
+    "a": "بالمشابك",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "بالمشابك"
+      },
+      {
+       "v": "بالأكواب"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g1MASS": {
+  "name": "الوزن: مقارنةً وقياساً",
+  "qs": [
+   {
+    "f": "compare",
+    "p": "انظر إلى ميل الميزان: انقر الأثقل.",
+    "a": "البطيخة",
+    "v": {
+     "kind": "measure",
+     "mode": "heavier",
+     "left": {
+      "v": "البطيخة",
+      "e": "🍉"
+     },
+     "right": {
+      "v": "التفاحة",
+      "e": "🍎"
+     },
+     "heavier": "left"
+    }
+   },
+   {
+    "f": "compare",
+    "p": "انظر إلى ميل الميزان: انقر الأثقل.",
+    "a": "الكتاب",
+    "v": {
+     "kind": "measure",
+     "mode": "heavier",
+     "left": {
+      "v": "البالون",
+      "e": "🎈"
+     },
+     "right": {
+      "v": "الكتاب",
+      "e": "📚"
+     },
+     "heavier": "right"
+    }
+   },
+   {
+    "f": "compare",
+    "p": "انظر إلى ميل الميزان: انقر الأثقل.",
+    "a": "القرع",
+    "v": {
+     "kind": "measure",
+     "mode": "heavier",
+     "left": {
+      "v": "الجزرة",
+      "e": "🥕"
+     },
+     "right": {
+      "v": "القرع",
+      "e": "🎃"
+     },
+     "heavier": "right"
+    }
+   },
+   {
+    "f": "compare",
+    "p": "اتّزن الميزان تماماً بجسمين: هل وزناهما متساويان؟",
+    "a": "نعم",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "نعم"
+      },
+      {
+       "v": "لا"
+      }
+     ]
+    }
+   },
+   {
+    "f": "measure",
+    "p": "زِنِ الجسم: أضف مكعّبات حتى يتّزن الميزان — كم مكعّباً؟",
+    "a": "٣",
+    "v": {
+     "kind": "measure",
+     "mode": "balance",
+     "mass": 3,
+     "unit": "مكعب",
+     "unitOne": "مكعباً"
+    }
+   },
+   {
+    "f": "measure",
+    "p": "زِنِ الجسم: أضف مكعّبات حتى يتّزن الميزان — كم مكعّباً؟",
+    "a": "٥",
+    "v": {
+     "kind": "measure",
+     "mode": "balance",
+     "mass": 5,
+     "unit": "مكعب",
+     "unitOne": "مكعباً"
+    }
+   },
+   {
+    "f": "measure",
+    "p": "زِنِ الجسم: أضف مكعّبات حتى يتّزن الميزان — كم مكعّباً؟",
+    "a": "٤",
+    "v": {
+     "kind": "measure",
+     "mode": "balance",
+     "mass": 4,
+     "unit": "مكعب",
+     "unitOne": "مكعباً"
+    }
+   },
+   {
+    "f": "measure",
+    "p": "زِنِ الجسم: أضف مكعّبات حتى يتّزن الميزان — كم مكعّباً؟",
+    "a": "٦",
+    "v": {
+     "kind": "measure",
+     "mode": "balance",
+     "mass": 6,
+     "unit": "مكعب",
+     "unitOne": "مكعباً"
+    }
+   }
+  ]
+ },
+ "g1CAP": {
+  "name": "السعة: مقارنةً وقياساً",
+  "qs": [
+   {
+    "f": "compare",
+    "p": "انقر الأكثر سعةً.",
+    "a": "الإبريق",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "الإبريق",
+       "w": 60,
+       "h": 110
+      },
+      {
+       "v": "الكوب",
+       "w": 40,
+       "h": 50
+      }
+     ]
+    }
+   },
+   {
+    "f": "compare",
+    "p": "انقر الأقلّ سعةً.",
+    "a": "الفنجان",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "القارورة",
+       "w": 36,
+       "h": 130
+      },
+      {
+       "v": "الفنجان",
+       "w": 40,
+       "h": 40
+      }
+     ]
+    }
+   },
+   {
+    "f": "compare",
+    "p": "انقر الأكثر سعةً.",
+    "a": "ب",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 44,
+       "h": 60
+      },
+      {
+       "v": "ب",
+       "w": 50,
+       "h": 120
+      },
+      {
+       "v": "ج",
+       "w": 40,
+       "h": 85
+      }
+     ]
+    }
+   },
+   {
+    "f": "compare",
+    "p": "انقر الأقلّ سعةً.",
+    "a": "ب",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 46,
+       "h": 100
+      },
+      {
+       "v": "ب",
+       "w": 40,
+       "h": 45
+      },
+      {
+       "v": "ج",
+       "w": 44,
+       "h": 70
+      }
+     ]
+    }
+   },
+   {
+    "f": "measure",
+    "p": "املأ الإناء بالأكواب: كم كوباً يملؤه؟",
+    "a": "٣",
+    "v": {
+     "kind": "measure",
+     "cups": 3
+    }
+   },
+   {
+    "f": "measure",
+    "p": "املأ الإناء بالأكواب: كم كوباً يملؤه؟",
+    "a": "٥",
+    "v": {
+     "kind": "measure",
+     "cups": 5
+    }
+   },
+   {
+    "f": "measure",
+    "p": "املأ الإناء بالأكواب: كم كوباً يملؤه؟",
+    "a": "٤",
+    "v": {
+     "kind": "measure",
+     "cups": 4
+    }
+   },
+   {
+    "f": "measure",
+    "p": "املأ الإناء بالأكواب: كم كوباً يملؤه؟",
+    "a": "٦",
+    "v": {
+     "kind": "measure",
+     "cups": 6
+    }
+   }
+  ]
+ },
+ "g1AREA": {
+  "name": "المساحة: مقارنة التغطية",
+  "qs": [
+   {
+    "f": "coverage",
+    "p": "انقر ما يغطّي مساحةً أكبر.",
+    "a": "السجادة",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "السجادة",
+       "w": 150,
+       "h": 90
+      },
+      {
+       "v": "المنديل",
+       "w": 60,
+       "h": 45
+      }
+     ]
+    }
+   },
+   {
+    "f": "coverage",
+    "p": "انقر ما يغطّي مساحةً أكبر.",
+    "a": "الباب",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "الباب",
+       "w": 70,
+       "h": 170
+      },
+      {
+       "v": "النافذة",
+       "w": 60,
+       "h": 60
+      }
+     ]
+    }
+   },
+   {
+    "f": "coverage",
+    "p": "انقر ما يغطّي مساحةً أقلّ.",
+    "a": "أ",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 50,
+       "h": 40
+      },
+      {
+       "v": "ب",
+       "w": 120,
+       "h": 100
+      }
+     ]
+    }
+   },
+   {
+    "f": "coverage",
+    "p": "انقر ما يغطّي مساحةً أقلّ.",
+    "a": "الكرسي",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "الطاولة",
+       "w": 130,
+       "h": 80
+      },
+      {
+       "v": "الكرسي",
+       "w": 60,
+       "h": 55
+      }
+     ]
+    }
+   },
+   {
+    "f": "coverage",
+    "p": "رتّب بالتغطية: انقر الأوسع.",
+    "a": "ج",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 40,
+       "h": 35
+      },
+      {
+       "v": "ب",
+       "w": 90,
+       "h": 70
+      },
+      {
+       "v": "ج",
+       "w": 150,
+       "h": 110
+      }
+     ]
+    }
+   },
+   {
+    "f": "coverage",
+    "p": "رتّب بالتغطية: انقر الأضيق.",
+    "a": "أ",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 45,
+       "h": 40
+      },
+      {
+       "v": "ب",
+       "w": 100,
+       "h": 80
+      },
+      {
+       "v": "ج",
+       "w": 160,
+       "h": 120
+      }
+     ]
+    }
+   },
+   {
+    "f": "coverage",
+    "p": "انقر الأوسط تغطيةً.",
+    "a": "ج",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 60,
+       "h": 50
+      },
+      {
+       "v": "ب",
+       "w": 130,
+       "h": 95
+      },
+      {
+       "v": "ج",
+       "w": 95,
+       "h": 70
+      }
+     ]
+    }
+   },
+   {
+    "f": "coverage",
+    "p": "انقر الأوسط تغطيةً.",
+    "a": "ج",
+    "v": {
+     "kind": "measure",
+     "mode": "compare",
+     "items": [
+      {
+       "v": "أ",
+       "w": 140,
+       "h": 100
+      },
+      {
+       "v": "ب",
+       "w": 55,
+       "h": 45
+      },
+      {
+       "v": "ج",
+       "w": 95,
+       "h": 75
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g1CLK": {
+  "name": "قراءة الساعة الكاملة",
+  "qs": [
+   {
+    "f": "dial",
+    "p": "انظر إلى عقربَي الساعة: كم الساعة؟",
+    "a": "الثالثة تماماً",
+    "v": {
+     "kind": "clock",
+     "hour": 3,
+     "minute": 0,
+     "options": [
+      "الثالثة تماماً",
+      "الرابعة تماماً",
+      "الثانية تماماً"
+     ]
+    }
+   },
+   {
+    "f": "dial",
+    "p": "انظر إلى عقربَي الساعة: كم الساعة؟",
+    "a": "السابعة تماماً",
+    "v": {
+     "kind": "clock",
+     "hour": 7,
+     "minute": 0,
+     "options": [
+      "السابعة تماماً",
+      "السادسة تماماً",
+      "الثامنة تماماً"
+     ]
+    }
+   },
+   {
+    "f": "dial",
+    "p": "انظر إلى عقربَي الساعة: كم الساعة؟",
+    "a": "الثانية عشرة تماماً",
+    "v": {
+     "kind": "clock",
+     "hour": 12,
+     "minute": 0,
+     "options": [
+      "الثانية عشرة تماماً",
+      "الحادية عشرة تماماً",
+      "الواحدة تماماً"
+     ]
+    }
+   },
+   {
+    "f": "dial",
+    "p": "العقرب الطويل على ١٢ والقصير على ٩ — أيُّ عقربٍ يحدّد الساعة؟",
+    "a": "القصير",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "القصير"
+      },
+      {
+       "v": "الطويل"
+      }
+     ]
+    }
+   },
+   {
+    "f": "digital",
+    "p": "أيُّ وقتٍ رقميٍّ يطابق القرص؟",
+    "a": "٥:٠٠",
+    "v": {
+     "kind": "clock",
+     "hour": 5,
+     "minute": 0,
+     "options": [
+      "٥:٠٠",
+      "٦:٠٠",
+      "٤:٠٠"
+     ]
+    }
+   },
+   {
+    "f": "digital",
+    "p": "أيُّ وقتٍ رقميٍّ يطابق القرص؟",
+    "a": "٩:٠٠",
+    "v": {
+     "kind": "clock",
+     "hour": 9,
+     "minute": 0,
+     "options": [
+      "٩:٠٠",
+      "٨:٠٠",
+      "١٠:٠٠"
+     ]
+    }
+   },
+   {
+    "f": "digital",
+    "p": "أيُّ وقتٍ رقميٍّ يطابق القرص؟",
+    "a": "٢:٠٠",
+    "v": {
+     "kind": "clock",
+     "hour": 2,
+     "minute": 0,
+     "options": [
+      "٢:٠٠",
+      "١٢:٠٠",
+      "٣:٠٠"
+     ]
+    }
+   },
+   {
+    "f": "digital",
+    "p": "أيُّ وقتٍ رقميٍّ يطابق القرص؟",
+    "a": "١١:٠٠",
+    "v": {
+     "kind": "clock",
+     "hour": 11,
+     "minute": 0,
+     "options": [
+      "١١:٠٠",
+      "١٠:٠٠",
+      "١٢:٠٠"
+     ]
+    }
+   }
+  ]
+ },
+ "g1HALFH": {
+  "name": "نصف الساعة",
+  "qs": [
+   {
+    "f": "dial",
+    "p": "العقرب القصير بين رقمين: كم الساعة؟",
+    "a": "الثالثة والنصف",
+    "v": {
+     "kind": "clock",
+     "hour": 3,
+     "minute": 30,
+     "options": [
+      "الثالثة والنصف",
+      "الرابعة والنصف",
+      "الثانية والنصف"
+     ]
+    }
+   },
+   {
+    "f": "dial",
+    "p": "العقرب القصير بين رقمين: كم الساعة؟",
+    "a": "السابعة والنصف",
+    "v": {
+     "kind": "clock",
+     "hour": 7,
+     "minute": 30,
+     "options": [
+      "السابعة والنصف",
+      "الثامنة والنصف",
+      "السادسة والنصف"
+     ]
+    }
+   },
+   {
+    "f": "dial",
+    "p": "العقرب القصير بين رقمين: كم الساعة؟",
+    "a": "العاشرة والنصف",
+    "v": {
+     "kind": "clock",
+     "hour": 10,
+     "minute": 30,
+     "options": [
+      "العاشرة والنصف",
+      "الحادية عشرة والنصف",
+      "التاسعة والنصف"
+     ]
+    }
+   },
+   {
+    "f": "dial",
+    "p": "العقرب القصير بين رقمين: كم الساعة؟",
+    "a": "الواحدة والنصف",
+    "v": {
+     "kind": "clock",
+     "hour": 1,
+     "minute": 30,
+     "options": [
+      "الواحدة والنصف",
+      "الثانية والنصف",
+      "الثانية عشرة والنصف"
+     ]
+    }
+   },
+   {
+    "f": "digital",
+    "p": "أيُّ وقتٍ رقميٍّ يطابق القرص؟",
+    "a": "٤:٣٠",
+    "v": {
+     "kind": "clock",
+     "hour": 4,
+     "minute": 30,
+     "options": [
+      "٤:٣٠",
+      "٥:٣٠",
+      "٣:٣٠"
+     ]
+    }
+   },
+   {
+    "f": "digital",
+    "p": "أيُّ وقتٍ رقميٍّ يطابق القرص؟",
+    "a": "٨:٣٠",
+    "v": {
+     "kind": "clock",
+     "hour": 8,
+     "minute": 30,
+     "options": [
+      "٨:٣٠",
+      "٧:٣٠",
+      "٩:٣٠"
+     ]
+    }
+   },
+   {
+    "f": "digital",
+    "p": "أيُّ وقتٍ رقميٍّ يطابق القرص؟",
+    "a": "١٢:٣٠",
+    "v": {
+     "kind": "clock",
+     "hour": 12,
+     "minute": 30,
+     "options": [
+      "١٢:٣٠",
+      "١١:٣٠",
+      "١:٣٠"
+     ]
+    }
+   },
+   {
+    "f": "digital",
+    "p": "أيُّ وقتٍ رقميٍّ يطابق القرص؟",
+    "a": "٦:٣٠",
+    "v": {
+     "kind": "clock",
+     "hour": 6,
+     "minute": 30,
+     "options": [
+      "٦:٣٠",
+      "٥:٣٠",
+      "٧:٣٠"
+     ]
+    }
+   }
+  ]
+ },
+ "g1DATA": {
+  "name": "تنظيم البيانات وعدُّها",
+  "qs": [
+   {
+    "f": "organize",
+    "p": "نظِّم البيانات: افرز العناصر في فئتَي «فواكه/حيوانات».",
+    "a": "نعم",
+    "v": {
+     "kind": "sort-bins",
+     "bins": [
+      "فواكه",
+      "حيوانات"
+     ],
+     "items": [
+      {
+       "e": "🍎",
+       "bin": 0
+      },
+      {
+       "e": "🐱",
+       "bin": 1
+      },
+      {
+       "e": "🍌",
+       "bin": 0
+      },
+      {
+       "e": "🐰",
+       "bin": 1
+      },
+      {
+       "e": "🍓",
+       "bin": 0
+      }
+     ]
+    }
+   },
+   {
+    "f": "organize",
+    "p": "عُدَّ التفاحات وسجِّل بعلامات العدّ: ٧.",
+    "a": "٧",
+    "v": {
+     "kind": "chart",
+     "mode": "build",
+     "type": "tally",
+     "target": 7
+    }
+   },
+   {
+    "f": "organize",
+    "p": "عُدَّ العصافير وسجِّل بعلامات العدّ: ٥.",
+    "a": "٥",
+    "v": {
+     "kind": "chart",
+     "mode": "build",
+     "type": "tally",
+     "target": 5
+    }
+   },
+   {
+    "f": "organize",
+    "p": "مخطّط كارول: ضع «قطة سوداء» في خانة (حيوان، أسود) — أيُّ خانة؟",
+    "a": "حيوان أسود",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "حيوان أسود"
+      },
+      {
+       "v": "حيوان غير أسود"
+      }
+     ]
+    }
+   },
+   {
+    "f": "read",
+    "p": "من الجدول: كم عدد فئة «موز»؟",
+    "a": "٦",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "pictograph",
+     "data": [
+      [
+       "تفاح",
+       4
+      ],
+      [
+       "موز",
+       6
+      ],
+      [
+       "عنب",
+       3
+      ]
+     ],
+     "ask": "count",
+     "cat": "موز"
+    }
+   },
+   {
+    "f": "read",
+    "p": "من الجدول: كم عدد فئة «قطط»؟",
+    "a": "٥",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "pictograph",
+     "data": [
+      [
+       "قطط",
+       5
+      ],
+      [
+       "عصافير",
+       2
+      ],
+      [
+       "أسماك",
+       7
+      ]
+     ],
+     "ask": "count",
+     "cat": "قطط"
+    }
+   },
+   {
+    "f": "read",
+    "p": "من الجدول: كم عدد فئة «أخضر»؟",
+    "a": "٥",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "pictograph",
+     "data": [
+      [
+       "أحمر",
+       3
+      ],
+      [
+       "أزرق",
+       8
+      ],
+      [
+       "أخضر",
+       5
+      ]
+     ],
+     "ask": "count",
+     "cat": "أخضر"
+    }
+   },
+   {
+    "f": "read",
+    "p": "من الجدول: كم عدد فئة «دمية»؟",
+    "a": "٤",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "pictograph",
+     "data": [
+      [
+       "كرة",
+       6
+      ],
+      [
+       "دمية",
+       4
+      ],
+      [
+       "مكعب",
+       2
+      ]
+     ],
+     "ask": "count",
+     "cat": "دمية"
+    }
+   }
+  ]
+ },
+ "g1PICT": {
+  "name": "التمثيل بالصور وقراءته",
+  "qs": [
+   {
+    "f": "read",
+    "p": "في مخطّط الصور: أيُّ فئةٍ هي الأكثر؟",
+    "a": "ب",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "pictograph",
+     "data": [
+      [
+       "أ",
+       4
+      ],
+      [
+       "ب",
+       7
+      ],
+      [
+       "ج",
+       2
+      ]
+     ],
+     "ask": "most"
+    }
+   },
+   {
+    "f": "read",
+    "p": "في مخطّط الصور: كم عدد فئة «موز»؟",
+    "a": "٥",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "pictograph",
+     "data": [
+      [
+       "تفاح",
+       3
+      ],
+      [
+       "موز",
+       5
+      ],
+      [
+       "عنب",
+       4
+      ]
+     ],
+     "ask": "count",
+     "cat": "موز"
+    }
+   },
+   {
+    "f": "read",
+    "p": "في مخطّط الأعمدة: أيُّ فئةٍ هي الأكثر؟",
+    "a": "ج",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "bar",
+     "data": [
+      [
+       "أ",
+       5
+      ],
+      [
+       "ب",
+       3
+      ],
+      [
+       "ج",
+       6
+      ]
+     ],
+     "ask": "most"
+    }
+   },
+   {
+    "f": "read",
+    "p": "في مخطّط الصور: كم عدد فئة «عصافير»؟",
+    "a": "٦",
+    "v": {
+     "kind": "chart",
+     "mode": "read",
+     "type": "pictograph",
+     "data": [
+      [
+       "قطط",
+       2
+      ],
+      [
+       "عصافير",
+       6
+      ]
+     ],
+     "ask": "count",
+     "cat": "عصافير"
+    }
+   },
+   {
+    "f": "build",
+    "p": "ابنِ التمثيل: التفاحات = ٦.",
+    "a": "٦",
+    "v": {
+     "kind": "chart",
+     "mode": "build",
+     "type": "tally",
+     "target": 6
+    }
+   },
+   {
+    "f": "build",
+    "p": "ابنِ التمثيل: العصافير = ٤.",
+    "a": "٤",
+    "v": {
+     "kind": "chart",
+     "mode": "build",
+     "type": "tally",
+     "target": 4
+    }
+   },
+   {
+    "f": "build",
+    "p": "ابنِ التمثيل: الكتب = ٧.",
+    "a": "٧",
+    "v": {
+     "kind": "chart",
+     "mode": "build",
+     "type": "bar",
+     "target": 7
+    }
+   },
+   {
+    "f": "build",
+    "p": "ابنِ التمثيل: الأقلام = ٥.",
+    "a": "٥",
+    "v": {
+     "kind": "chart",
+     "mode": "build",
+     "type": "tally",
+     "target": 5
+    }
+   }
+  ]
+ },
+ "g3PV": {
+  "name": "القيمة المنزلية ضمن الألوف",
+  "qs": [
+   {
+    "f": "compose",
+    "p": "كوِّن العدد: ٣ آلاف و٤ مئات و٧ عشرات و٢ آحاد.",
+    "a": "٣٤٧٢",
+    "v": null
+   },
+   {
+    "f": "compose",
+    "p": "كوِّن العدد: ٥ آلاف و١ عشرات و٨ آحاد.",
+    "a": "٥٠١٨",
+    "v": null
+   },
+   {
+    "f": "compose",
+    "p": "فكِّك: ٢٦٩٣ = ٢٠٠٠ + ؟ + ٩٠ + ٣ — كم قيمة المنزلة الناقصة؟",
+    "a": "٦٠٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "ما قيمة الرقم ٧ في العدد ٤٧٢٥؟",
+    "a": "٧٠٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "ما قيمة الرقم ٨ في العدد ٨٣٥٦؟",
+    "a": "٨٠٠٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "في أيِّ منزلةٍ يقع الرقم ٦ في العدد ٦٠٤١؟",
+    "a": "الآلاف",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "الآحاد"
+      },
+      {
+       "v": "العشرات"
+      },
+      {
+       "v": "المئات"
+      },
+      {
+       "v": "الآلاف"
+      }
+     ]
+    }
+   },
+   {
+    "f": "pattern",
+    "p": "أكمل النمط: ٣٢٠٠، ٣٣٠٠، ٣٤٠٠، ؟",
+    "a": "٣٥٠٠",
+    "v": null
+   },
+   {
+    "f": "pattern",
+    "p": "أكمل النمط: ٢٤٥٠، ٣٤٥٠، ٤٤٥٠، ؟",
+    "a": "٥٤٥٠",
+    "v": null
+   }
+  ]
+ },
+ "g3PV5": {
+  "name": "القيمة المنزلية ضمن عشرات الألوف",
+  "qs": [
+   {
+    "f": "compose",
+    "p": "كوِّن العدد: ٢ عشرات ألوف و٤ آلاف و٥ مئات و١ عشرات و٣ آحاد.",
+    "a": "٢٤٥١٣",
+    "v": null
+   },
+   {
+    "f": "compose",
+    "p": "كوِّن العدد: ٧ عشرات ألوف و٢ مئات و٦ آحاد.",
+    "a": "٧٠٢٠٦",
+    "v": null
+   },
+   {
+    "f": "compose",
+    "p": "فكِّك: ٤٦٢٨٠ = ٤٠٠٠٠ + ؟ + ٢٠٠ + ٨٠ — كم قيمة المنزلة الناقصة؟",
+    "a": "٦٠٠٠",
+    "v": null
+   },
+   {
+    "f": "compose",
+    "p": "فكِّك: ٥٣٩٠٧ = ٥٠٠٠٠ + ٣٠٠٠ + ؟ + ٧ — كم قيمة المنزلة الناقصة؟",
+    "a": "٩٠٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "ما قيمة الرقم ٢ في العدد ٢٥٤١٣؟",
+    "a": "٢٠٠٠٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "ما قيمة الرقم ٧ في العدد ٤٧٢٥٠؟",
+    "a": "٧٠٠٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "في أيِّ منزلةٍ يقع الرقم ٨ في العدد ٨١٦٣٤؟",
+    "a": "عشرات الألوف",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "الآحاد"
+      },
+      {
+       "v": "العشرات"
+      },
+      {
+       "v": "المئات"
+      },
+      {
+       "v": "الآلاف"
+      },
+      {
+       "v": "عشرات الألوف"
+      }
+     ]
+    }
+   },
+   {
+    "f": "place",
+    "p": "في أيِّ منزلةٍ يقع الرقم ٩ في العدد ١٩٠٤٥؟",
+    "a": "الآلاف",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "الآحاد"
+      },
+      {
+       "v": "العشرات"
+      },
+      {
+       "v": "المئات"
+      },
+      {
+       "v": "الآلاف"
+      },
+      {
+       "v": "عشرات الألوف"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g3BIG": {
+  "name": "الأعداد حتى ستة أرقام",
+  "qs": [
+   {
+    "f": "compose",
+    "p": "كوِّن العدد: ٢ مئات ألوف و٤ عشرات ألوف و٥ آلاف و٣ مئات و١ عشرات و٧ آحاد.",
+    "a": "٢٤٥٣١٧",
+    "v": null
+   },
+   {
+    "f": "compose",
+    "p": "كوِّن العدد: ٨ مئات ألوف و٣ آلاف و٥ عشرات.",
+    "a": "٨٠٣٠٥٠",
+    "v": null
+   },
+   {
+    "f": "compose",
+    "p": "فكِّك: ٦٧٢٤٨١ = ٦٠٠٠٠٠ + ؟ + ٢٠٠٠ + ٤٠٠ + ٨٠ + ١ — كم قيمة المنزلة الناقصة؟",
+    "a": "٧٠٠٠٠",
+    "v": null
+   },
+   {
+    "f": "compose",
+    "p": "فكِّك: ١٥٠٢٣٦ = ١٠٠٠٠٠ + ٥٠٠٠٠ + ٢٠٠ + ؟ + ٦ — كم قيمة المنزلة الناقصة؟",
+    "a": "٣٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "ما قيمة الرقم ٢ في العدد ٢٤٥٣١٧؟",
+    "a": "٢٠٠٠٠٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "ما قيمة الرقم ٩ في العدد ٣٩١٧٥٠؟",
+    "a": "٩٠٠٠٠",
+    "v": null
+   },
+   {
+    "f": "place",
+    "p": "في أيِّ منزلةٍ يقع الرقم ٤ في العدد ٤٦٨١٢٥؟",
+    "a": "مئات الألوف",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "الآحاد"
+      },
+      {
+       "v": "العشرات"
+      },
+      {
+       "v": "المئات"
+      },
+      {
+       "v": "الآلاف"
+      },
+      {
+       "v": "عشرات الألوف"
+      },
+      {
+       "v": "مئات الألوف"
+      }
+     ]
+    }
+   },
+   {
+    "f": "place",
+    "p": "في أيِّ منزلةٍ يقع الرقم ٢ في العدد ٧٢٩٣٠٤؟",
+    "a": "عشرات الألوف",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "الآحاد"
+      },
+      {
+       "v": "العشرات"
+      },
+      {
+       "v": "المئات"
+      },
+      {
+       "v": "الآلاف"
+      },
+      {
+       "v": "عشرات الألوف"
+      },
+      {
+       "v": "مئات الألوف"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g3ROUND": {
+  "name": "التقريب إلى أقرب عشرة ومئة",
+  "qs": [
+   {
+    "f": "rounding",
+    "p": "قرِّب ٤٧٢ إلى أقرب عشرة.",
+    "a": "٤٧٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 1000,
+     "step": 10,
+     "target": 472
+    }
+   },
+   {
+    "f": "rounding",
+    "p": "قرِّب ٣٤٥ إلى أقرب عشرة.",
+    "a": "٣٥٠",
+    "v": null
+   },
+   {
+    "f": "rounding",
+    "p": "قرِّب ٦٨٥ إلى أقرب مئة.",
+    "a": "٧٠٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 1000,
+     "step": 100,
+     "target": 685
+    }
+   },
+   {
+    "f": "rounding",
+    "p": "قرِّب ٢٤٩ إلى أقرب مئة.",
+    "a": "٢٠٠",
+    "v": null
+   },
+   {
+    "f": "inverse",
+    "p": "أيُّ الأعداد يؤول إلى ٤٦٠ عند تقريبه إلى أقرب عشرة؟",
+    "a": "٤٥٧",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٤٥٧"
+      },
+      {
+       "v": "٤٥٣"
+      },
+      {
+       "v": "٤٦٧"
+      }
+     ]
+    }
+   },
+   {
+    "f": "inverse",
+    "p": "أيُّ الأعداد يؤول إلى ٨٢٠ عند تقريبه إلى أقرب عشرة؟",
+    "a": "٨٢٣",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٨٢٣"
+      },
+      {
+       "v": "٨٢٧"
+      },
+      {
+       "v": "٨١٣"
+      }
+     ]
+    }
+   },
+   {
+    "f": "inverse",
+    "p": "أيُّ الأعداد يؤول إلى ٣٠٠ عند تقريبه إلى أقرب مئة؟",
+    "a": "٢٨٤",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٢٨٤"
+      },
+      {
+       "v": "٢٣٩"
+      },
+      {
+       "v": "٣٦٢"
+      }
+     ]
+    }
+   },
+   {
+    "f": "inverse",
+    "p": "أيُّ الأعداد يؤول إلى ٧٠٠ عند تقريبه إلى أقرب مئة؟",
+    "a": "٦٥٢",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٦٥٢"
+      },
+      {
+       "v": "٧٦١"
+      },
+      {
+       "v": "٦٤٩"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g3ROUND4": {
+  "name": "التقريب إلى أقرب ألف",
+  "qs": [
+   {
+    "f": "rounding",
+    "p": "قرِّب ٣٤٥٢ إلى أقرب ألف.",
+    "a": "٣٠٠٠",
+    "v": {
+     "kind": "number-line",
+     "min": 0,
+     "max": 9999,
+     "step": 1000,
+     "target": 3452
+    }
+   },
+   {
+    "f": "rounding",
+    "p": "قرِّب ٧٦٨٠ إلى أقرب ألف.",
+    "a": "٨٠٠٠",
+    "v": null
+   },
+   {
+    "f": "rounding",
+    "p": "قرِّب ٢٥٠٠ إلى أقرب ألف.",
+    "a": "٣٠٠٠",
+    "v": null
+   },
+   {
+    "f": "rounding",
+    "p": "قرِّب ٩٢١٤ إلى أقرب ألف.",
+    "a": "٩٠٠٠",
+    "v": null
+   },
+   {
+    "f": "inverse",
+    "p": "أيُّ الأعداد يؤول إلى ٥٠٠٠ عند تقريبه إلى أقرب ألف؟",
+    "a": "٥٣٢٠",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٥٣٢٠"
+      },
+      {
+       "v": "٥٧٠٠"
+      },
+      {
+       "v": "٤٣٠٠"
+      }
+     ]
+    }
+   },
+   {
+    "f": "inverse",
+    "p": "أيُّ الأعداد يؤول إلى ٨٠٠٠ عند تقريبه إلى أقرب ألف؟",
+    "a": "٧٦٤٩",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٧٦٤٩"
+      },
+      {
+       "v": "٧٤٩٩"
+      },
+      {
+       "v": "٨٦٠٠"
+      }
+     ]
+    }
+   },
+   {
+    "f": "inverse",
+    "p": "أيُّ الأعداد يؤول إلى ٢٠٠٠ عند تقريبه إلى أقرب ألف؟",
+    "a": "٢٣٨١",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٢٣٨١"
+      },
+      {
+       "v": "٢٧٨٠"
+      },
+      {
+       "v": "١٤٠٩"
+      }
+     ]
+    }
+   },
+   {
+    "f": "inverse",
+    "p": "أيُّ الأعداد يؤول إلى ٦٠٠٠ عند تقريبه إلى أقرب ألف؟",
+    "a": "٦٠٨٨",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٦٠٨٨"
+      },
+      {
+       "v": "٦٨٠٢"
+      },
+      {
+       "v": "٥٠٩٩"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g3ADD3": {
+  "name": "جمع وطرح الأعداد ضمن ١٠٠٠",
+  "qs": [
+   {
+    "f": "algorithm",
+    "p": "اجمع عمودياً (بإعادة التجميع): ٤٥٦ + ٣٦٧ = ؟",
+    "a": "٨٢٣",
+    "v": null
+   },
+   {
+    "f": "algorithm",
+    "p": "اطرح عمودياً (بإعادة التجميع): ٧٠٣ − ٤٥٨ = ؟",
+    "a": "٢٤٥",
+    "v": null
+   },
+   {
+    "f": "algorithm",
+    "p": "اطرح عمودياً (بإعادة التجميع): ٥٠٠ − ٢٧٦ = ؟",
+    "a": "٢٢٤",
+    "v": null
+   },
+   {
+    "f": "partial",
+    "p": "اجمع بالخانات (نواتج جزئية): ٢٦٣ + ٤٨٩",
+    "a": "٧٥٢",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 263,
+     "b": 489
+    }
+   },
+   {
+    "f": "partial",
+    "p": "اجمع بالخانات (نواتج جزئية): ١٧٥ + ٢٤٨",
+    "a": "٤٢٣",
+    "v": {
+     "kind": "decomposition",
+     "mode": "place-add",
+     "a": 175,
+     "b": 248
+    }
+   },
+   {
+    "f": "partial",
+    "p": "بالمجاميع الجزئية: ٤٧٦ + ٢٥٨ → ٦٠٠ و١٢٠ و١٤ — فما المجموع؟",
+    "a": "٧٣٤",
+    "v": null
+   },
+   {
+    "f": "multi",
+    "p": "اجمع الأعداد الثلاثة: ١٢٥ + ٢٣٠ + ٣١٤ = ؟",
+    "a": "٦٦٩",
+    "v": null
+   },
+   {
+    "f": "multi",
+    "p": "اجمع الأعداد الثلاثة: ١٤٦ + ٢٠٨ + ١١٧ = ؟",
+    "a": "٤٧١",
+    "v": null
+   }
+  ]
+ },
+ "g3OPS4": {
+  "name": "جمع وطرح الأعداد الكبيرة (٤ أرقام)",
+  "qs": [
+   {
+    "f": "algorithm",
+    "p": "اجمع عمودياً (بإعادة التجميع): ٤٤٧٨ + ١٣٨٣ = ؟",
+    "a": "٥٨٦١",
+    "v": null
+   },
+   {
+    "f": "algorithm",
+    "p": "اجمع عمودياً (بإعادة التجميع): ٣٩٨٧ + ٣٩٢٨ = ؟",
+    "a": "٧٩١٥",
+    "v": null
+   },
+   {
+    "f": "algorithm",
+    "p": "اطرح عمودياً (بإعادة التجميع): ٨٤٢٢ − ٥٩٩٥ = ؟",
+    "a": "٢٤٢٧",
+    "v": null
+   },
+   {
+    "f": "algorithm",
+    "p": "اطرح عمودياً (بإعادة التجميع): ٢٠٠٦ − ٧٨١ = ؟",
+    "a": "١٢٢٥",
+    "v": null
+   },
+   {
+    "f": "partial",
+    "p": "حلّل ثم اجمع: ٢٣٦١ + ١٤٢٧ = (٢٠٠٠+١٠٠٠) + (٣٠٠+٤٠٠) + (٦٠+٢٠) + (١+٧) = ؟",
+    "a": "٣٧٨٨",
+    "v": null
+   },
+   {
+    "f": "partial",
+    "p": "حلّل ثم اجمع: ٥١٣٦ + ٢٧٤٢ = (٥٠٠٠+٢٠٠٠) + (١٠٠+٧٠٠) + (٣٠+٤٠) + (٦+٢) = ؟",
+    "a": "٧٨٧٨",
+    "v": null
+   },
+   {
+    "f": "partial",
+    "p": "حلّل ثم اطرح: ٦٨٧٥ − ٢٤٣١ = (٦٠٠٠−٢٠٠٠) + (٨٠٠−٤٠٠) + (٧٠−٣٠) + (٥−١) = ؟",
+    "a": "٤٤٤٤",
+    "v": null
+   },
+   {
+    "f": "partial",
+    "p": "حلّل ثم اطرح: ٧٥٩٢ − ٤٢٥٠ = (٧٠٠٠−٤٠٠٠) + (٥٠٠−٢٠٠) + (٩٠−٥٠) + (٢−٠) = ؟",
+    "a": "٣٣٤٢",
+    "v": null
+   }
+  ]
+ },
+ "g3PROPS": {
+  "name": "خواص الجمع والطرح وطرائقهما",
+  "qs": [
+   {
+    "f": "property",
+    "p": "بخاصية الإبدال (الترتيب): ٥٧ + ٣٥ = ٣٥ + ؟",
+    "a": "٥٧",
+    "v": null
+   },
+   {
+    "f": "property",
+    "p": "بخاصية التجميع: (١٨ + ١٤) + ١٥ = ١٨ + (١٤ + ؟)",
+    "a": "١٥",
+    "v": null
+   },
+   {
+    "f": "property",
+    "p": "العنصر المحايد: ٣٩ + ؟ = ٣٩",
+    "a": "٠",
+    "v": null
+   },
+   {
+    "f": "mental",
+    "p": "متمِّم المئة: ٧٢ + ؟ = ١٠٠",
+    "a": "٢٨",
+    "v": null
+   },
+   {
+    "f": "mental",
+    "p": "ذهنياً بمتمّمات المئة: ٢٠٠ − ١٧٨ = ؟",
+    "a": "٢٢",
+    "v": null
+   },
+   {
+    "f": "mental",
+    "p": "ذهنياً بالتعويض: ٢٩٨ + ٢٤٥ (اجعلها ٣٠٠ + ٢٤٣) = ؟",
+    "a": "٥٤٣",
+    "v": null
+   },
+   {
+    "f": "relation",
+    "p": "إذا كان ٢٦ + ٤٧ = ٧٣ فإنَّ ٧٣ − ٤٧ = ؟",
+    "a": "٢٦",
+    "v": null
+   },
+   {
+    "f": "relation",
+    "p": "المعادلة الناقصة: ؟ − ٣٤ = ٥٨",
+    "a": "٩٢",
+    "v": null
+   }
+  ]
+ },
+ "g3MUL": {
+  "name": "فهم الضرب",
+  "qs": [
+   {
+    "f": "repeated",
+    "p": "كوِّن ٤ مجموعاتٍ في كلٍّ منها ٦ — كم الإجمالي؟",
+    "a": "٢٤",
+    "v": {
+     "kind": "groups",
+     "mode": "form",
+     "groups": 4,
+     "per": 6
+    }
+   },
+   {
+    "f": "repeated",
+    "p": "اكتبها جمعاً متكرراً ثم احسب: ٣ × ٧ = ٧ + ٧ + ٧ = ؟",
+    "a": "٢١",
+    "v": null
+   },
+   {
+    "f": "repeated",
+    "p": "٥ + ٥ + ٥ + ٥ = ؟ × ٥ — ما العدد الناقص؟",
+    "a": "٤",
+    "v": null
+   },
+   {
+    "f": "array",
+    "p": "صُفَّ مصفوفة: ٤ صفوف × ٧ أعمدة — كم الإجمالي؟",
+    "a": "٢٨",
+    "v": {
+     "kind": "array",
+     "rows": 4,
+     "cols": 7
+    }
+   },
+   {
+    "f": "array",
+    "p": "بالإبدال (اقلب المصفوفة): إذا كان ٧ × ٤ = ٢٨ فكم ٤ × ٧؟",
+    "a": "٢٨",
+    "v": null
+   },
+   {
+    "f": "array",
+    "p": "المصفوفة المفتوحة (فكِّك العمود): ١٣ × ٤ = (١٠ × ٤) + (٣ × ٤) = ؟",
+    "a": "٥٢",
+    "v": null
+   },
+   {
+    "f": "modeling",
+    "p": "أيُّ جملةٍ تمثِّل: «٥ أطباقٍ في كلِّ طبقٍ ٣ تمرات»؟",
+    "a": "٥ × ٣",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٥ × ٣"
+      },
+      {
+       "v": "٥ + ٣"
+      }
+     ]
+    }
+   },
+   {
+    "f": "modeling",
+    "p": "أيُّ قصةٍ تناسب الجملة ٤ × ٦؟",
+    "a": "٤ سلالٍ في كلِّ سلةٍ ٦ تفاحات",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٤ سلالٍ في كلِّ سلةٍ ٦ تفاحات"
+      },
+      {
+       "v": "٤ تفاحاتٍ أُكلت منها ٦"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ "g3MULF1": {
+  "name": "حقائق الضرب بالأنماط",
+  "qs": [
+   {
+    "f": "skip",
+    "p": "بنمط الخمسة (٥، ١٠، ١٥، ...): ٦ × ٥ = ؟",
+    "a": "٣٠",
+    "v": null
+   },
+   {
+    "f": "skip",
+    "p": "بقفز الاثنين: ٧ × ٢ = ؟",
+    "a": "١٤",
+    "v": null
+   },
+   {
+    "f": "skip",
+    "p": "صُفَّ مصفوفة: ٤ صفوف × ١٠ أعمدة — كم الإجمالي؟",
+    "a": "٤٠",
+    "v": {
+     "kind": "array",
+     "rows": 4,
+     "cols": 10
+    }
+   },
+   {
+    "f": "zero-one",
+    "p": "٨ × ١ = ؟",
+    "a": "٨",
+    "v": null
+   },
+   {
+    "f": "zero-one",
+    "p": "٠ × ٦ = ؟",
+    "a": "٠",
+    "v": null
+   },
+   {
+    "f": "zero-one",
+    "p": "أيُّ القاعدتين صحيحة؟",
+    "a": "أيُّ عددٍ × صفر = صفر",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "أيُّ عددٍ × صفر = صفر"
+      },
+      {
+       "v": "أيُّ عددٍ × صفر = العدد نفسه"
+      }
+     ]
+    }
+   },
+   {
+    "f": "nine",
+    "p": "نمط التسعة: ٩ × ٤ = (١٠ × ٤) − ٤ = ؟",
+    "a": "٣٦",
+    "v": null
+   },
+   {
+    "f": "nine",
+    "p": "٩ × ٧ = ؟ (لاحظ: رقما الناتج يجمعان إلى ٩)",
+    "a": "٦٣",
+    "v": null
+   }
+  ]
+ },
+ "g3MULF2": {
+  "name": "اشتقاق حقائق الضرب الصعبة",
+  "qs": [
+   {
+    "f": "distribute",
+    "p": "اشتق بالتوزيع: ٧ × ٦ = (٧ × ٥) + (٧ × ١) = ؟",
+    "a": "٤٢",
+    "v": null
+   },
+   {
+    "f": "distribute",
+    "p": "بالتوزيع: ٨ × ٧ = (٨ × ٥) + (٨ × ٢) = ؟",
+    "a": "٥٦",
+    "v": null
+   },
+   {
+    "f": "double",
+    "p": "الضعف المضاعف: ٦ × ٤ = ضِعف (٦ × ٢) = ؟",
+    "a": "٢٤",
+    "v": null
+   },
+   {
+    "f": "double",
+    "p": "٩ × ٦ = ضِعف (٩ × ٣) = ؟",
+    "a": "٥٤",
+    "v": null
+   },
+   {
+    "f": "associate",
+    "p": "بالتجميع: (٢ × ٣) × ٤ = ٢ × (٣ × ٤) = ؟",
+    "a": "٢٤",
+    "v": null
+   },
+   {
+    "f": "associate",
+    "p": "اختر التجميع الأسهل ثم احسب: ٥ × ٢ × ٧ = ؟",
+    "a": "٧٠",
+    "v": null
+   },
+   {
+    "f": "pattern",
+    "p": "في جدول الضرب، صفُّ الثلاثة: ٣، ٦، ٩، ١٢، ؟",
+    "a": "١٥",
+    "v": null
+   },
+   {
+    "f": "pattern",
+    "p": "على لوحة المئة، مضاعفات الثمانية: ٨، ١٦، ٢٤، ؟",
+    "a": "٣٢",
+    "v": null
+   }
+  ]
+ },
+ "g3F12": {
+  "name": "الضرب في ١١ و١٢",
+  "qs": [
+   {
+    "f": "eleven",
+    "p": "نمط الأحد عشر (الرقم يتكرر): ٧ × ١١ = ؟",
+    "a": "٧٧",
+    "v": null
+   },
+   {
+    "f": "eleven",
+    "p": "٩ × ١١ = ؟",
+    "a": "٩٩",
+    "v": null
+   },
+   {
+    "f": "eleven",
+    "p": "٥ × ١١ = ؟",
+    "a": "٥٥",
+    "v": null
+   },
+   {
+    "f": "eleven",
+    "p": "١١ × ١١ = ؟ (لاحظ: ١٢١ يكسر تكرار الرقم!)",
+    "a": "١٢١",
+    "v": null
+   },
+   {
+    "f": "distribute",
+    "p": "بالتوزيع: ٤ × ١٢ = (٤ × ١٠) + (٤ × ٢) = ؟",
+    "a": "٤٨",
+    "v": null
+   },
+   {
+    "f": "distribute",
+    "p": "٦ × ١٢ = (٦ × ١٠) + (٦ × ٢) = ؟",
+    "a": "٧٢",
+    "v": null
+   },
+   {
+    "f": "distribute",
+    "p": "١٢ × ٩ = (١٠ × ٩) + (٢ × ٩) = ؟",
+    "a": "١٠٨",
+    "v": null
+   },
+   {
+    "f": "distribute",
+    "p": "١٢ × ١٢ = (١٠ × ١٢) + (٢ × ١٢) = ؟",
+    "a": "١٤٤",
+    "v": null
+   }
+  ]
+ },
+ "g3FACTOM": {
+  "name": "حقائق الضرب والقسمة المتكاملة (عُمان)",
+  "qs": [
+   {
+    "f": "dual",
+    "p": "٤ × ٩ = ٣٦ — فما ٣٦ ÷ ٤؟",
+    "a": "٩",
+    "v": null
+   },
+   {
+    "f": "dual",
+    "p": "من جدول الأربعة: ٤٨ ÷ ٤ = ؟",
+    "a": "١٢",
+    "v": null
+   },
+   {
+    "f": "dual",
+    "p": "١٠٠ ÷ ٢ = ؟",
+    "a": "٥٠",
+    "v": null
+   },
+   {
+    "f": "dual",
+    "p": "٩ × ٦ = ؟",
+    "a": "٥٤",
+    "v": null
+   },
+   {
+    "f": "open-array",
+    "p": "المصفوفة المفتوحة: ١٧ × ٤ = (١٠ × ٤) + (٧ × ٤) = ؟",
+    "a": "٦٨",
+    "v": null
+   },
+   {
+    "f": "open-array",
+    "p": "١٣ × ٩ = (١٠ × ٩) + (٣ × ٩) = ؟",
+    "a": "١١٧",
+    "v": null
+   },
+   {
+    "f": "missing",
+    "p": "؟ × ٤ = ٣٢ — ما العدد؟",
+    "a": "٨",
+    "v": null
+   },
+   {
+    "f": "missing",
+    "p": "ما العدد الذي إذا ضُرِب في ٩ كان الناتج ٣٦؟",
+    "a": "٤",
+    "v": null
+   }
+  ]
+ },
+ "g3DIV": {
+  "name": "فهم القسمة",
+  "qs": [
+   {
+    "f": "share",
+    "p": "وزِّع ٤٠ بالتساوي على ٥ مجموعات — كم في كلِّ مجموعة؟",
+    "a": "٨",
+    "v": {
+     "kind": "groups",
+     "mode": "share",
+     "total": 40,
+     "groups": 5
+    }
+   },
+   {
+    "f": "share",
+    "p": "وزِّع ٢٤ بالتساوي على ٤ مجموعات — كم في كلٍّ منها؟",
+    "a": "٦",
+    "v": {
+     "kind": "groups",
+     "mode": "share",
+     "total": 24,
+     "groups": 4
+    }
+   },
+   {
+    "f": "share",
+    "p": "٣٠ قلماً على ٦ تلاميذ بالتساوي — كم قلماً لكلِّ تلميذ؟",
+    "a": "٥",
+    "v": null
+   },
+   {
+    "f": "measure",
+    "p": "كم مجموعةً من ٦ في ٤٢؟ (اطرح ٦ متكرِّراً وعُدَّ المجموعات)",
+    "a": "٧",
+    "v": {
+     "kind": "groups",
+     "mode": "measure",
+     "total": 42,
+     "per": 6
+    }
+   },
+   {
+    "f": "measure",
+    "p": "كم مجموعةً من ٨ في ٣٢؟",
+    "a": "٤",
+    "v": {
+     "kind": "groups",
+     "mode": "measure",
+     "total": 32,
+     "per": 8
+    }
+   },
+   {
+    "f": "measure",
+    "p": "تتسع السلةُ لستِّ نباتات — كم سلةً تلزم لـ ٥٤ نبتةً؟",
+    "a": "٩",
+    "v": null
+   },
+   {
+    "f": "inverse",
+    "p": "إذا كان ٧ × ٤ = ٢٨ فإنَّ ٢٨ ÷ ٧ = ؟",
+    "a": "٤",
+    "v": null
+   },
+   {
+    "f": "inverse",
+    "p": "٦ × ٩ = ٥٤ — فما ٥٤ ÷ ٦؟",
+    "a": "٩",
+    "v": null
+   }
+  ]
+ },
+ "g3DIVF": {
+  "name": "حقائق القسمة",
+  "qs": [
+   {
+    "f": "think-mul",
+    "p": "٢٧ ÷ ٣ = ؟ (فكِّر: ٣ × ؟ = ٢٧)",
+    "a": "٩",
+    "v": null
+   },
+   {
+    "f": "think-mul",
+    "p": "٥٦ ÷ ٨ = ؟ (فكِّر: ٨ × ؟ = ٥٦)",
+    "a": "٧",
+    "v": null
+   },
+   {
+    "f": "think-mul",
+    "p": "٤٥ ÷ ٩ = ؟",
+    "a": "٥",
+    "v": null
+   },
+   {
+    "f": "family",
+    "p": "أكمل الحقيقة الرابعة في العائلة: ٣×٩=٢٧، ٩×٣=٢٧، ٢٧÷٣=٩، ؟",
+    "a": "٢٧ ÷ ٩ = ٣",
+    "v": {
+     "kind": "shape-pick",
+     "options": [
+      {
+       "v": "٢٧ ÷ ٩ = ٣"
+      },
+      {
+       "v": "٢٧ − ٩ = ١٨"
+      }
+     ]
+    }
+   },
+   {
+    "f": "family",
+    "p": "العدد الناقص في جدول الضرب: ٧ × ؟ = ٦٣",
+    "a": "٩",
+    "v": null
+   },
+   {
+    "f": "family",
+    "p": "من عائلة ٤، ٦، ٢٤: اكتب ناتج ٢٤ ÷ ٦",
+    "a": "٤",
+    "v": null
+   },
+   {
+    "f": "rules",
+    "p": "٨ ÷ ١ = ؟",
+    "a": "٨",
+    "v": null
+   },
+   {
+    "f": "rules",
+    "p": "٠ ÷ ٧ = ؟",
+    "a": "٠",
+    "v": null
+   }
+  ]
+ }
+}

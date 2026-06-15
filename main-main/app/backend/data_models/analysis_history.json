@@ -1,0 +1,40 @@
+{
+    "title": "analysis_history",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "total_wrong_answers": {
+            "type": "integer",
+            "description": "Total wrong answers at time of analysis"
+        },
+        "weaknesses_count": {
+            "type": "integer",
+            "description": "Number of weaknesses identified"
+        },
+        "top_weakness": {
+            "type": "string",
+            "description": "The most critical weakness skill name"
+        },
+        "summary": {
+            "type": "string",
+            "description": "AI generated summary"
+        },
+        "full_result": {
+            "type": "string",
+            "description": "Full JSON result of the analysis"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "total_wrong_answers",
+        "weaknesses_count"
+    ]
+}

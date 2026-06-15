@@ -1,0 +1,37 @@
+[
+    {
+        "title": "اختبار الجبر",
+        "lesson_id": 1,
+        "subject_id": 1,
+        "grade": "الصف السابع",
+        "difficulty": "easy"
+    },
+    {
+        "title": "اختبار المعادلات",
+        "lesson_id": 2,
+        "subject_id": 1,
+        "grade": "الصف السابع",
+        "difficulty": "medium"
+    },
+    {
+        "title": "اختبار الكسور",
+        "lesson_id": 3,
+        "subject_id": 1,
+        "grade": "الصف السابع",
+        "difficulty": "easy"
+    },
+    {
+        "title": "اختبار الخلية",
+        "lesson_id": 4,
+        "subject_id": 2,
+        "grade": "الصف السابع",
+        "difficulty": "easy"
+    },
+    {
+        "title": "اختبار النحو",
+        "lesson_id": 6,
+        "subject_id": 3,
+        "grade": "الصف السابع",
+        "difficulty": "medium"
+    }
+]

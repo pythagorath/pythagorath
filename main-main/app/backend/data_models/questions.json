@@ -1,0 +1,57 @@
+{
+    "title": "questions",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "quiz_id": {
+            "type": "integer",
+            "description": "Foreign key to quizzes"
+        },
+        "question_text": {
+            "type": "string",
+            "description": "The question text"
+        },
+        "option_a": {
+            "type": "string",
+            "description": "Option A"
+        },
+        "option_b": {
+            "type": "string",
+            "description": "Option B"
+        },
+        "option_c": {
+            "type": "string",
+            "description": "Option C"
+        },
+        "option_d": {
+            "type": "string",
+            "description": "Option D"
+        },
+        "correct_answer": {
+            "type": "string",
+            "description": "Correct answer letter (a,b,c,d)"
+        },
+        "explanation": {
+            "type": "string",
+            "description": "Explanation for the correct answer"
+        },
+        "skill": {
+            "type": "string",
+            "description": "Skill being tested"
+        }
+    },
+    "required": [
+        "id",
+        "quiz_id",
+        "question_text",
+        "option_a",
+        "option_b",
+        "option_c",
+        "option_d",
+        "correct_answer",
+        "skill"
+    ]
+}

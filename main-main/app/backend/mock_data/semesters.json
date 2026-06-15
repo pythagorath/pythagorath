@@ -1,0 +1,50 @@
+[
+    {
+        "name": "الفصل الأول",
+        "grade_id": 1,
+        "academic_year": "2025-2026",
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الفصل الثاني",
+        "grade_id": 1,
+        "academic_year": "2025-2026",
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الفصل الأول",
+        "grade_id": 2,
+        "academic_year": "2025-2026",
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الفصل الثاني",
+        "grade_id": 2,
+        "academic_year": "2025-2026",
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الفصل الأول",
+        "grade_id": 3,
+        "academic_year": "2025-2026",
+        "status": "published",
+        "country_id": 2,
+        "curriculum_id": 2
+    },
+    {
+        "name": "الفصل الثاني",
+        "grade_id": 3,
+        "academic_year": "2025-2026",
+        "status": "published",
+        "country_id": 2,
+        "curriculum_id": 2
+    }
+]

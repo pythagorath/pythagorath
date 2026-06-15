@@ -1,0 +1,50 @@
+[
+    {
+        "name": "الأعداد حتى 10",
+        "subject_id": 1,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الجمع والطرح",
+        "subject_id": 1,
+        "display_order": 2,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الأشكال الهندسية",
+        "subject_id": 1,
+        "display_order": 3,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الأعداد حتى 100",
+        "subject_id": 4,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الضرب والقسمة",
+        "subject_id": 4,
+        "display_order": 2,
+        "status": "published",
+        "country_id": 1,
+        "curriculum_id": 1
+    },
+    {
+        "name": "الأعداد - مصر",
+        "subject_id": 5,
+        "display_order": 1,
+        "status": "published",
+        "country_id": 2,
+        "curriculum_id": 2
+    }
+]

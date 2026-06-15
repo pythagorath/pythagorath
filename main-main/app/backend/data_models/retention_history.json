@@ -1,0 +1,52 @@
+{
+    "title": "retention_history",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "skill_id": {
+            "type": "integer",
+            "description": "Skill ID reference"
+        },
+        "review_type": {
+            "type": "string",
+            "description": "Review type: scheduled, adaptive, manual"
+        },
+        "questions_asked": {
+            "type": "integer",
+            "description": "Questions asked in review"
+        },
+        "questions_correct": {
+            "type": "integer",
+            "description": "Correct answers in review"
+        },
+        "retention_score": {
+            "type": "number",
+            "description": "Retention score 0.0 to 1.0"
+        },
+        "time_spent_seconds": {
+            "type": "integer",
+            "description": "Time spent in seconds"
+        },
+        "passed": {
+            "type": "boolean",
+            "description": "Whether review was passed"
+        },
+        "next_review_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Next scheduled review"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "skill_id"
+    ]
+}

@@ -1,0 +1,59 @@
+{
+    "title": "engagement_events",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User ID"
+        },
+        "event_type": {
+            "type": "string",
+            "description": "Event type: session_start, session_end, question_answered, question_skipped, dropout, retry, boredom_signal, page_exit"
+        },
+        "skill_id": {
+            "type": "integer",
+            "description": "Related skill ID if applicable"
+        },
+        "question_id": {
+            "type": "integer",
+            "description": "Related question ID if applicable"
+        },
+        "session_id": {
+            "type": "integer",
+            "description": "Related session ID"
+        },
+        "time_spent_seconds": {
+            "type": "integer",
+            "description": "Time spent on this event"
+        },
+        "is_correct": {
+            "type": "boolean",
+            "description": "Whether answer was correct"
+        },
+        "attempt_number": {
+            "type": "integer",
+            "description": "Which attempt number for retries"
+        },
+        "page_context": {
+            "type": "string",
+            "description": "Which page the event occurred on"
+        },
+        "device_type": {
+            "type": "string",
+            "description": "Device type: mobile, tablet, desktop"
+        },
+        "extra_data": {
+            "type": "string",
+            "description": "JSON string with additional data"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "event_type"
+    ]
+}

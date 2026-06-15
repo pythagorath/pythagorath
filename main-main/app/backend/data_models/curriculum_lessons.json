@@ -1,0 +1,36 @@
+{
+    "title": "curriculum_lessons",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "unit_id": {
+            "type": "integer",
+            "description": "FK to curriculum_units"
+        },
+        "name": {
+            "type": "string",
+            "description": "Lesson name in Arabic"
+        },
+        "order_index": {
+            "type": "integer",
+            "description": "Display order"
+        },
+        "objectives": {
+            "type": "string",
+            "description": "JSON array of learning objectives"
+        },
+        "prerequisites": {
+            "type": "string",
+            "description": "JSON array of prerequisite lesson IDs"
+        }
+    },
+    "required": [
+        "id",
+        "unit_id",
+        "name",
+        "order_index"
+    ]
+}

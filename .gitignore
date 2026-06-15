@@ -1,0 +1,76 @@
+# ============================================================
+# Pythagorath — root .gitignore
+# Protects: secrets, children/customer data, huge copyrighted PDFs
+# ============================================================
+
+# --- Secrets / credentials (NEVER commit) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.*
+*credentials*
+*.secret
+
+# --- Databases (may contain children/customer data) ---
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite3-journal
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Node / frontend ---
+node_modules/
+dist/
+build/
+.vite/
+.next/
+.cache/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# --- Large, copyrighted source curricula ---
+# Distilled *.md / *.json / *.txt references ARE tracked (the project's real asset);
+# the raw textbook PDFs and extracted page-scan PNGs are NOT (huge + copyrighted + regenerable).
+*.pdf
+**/curricula/**/*.png
+uploads/
+**/uploads/
+
+# --- Temporary / scratch / scaffolding ---
+_*.txt
+_*.html
+*.tmp
+*.log
+*.bak
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# --- Claude local-only settings (keep launch.json, drop machine-local) ---
+.claude/settings.local.json

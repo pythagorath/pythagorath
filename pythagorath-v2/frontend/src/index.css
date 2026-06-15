@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Official Pythagorath identity:
+   Primary orange #F39A24 = hsl(34 90% 55%)
+   Background warm off-white #FFFDF8 = hsl(40 100% 98%)
+   Text near-black #1A1A1A = hsl(0 0% 10%)
+   Derived orange shades for hover/press and soft surfaces. */
+@layer base {
+  :root {
+    --background: 40 100% 98%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --primary: 34 90% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-press: 34 90% 46%; /* darker orange for hover/press */
+    --primary-soft: 36 100% 94%; /* light orange tint for gentle surfaces */
+
+    --secondary: 40 60% 96%;
+    --secondary-foreground: 0 0% 15%;
+
+    --muted: 40 30% 95%;
+    --muted-foreground: 0 0% 38%;
+
+    /* celebration / highlight also uses the brand orange */
+    --accent: 34 90% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 30% 88%;
+    --input: 40 30% 88%;
+    --ring: 34 90% 55%;
+
+    --radius: 1rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    direction: rtl;
+  }
+
+  body {
+    @apply bg-background text-foreground font-tajawal antialiased;
+  }
+}

@@ -1,0 +1,1232 @@
+[
+{
+"grade": 1,
+"code": "g1ADD",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1ADDSTR",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1AREA",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1BOND",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1CAL",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 8,
+"sel": 8
+},
+{
+"grade": 1,
+"code": "g1CAP",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1CLK",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 1,
+"sel": 8
+},
+{
+"grade": 1,
+"code": "g1CLS",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 2,
+"sel": 4
+},
+{
+"grade": 1,
+"code": "g1CMPQ",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 8,
+"sel": 8
+},
+{
+"grade": 1,
+"code": "g1DATA",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 1,
+"sel": 1
+},
+{
+"grade": 1,
+"code": "g1DIG2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1EST",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 4,
+"sel": 8
+},
+{
+"grade": 1,
+"code": "g1ESTR",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 4,
+"sel": 4
+},
+{
+"grade": 1,
+"code": "g1EVEN",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 2,
+"binsel": 8,
+"sel": 8
+},
+{
+"grade": 1,
+"code": "g1FRSET",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 4,
+"sel": 4
+},
+{
+"grade": 1,
+"code": "g1HALF",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 2,
+"sel": 3
+},
+{
+"grade": 1,
+"code": "g1HALFH",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 8
+},
+{
+"grade": 1,
+"code": "g1LEN",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 1,
+"sel": 1
+},
+{
+"grade": 1,
+"code": "g1MASS",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 1,
+"sel": 1
+},
+{
+"grade": 1,
+"code": "g1MONEY",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 5,
+"sel": 5
+},
+{
+"grade": 1,
+"code": "g1N10",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1N100",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1N120",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1N20",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1ORDINAL",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 4
+},
+{
+"grade": 1,
+"code": "g1PAT",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 6,
+"sel": 8
+},
+{
+"grade": 1,
+"code": "g1PICT",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1POS",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1PV",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1QRT",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 4
+},
+{
+"grade": 1,
+"code": "g1REGR",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1REL",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1SHP2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 3
+},
+{
+"grade": 1,
+"code": "g1SHP3",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 5,
+"sel": 8
+},
+{
+"grade": 1,
+"code": "g1SKIP",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1SUB",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1SUBSTR",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 1,
+"code": "g1TENS",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "A1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "A2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "A3",
+"pool": 9,
+"distinct": 9,
+"d50": 9,
+"answers": 9,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "A4",
+"pool": 9,
+"distinct": 9,
+"d50": 9,
+"answers": 9,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "B1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "B2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "B3",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "B4",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "B5",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "C1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "C3",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "C4",
+"pool": 10,
+"distinct": 10,
+"d50": 10,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "C5",
+"pool": 10,
+"distinct": 10,
+"d50": 10,
+"answers": 9,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "D1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "D2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "DA1",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "DA2",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "DA3",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "DA4",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "E1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "E2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "F1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "F11",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "F12",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "F13",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "F4",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "F5",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "F7",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "F9",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "Fr1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 4
+},
+{
+"grade": 2,
+"code": "Fr2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "Fr3",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "G1",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 4,
+"binsel": 0,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "G2",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 4,
+"binsel": 0,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "G3",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "G4",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 2,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "G5",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 4,
+"binsel": 3,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "G6",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 1,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "G7",
+"pool": 6,
+"distinct": 5,
+"d50": 5,
+"answers": 2,
+"binsel": 6,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "G8",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 3,
+"binsel": 2,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "M1",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "M4",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "N10",
+"pool": 10,
+"distinct": 10,
+"d50": 10,
+"answers": 10,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "N11",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "N4",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "N9",
+"pool": 10,
+"distinct": 10,
+"d50": 10,
+"answers": 10,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "Ord",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 4,
+"binsel": 0,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "P",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 6,
+"binsel": 0,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "Q1",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "Q2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 8
+},
+{
+"grade": 2,
+"code": "Q3",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 4
+},
+{
+"grade": 2,
+"code": "Q4",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "Q5",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "R1",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 3,
+"binsel": 0,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "R2",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 5,
+"binsel": 6,
+"sel": 6
+},
+{
+"grade": 2,
+"code": "S1",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "S2",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 4,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "T1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "T10",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "T5",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "T6",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "V1",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "V2",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 5,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "V3",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "V4",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 3,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 2,
+"code": "Z",
+"pool": 6,
+"distinct": 6,
+"d50": 6,
+"answers": 2,
+"binsel": 6,
+"sel": 6
+},
+{
+"grade": 3,
+"code": "g3ADD3",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 3,
+"code": "g3BIG",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 2
+},
+{
+"grade": 3,
+"code": "g3CMP10",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 4,
+"sel": 4
+},
+{
+"grade": 3,
+"code": "g3CMP4",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 4,
+"sel": 4
+},
+{
+"grade": 3,
+"code": "g3DIV",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 3,
+"code": "g3DIVF",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 1,
+"sel": 1
+},
+{
+"grade": 3,
+"code": "g3EST3",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 5,
+"sel": 5
+},
+{
+"grade": 3,
+"code": "g3EVENM",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 6,
+"binsel": 8,
+"sel": 8
+},
+{
+"grade": 3,
+"code": "g3F12",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 3,
+"code": "g3FACTOM",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 3,
+"code": "g3MUL",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 2,
+"sel": 2
+},
+{
+"grade": 3,
+"code": "g3MULF1",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 1,
+"sel": 1
+},
+{
+"grade": 3,
+"code": "g3MULF2",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 3,
+"code": "g3OPS4",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 3,
+"code": "g3PROPS",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 0
+},
+{
+"grade": 3,
+"code": "g3PV",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 1
+},
+{
+"grade": 3,
+"code": "g3PV5",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 2
+},
+{
+"grade": 3,
+"code": "g3ROUND",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 8,
+"binsel": 0,
+"sel": 4
+},
+{
+"grade": 3,
+"code": "g3ROUND4",
+"pool": 8,
+"distinct": 8,
+"d50": 8,
+"answers": 7,
+"binsel": 0,
+"sel": 4
+}
+]

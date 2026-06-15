@@ -1,0 +1,27 @@
+{
+    "title": "skill_prerequisites",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "skill_id": {
+            "type": "integer",
+            "description": "The skill that has prerequisites"
+        },
+        "prerequisite_skill_id": {
+            "type": "integer",
+            "description": "The prerequisite skill"
+        },
+        "relationship_type": {
+            "type": "string",
+            "description": "Type: required, recommended, optional"
+        }
+    },
+    "required": [
+        "id",
+        "skill_id",
+        "prerequisite_skill_id"
+    ]
+}

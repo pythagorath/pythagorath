@@ -1,0 +1,57 @@
+{
+    "title": "curriculum_files",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User who uploaded the file"
+        },
+        "subject_name": {
+            "type": "string",
+            "description": "Subject name in Arabic"
+        },
+        "grade_number": {
+            "type": "integer",
+            "description": "Grade number 1-12"
+        },
+        "semester_number": {
+            "type": "integer",
+            "description": "Semester 1 or 2"
+        },
+        "file_name": {
+            "type": "string",
+            "description": "Original file name"
+        },
+        "file_url": {
+            "type": "string",
+            "description": "Storage URL of the uploaded file"
+        },
+        "file_size": {
+            "type": "integer",
+            "description": "File size in bytes"
+        },
+        "file_type": {
+            "type": "string",
+            "description": "MIME type of the file"
+        },
+        "description": {
+            "type": "string",
+            "description": "Optional description of the file"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "subject_name",
+        "grade_number",
+        "semester_number",
+        "file_name",
+        "file_url",
+        "file_size",
+        "file_type"
+    ]
+}

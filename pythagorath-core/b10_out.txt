@@ -1,0 +1,27 @@
+......F
+================================== FAILURES ===================================
+________________________ test_variation_guard_batch10 _________________________
+
+    def test_variation_guard_batch10():
+        rng = random.Random(99)
+        for code, floor in FLOORS.items():
+            fams = list(generators.REGISTRY[code])
+            draws = set()
+            for i in range(50):
+                pr, ans, vis = generators.REGISTRY[code][fams[i % len(fams)]](rng, {})
+                draws.add((pr, ans, json.dumps(vis, ensure_ascii=False) if vis else ""))
+>           assert len(draws) >= floor, (code, len(draws))
+E           AssertionError: ('g3DATAB', 21)
+E           assert 21 >= 25
+E            +  where 21 = len({('\u0643\u0644\u064f\u0651 \u0631\u0645\u0632\u064d \u064a\u0645\u062b\u0651\u0644 \u0661\u0660 \u2014 \u0643\u0645 \u0631\u0645\u0632\u0627\u064b \u062a\u062d\u062a\u0627\u062c \u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0642\u064a\u0645\u0629 \u0662\u0660\u061f', '\u0662', ''), ('\u0643\u0644\u064f\u0651 \u0631\u0645\u0632\u064d \u064a\u0645\u062b\u0651\u0644 \u0661\u0660 \u2014 \u0643\u0645 \u0631\u0645\u0632\u0627\u064b \u062a\u062d\u062a\u0627\u062c \u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0642\u064a... \u2014 \u0643\u0645 \u0631\u0645\u0632\u0627\u064b \u062a\u062d\u062a\u0627\u062c \u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0642\u064a\u0645\u0629 \u0661\u0660\u061f', '\u0665', ''), ('\u0643\u0644\u064f\u0651 \u0631\u0645\u0632\u064d \u064a\u0645\u062b\u0651\u0644 \u0662 \u2014 \u0643\u0645 \u0631\u0645\u0632\u0627\u064b \u062a\u062d\u062a\u0627\u062c \u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0642\u064a\u0645\u0629 \u0661\u0662\u061f', '\u0666', ''), ...})
+
+tests\test_g3b10_generators.py:159: AssertionError
+============================== warnings summary ===============================
+..\..\pythagorath-v2\backend\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\user\Downloads\main-main\pythagorath-v2\backend\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_g3b10_generators.py::test_variation_guard_batch10 - Asserti...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -1,0 +1,50 @@
+[
+    {
+        "title": "مقدمة في الجبر",
+        "subject_id": 1,
+        "grade": "الصف السابع",
+        "video_url": "https://www.youtube.com/watch?v=example1",
+        "duration_minutes": 25,
+        "order_index": 1
+    },
+    {
+        "title": "المعادلات الخطية",
+        "subject_id": 1,
+        "grade": "الصف السابع",
+        "video_url": "https://www.youtube.com/watch?v=example2",
+        "duration_minutes": 30,
+        "order_index": 2
+    },
+    {
+        "title": "الكسور والنسب",
+        "subject_id": 1,
+        "grade": "الصف السابع",
+        "video_url": "https://www.youtube.com/watch?v=example3",
+        "duration_minutes": 20,
+        "order_index": 3
+    },
+    {
+        "title": "الخلية وتركيبها",
+        "subject_id": 2,
+        "grade": "الصف السابع",
+        "video_url": "https://www.youtube.com/watch?v=example4",
+        "duration_minutes": 22,
+        "order_index": 1
+    },
+    {
+        "title": "الجهاز الهضمي",
+        "subject_id": 2,
+        "grade": "الصف السابع",
+        "video_url": "https://www.youtube.com/watch?v=example5",
+        "duration_minutes": 28,
+        "order_index": 2
+    },
+    {
+        "title": "قواعد النحو الأساسية",
+        "subject_id": 3,
+        "grade": "الصف السابع",
+        "video_url": "https://www.youtube.com/watch?v=example6",
+        "duration_minutes": 35,
+        "order_index": 1
+    }
+]

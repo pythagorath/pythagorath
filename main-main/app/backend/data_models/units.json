@@ -1,0 +1,49 @@
+{
+    "title": "units",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "subject_id": {
+            "type": "integer",
+            "description": "FK to subjects"
+        },
+        "semester_id": {
+            "type": "integer",
+            "description": "FK to semesters"
+        },
+        "name_ar": {
+            "type": "string",
+            "description": "Unit name in Arabic"
+        },
+        "name_en": {
+            "type": "string",
+            "description": "Unit name in English"
+        },
+        "unit_number": {
+            "type": "integer",
+            "description": "Unit order number"
+        },
+        "description": {
+            "type": "string",
+            "description": "Unit description"
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether unit is active"
+        },
+        "display_order": {
+            "type": "integer",
+            "description": "Display order"
+        }
+    },
+    "required": [
+        "id",
+        "subject_id",
+        "semester_id",
+        "name_ar",
+        "unit_number"
+    ]
+}

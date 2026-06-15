@@ -1,0 +1,46 @@
+{
+    "title": "admin_subjects",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "name": {
+            "type": "string",
+            "description": "Subject name"
+        },
+        "grade_id": {
+            "type": "integer",
+            "description": "Grade ID"
+        },
+        "semester_id": {
+            "type": "integer",
+            "description": "Semester ID"
+        },
+        "slug": {
+            "type": "string",
+            "description": "URL slug"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description"
+        },
+        "status": {
+            "type": "string",
+            "description": "Status"
+        },
+        "country_id": {
+            "type": "integer",
+            "description": "Country ID"
+        },
+        "curriculum_id": {
+            "type": "integer",
+            "description": "Curriculum ID"
+        }
+    },
+    "required": [
+        "id",
+        "name"
+    ]
+}

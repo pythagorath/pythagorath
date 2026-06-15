@@ -1,0 +1,45 @@
+{
+    "title": "content_review_logs",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "Reviewer user ID"
+        },
+        "entity_type": {
+            "type": "string",
+            "description": "skill/question/domain/remediation"
+        },
+        "entity_id": {
+            "type": "integer",
+            "description": "ID of reviewed entity"
+        },
+        "action": {
+            "type": "string",
+            "description": "approve/reject/flag/edit"
+        },
+        "notes": {
+            "type": "string",
+            "description": "Review notes"
+        },
+        "previous_status": {
+            "type": "string",
+            "description": "Status before review"
+        },
+        "new_status": {
+            "type": "string",
+            "description": "Status after review"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "entity_type",
+        "entity_id",
+        "action"
+    ]
+}

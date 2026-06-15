@@ -1,0 +1,36 @@
+{
+    "title": "skill_remediation_paths",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "skill_id": {
+            "type": "integer",
+            "description": "Skill that needs remediation"
+        },
+        "prerequisite_skill_id": {
+            "type": "integer",
+            "description": "Prerequisite skill to review"
+        },
+        "remediation_type": {
+            "type": "string",
+            "description": "review/practice/visual_aid/decompose"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of remediation step"
+        },
+        "order_index": {
+            "type": "integer",
+            "description": "Order in remediation path"
+        }
+    },
+    "required": [
+        "id",
+        "skill_id",
+        "prerequisite_skill_id",
+        "remediation_type"
+    ]
+}

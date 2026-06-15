@@ -1,0 +1,38 @@
+{
+    "title": "admin_lessons",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "name": {
+            "type": "string",
+            "description": "Lesson name"
+        },
+        "unit_id": {
+            "type": "integer",
+            "description": "Unit ID"
+        },
+        "display_order": {
+            "type": "integer",
+            "description": "Display order"
+        },
+        "status": {
+            "type": "string",
+            "description": "Status"
+        },
+        "country_id": {
+            "type": "integer",
+            "description": "Country ID"
+        },
+        "curriculum_id": {
+            "type": "integer",
+            "description": "Curriculum ID"
+        }
+    },
+    "required": [
+        "id",
+        "name"
+    ]
+}

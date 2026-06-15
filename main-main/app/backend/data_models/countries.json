@@ -1,0 +1,36 @@
+{
+    "title": "countries",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "name_ar": {
+            "type": "string",
+            "description": "Country name in Arabic"
+        },
+        "name_en": {
+            "type": "string",
+            "description": "Country name in English"
+        },
+        "code": {
+            "type": "string",
+            "description": "ISO country code e.g. OM"
+        },
+        "is_active": {
+            "type": "boolean",
+            "description": "Whether country is active"
+        },
+        "display_order": {
+            "type": "integer",
+            "description": "Display order"
+        }
+    },
+    "required": [
+        "id",
+        "name_ar",
+        "name_en",
+        "code"
+    ]
+}

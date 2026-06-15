@@ -1,0 +1,51 @@
+{
+    "title": "pilot_feedback",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "integer",
+            "description": "Primary key, auto-increment"
+        },
+        "user_id": {
+            "type": "string",
+            "description": "User who submitted feedback"
+        },
+        "feedback_type": {
+            "type": "string",
+            "description": "child, parent, reviewer, or editor"
+        },
+        "rating": {
+            "type": "integer",
+            "description": "1-5 star rating"
+        },
+        "ease_of_use": {
+            "type": "integer",
+            "description": "1-5 ease rating"
+        },
+        "clarity": {
+            "type": "integer",
+            "description": "1-5 clarity rating"
+        },
+        "engagement": {
+            "type": "integer",
+            "description": "1-5 engagement rating"
+        },
+        "comment": {
+            "type": "string",
+            "description": "Free text feedback"
+        },
+        "page_context": {
+            "type": "string",
+            "description": "Which page/feature the feedback is about"
+        },
+        "device_type": {
+            "type": "string",
+            "description": "mobile, tablet, or desktop"
+        }
+    },
+    "required": [
+        "id",
+        "user_id",
+        "feedback_type"
+    ]
+}

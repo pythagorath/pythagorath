@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pythagorath-frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "pythagorath-v2/frontend", "run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "pythagorath-core",
+      "runtimeExecutable": "pythagorath-v2/backend/.venv/Scripts/python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "app.main:app", "--app-dir", "pythagorath-core/backend", "--host", "127.0.0.1", "--port", "8100"],
+      "port": 8100
+    },
+    {
+      "name": "g4harness",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8138", "--directory", "pythagorath-core/backend/app/static"],
+      "port": 8138
+    }
+  ]
+}
