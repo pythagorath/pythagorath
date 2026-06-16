@@ -268,6 +268,13 @@ class NextSkill(BaseModel):
     remediating_for: PlacementRef | None = None  # the struggling node we descended FROM (remediation)
 
 
+# ----- the learning-loop entry: what should the child do right now? -----
+class SessionState(BaseModel):
+    needs_diagnostic: bool                 # never diagnosed → run the adaptive diagnostic first
+    phase: str                             # diagnostic | learn | review | done
+    next: NextSkill | None = None          # the next step (None only while needs_diagnostic)
+
+
 # ----- admin panel (question editor + phrasing layer) -----
 def _nonblank(v: str) -> str:
     if v is None or not str(v).strip():

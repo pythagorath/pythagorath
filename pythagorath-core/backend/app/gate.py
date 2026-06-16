@@ -295,13 +295,35 @@ def recompute(db: Session, student_id: int, skill_id: int) -> dict:
     if sm.status == "understood" and sm.understood_answer_id is not None:
         if _meets_fluency(_fluency_view(db, student_id, skill_id, sm.understood_answer_id)):
             sm.status = "mastered"
-            # durability: schedule the first review at the moment of mastery (structure
-            # only — nothing consumes this yet).
+            # durability: schedule the first review at the moment of mastery.
             sm.next_review_at = datetime.now(timezone.utc) + REVIEW_INTERVAL
+
+    # Review tick (SCHEDULING ONLY — the two gates above are untouched; no status changes
+    # here, so 'no progression without mastery' is fully preserved). When a MASTERED node
+    # is practiced CORRECTLY after its review fell due, push the next review forward so the
+    # due item CLEARS and the learning loop doesn't re-surface it endlessly. Simple spaced
+    # repetition; demotion-on-failure stays deferred (a mastered node is never downgraded).
+    if sm.status == "mastered" and sm.next_review_at is not None:
+        now = datetime.now(timezone.utc)
+        due_at = sm.next_review_at
+        if due_at.tzinfo is None:
+            due_at = due_at.replace(tzinfo=timezone.utc)
+        if due_at <= now and _last_answer_correct(db, student_id, skill_id):
+            sm.next_review_at = now + REVIEW_INTERVAL
 
     sm.updated_at = datetime.now(timezone.utc)
     db.flush()
     return _view(db, student_id, skill_id, sm)
+
+
+def _last_answer_correct(db: Session, student_id: int, skill_id: int) -> bool:
+    """Was the most recent answer on this skill correct? (used only by the review tick)."""
+    return bool(db.execute(
+        select(Answer.is_correct)
+        .join(Question, Answer.question_id == Question.id)
+        .where(Answer.student_id == student_id, Question.skill_id == skill_id)
+        .order_by(Answer.id.desc()).limit(1)
+    ).scalars().first())
 
 
 def due_for_review(db: Session, student_id: int, now: datetime | None = None) -> list[int]:

@@ -17,7 +17,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import gate
-from app.models import Question, Skill, SkillMastery
+from app.models import Question, Skill, SkillMastery, Student
 
 
 def _probe_questions(db: Session, skill: Skill) -> list[Question]:
@@ -204,6 +204,7 @@ def record_placement(db: Session, student_id: int, frontier: Skill | None) -> No
     ancestors (its foundation) `placed`. Never the frontier itself (the child must learn
     it), never downgrade a real understood/mastered node. Re-running the diagnostic clears
     the previous `placed` rows first."""
+    student = db.get(Student, student_id)
     for sm in db.execute(
         select(SkillMastery).where(
             SkillMastery.student_id == student_id, SkillMastery.status == "placed"
@@ -211,6 +212,9 @@ def record_placement(db: Session, student_id: int, frontier: Skill | None) -> No
     ).scalars().all():
         db.delete(sm)
     db.flush()
+    # record the start pointer (the 'diagnosed' flag + where to begin) — NOT mastery
+    if student is not None:
+        student.placement_skill_id = frontier.id if frontier is not None else None
     if frontier is None:
         db.commit()
         return

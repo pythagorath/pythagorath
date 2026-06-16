@@ -256,6 +256,13 @@ class Student(Base):
     owner_user_id: Mapped[int | None] = mapped_column(
         ForeignKey("users.id", ondelete="CASCADE"), nullable=True, index=True
     )
+    # The adaptive diagnostic's START POINT (the diagnosed frontier). NULL → never
+    # diagnosed: the session entry routes such a child to the diagnostic first. It only
+    # RECORDS where to begin (and serves as the 'diagnosed' flag); the foundation below is
+    # opened by the `placed` markers, not by this pointer — so it grants no mastery.
+    placement_skill_id: Mapped[int | None] = mapped_column(
+        ForeignKey("skills.id", ondelete="SET NULL"), nullable=True
+    )
 
 
 class ConsentRecord(Base):

@@ -323,12 +323,7 @@ def diagnostic_adaptive(payload: schemas.DiagnosticSubmit,
     )
 
 
-@app.get("/api/students/{student_id}/next", response_model=schemas.NextSkill)
-def next_skill(student=Depends(auth.owned_student), db: Session = Depends(get_db)):
-    """The child's ONE next study target + WHY — the personal learning path. A pure read
-    (lock + mastery + the unified DAG): remediation (descend to a foundation gap) >
-    continue > new frontier > review > done. Only UNLOCKED, in-curriculum nodes are
-    offered (no progression before mastery; all-owners). owned_student → 401/403/404."""
+def _next_skill_payload(db: Session, student) -> schemas.NextSkill:
     res = learning_path.next_skill(db, student, _path_skills(db, student))
 
     def ref(skill_id):
@@ -339,6 +334,41 @@ def next_skill(student=Depends(auth.owned_student), db: Session = Depends(get_db
 
     return schemas.NextSkill(reason=res["reason"], skill=ref(res["skill_id"]),
                              remediating_for=ref(res["remediating_for"]))
+
+
+@app.get("/api/students/{student_id}/session", response_model=schemas.SessionState)
+def session(student=Depends(auth.owned_student), db: Session = Depends(get_db)):
+    """The learning-loop ENTRY — 'what should this child do right now?'. A NEVER-diagnosed
+    child (placement_skill_id is NULL) is routed to the adaptive diagnostic; otherwise the
+    personal path decides (learn / review / done) — review enters automatically when a
+    mastered node falls due. A pure read; ties the existing pieces into one cycle.
+    owned_student → 401/403/404."""
+    if student.placement_skill_id is None:
+        return schemas.SessionState(needs_diagnostic=True, phase="diagnostic", next=None)
+    # daily rule: a DUE review is cleared before new learning (spaced repetition on
+    # return). This session-level ordering is separate from next_skill's learn-priority
+    # (which keeps the ratified remediation>continue>new>review order for direct use).
+    path_ids = {s.id for s in _path_skills(db, student)}
+    due = [sid for sid in gate.due_for_review(db, student.id) if sid in path_ids]
+    if due:
+        s = db.get(Skill, due[0])
+        return schemas.SessionState(
+            needs_diagnostic=False, phase="review",
+            next=schemas.NextSkill(reason="review", remediating_for=None,
+                                   skill=schemas.PlacementRef(skill_id=s.id, code=s.code, name=s.name)))
+    nxt = _next_skill_payload(db, student)
+    phase = {"remediation": "learn", "continue": "learn", "new": "learn",
+             "review": "review", "done": "done"}[nxt.reason]
+    return schemas.SessionState(needs_diagnostic=False, phase=phase, next=nxt)
+
+
+@app.get("/api/students/{student_id}/next", response_model=schemas.NextSkill)
+def next_skill(student=Depends(auth.owned_student), db: Session = Depends(get_db)):
+    """The child's ONE next study target + WHY — the personal learning path. A pure read
+    (lock + mastery + the unified DAG): remediation (descend to a foundation gap) >
+    continue > new frontier > review > done. Only UNLOCKED, in-curriculum nodes are
+    offered (no progression before mastery; all-owners). owned_student → 401/403/404."""
+    return _next_skill_payload(db, student)
 
 
 @app.get("/api/students/{student_id}/skills/{skill_id}/questions",
