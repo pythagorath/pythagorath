@@ -1050,6 +1050,55 @@ function _chartRead(host, v, onAnswer){
       col.appendChild(marks); col.appendChild(tag); row.appendChild(col);
     });
     board.appendChild(row);
+  } else if(v.type==='pie'){
+    // PIE (G4 b8, g4GRAPH) — sectors PROPORTIONAL to values (a 25% value = a 90° sector,
+    // so the visual reads true). Click a sector for «most»; else read via the key/keypad.
+    const NS='http://www.w3.org/2000/svg', total=v.data.reduce((s,d)=>s+d[1],0)||1, R=70, cx=90, cy=90;
+    const COLORS=['#29A9E0','#F39A1F','#7CB342','#E8443B','#9C5EC0','#00897B'];
+    const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 180 180');
+    svg.setAttribute('width','180'); svg.style.cssText='display:block;margin:6px auto'; svg.setAttribute('dir','ltr');
+    const P=(deg)=>[cx+R*Math.cos(Math.PI*deg/180), cy+R*Math.sin(Math.PI*deg/180)];
+    let ang=-90;
+    v.data.forEach(([l,val],i)=>{
+      const frac=val/total, a2=ang+frac*360, large=frac>0.5?1:0;
+      const [x1,y1]=P(ang), [x2,y2]=P(a2);
+      const path=document.createElementNS(NS,'path');
+      path.setAttribute('d',`M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${R} ${R} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`);
+      path.setAttribute('fill',COLORS[i%COLORS.length]); path.setAttribute('stroke','#fff'); path.setAttribute('stroke-width','1.5');
+      if(onPick){ path.style.cursor='pointer'; path.onclick=()=>onPick(l); }
+      svg.appendChild(path);
+      const mid=(ang+a2)/2, [lx,ly]=[cx+R*0.62*Math.cos(Math.PI*mid/180), cy+R*0.62*Math.sin(Math.PI*mid/180)];
+      const t=document.createElementNS(NS,'text'); t.setAttribute('x',lx.toFixed(2)); t.setAttribute('y',(ly+4).toFixed(2));
+      t.setAttribute('text-anchor','middle'); t.setAttribute('style','font-size:12px;font-weight:800;fill:#fff'); t.textContent=l;
+      svg.appendChild(t); ang=a2;
+    });
+    board.appendChild(svg);
+  } else if(v.type==='line'){
+    // LINE GRAPH (G4 b8, g4GRAPH) — points over axes joined by a line; read a point's value.
+    const NS='http://www.w3.org/2000/svg', n=v.data.length, max=Math.max(...v.data.map(d=>d[1]))||1;
+    const W=250,H=150,padL=30,padB=26,padT=12,padR=12;
+    const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    svg.setAttribute('width','100%'); svg.style.cssText='max-width:260px;display:block;margin:6px auto'; svg.setAttribute('dir','ltr');
+    const X=i=> padL + (n>1 ? i*((W-padL-padR)/(n-1)) : (W-padL-padR)/2);
+    const Y=val=> (H-padB) - val*((H-padB-padT)/max);
+    const ln=(x1,y1,x2,y2,st)=>{ const e=document.createElementNS(NS,'line'); e.setAttribute('x1',x1); e.setAttribute('y1',y1);
+      e.setAttribute('x2',x2); e.setAttribute('y2',y2); e.setAttribute('style',st); return e; };
+    svg.appendChild(ln(padL,padT,padL,H-padB,'stroke:#155E7D;stroke-width:2'));   // y-axis
+    svg.appendChild(ln(padL,H-padB,W-padR,H-padB,'stroke:#155E7D;stroke-width:2')); // x-axis
+    for(let g=0; g<=max; g++){ const y=Y(g);                                        // y gridlines+labels
+      svg.appendChild(ln(padL,y,W-padR,y,'stroke:#e2eef6;stroke-width:1'));
+      const t=document.createElementNS(NS,'text'); t.setAttribute('x',padL-6); t.setAttribute('y',y+4);
+      t.setAttribute('text-anchor','end'); t.setAttribute('style','font-size:10px;fill:#155E7D'); t.textContent=toHindi(g); svg.appendChild(t); }
+    const poly=document.createElementNS(NS,'polyline');
+    poly.setAttribute('points', v.data.map(([l,val],i)=>`${X(i).toFixed(1)},${Y(val).toFixed(1)}`).join(' '));
+    poly.setAttribute('style','fill:none;stroke:#F39A1F;stroke-width:2.5'); svg.appendChild(poly);
+    v.data.forEach(([l,val],i)=>{
+      const c=document.createElementNS(NS,'circle'); c.setAttribute('cx',X(i).toFixed(1)); c.setAttribute('cy',Y(val).toFixed(1));
+      c.setAttribute('r',4); c.setAttribute('style','fill:#155E7D'); svg.appendChild(c);
+      const t=document.createElementNS(NS,'text'); t.setAttribute('x',X(i).toFixed(1)); t.setAttribute('y',H-padB+14);
+      t.setAttribute('text-anchor','middle'); t.setAttribute('style','font-size:10px;font-weight:700;fill:#155E7D'); t.textContent=l; svg.appendChild(t);
+    });
+    board.appendChild(svg);
   } else {
     v.data.forEach(([l,val])=>board.appendChild(_pictoRow(l,val,onPick,v.scale)));
   }

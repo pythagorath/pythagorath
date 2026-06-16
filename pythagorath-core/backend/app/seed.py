@@ -4508,6 +4508,168 @@ NODE_COUNTRIES.update({
 # =================== end GRADE 4 batch 7 ===================
 
 
+# =================== GRADE 4 batch 8 — الأنماط والبيانات (FINAL) ===================
+# Born live (gencontent_g4b8.py). Body checks 2026-06-15. The closing G4 batch.
+#   • g4SEQ (extend/rule/shape) — QA/AE/BH/SA. Sequences + rules. SEQ-KW/OM OUT (patterns
+#     embedded in their operations units, not a standalone act).
+#   • g4EXPR (sentence/function) — SA/BH. Number sentences + function tables. NEW (algebra;
+#     QA/AE own sequences but NOT expressions → separate node, no leak).
+#   • g4DATA (read/interpret/create) — SIX. Scale-based bar/pictograph. Pair ↔ g3DATAR/g3DATAB.
+#   • g4LINEPLOT (read/interpret) — QA. Line plot (و١٠). NEW representation (chart lineplot type).
+#   • g4GRAPH (pie/linegraph) — SA/BH. Pie + line graph. NEW representations (chart pie+line).
+#   • g4PROB (certainty/likely) — SA. Probability. Pair ↔ g3PROB (Bahrain-single → Saudi).
+# ALL ROOTS — data/patterns are independent strands (G2/G3 had no data edges). ONE widget
+# extension (chart pie+line; lineplot already existed); sequence/likelihood reused; g4EXPR text.
+# =================================================================================
+
+G4_PATTERN_NODES = [
+    ("g4SEQ", "الأنماط والمتتاليات وقواعدها", "operational", [  # QA/AE/BH/SA
+        # family 1 — إكمال المتتالية (extend) — sequence widget reused
+        ("extend", "أكمل المتتالية: اضبط الحدّ التالي.", "١٥",
+         {"kind": "sequence", "terms": [3, 6, 9, 12]}),
+        ("extend", "أكمل المتتالية: اضبط الحدّ التالي.", "١٠",
+         {"kind": "sequence", "terms": [2, 4, 6, 8]}),
+        ("extend", "أكمل المتتالية: اضبط الحدّ التالي.", "٢٥",
+         {"kind": "sequence", "terms": [5, 10, 15, 20]}),
+        # family 2 — اكتشاف القاعدة (rule)
+        ("rule", "ما قاعدة المتتالية: ٣، ٦، ٩، ١٢ ؟", "+٣",
+         {"kind": "shape-pick", "options": [{"v": "+٣"}, {"v": "+٤"}]}),
+        ("rule", "ما قاعدة المتتالية: ٢، ٤، ٦، ٨ ؟", "+٢",
+         {"kind": "shape-pick", "options": [{"v": "+٢"}, {"v": "+٣"}]}),
+        ("rule", "ما قاعدة المتتالية: ٥، ١٠، ١٥، ٢٠ ؟", "+٥",
+         {"kind": "shape-pick", "options": [{"v": "+٥"}, {"v": "+٦"}]}),
+        # family 3 — نمط الأشكال (shape)
+        ("shape", "ما الشكل التالي في النمط: 🔺🔵🔺🔵🔺 ؟", "🔵",
+         {"kind": "shape-pick", "options": [{"v": "🔵"}, {"v": "🔺"}]}),
+        ("shape", "ما الشكل التالي في النمط: 🔺🔵🟩🔺🔵 ؟", "🟩",
+         {"kind": "shape-pick", "options": [{"v": "🟩"}, {"v": "🔵"}]}),
+    ]),
+    ("g4EXPR", "العبارات والجمل العددية وجداول الدوال", "operational", [  # SA/BH — NEW
+        # family 1 — الجملة العددية المجهولة (sentence)
+        ("sentence", "أكمل الجملة العددية: ٧ + ؟ = ١٢", "٥", None),
+        ("sentence", "أكمل الجملة العددية: ؟ − ٤ = ٦", "١٠", None),
+        ("sentence", "أكمل الجملة العددية: ٣ × ؟ = ١٢", "٤", None),
+        ("sentence", "أكمل الجملة العددية: ٩ + ؟ = ١٥", "٦", None),
+        # family 2 — جدول الدالّة (function)
+        ("function", "جدول دالّة، القاعدة: «س + ٥». إذا كان الدخل ٤ فما الخرج؟", "٩", None),
+        ("function", "جدول دالّة، القاعدة: «س × ٣». إذا كان الدخل ٦ فما الخرج؟", "١٨", None),
+        ("function", "جدول دالّة، القاعدة: «س + ٧». إذا كان الدخل ٨ فما الخرج؟", "١٥", None),
+        ("function", "جدول دالّة، القاعدة: «س × ٢». إذا كان الدخل ٩ فما الخرج؟", "١٨", None),
+    ]),
+    ("g4DATA", "تمثيل البيانات وقراءتها بمقياس", "operational", [  # six
+        # family 1 — القراءة بمقياس (read)
+        ("read", "في مخطّط الصور (كل رمز = ٢): كم عدد الفئة «ب»؟", "٦",
+         {"kind": "chart", "mode": "read", "type": "pictograph",
+          "data": [["أ", 4], ["ب", 6], ["ج", 8]], "scale": 2, "ask": "count", "cat": "ب"}),
+        ("read", "في مخطّط الصور (كل رمز = ٥): كم عدد الفئة «ج»؟", "١٥",
+         {"kind": "chart", "mode": "read", "type": "pictograph",
+          "data": [["أ", 10], ["ب", 5], ["ج", 15]], "scale": 5, "ask": "count", "cat": "ج"}),
+        ("read", "في مخطّط الأعمدة: ما ارتفاع عمود الفئة «أ»؟", "٨",
+         {"kind": "chart", "mode": "read", "type": "bar",
+          "data": [["أ", 8], ["ب", 4], ["ج", 6]], "ask": "count", "cat": "أ"}),
+        # family 2 — التفسير (interpret)
+        ("interpret", "في المخطّط: أيُّ فئةٍ هي الأكثر؟", "ب",
+         {"kind": "chart", "mode": "read", "type": "bar",
+          "data": [["أ", 4], ["ب", 8], ["ج", 6]], "ask": "most"}),
+        ("interpret", "في المخطّط: أيُّ فئةٍ هي الأكثر؟", "ج",
+         {"kind": "chart", "mode": "read", "type": "bar",
+          "data": [["أ", 7], ["ب", 3], ["ج", 9]], "ask": "most"}),
+        # family 3 — الإنشاء/اختيار التدريج (create)
+        ("create", "كلُّ رمزٍ يمثّل ٢ — كم رمزاً تحتاج لتمثيل القيمة ٨؟", "٤", None),
+        ("create", "كلُّ رمزٍ يمثّل ٥ — كم رمزاً تحتاج لتمثيل القيمة ٢٠؟", "٤", None),
+        ("create", "كلُّ رمزٍ يمثّل ١٠ — كم رمزاً تحتاج لتمثيل القيمة ٣٠؟", "٣", None),
+    ]),
+    ("g4LINEPLOT", "الخطّ بالنقاط", "operational", [  # QA — line plot
+        # family 1 — القراءة (read)
+        ("read", "في الخطّ بالنقاط: كم عدد العلامات فوق القيمة «٢»؟", "٣",
+         {"kind": "chart", "mode": "read", "type": "lineplot",
+          "data": [["٢", 3], ["٤", 2], ["٦", 4]], "ask": "count", "cat": "٢"}),
+        ("read", "في الخطّ بالنقاط: كم عدد العلامات فوق القيمة «٤»؟", "٢",
+         {"kind": "chart", "mode": "read", "type": "lineplot",
+          "data": [["٢", 3], ["٤", 2], ["٦", 4]], "ask": "count", "cat": "٤"}),
+        ("read", "في الخطّ بالنقاط: كم عدد العلامات فوق القيمة «١»؟", "٥",
+         {"kind": "chart", "mode": "read", "type": "lineplot",
+          "data": [["١", 5], ["٣", 3], ["٥", 2]], "ask": "count", "cat": "١"}),
+        ("read", "في الخطّ بالنقاط: كم عدد العلامات فوق القيمة «٧»؟", "٣",
+         {"kind": "chart", "mode": "read", "type": "lineplot",
+          "data": [["٢", 4], ["٥", 1], ["٧", 3]], "ask": "count", "cat": "٧"}),
+        # family 2 — التفسير (interpret)
+        ("interpret", "في الخطّ بالنقاط: أيُّ قيمةٍ لها أكثر العلامات؟", "٤",
+         {"kind": "chart", "mode": "read", "type": "lineplot",
+          "data": [["٢", 3], ["٤", 5], ["٦", 2]], "ask": "most"}),
+        ("interpret", "في الخطّ بالنقاط: أيُّ قيمةٍ لها أكثر العلامات؟", "٣",
+         {"kind": "chart", "mode": "read", "type": "lineplot",
+          "data": [["١", 2], ["٣", 6], ["٥", 4]], "ask": "most"}),
+        ("interpret", "في الخطّ بالنقاط: أيُّ قيمةٍ لها أكثر العلامات؟", "٦",
+         {"kind": "chart", "mode": "read", "type": "lineplot",
+          "data": [["٢", 4], ["٤", 1], ["٦", 5]], "ask": "most"}),
+        ("interpret", "في الخطّ بالنقاط: أيُّ قيمةٍ لها أكثر العلامات؟", "١",
+         {"kind": "chart", "mode": "read", "type": "lineplot",
+          "data": [["١", 5], ["٣", 2], ["٥", 3]], "ask": "most"}),
+    ]),
+    ("g4GRAPH", "القطاعات الدائرية والتمثيل بالخطوط", "operational", [  # SA/BH — pie + line
+        # family 1 — القطاع الدائري (pie)
+        ("pie", "في القطاع الدائري: أيُّ فئةٍ نصيبها الأكبر؟", "ج",
+         {"kind": "chart", "mode": "read", "type": "pie",
+          "data": [["أ", 2], ["ب", 4], ["ج", 6]], "ask": "most"}),
+        ("pie", "في القطاع الدائري: أيُّ فئةٍ نصيبها الأكبر؟", "أ",
+         {"kind": "chart", "mode": "read", "type": "pie",
+          "data": [["أ", 6], ["ب", 3], ["ج", 1]], "ask": "most"}),
+        ("pie", "في القطاع الدائري: أيُّ فئةٍ نصيبها الأكبر؟", "ب",
+         {"kind": "chart", "mode": "read", "type": "pie",
+          "data": [["أ", 3], ["ب", 6], ["ج", 2]], "ask": "most"}),
+        ("pie", "في القطاع الدائري: أيُّ فئةٍ نصيبها الأكبر؟", "ج",
+         {"kind": "chart", "mode": "read", "type": "pie",
+          "data": [["أ", 4], ["ب", 2], ["ج", 6]], "ask": "most"}),
+        # family 2 — التمثيل بالخطوط (linegraph)
+        ("linegraph", "في التمثيل بالخطوط: ما قيمة النقطة عند «ب»؟", "٥",
+         {"kind": "chart", "mode": "read", "type": "line",
+          "data": [["أ", 3], ["ب", 5], ["ج", 2], ["د", 6]], "ask": "count", "cat": "ب"}),
+        ("linegraph", "في التمثيل بالخطوط: ما قيمة النقطة عند «د»؟", "٦",
+         {"kind": "chart", "mode": "read", "type": "line",
+          "data": [["أ", 3], ["ب", 5], ["ج", 2], ["د", 6]], "ask": "count", "cat": "د"}),
+        ("linegraph", "في التمثيل بالخطوط: ما قيمة النقطة عند «أ»؟", "٧",
+         {"kind": "chart", "mode": "read", "type": "line",
+          "data": [["أ", 7], ["ب", 2], ["ج", 4], ["د", 1]], "ask": "count", "cat": "أ"}),
+        ("linegraph", "في التمثيل بالخطوط: ما قيمة النقطة عند «ج»؟", "٣",
+         {"kind": "chart", "mode": "read", "type": "line",
+          "data": [["أ", 2], ["ب", 6], ["ج", 3], ["د", 5]], "ask": "count", "cat": "ج"}),
+    ]),
+    ("g4PROB", "تحديد الاحتمال", "operational", [  # SA — likelihood reused
+        # family 1 — الحتمية (certainty)
+        ("certainty", "كيس فيه كرات حمراء فقط. سحب كرة حمراء حدثٌ:", "أكيد",
+         {"kind": "likelihood", "scenario": "bag", "balls": [["red", 5]], "ask": "certainty", "event": "red"}),
+        ("certainty", "كيس فيه كرات حمراء فقط. سحب كرة زرقاء حدثٌ:", "مستحيل",
+         {"kind": "likelihood", "scenario": "bag", "balls": [["red", 5]], "ask": "certainty", "event": "blue"}),
+        ("certainty", "كيس فيه ٤ حمراء و٤ زرقاء. سحب كرة حمراء حدثٌ:", "ممكن",
+         {"kind": "likelihood", "scenario": "bag", "balls": [["red", 4], ["blue", 4]], "ask": "certainty", "event": "red"}),
+        ("certainty", "كيس فيه كرات خضراء فقط. سحب كرة خضراء حدثٌ:", "أكيد",
+         {"kind": "likelihood", "scenario": "bag", "balls": [["green", 5]], "ask": "certainty", "event": "green"}),
+        # family 2 — الترجيح (likely)
+        ("likely", "كيس فيه ٥ حمراء و٢ زرقاء. أيُّ لونٍ أكثر احتمالاً للسحب؟", "أحمر",
+         {"kind": "likelihood", "scenario": "bag", "balls": [["red", 5], ["blue", 2]], "ask": "more"}),
+        ("likely", "كيس فيه ٣ خضراء و٦ صفراء. أيُّ لونٍ أكثر احتمالاً للسحب؟", "أصفر",
+         {"kind": "likelihood", "scenario": "bag", "balls": [["green", 3], ["yellow", 6]], "ask": "more"}),
+        ("likely", "كيس فيه ٢ حمراء و٧ زرقاء. أيُّ لونٍ أقلُّ احتمالاً للسحب؟", "أحمر",
+         {"kind": "likelihood", "scenario": "bag", "balls": [["red", 2], ["blue", 7]], "ask": "less"}),
+        ("likely", "كيس فيه ٦ خضراء و٢ صفراء. أيُّ لونٍ أقلُّ احتمالاً للسحب؟", "أصفر",
+         {"kind": "likelihood", "scenario": "bag", "balls": [["green", 6], ["yellow", 2]], "ask": "less"}),
+    ]),
+]
+
+G4_PATTERN_EDGES = []   # all roots — data & patterns are independent strands (as in G2/G3)
+
+NODE_COUNTRIES.update({
+    "g4SEQ": ("QA", "AE", "BH", "SA"),                # sequences — four (KW/OM patterns embedded)
+    "g4EXPR": ("SA", "BH"),                           # expressions/function tables — SA/BH (new)
+    "g4DATA": ("SA", "BH", "KW", "QA", "AE", "OM"),   # data by scale — six
+    "g4LINEPLOT": ("QA",),                            # line plot — Qatar alone (new representation)
+    "g4GRAPH": ("SA", "BH"),                          # pie + line graph — SA/BH (new representations)
+    "g4PROB": ("SA",),                                # probability — Saudi (g3PROB Bahrain → Saudi)
+})
+# =================== end GRADE 4 batch 8 ===================
+
+
 def seed(db: Session) -> None:
     if db.execute(select(Skill).limit(1)).scalars().first() is not None:
         return  # already seeded
@@ -4575,13 +4737,15 @@ def seed(db: Session) -> None:
     add_unit("القياس", 6, G4_MEASURE_NODES, target_grade=grade4)
     # GRADE 4 — batch 7: geometry (lines, angles+protractor, shapes, symmetry, coords, location)
     add_unit("الهندسة", 7, G4_GEOM_NODES, target_grade=grade4)
+    # GRADE 4 — batch 8 (FINAL): patterns/algebra + data/probability
+    add_unit("الأنماط والبيانات", 8, G4_PATTERN_NODES, target_grade=grade4)
 
     for prereq_code, dependent_code in (
         EDGES + GEOMETRY_EDGES + MULDIV_EDGES + DATA_EDGES + MEASURE_EDGES + LIGHT_EDGES
         + FRACTION_EDGES + G1_EDGES + G3_EDGES + G3_ADDSUB_EDGES + G3_MULDIV_EDGES
         + G3_FRACTION_EDGES + G3_MEASURE_EDGES + G3_GEOM_EDGES + G3_DATA_NODES_EDGES
         + G4_EDGES + G4_ADDSUB_EDGES + G4_MULDIV_EDGES + G4_FRACTION_EDGES
-        + G4_DECIMAL_EDGES + G4_MEASURE_EDGES + G4_GEOM_EDGES
+        + G4_DECIMAL_EDGES + G4_MEASURE_EDGES + G4_GEOM_EDGES + G4_PATTERN_EDGES
     ):
         db.add(SkillPrerequisite(
             skill_id=code_to_id[dependent_code],

@@ -24,7 +24,8 @@ G4_B4 = {"g4FRAC", "g4FREQ", "g4FRADD", "g4FRADDX", "g4FRMUL"}             # ا�
 G4_B5 = {"g4DEC", "g4DECLINE", "g4DECADD"}                                 # الكسور العشرية
 G4_B6 = {"g4METRIC", "g4PERIM", "g4AREA", "g4TIME", "g4VOL"}               # القياس
 G4_B7 = {"g4LINES", "g4ANGLE", "g4SHAPES", "g4SYMM", "g4COORD", "g4LOC"}   # الهندسة
-G4_NUM = G4_B1 | G4_B2 | G4_B3 | G4_B4 | G4_B5 | G4_B6 | G4_B7
+G4_B8 = {"g4SEQ", "g4EXPR", "g4DATA", "g4LINEPLOT", "g4GRAPH", "g4PROB"}   # الأنماط والبيانات
+G4_NUM = G4_B1 | G4_B2 | G4_B3 | G4_B4 | G4_B5 | G4_B6 | G4_B7 | G4_B8
 
 # per-country G4 paths (batches 1-4). Fractions: all six in g4FRAC/g4FREQ (≤12, no Oman
 # tier — Oman's fraction wall reaches 12 too); add/sub LIKE five (no Oman); g4FRADDX
@@ -36,31 +37,37 @@ G4_PATH = {
            "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD",
            "g4DEC", "g4DECLINE", "g4DECADD",
            "g4METRIC", "g4PERIM", "g4AREA", "g4TIME", "g4VOL",
-           "g4LINES", "g4ANGLE", "g4SHAPES", "g4SYMM", "g4COORD"} | _FR,
+           "g4LINES", "g4ANGLE", "g4SHAPES", "g4SYMM", "g4COORD",
+           "g4SEQ", "g4EXPR", "g4DATA", "g4GRAPH", "g4PROB"} | _FR,
     "BH": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4PROPS", "g4EST", "g4MUL1",
            "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD",
            "g4DEC", "g4DECADD",
            "g4METRIC", "g4PERIM", "g4AREA",
-           "g4LINES", "g4SHAPES"} | _FR,
+           "g4LINES", "g4SHAPES",
+           "g4SEQ", "g4EXPR", "g4DATA", "g4GRAPH"} | _FR,
     "QA": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4EST", "g4MUL1", "g4FACT",
            "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRMUL",
            "g4DEC", "g4DECLINE",
            "g4METRIC", "g4PERIM", "g4AREA",
-           "g4LINES", "g4ANGLE", "g4SHAPES"} | _FR,
+           "g4LINES", "g4ANGLE", "g4SHAPES",
+           "g4SEQ", "g4DATA", "g4LINEPLOT"} | _FR,
     "KW": {"g4PVM", "g4CMPM", "g4ROUND", "g4ADDSUB", "g4EST", "g4MUL1", "g4FACT",
            "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRADDX",
            "g4DEC",
            "g4METRIC", "g4PERIM", "g4AREA",
-           "g4LINES", "g4SHAPES"} | _FR,
+           "g4LINES", "g4SHAPES",
+           "g4DATA"} | _FR,
     "AE": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4EST", "g4MUL1", "g4MUL2",
            "g4DIV1", "g4FRADD",
            "g4DEC", "g4DECADD",
            "g4METRIC", "g4PERIM", "g4AREA", "g4VOL",
-           "g4LINES", "g4SHAPES", "g4SYMM"} | _FR,
+           "g4LINES", "g4SHAPES", "g4SYMM",
+           "g4SEQ", "g4DATA"} | _FR,
     "OM": {"g4PV4", "g4ROUND100", "g4ADD4", "g4DIV2",
            "g4DEC",
            "g4PERIM", "g4AREA", "g4TIME",
-           "g4SHAPES", "g4SYMM", "g4LOC"} | _FR,
+           "g4SHAPES", "g4SYMM", "g4LOC",
+           "g4DATA"} | _FR,
 }
 
 G4_RANGE_CAP = {
@@ -77,6 +84,8 @@ G4_RANGE_CAP = {
     "g4METRIC": 9000, "g4PERIM": 300, "g4AREA": 400, "g4TIME": 60, "g4VOL": 1000,
     # batch 7 — geometry (degrees ≤180, coords ≤10, element counts ≤6; text nodes have no numerals)
     "g4LINES": 180, "g4ANGLE": 180, "g4SHAPES": 6, "g4SYMM": 9, "g4COORD": 10, "g4LOC": 9,
+    # batch 8 — patterns/data/probability
+    "g4SEQ": 200, "g4EXPR": 200, "g4DATA": 100, "g4LINEPLOT": 50, "g4GRAPH": 50, "g4PROB": 20,
 }
 # fractions are range-guarded by max DENOMINATOR ≤ 12, not an integer ceiling
 G4_FRAC_CODES = {"g4FRAC", "g4FREQ", "g4FRADD", "g4FRADDX", "g4FRMUL"}
@@ -126,6 +135,13 @@ G4_FAMILIES = {
     "g4SYMM": {"line", "rotational"},
     "g4COORD": {"plot", "read"},
     "g4LOC": {"position", "between"},
+    # batch 8 — patterns & data
+    "g4SEQ": {"extend", "rule", "shape"},
+    "g4EXPR": {"sentence", "function"},
+    "g4DATA": {"read", "interpret", "create"},
+    "g4LINEPLOT": {"read", "interpret"},
+    "g4GRAPH": {"pie", "linegraph"},
+    "g4PROB": {"certainty", "likely"},
 }
 
 _TRANS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
@@ -170,7 +186,8 @@ def test_four_grades_seeded(guardian_client):
 def test_g4_unit_nodes_and_content(db):
     _, units, skills = _g4_skills(db)
     assert [u.name for u in sorted(units, key=lambda u: u.order)] == [
-        "الأعداد", "العمليات", "الضرب والقسمة", "الكسور", "الكسور العشرية", "القياس", "الهندسة"]
+        "الأعداد", "العمليات", "الضرب والقسمة", "الكسور", "الكسور العشرية", "القياس",
+        "الهندسة", "الأنماط والبيانات"]
     assert {s.code for s in skills} == G4_NUM
     for s in skills:
         qs = db.execute(select(Question).where(Question.skill_id == s.id)).scalars().all()
@@ -387,6 +404,35 @@ def test_g4_angle_waits_on_lines(guardian_client):
     sa = _child(guardian_client, country="SA", name="ز٧س")["id"]
     es = {x["code"]: x for x in guardian_client.get(f"/api/students/{sa}/skillmap").json()}
     assert es["g4SHAPES"]["unlocked"] is True and es["g4COORD"]["unlocked"] is True
+
+
+def test_g4_batch8_patterns_data_structure(guardian_client):
+    """Sequences QA/AE/BH/SA (KW/OM patterns are embedded → out); expressions SA/BH (algebra,
+    no leak to QA/AE); data six; line plot QA alone; pie+line graph SA/BH; probability SA."""
+    paths = {c: _map_codes(guardian_client, _child(guardian_client, country=c, name=f"p{c}")["id"])
+             for c in ("SA", "BH", "KW", "QA", "AE", "OM")}
+    assert {c for c, p in paths.items() if "g4SEQ" in p} == {"SA", "QA", "AE", "BH"}
+    assert "g4SEQ" not in paths["KW"] and "g4SEQ" not in paths["OM"]
+    assert {c for c, p in paths.items() if "g4EXPR" in p} == {"SA", "BH"}      # algebra
+    assert all("g4DATA" in p for p in paths.values())                          # data six
+    assert {c for c, p in paths.items() if "g4LINEPLOT" in p} == {"QA"}        # line plot
+    assert {c for c, p in paths.items() if "g4GRAPH" in p} == {"SA", "BH"}     # pie + line graph
+    assert {c for c, p in paths.items() if "g4PROB" in p} == {"SA"}            # probability
+
+
+def test_g4_readiness_all_paths_complete_and_closed(guardian_client, db):
+    """FINAL readiness audit: every G4 node is owned by ≥1 country, the union is exactly the
+    G4 set (no orphan, no phantom), and every country path is prerequisite-CLOSED (no node
+    whose prereq is missing from its own path → no broken path)."""
+    assert set().union(*G4_PATH.values()) == G4_NUM                            # full coverage, no orphan
+    skills = {s.code: s.id for s in db.execute(select(Skill)).scalars().all() if s.code in G4_NUM}
+    id2code = {v: k for k, v in skills.items()}
+    prereqs = {code: {id2code[r] for r in db.execute(select(
+        SkillPrerequisite.prerequisite_skill_id).where(SkillPrerequisite.skill_id == sid)).scalars()
+        if r in id2code} for code, sid in skills.items()}
+    for country, path in G4_PATH.items():
+        for node in path:
+            assert prereqs[node] <= path, (country, node, prereqs[node] - path)   # closure
 
 
 def test_g4_isolated_from_lower_grades(guardian_client):
