@@ -288,15 +288,18 @@ def test_g2_child_unchanged_66(guardian_client):
     assert not (codes & G1_CODES)
 
 
-def test_cross_grade_questions_blocked_structurally(guardian_client, db):
-    g1_child = _child(guardian_client, country="SA", order=1, name="أ")["id"]
-    g2_child = _child(guardian_client, country="SA", order=2, name="ب")["id"]
-    g1n10 = db.execute(select(Skill).where(Skill.code == "g1N10")).scalars().one()
-    e1 = db.execute(select(Skill).where(Skill.code == "E1")).scalars().one()
-    r = guardian_client.get(f"/api/students/{g1_child}/skills/{e1.id}/questions")
-    assert r.status_code == 403 and r.json()["detail"]["reason"] == "path"
-    r2 = guardian_client.get(f"/api/students/{g2_child}/skills/{g1n10.id}/questions")
-    assert r2.status_code == 403 and r2.json()["detail"]["reason"] == "path"
+def test_cross_grade_descent_allowed_ascent_blocked(guardian_client, db):
+    """A G2 child may DESCEND to a cross-grade ANCESTOR in G1 (g1PV ← C1) for remediation
+    — not a path block. A G1 child can never ASCEND to a G2 node (G1 is the floor)."""
+    def cid(c):
+        return db.execute(select(Skill).where(Skill.code == c)).scalars().one().id
+    def reason(sid, skid):
+        r = guardian_client.get(f"/api/students/{sid}/skills/{skid}/questions")
+        return None if r.status_code == 200 else r.json().get("detail", {}).get("reason")
+    g1 = _child(guardian_client, country="SA", order=1, name="أ")["id"]
+    g2 = _child(guardian_client, country="SA", order=2, name="ب")["id"]
+    assert reason(g2, cid("g1PV")) != "path"        # DESCENT: g1PV (g1) founds C1 (a g2 node)
+    assert reason(g1, cid("C1")) == "path"          # ASCENT blocked: g1 child can't reach g2
 
 
 def test_g1_diagnostic_probes_follow_the_path(guardian_client, db):

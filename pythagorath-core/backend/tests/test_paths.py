@@ -136,14 +136,14 @@ def test_s2_batch1_three_digit_column_paths(guardian_client, db):
     om = _codes(guardian_client, _child(guardian_client, "OM")["id"])
     assert om.isdisjoint({"C5", "A3", "A4"})               # Oman excluded (logged ambiguous)
     # the new edges: C5←C1, A3←{C5,A1}, A4←{C5,A2} — and every path stays prereq-closed
-    from app.models import Skill, SkillPrerequisite
+    from app.models import Skill
     from sqlalchemy import select
+    from app import gate
+    names = {s.id: s.code for s in db.execute(select(Skill)).scalars().all()}
     def prereqs(code):
         sk = db.execute(select(Skill).where(Skill.code == code)).scalars().one()
-        rows = db.execute(select(SkillPrerequisite.prerequisite_skill_id).where(
-            SkillPrerequisite.skill_id == sk.id)).scalars().all()
-        names = {s.id: s.code for s in db.execute(select(Skill)).scalars().all()}
-        return {names[r] for r in rows}
+        # INTRA-grade DAG = same-grade locks; cross-grade edges (descent) are excluded
+        return {names[p] for p in gate.lock_prerequisites(db, sk.id)}
     assert prereqs("C5") == {"C1"}
     assert prereqs("A3") == {"C5", "A1"}
     assert prereqs("A4") == {"C5", "A2"}

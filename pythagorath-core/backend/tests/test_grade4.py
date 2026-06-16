@@ -475,10 +475,11 @@ def test_g4_crossgrade_edges_connect_grades(db):
     higher), every G4 node has ≥1 edge (none edge-isolated), and the lock never gates a
     G4 node on a cross-grade ancestor (so no path bricks)."""
     code_of = {s.id: s.code for s in db.execute(select(Skill)).scalars().all()}
-    grade_of = {}
+    from app.models import Grade
+    g_order = {g.id: g.order for g in db.execute(select(Grade)).scalars().all()}
+    grade_of = {}                                     # code → GRADE ORDER (1..4), not grade_id
     for s in db.execute(select(Skill)).scalars().all():
-        u = db.get(Unit, s.unit_id)
-        grade_of[s.code] = u.grade_id
+        grade_of[s.code] = g_order[db.get(Unit, s.unit_id).grade_id]
     cross = 0
     g4_with_edge = set()
     for pr in db.execute(select(SkillPrerequisite)).scalars().all():

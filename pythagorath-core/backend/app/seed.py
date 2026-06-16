@@ -4698,6 +4698,44 @@ G4_CROSSGRADE_EDGES = [
 # =================== end CROSS-GRADE EDGES ===================
 
 
+# =================== LOWER-GRADE CROSS-GRADE EDGES (G1→G2→G3) ===================
+# Same principle as the G4 merge: same-skill lineage, LOWER→HIGHER, and the lock stays
+# SAME-GRADE only (gate.lock_prerequisites) — a cross-grade ancestor connects + enables
+# DESCENT but NEVER hard-locks the higher node. With these the map is connected across all
+# four grades, so the adaptive diagnostic descends/climbs the full 1→2→3→4 span.
+#
+# IMPORTANT (owner-noted): these pairs are derived from node NAMES, not a full body check
+# (unlike the G4 edges). The CLEAR group is obvious same-skill growth; the NAME-BASED group
+# is similarity-inferred and tagged ⚠ — to revisit if trials show a descent to a wrong root.
+G4_LOWER_CROSSGRADE_EDGES = [
+    # ---------- G1 → G2 : CLEAR same-skill lineage ----------
+    ("g1PV", "C1"), ("g1ADD", "D1"), ("g1SUB", "D2"), ("g1EVEN", "Z"),
+    ("g1ORDINAL", "Ord"), ("g1PAT", "P"), ("g1HALF", "Fr1"), ("g1FRSET", "Fr3"),
+    ("g1LEN", "Q1"), ("g1AREA", "Q4"), ("g1CLK", "Q2"), ("g1MONEY", "Q3"),
+    ("g1SHP2", "G1"), ("g1SHP3", "G2"), ("g1DATA", "DA1"), ("g1PICT", "DA2"),
+    # ---------- G1 → G2 : ⚠ NAME-BASED (review if mis-descent in trials) ----------
+    ("g1N100", "C5"), ("g1SKIP", "N4"), ("g1CMPQ", "N9"), ("g1EST", "N11"),
+    ("g1ADDSTR", "A1"), ("g1SUBSTR", "A2"), ("g1REL", "F11"), ("g1BOND", "B2"),
+    ("g1TENS", "T1"), ("g1DIG2", "B4"), ("g1ESTR", "T6"), ("g1POS", "R2"),
+    ("g1CLS", "R1"), ("g1CAL", "Q5"),
+    # ---------- G2 → G3 : CLEAR same-skill lineage ----------
+    ("C1", "g3PV"), ("Z", "g3EVENM"), ("M1", "g3MUL"), ("M4", "g3MUL"),
+    ("V1", "g3DIV"), ("V3", "g3DIV"), ("Fr1", "g3FRAC"), ("Fr2", "g3FREQ"),
+    ("Fr3", "g3FRSET3"), ("Q1", "g3LEN"), ("Q2", "g3TIME3"), ("Q3", "g3MONEY3"),
+    ("Q4", "g3AREA3"), ("G1", "g3GEO"), ("DA1", "g3DATAR"), ("DA2", "g3DATAB"),
+    ("DA3", "g3PROB"), ("N9", "g3CMP10"), ("N10", "g3CMP10"),
+    # ---------- G2 → G3 : ⚠ NAME-BASED (review if mis-descent in trials) ----------
+    ("N11", "g3ROUND"), ("N4", "g3MUL"), ("A3", "g3ADD3"), ("A4", "g3ADD3"),
+    ("T6", "g3EST3"), ("T10", "g3EST3"), ("F1", "g3PROPS"), ("F4", "g3MULF1"),
+    ("V4", "g3DIVF"), ("G4", "g3GEO"), ("G8", "g3GEO"), ("G5", "g3SYMM"),
+    ("G7", "g3SYMM"), ("R2", "g3COORD"), ("Q5", "g3TIME3"),
+]
+# Intentional LEAVES (no clean cross-grade partner — owner-approved, not a gap):
+#   DA4 (line plot — reappears only in g4LINEPLOT, a 2-grade jump), S1/S2 (problem solving
+#   — a cross-cutting skill with no single-skill G1/G3 analog).
+# =================== end LOWER-GRADE CROSS-GRADE EDGES ===================
+
+
 def seed(db: Session) -> None:
     if db.execute(select(Skill).limit(1)).scalars().first() is not None:
         return  # already seeded
@@ -4774,7 +4812,7 @@ def seed(db: Session) -> None:
         + G3_FRACTION_EDGES + G3_MEASURE_EDGES + G3_GEOM_EDGES + G3_DATA_NODES_EDGES
         + G4_EDGES + G4_ADDSUB_EDGES + G4_MULDIV_EDGES + G4_FRACTION_EDGES
         + G4_DECIMAL_EDGES + G4_MEASURE_EDGES + G4_GEOM_EDGES + G4_PATTERN_EDGES
-        + G4_CROSSGRADE_EDGES
+        + G4_CROSSGRADE_EDGES + G4_LOWER_CROSSGRADE_EDGES
     ):
         db.add(SkillPrerequisite(
             skill_id=code_to_id[dependent_code],

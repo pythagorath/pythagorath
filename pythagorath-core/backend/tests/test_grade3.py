@@ -16,7 +16,7 @@ from collections import Counter
 
 from sqlalchemy import select
 
-from app import consent
+from app import consent, gate
 from app.models import Grade, Question, Skill, SkillCountry, SkillPrerequisite, Unit
 
 G3_NUM = {"g3PV", "g3PV5", "g3BIG", "g3CMP4", "g3CMP10", "g3ROUND", "g3ROUND4"}
@@ -332,8 +332,8 @@ def test_g3_countries_and_edges(db):
         ).scalars().all()
         assert sorted(countries) == want, code
     def prereqs(code):
-        return set(db.execute(select(SkillPrerequisite.prerequisite_skill_id).where(
-            SkillPrerequisite.skill_id == by_code[code].id)).scalars().all())
+        # the INTRA-grade DAG = same-grade locks; cross-grade edges (descent) are excluded
+        return set(gate.lock_prerequisites(db, by_code[code].id))
     # five open roots: PV, ROUND (Qatar owns it without PV — the BOND→ADDSTR
     # dropped-edge precedent), Oman's CMP10, ADD3 (QA/OM own it without PV), and
     # PROPS (QA/SA order properties BEFORE 3-digit fluency — no ADD3→PROPS edge)
@@ -470,15 +470,19 @@ def test_g1_g2_inventories_unchanged(guardian_client):
     assert not (g1_codes & G3_CODES)
 
 
-def test_cross_grade_questions_blocked_structurally(guardian_client, db):
-    g3_child = _child(guardian_client, country="SA", name="ج")["id"]
-    g2_child = _child(guardian_client, country="SA", order=2, name="ب")["id"]
-    g3pv = db.execute(select(Skill).where(Skill.code == "g3PV")).scalars().one()
-    e1 = db.execute(select(Skill).where(Skill.code == "E1")).scalars().one()
-    g1n10 = db.execute(select(Skill).where(Skill.code == "g1N10")).scalars().one()
-    for sid, skill in ((g3_child, e1), (g3_child, g1n10), (g2_child, g3pv)):
-        r = guardian_client.get(f"/api/students/{sid}/skills/{skill.id}/questions")
-        assert r.status_code == 403 and r.json()["detail"]["reason"] == "path", skill.code
+def test_cross_grade_descent_allowed_ascent_blocked(guardian_client, db):
+    """With the unified DAG a G3 child may DESCEND to a cross-grade ANCESTOR (C1 ← g3PV)
+    for remediation — not a path block. ASCENT stays blocked: a G2 child can never reach
+    a G3 node."""
+    def cid(c):
+        return db.execute(select(Skill).where(Skill.code == c)).scalars().one().id
+    def reason(sid, skid):
+        r = guardian_client.get(f"/api/students/{sid}/skills/{skid}/questions")
+        return None if r.status_code == 200 else r.json().get("detail", {}).get("reason")
+    g3 = _child(guardian_client, country="SA", name="ج")["id"]
+    g2 = _child(guardian_client, country="SA", order=2, name="ب")["id"]
+    assert reason(g3, cid("C1")) != "path"          # DESCENT: C1 (g2) founds g3PV (SA owns it)
+    assert reason(g2, cid("g3PV")) == "path"        # ASCENT blocked: g2 child can't reach g3
 
 
 def test_g3_diagnostic_probes_follow_the_path(guardian_client, db):

@@ -77,8 +77,8 @@ def test_fraction_paths_by_country(guardian_client):
 def test_fraction_dependencies_are_path_driven_and_closed(db):
     names = {s.id: s.code for s in db.execute(select(Skill)).scalars().all()}
     def prereqs(code):
-        return {names[r] for r in db.execute(select(SkillPrerequisite.prerequisite_skill_id).where(
-            SkillPrerequisite.skill_id == _skill(db, code).id)).scalars().all()}
+        # the INTRA-grade DAG = same-grade locks; cross-grade edges (descent) are excluded
+        return {names[p] for p in gate.lock_prerequisites(db, _skill(db, code).id)}
     assert prereqs("Fr1") == set()       # independent visual base
     assert prereqs("Fr2") == {"Fr1"}
     assert prereqs("Fr3") == {"Fr1"}     # NOT V1 — Saudi has Fr3 but not V1 (path closure)

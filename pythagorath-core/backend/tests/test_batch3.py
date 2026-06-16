@@ -72,8 +72,8 @@ def test_batch3_paths_in_both_dimensions(guardian_client):
 def test_dependencies_path_driven_and_closed(db):
     names = {s.id: s.code for s in db.execute(select(Skill)).scalars().all()}
     def pr(code):
-        return {names[r] for r in db.execute(select(SkillPrerequisite.prerequisite_skill_id).where(
-            SkillPrerequisite.skill_id == _skill(db, code).id)).scalars().all()}
+        # INTRA-grade DAG = same-grade locks; cross-grade edges (descent) are excluded
+        return {names[p] for p in gate.lock_prerequisites(db, _skill(db, code).id)}
     assert pr("V4") == {"M1", "V1"}     # inverse needs both — Kuwait has both (closed)
     for code in ("Q4", "Q5", "DA4"):    # independent visual/symbolic bases
         assert pr(code) == set()
