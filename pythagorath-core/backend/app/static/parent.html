@@ -4,54 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>لوحة وليّ الأمر — فيثاغورث</title>
+<!-- brand.css already imports Baloo Bhaijaan 2 + Readex Pro + the colour tokens -->
 <link rel="stylesheet" href="/static/brand.css">
 <style>
-  /* warm wash over the brand surface (home-of-education feel) */
-  body{ background-color:#FBF7F0; }
-  .wrap{ max-width:760px; margin:0 auto; padding:14px; position:relative; z-index:1; }
-  .pcard{ background:var(--card); border:1px solid var(--line); border-radius:var(--r);
-          box-shadow:var(--sh); padding:16px; margin:12px 0; }
-  .head{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
-         background:linear-gradient(135deg,var(--deep),#1B7FB0); color:#fff; }
-  .head h1{ font-family:var(--fun); margin:0 0 2px; font-size:22px; }
-  .head .sub{ opacity:.9; font-size:14px; }
-  .streak{ background:rgba(255,255,255,.16); border-radius:var(--r-pill); padding:8px 14px;
-           font-weight:800; font-size:18px; white-space:nowrap; }
-  .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  .stat{ text-align:center; padding:14px 8px; border-radius:var(--r); border:1px solid var(--line);
-         background:var(--card); }
-  .stat .big{ font-family:var(--fun); font-size:26px; font-weight:800; }
-  .stat .lbl{ color:var(--muted); font-size:13px; margin-top:2px; }
-  .stat.coins .big{ color:var(--orange-d); } .stat.mast .big{ color:var(--ok); }
-  .stat.time .big{ color:var(--cyan-d); }
-  h2.sec{ font-family:var(--fun); font-size:17px; margin:0 0 8px; color:var(--deep);
-          display:flex; align-items:center; gap:7px; }
-  .muted{ color:var(--muted); }
-  /* struggle card — warm amber, not alarming red */
-  .struggle{ background:linear-gradient(180deg,#FFF6EC,#FFEFD9); border:1px solid #F3CF97; }
-  .struggle .why{ font-weight:600; margin:6px 0; }
-  .struggle .ph{ background:#fff; border-radius:12px; padding:10px 12px; margin-top:8px;
-                 border-right:4px solid var(--orange); font-size:14px; color:#5a4421; }
-  .plan li{ list-style:none; margin:6px 0; display:flex; align-items:center; gap:8px; }
-  .plan .done{ color:var(--ok); font-weight:800; } .plan .todo{ color:var(--muted); }
-  .bar{ height:12px; background:#EAEEF2; border-radius:var(--r-pill); overflow:hidden; margin-top:8px; }
-  .bar>i{ display:block; height:100%; background:linear-gradient(90deg,var(--cyan),var(--cyan-d)); }
-  .chip{ display:inline-block; background:var(--cyan-l); color:var(--cyan-d); border-radius:var(--r-pill);
-         padding:3px 10px; font-size:13px; font-weight:700; }
-  .lst li{ list-style:none; margin:6px 0; display:flex; align-items:center; gap:8px; }
-  .next-skill{ font-weight:700; font-size:16px; }
-  /* Arabic fraction (numerator over denominator) — for ALL surfaces; never ½ */
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family:'Readex Pro',sans-serif; color:#2C2620; min-height:100vh;
+    background:#FBF7F0;
+    background-image:
+      radial-gradient(58% 30% at 92% 0%,rgba(243,154,31,.10),transparent 60%),
+      radial-gradient(54% 28% at 6% 4%,rgba(41,169,224,.10),transparent 60%);
+  }
+  @keyframes bobm{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+  .wrap{ max-width:720px; margin:0 auto; padding:30px 20px 56px; }
+  .err{ text-align:center; padding:60px 16px; color:#9A8F82; font-size:15px; }
+  /* Arabic fraction (numerator stacked OVER denominator) — never ½ */
   .frac{ display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle;
-         line-height:1; margin:0 2px; font-size:.92em; }
-  .frac b{ border-bottom:1.6px solid currentColor; padding:0 3px; font-weight:700; }
-  .frac i{ padding:0 3px; font-style:normal; }
-  .err{ text-align:center; padding:40px 16px; color:var(--muted); }
+         line-height:1; margin:0 4px; font-size:.86em; color:#178FC9; }
+  .frac b{ border-bottom:1.7px solid currentColor; padding:0 4px; font-weight:700; }
+  .frac i{ padding:0 4px; font-style:normal; }
 </style>
 </head>
 <body>
-<div class="mathbg" aria-hidden="true"></div>
 <div class="wrap" id="app"><div class="err">… جارٍ التحميل</div></div>
 <script>
+// ---------- mandatory UI helpers ----------
 const H = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
 // render Arabic text: stack any a/b as a proper fraction, then Hindi-ize remaining digits
 function ar(s){
@@ -59,8 +37,39 @@ function ar(s){
   s = s.replace(/(\d+)\s*\/\s*(\d+)/g, (m,a,b)=>`<span class="frac"><b>${H(a)}</b><i>${H(b)}</i></span>`);
   return s.replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
 }
-const el = (h)=>{ const d=document.createElement('div'); d.innerHTML=h; return d.firstElementChild; };
+function streakLabel(days){
+  if(days <= 0) return 'ابدأ سلسلتك اليوم';
+  if(days === 1) return 'يومٌ واحد متتالٍ';
+  if(days === 2) return 'يومان متتاليان';
+  if(days >= 3 && days <= 10) return H(days) + ' أيّام متتالية';
+  return H(days) + ' يوماً متتالياً';
+}
 
+// ---------- decorative SVG icons (static brand art) ----------
+const SVG = {
+  flame:'<svg viewBox="0 0 24 24" fill="none" style="width:19px;height:19px;flex:0 0 auto;"><path d="M12.5 3c.3 2.6-1.4 3.4-2.4 5-1.1 1.8-.4 4 1 4.6 .2-1 .9-1.6 1.4-2.4 .9 1 2 2 2 3.7a4.4 4.4 0 1 1-8.8 .2c0-3.7 3.9-4.8 3.4-9.1 1 .6 2.4 1.9 2.4 4-.1.7-.1 1.4-.4 2" stroke="#FFD27E" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+  mastery:'<svg viewBox="0 0 24 24" fill="none" style="width:22px;height:22px;"><circle cx="12" cy="10" r="6" stroke="currentColor" stroke-width="1.7"/><path d="M9.3 10.2l1.9 1.9 3.5-3.9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.4 15.2L6.6 21l5.4-2.6L17.4 21l-1.8-5.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  coin:'<svg viewBox="0 0 24 24" fill="none" style="width:22px;height:22px;"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.4v9.2M14.4 9.4c0-1-1.1-1.7-2.5-1.7s-2.5.6-2.5 1.6 1 1.4 2.5 1.6 2.6.7 2.6 1.8-1.1 1.7-2.6 1.7-2.6-.6-2.6-1.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" style="width:22px;height:22px;"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.6V12l3 1.9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="none" style="width:21px;height:21px;"><path d="M12 21s6.5-5.4 6.5-10.5a6.5 6.5 0 1 0-13 0C5.5 15.6 12 21 12 21z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="10.3" r="2.4" stroke="currentColor" stroke-width="1.7"/></svg>',
+  compass:'<svg viewBox="0 0 24 24" fill="none" style="width:21px;height:21px;"><circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.7"/><path d="M15.6 8.4l-2.1 5.1-5.1 2.1 2.1-5.1z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>',
+  clipboard:'<svg viewBox="0 0 24 24" fill="none" style="width:21px;height:21px;"><rect x="6" y="4.5" width="12" height="16" rx="2.4" stroke="currentColor" stroke-width="1.7"/><path d="M9.2 4.5h5.6v2H9.2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 13.4h2l1-2 2 4 1-2h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" style="width:21px;height:21px;"><path d="M12 4l2.2 4.55 5.02.72-3.63 3.54.86 5L12 15.97 7.55 17.85l.86-5L4.78 9.27l5.02-.72z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24" fill="none" style="width:21px;height:21px;"><path d="M18.5 12H5.5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  sprout:'<svg viewBox="0 0 24 24" fill="none" style="width:21px;height:21px;"><path d="M12 20.5v-7.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 13c0-3.3-2.2-5.5-5.5-5.5C6.5 10.8 8.7 13 12 13zM12 13c0-3.3 2.2-5.5 5.5-5.5C17.5 10.8 15.3 13 12 13z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+  cap:'<svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;"><path d="M8 4.5h8v3.2a4 4 0 0 1-8 0z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 6.2H5.6v.8a2.8 2.8 0 0 0 2.8 2.8M16 6.2h2.4v.8a2.8 2.8 0 0 1-2.8 2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 11.7v3.1M9.6 19.5h4.8M10.4 19.5v-1.4h3.2v1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  stepDone:'<svg viewBox="0 0 24 24" fill="none" style="width:22px;height:22px;"><circle cx="12" cy="12" r="9" fill="#E8F7EE"/><path d="M8.2 12.2l2.6 2.6 4.8-5.2" stroke="#1E945B" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  stepTodo:'<svg viewBox="0 0 24 24" fill="none" style="width:22px;height:22px;"><circle cx="12" cy="12" r="8.4" stroke="#CFC6BA" stroke-width="1.7"/></svg>',
+  // فيثاغورث mascot (the warm character that "speaks" in the struggle card)
+  pyth:'<svg viewBox="0 0 300 300" fill="none" style="width:40px;height:40px;animation:bobm 4s ease-in-out infinite;"><defs><radialGradient id="pab" cx="38%" cy="30%" r="78%"><stop offset="0%" stop-color="#FFD27E"/><stop offset="38%" stop-color="#F9AC36"/><stop offset="78%" stop-color="#F1991F"/><stop offset="100%" stop-color="#DD7E05"/></radialGradient><radialGradient id="pan" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#7FD0F2"/><stop offset="100%" stop-color="#1E9BD7"/></radialGradient></defs><g><line x1="160" y1="40" x2="146" y2="22" stroke="#8AD0F0" stroke-width="3" stroke-linecap="round"/><line x1="160" y1="40" x2="182" y2="28" stroke="#8AD0F0" stroke-width="3" stroke-linecap="round"/><circle cx="144" cy="20" r="5" fill="#29A9E0"/><circle cx="184" cy="26" r="5" fill="#29A9E0"/><path d="M150 66 Q150 48 160 40" stroke="#EE9420" stroke-width="6" stroke-linecap="round" fill="none"/><circle cx="160" cy="38" r="11" fill="url(#pan)"/></g><path d="M76 156 Q46 126 42 96" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><path d="M224 158 Q254 178 256 204" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><ellipse cx="150" cy="180" rx="112" ry="116" fill="url(#pab)"/><ellipse cx="112" cy="120" rx="56" ry="38" fill="#FFFFFF" opacity=".22"/><circle cx="42" cy="92" r="17" fill="#F6A92F"/><circle cx="256" cy="208" r="17" fill="#F6A92F"/><ellipse cx="92" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="208" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="120" cy="160" rx="29" ry="33" fill="#fff"/><ellipse cx="190" cy="160" rx="29" ry="33" fill="#fff"/><circle cx="127" cy="168" r="15" fill="#163E52"/><circle cx="183" cy="168" r="15" fill="#163E52"/><circle cx="122" cy="162" r="6" fill="#fff"/><circle cx="178" cy="162" r="6" fill="#fff"/><path d="M102 130 Q120 122 138 129" stroke="#163E52" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M172 129 Q190 122 208 130" stroke="#163E52" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M128 196 Q150 204 172 196 Q167 220 150 222 Q133 220 128 196 Z" fill="#1B4A5E"/></svg>',
+};
+
+// ---------- card shells (reusable inline styles, faithful to the design) ----------
+const CARD = 'background:#fff;border:1px solid #EFE7DA;border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 14px 30px -26px rgba(21,94,125,.5);';
+const H2 = (color,icon,text)=>`<h2 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:18px;margin:0 0 11px;color:${color};display:flex;align-items:center;gap:9px;"><span style="display:inline-flex;color:${color};">${icon}</span>${text}</h2>`;
+const CHIP = (text)=>`<span style="display:inline-block;margin-top:11px;background:#E6F4FB;color:#178FC9;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;">${text}</span>`;
+
+// ---------- data load (live, unchanged binding) ----------
 async function load(){
   const app = document.getElementById('app');
   let sid = new URLSearchParams(location.search).get('student');
@@ -77,48 +86,96 @@ async function load(){
   }catch(e){ app.innerHTML='<div class="err">تعذّر الاتصال بالخادم.</div>'; }
 }
 
+function statCard(bg, color, icon, big, lbl){
+  return `<div style="background:#fff;border:1px solid #EFE7DA;border-radius:18px;padding:16px 10px;text-align:center;box-shadow:0 14px 30px -26px rgba(21,94,125,.5);">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:13px;background:${bg};color:${color};margin-bottom:9px;">${icon}</span>
+      <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:27px;color:${color};line-height:1;">${big}</div>
+      <div style="color:#8A8178;font-size:13px;margin-top:7px;">${lbl}</div>
+    </div>`;
+}
+
 function render(d){
   const c = d.cards, s = d.struggle;
+  const headerSub = (d.child.grade ? d.child.grade + ' · ' : '') + 'منهج ' + d.child.curriculum;
   let html = '';
-  // 1 — header
-  html += `<div class="pcard head">
-      <div><h1>${d.child.name}</h1>
-        <div class="sub">${d.child.grade || ''} · منهج ${d.child.curriculum}</div></div>
-      <div class="streak">🔥 ${H(d.streak_days)} ${d.streak_days===1?'يوم':'أيّام'} متتالية</div>
+
+  // brand bar (text wordmark — no external logo asset)
+  html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;padding:0 2px;">
+      <div style="display:flex;align-items:center;gap:11px;">
+        <span style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:19px;color:#D97E0A;">فيثاغورث</span>
+        <span style="font-size:12.5px;color:#9A8F82;padding-right:11px;border-right:1.5px solid #E9DFD0;">لوحة وليّ الأمر</span>
+      </div>
+      <span style="font-size:12.5px;color:#B0A595;">موطن التعليم</span>
     </div>`;
-  // 2 — three stat cards
-  html += `<div class="cards">
-      <div class="stat mast"><div class="big">${H(c.mastered)}<span class="muted" style="font-size:16px">/${H(c.total)}</span></div><div class="lbl">مهارة أتقنها</div></div>
-      <div class="stat coins"><div class="big">${H(c.coins)} 🪙</div><div class="lbl">نقاطه (الكوينز)</div></div>
-      <div class="stat time"><div class="big">${H(c.week_minutes)}</div><div class="lbl">دقيقة هذا الأسبوع</div></div>
+
+  // 1 · header
+  html += `<div style="position:relative;overflow:hidden;border-radius:24px;padding:22px;margin:14px 0;background:linear-gradient(135deg,#163E52 0%,#1B6E97 68%,#1E84B6 100%);box-shadow:0 22px 46px -26px rgba(21,94,125,.7);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <span aria-hidden="true" style="position:absolute;left:-12px;top:-34px;font-family:'Baloo Bhaijaan 2',cursive;font-size:160px;color:#fff;opacity:.06;line-height:1;">&pi;</span>
+      <div style="position:relative;">
+        <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:27px;color:#fff;line-height:1.12;">${d.child.name}</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.84);margin-top:5px;">${headerSub}</div>
+      </div>
+      <div style="position:relative;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:9px 16px;">
+        ${SVG.flame}
+        <span style="font-weight:800;font-size:16px;color:#fff;white-space:nowrap;">${streakLabel(d.streak_days)}</span>
+      </div>
     </div>`;
-  // 3 — where is the child now
-  html += `<div class="pcard"><h2 class="sec">📍 أين طفلك الآن</h2>
-      <div class="next-skill">${ar(d.location.description)}</div>
-      <div class="chip" style="margin-top:6px">${d.location.level}</div></div>`;
-  // 4 — struggling + why (amber) — or all-good
+
+  // 2 · three stats
+  html += `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0;">
+      ${statCard('#E8F7EE','#1E945B',SVG.mastery, `${H(c.mastered)}<span style="font-size:16px;color:#B0BBB2;font-weight:700;"> /${H(c.total)}</span>`, 'مهارة أتقنها')}
+      ${statCard('#FFF1DA','#D97E0A',SVG.coin, H(c.coins), 'نقاطه (الكوينز)')}
+      ${statCard('#E6F4FB','#178FC9',SVG.clock, H(c.week_minutes), 'دقيقة هذا الأسبوع')}
+    </div>`;
+
+  // 3 · where is the child now
+  html += `<div style="${CARD}">
+      ${H2('#155E7D', SVG.pin, 'أين طفلك الآن')}
+      <div style="font-weight:600;font-size:16px;color:#2C3A43;line-height:1.7;">${ar(d.location.description)}</div>
+      ${CHIP(d.location.level)}
+    </div>`;
+
+  // 4 + 5 · struggle (amber) + plan  —  OR  all-good
   if(s.has){
-    html += `<div class="pcard struggle"><h2 class="sec">🧭 أين يتعثّر — ولماذا</h2>
-        <div class="why">${ar(s.why)}</div>
-        <div class="ph">✨ ${ar(s.pythagorath_line)}</div></div>`;
-    // 5 — remediation plan
-    const steps = s.plan.steps.map(st=>`<li><span class="${st.done?'done':'todo'}">${st.done?'✓':'○'}</span> ${ar(st.label)}</li>`).join('');
-    html += `<div class="pcard"><h2 class="sec">🩺 خطة العلاج</h2>
-        <ul class="plan">${steps}</ul>
-        <div class="bar"><i style="width:${s.plan.progress_percent}%"></i></div>
-        <div class="muted" style="font-size:13px;margin-top:4px">نسبة إنجاز العلاج: ${H(s.plan.progress_percent)}٪</div></div>`;
+    html += `<div style="background:linear-gradient(180deg,#FFF6EC,#FFEED6);border:1px solid #F3CF97;border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 14px 30px -26px rgba(217,126,10,.45);">
+        ${H2('#B5701A', SVG.compass, 'أين يتعثّر — ولماذا')}
+        <div style="font-weight:600;font-size:15.5px;color:#5A4421;line-height:1.75;">${ar(s.why)}</div>
+        <div style="display:flex;gap:13px;align-items:center;background:#fff;border-radius:14px;border-right:4px solid #F39A1F;padding:12px 14px;margin-top:13px;box-shadow:0 8px 18px -14px rgba(217,126,10,.6);">
+          <span style="flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#FFF4DF,#FFE6BE);display:flex;align-items:flex-end;justify-content:center;overflow:hidden;">${SVG.pyth}</span>
+          <div style="font-size:14px;color:#5A4421;line-height:1.65;"><b style="color:#155E7D;font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;">فيثاغورث يقول:</b> ${ar(s.pythagorath_line)}</div>
+        </div>
+      </div>`;
+
+    const steps = s.plan.steps.map(st=>`<li style="display:flex;align-items:center;gap:11px;font-size:15px;color:${st.done?'#3A4750':'#9A938B'};"><span style="flex:0 0 auto;display:inline-flex;">${st.done?SVG.stepDone:SVG.stepTodo}</span>${ar(st.label)}</li>`).join('');
+    const pct = s.plan.progress_percent;
+    html += `<div style="${CARD}">
+        ${H2('#178FC9', SVG.clipboard, 'خطة العلاج')}
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;">${steps}</ul>
+        <div style="height:12px;background:#F1EBE0;border-radius:999px;overflow:hidden;margin-top:15px;"><i style="display:block;height:100%;width:${pct}%;background:linear-gradient(90deg,#37B6E6,#178FC9);border-radius:999px;"></i></div>
+        <div style="color:#8A8178;font-size:13px;margin-top:8px;">نسبة إنجاز العلاج: ${H(pct)}٪</div>
+      </div>`;
   } else {
-    html += `<div class="pcard"><h2 class="sec">🌱 الحالة</h2><div>${ar(s.message)}</div></div>`;
+    html += `<div style="background:linear-gradient(180deg,#EFF9F1,#E4F4E9);border:1px solid #BFE3CA;border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 14px 30px -26px rgba(30,148,91,.4);">
+        ${H2('#1E945B', SVG.sprout, 'الحالة')}
+        <div style="font-weight:600;font-size:15.5px;color:#2F5B43;line-height:1.7;">${ar(s.message)}</div>
+      </div>`;
   }
-  // 6 — last mastered
+
+  // 6 · last mastered
   if(d.last_mastered.length){
-    const items = d.last_mastered.map(m=>`<li>🏆 ${ar(m.skill)}</li>`).join('');
-    html += `<div class="pcard"><h2 class="sec">⭐ آخر ما أتقن</h2><ul class="lst">${items}</ul></div>`;
+    const items = d.last_mastered.map(m=>`<li style="display:flex;align-items:center;gap:11px;font-size:15px;color:#3A4750;"><span style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:#FFF1DA;color:#D97E0A;">${SVG.cap}</span>${ar(m.skill)}</li>`).join('');
+    html += `<div style="${CARD}">
+        ${H2('#D97E0A', SVG.star, 'آخر ما أتقن')}
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">${items}</ul>
+      </div>`;
   }
-  // 7 — what's next
-  html += `<div class="pcard"><h2 class="sec">➡️ القادم</h2>
-      <div class="next-skill">${ar(d.next.skill || '—')}</div>
-      <div class="chip" style="margin-top:6px">${d.next.reason}</div></div>`;
+
+  // 7 · what's next
+  html += `<div style="${CARD}margin-bottom:2px;">
+      ${H2('#155E7D', SVG.arrow, 'القادم')}
+      <div style="font-weight:700;font-size:17px;color:#2C3A43;line-height:1.6;">${ar(d.next.skill || '—')}</div>
+      ${CHIP(d.next.reason)}
+    </div>`;
 
   document.getElementById('app').innerHTML = html;
 }
