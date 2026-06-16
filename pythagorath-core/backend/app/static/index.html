@@ -609,11 +609,28 @@ function renderGate(p){
   document.getElementById('mastered').style.display = p.mastered?'':'none';
 }
 
+// ---- deep-link from the child adventure screen (child.html) ----
+// CONDITIONAL: only acts when ?student= AND (skill|diagnostic) are present, so the normal
+// boot flow is untouched otherwise. Opens the current skill directly (or the diagnostic).
+async function tryDeepLink(){
+  const p=new URLSearchParams(location.search);
+  const sid=p.get('student'); if(!sid) return;
+  const skid=p.get('skill'), diag=p.get('diagnostic'), nm=p.get('name');
+  if(!skid && !diag) return;
+  try{
+    const kids=await api('/api/students');
+    const k=kids.find(x=>String(x.id)===String(sid)); if(!k) return;
+    student=k; lastPlacement=null;
+    if(skid){ await openSkill(parseInt(skid,10), nm || ''); }
+    else if(diag){ await startDiagnostic(); }
+  }catch(e){ /* leave whatever afterLogin already showed */ }
+}
+
 // ---- on load: apply the active theme, then resume session / show login ----
 updateMuteBtn();
 (async()=>{
   try{ const t=await api('/api/theme'); document.documentElement.dataset.theme=t.theme; }catch(e){}
-  try{ await afterLogin(); }catch(e){ show('authView'); showAuthTab('login'); }
+  try{ await afterLogin(); await tryDeepLink(); }catch(e){ show('authView'); showAuthTab('login'); }
 })();
 </script>
 </body>

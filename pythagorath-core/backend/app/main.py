@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 from app import access, admin, auth, consent, diagnostic, gate, generators, payments, phrasing, schemas, seed
 from app import path as learning_path
 from app import dashboard as parent_dashboard
+from app import adventure as child_adventure
 from app import gencontent  # noqa: F401 — registers the m1 live generators (the 22 critical nodes)
 from app import gencontent_m2  # noqa: F401 — registers the m2 live generators (the 27 high-risk nodes)
 from app import gencontent_m3  # noqa: F401 — registers the m3 live generators (the remaining 74 nodes)
@@ -271,6 +272,16 @@ def dashboard(student=Depends(auth.owned_student), db: Session = Depends(get_db)
     handled in the UI; computes streak/weekly-time in the child's local Gulf day and a
     DISPLAY-ONLY coins number. Touches no engine state. owned_student → 401/403/404."""
     return parent_dashboard.build(db, student, learning_path.next_skill, _path_skills(db, student))
+
+
+@app.get("/api/students/{student_id}/adventure")
+def adventure(student=Depends(auth.owned_student), db: Session = Depends(get_db)):
+    """The child adventure screen — a READ-ONLY, child-language aggregation over the heart
+    (path/lock/mastery/personal-path): the station map in journey order with each node's
+    visual state, the current target (next_skill), coins/streak, and needs_diagnostic.
+    Plain skill names (parent_terms); Hindi numerals handled in the UI. Touches no engine
+    state and grants no mastery. owned_student → 401/403/404."""
+    return child_adventure.build(db, student, learning_path.next_skill, _path_skills(db, student))
 
 
 @app.get("/api/students/{student_id}/diagnostic/probes", response_model=list[schemas.ProbeItem])
@@ -621,3 +632,8 @@ def landing_page():
 @app.get("/parent")
 def parent_page():
     return FileResponse(_STATIC / "parent.html")
+
+
+@app.get("/child")
+def child_page():
+    return FileResponse(_STATIC / "child.html")
