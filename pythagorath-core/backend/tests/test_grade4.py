@@ -241,6 +241,8 @@ def test_g4_edges_minimal_common(db):
         for pr in db.execute(select(SkillPrerequisite).where(
                 SkillPrerequisite.skill_id == s.id)).scalars():
             prereq = db.get(Skill, pr.prerequisite_skill_id)
+            if not prereq.code.startswith("g4"):
+                continue                     # cross-grade edges checked in the cross-grade test
             edges.add((prereq.code, s.code))
     assert edges == {("g4PVM", "g4CMPM"), ("g4PVM", "g4ROUNDM"),
                      ("g4PVM", "g4ROUND"), ("g4PV4", "g4ROUND100"),
@@ -435,22 +437,58 @@ def test_g4_readiness_all_paths_complete_and_closed(guardian_client, db):
             assert prereqs[node] <= path, (country, node, prereqs[node] - path)   # closure
 
 
-def test_g4_isolated_from_lower_grades(guardian_client):
-    # a G4 child sees ONLY G4; a G2/G3 child sees no G4 node
+def test_g4_skillmap_display_stays_grade_scoped(guardian_client):
+    """The skillmap DISPLAY is still the child's own grade ∩ country (the cross-grade
+    DESCENT is an access seam, surfaced by the remediation layer later — not the default
+    map). A G2/G3 child still sees no G4 node."""
     g4 = _child(guardian_client, country="SA", name="ر٤")["id"]
-    assert _map_codes(guardian_client, g4) == G4_PATH["SA"]
+    assert _map_codes(guardian_client, g4) == G4_PATH["SA"]            # display = own grade
     g2 = _child(guardian_client, order=2, name="ر٢")["id"]
     assert not (_map_codes(guardian_client, g2) & G4_NUM)
     g3 = _child(guardian_client, country="SA", order=3, name="ر٣")["id"]
     assert not (_map_codes(guardian_client, g3) & G4_NUM)
 
 
-def test_g4_cross_grade_questions_blocked(guardian_client, db):
-    g4_child = _child(guardian_client, country="SA", name="ج٤")["id"]
-    g3_child = _child(guardian_client, country="SA", order=3, name="ج٣")["id"]
-    g4pvm = db.execute(select(Skill).where(Skill.code == "g4PVM")).scalars().one()
-    g3pv = db.execute(select(Skill).where(Skill.code == "g3PV")).scalars().one()
-    # G4 child cannot fetch a G3 node; G3 child cannot fetch a G4 node (structural 403)
-    for sid, skill in ((g4_child, g3pv), (g3_child, g4pvm)):
-        r = guardian_client.get(f"/api/students/{sid}/skills/{skill.id}/questions")
-        assert r.status_code == 403 and r.json()["detail"]["reason"] == "path", skill.code
+def test_g4_cross_grade_descent_allowed_ascent_blocked(guardian_client, db):
+    """NEW behaviour: a G4 child may DESCEND to a cross-grade ANCESTOR of their path
+    (g3DEC ← g4DEC) for remediation — not a path-rejection. A NON-ancestor lower node
+    (g3MONEY3) stays blocked, and a G3 child can never ASCEND to a G4 node."""
+    def code_id(c):
+        return db.execute(select(Skill).where(Skill.code == c)).scalars().one().id
+    g4_sa = _child(guardian_client, country="SA", name="ج٤")["id"]
+    g3_sa = _child(guardian_client, country="SA", order=3, name="ج٣")["id"]
+
+    def reason(sid, skill_id):
+        r = guardian_client.get(f"/api/students/{sid}/skills/{skill_id}/questions")
+        return None if r.status_code == 200 else r.json().get("detail", {}).get("reason")
+
+    # DESCENT allowed: g3DEC is the cross-grade ancestor of SA's g4DEC → not a path block
+    assert reason(g4_sa, code_id("g3DEC")) != "path"
+    # NON-ancestor lower node stays blocked (g3MONEY3 founds no G4 node)
+    assert reason(g4_sa, code_id("g3MONEY3")) == "path"
+    # ASCENT blocked: a G3 child can never reach a G4 node
+    assert reason(g3_sa, code_id("g4PVM")) == "path"
+
+
+def test_g4_crossgrade_edges_connect_grades(db):
+    """The four grades are linked into one DAG: cross-grade edges exist (lower grade →
+    higher), every G4 node has ≥1 edge (none edge-isolated), and the lock never gates a
+    G4 node on a cross-grade ancestor (so no path bricks)."""
+    code_of = {s.id: s.code for s in db.execute(select(Skill)).scalars().all()}
+    grade_of = {}
+    for s in db.execute(select(Skill)).scalars().all():
+        u = db.get(Unit, s.unit_id)
+        grade_of[s.code] = u.grade_id
+    cross = 0
+    g4_with_edge = set()
+    for pr in db.execute(select(SkillPrerequisite)).scalars().all():
+        dep, anc = code_of[pr.skill_id], code_of[pr.prerequisite_skill_id]
+        if dep.startswith("g4"):
+            g4_with_edge.add(dep)
+        if anc.startswith("g4"):
+            g4_with_edge.add(anc)
+        if grade_of[dep] != grade_of[anc]:
+            cross += 1
+            assert grade_of[anc] < grade_of[dep], (anc, dep)   # ancestor is the LOWER grade
+    assert cross >= 26, cross                                    # documented lineage + foundation
+    assert g4_with_edge == G4_NUM                               # no G4 node edge-isolated

@@ -1,91 +1,124 @@
-"""Pins the placement diagnostic (compressed understanding, in-memory, no leak)
-AND its country-scoping: a child is probed/placed only WITHIN their country path."""
-from collections import Counter
-
+"""Adaptive placement diagnostic — the heart: a SHORT binary-search walk that finds the
+child's true start point, climbing on a pass and descending on a fail (over the unified
+DAG, including the cross-grade edges). It grants NO mastery — only a START POINTER (the
+frontier's foundation marked `placed`, a lock-opener that is not understanding/mastery).
+The exhaustive diagnostic (get_probes/place) still coexists.
+"""
 from sqlalchemy import select
 
 from app import diagnostic, gate
-from app.main import _path_skills
-from app.models import Question, Skill, SkillMastery
+from app.main import _path_skills, _adaptive_path
+from app.models import Answer, Grade, Skill, SkillMastery, Unit
 
 
-def _all_skills(db):
-    return db.execute(select(Skill)).scalars().all()
+def _drive(db, skills, can_do):
+    """Run the adaptive walk to completion. `can_do(skill)->bool` decides whether the
+    simulated child answers that node's probe correctly. Returns (placement, n_questions)."""
+    answers, asked = {}, 0
+    while True:
+        res = diagnostic.adaptive_next(db, skills, answers)
+        if res[0] == "placement":
+            return res[1], asked
+        _, q, s = res
+        answers[q.id] = q.answer if can_do(s) else (q.answer or "") + "X"
+        asked += 1
+        assert asked <= 40, "adaptive walk did not converge"
 
 
-def test_probes_two_per_node(db, h):
-    # NULL-country child sees the whole inventory → every node probed (the pinned invariant).
-    skills = _path_skills(db, h.student(db))          # NULL country → all skills
-    probes = diagnostic.get_probes(db, skills)
-    per_skill = Counter(p["skill_id"] for p in probes)
-    assert len(per_skill) == 66          # 56 (S1) + 3 (b1) + 3 (b2) + 4 (b3)
-    assert all(n == 2 for n in per_skill.values())   # the invariant: exactly two probes/node
-    assert all("answer" not in p for p in probes)   # answers never sent
+# ---------------- adaptive: short, finds the frontier ----------------
+
+def test_adaptive_is_short(db, h):
+    stu = h.student(db)
+    skills = _adaptive_path(db, stu)
+    pos = {s.id: i for i, s in enumerate(skills)}
+    cut = skills[len(skills) // 2]
+    placement, asked = _drive(db, skills, lambda s: pos[s.id] < pos[cut.id])
+    assert placement is not None
+    assert asked <= 10, asked                      # binary search → SHORT (~log2 + confirm)
 
 
-def test_place_marks_node_understood(db, h):
+def test_adaptive_climbs_on_pass_descends_on_fail(db, h):
+    """A strong child (passes everything) lands at/near the ceiling; a weak child (fails
+    everything) lands at/near the floor — the walk genuinely moves both ways."""
+    stu = h.student(db)
+    skills = _adaptive_path(db, stu)
+    pos = {s.id: i for i, s in enumerate(skills)}
+    strong, _ = _drive(db, skills, lambda s: True)
+    weak, _ = _drive(db, skills, lambda s: False)
+    assert pos[strong.id] > pos[weak.id]           # strong placed higher than weak
+
+
+# ---------------- placement: a start pointer, NEVER mastery ----------------
+
+def test_adaptive_places_without_mastery(db, h):
+    stu = h.student(db)
+    skills = _adaptive_path(db, stu)
+    pos = {s.id: i for i, s in enumerate(skills)}
+    cut = skills[len(skills) // 2]
+    placement, _ = _drive(db, skills, lambda s: pos[s.id] < pos[cut.id])
+    diagnostic.record_placement(db, stu.id, placement)
+    rows = db.execute(select(SkillMastery).where(SkillMastery.student_id == stu.id)).scalars().all()
+    assert rows                                     # a foundation WAS placed
+    assert all(r.status == "placed" for r in rows)  # ONLY placement markers…
+    assert all(r.status not in gate.SATISFYING_STATUSES for r in rows)  # …no free understood/mastered
+    # probes never leak into the answer log (placement is not practice)
+    assert db.execute(select(Answer).where(Answer.student_id == stu.id)).first() is None
+
+
+def test_placement_opens_frontier_but_not_above(db, h):
+    """The diagnosed start node opens (its foundation is `placed`); a node ABOVE it stays
+    LOCKED — "no progression without mastery" is untouched above the frontier."""
+    stu = h.student(db)
+    skills = _adaptive_path(db, stu)
+    pos = {s.id: i for i, s in enumerate(skills)}
+    cut = skills[len(skills) // 2]
+    placement, _ = _drive(db, skills, lambda s: pos[s.id] < pos[cut.id])
+    diagnostic.record_placement(db, stu.id, placement)
+    assert gate.is_unlocked(db, stu.id, placement.id)          # start opens
+    deps = [d for d in skills if placement.id in gate.lock_prerequisites(db, d.id)]
+    for d in deps:
+        assert not gate.is_unlocked(db, stu.id, d.id), d.code  # above stays locked (no free progress)
+
+
+def test_placement_grants_no_understood_or_mastered_count(db, h):
+    stu = h.student(db)
+    skills = _adaptive_path(db, stu)
+    placement, _ = _drive(db, skills, lambda s: True)          # passes all → ceiling
+    diagnostic.record_placement(db, stu.id, placement)
+    satisfied = gate.satisfied_among(db, stu.id, [s.id for s in skills])
+    assert satisfied == set()                                  # nothing understood/mastered for free
+
+
+# ---------------- cross-grade descent (uses the edges we built) ----------------
+
+def test_adaptive_descends_cross_grade_for_g4_child(db, h):
+    g4 = db.execute(select(Grade).where(Grade.name == "الصف الرابع")).scalars().one()
+    stu = h.student(db, grade_id=g4.id)              # NULL country → all G4 + its cone
+    skills = _adaptive_path(db, stu)
+    grades = {db.get(Unit, s.unit_id).grade_id for s in skills}
+    assert len(grades) > 1                           # the cone spans G4 + lower grades (cross-grade)
+    # a child who can do nothing descends to a lower-grade foundation
+    placement, asked = _drive(db, skills, lambda s: False)
+    assert placement is not None and asked <= 10
+    assert db.get(Unit, placement.unit_id).grade_id != g4.id   # placed BELOW grade 4 (descended)
+
+
+# ---------------- the exhaustive diagnostic still coexists ----------------
+
+def test_exhaustive_diagnostic_still_works(db, h):
     stu = h.student(db)
     skills = _path_skills(db, stu)
     probes = diagnostic.get_probes(db, skills)
-    b3 = h.skill(db, "B3")
-    ans = {q.id: q.answer for q in h.questions(db, b3.id)}
-    answers = [
-        {"question_id": p["question_id"], "answer": ans[p["question_id"]]}
-        for p in probes if p["skill_id"] == b3.id
-    ]
-    res = diagnostic.place(db, stu.id, answers, skills)
-    assert "B3" in res["understood_codes"]
-    sm = db.get(SkillMastery, (stu.id, b3.id))
-    assert sm.status == "understood"
-    # probes must NOT leak into the answer log (placement is understanding, not practice)
-    assert sm.understood_answer_id == 0
+    assert probes and all("answer" not in p for p in probes)   # answers never sent
+    res = diagnostic.place(db, stu.id, [], skills)              # empty → first open node
+    assert res["placement"] is not None
 
 
-def test_place_placement_is_first_open_node(db, h):
-    stu = h.student(db)
-    skills = _path_skills(db, stu)
-    res = diagnostic.place(db, stu.id, [], skills)   # nothing passed
-    assert res["placement"]["code"] == "E1"          # first by order, no prerequisites
-
-
-# ---- country scoping (the fix): probes + placement stay inside the child's path ----
-
-def test_probes_respect_country_path(db, h):
-    """A Qatar child is probed ONLY on Qatar's path — never an out-of-path node."""
-    stu = h.student(db, country="QA")
-    skills = _path_skills(db, stu)
-    probes = diagnostic.get_probes(db, skills)
-    probe_sids = {p["skill_id"] for p in probes}
-    path_ids = {s.id for s in skills}
-    all_ids = {s.id for s in _all_skills(db)}
-    out_of_path = all_ids - path_ids
-    assert probe_sids == path_ids            # exactly the path nodes are probed
-    assert len(path_ids) < len(all_ids)      # QA is a STRICT subset (country-scoped)
-    assert out_of_path                       # QA genuinely lacks some inventory nodes
-    assert not (out_of_path & probe_sids)    # none of them are ever probed
-
-
-def test_place_respects_country_path(db, h):
-    """Placement lands inside the path; understood marks (and DB state) stay in-path,
-    even when every path probe is answered correctly."""
-    stu = h.student(db, country="QA")
-    skills = _path_skills(db, stu)
-    path_ids = {s.id for s in skills}
-    path_codes = {s.code for s in skills}
-    all_ids = {s.id for s in _all_skills(db)}
-
-    # empty submission → first open node, must be IN the path
-    res = diagnostic.place(db, stu.id, [], skills)
-    assert res["placement"]["skill_id"] in path_ids
-
-    # answer ALL path probes correctly → every understood code is in-path…
-    probes = diagnostic.get_probes(db, skills)
-    answers = [
-        {"question_id": p["question_id"], "answer": db.get(Question, p["question_id"]).answer}
-        for p in probes
-    ]
-    res2 = diagnostic.place(db, stu.id, answers, skills)
-    assert set(res2["understood_codes"]) <= path_codes
-    # …and NO out-of-path node ever got a mastery row written
-    for sid in (all_ids - path_ids):
-        assert db.get(SkillMastery, (stu.id, sid)) is None
+def test_adaptive_base_is_country_scoped(db, h):
+    """The base path stays country-scoped; a Qatar child's grade nodes are a strict subset
+    of the whole inventory (the cone only adds lower-grade ancestors, never other-country
+    same-grade nodes)."""
+    qa = h.student(db, country="QA")
+    base_ids = {s.id for s in _path_skills(db, qa)}
+    all_ids = {s.id for s in db.execute(select(Skill)).scalars().all()}
+    assert base_ids < all_ids

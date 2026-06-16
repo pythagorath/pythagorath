@@ -33,7 +33,8 @@ from app.db import SessionLocal, get_db
 from app.gate import grade, read_snapshot, recompute
 from app.models import (
     AppSetting, GCC_COUNTRIES, Answer, ConsentRecord, Grade, Payment, Plan, Question,
-    QuestionInstance, Skill, SkillCountry, SkillMastery, Student, Subscription, Unit,
+    QuestionInstance, Skill, SkillCountry, SkillMastery, SkillPrerequisite, Student,
+    Subscription, Unit,
 )
 
 
@@ -68,27 +69,34 @@ PATH_REJECTION = "هذه المهارة ليست في منهج طفلك"
 LOCK_REJECTION = "هذه المهارة مقفلة — أتقن متطلّباتها أولاً"
 
 
+def _ancestor_closure(db: Session, base_ids: set[int]) -> set[int]:
+    """base_ids + ALL their transitive prerequisites (following every edge, within- AND
+    cross-grade). Following prereq edges only ever goes DOWNWARD (a prereq is lower), so a
+    child reaches lower-grade foundations but never ascends to a higher grade."""
+    rows = db.execute(select(SkillPrerequisite.skill_id,
+                             SkillPrerequisite.prerequisite_skill_id)).all()
+    pmap: dict[int, list[int]] = {}
+    for sid, pid in rows:
+        pmap.setdefault(sid, []).append(pid)
+    seen, stack = set(base_ids), list(base_ids)
+    while stack:
+        cur = stack.pop()
+        for pid in pmap.get(cur, ()):
+            if pid not in seen:
+                seen.add(pid)
+                stack.append(pid)
+    return seen
+
+
 def _skill_in_path(db: Session, student, skill_id: int) -> bool:
-    """True iff this skill is in the child's path = target GRADE ∩ COUNTRY (NULL country →
-    whole grade). Both dimensions enforced here so the seven points stay scoped to the
-    child's grade AND country."""
-    # GRADE: the skill must belong to the child's target grade.
-    if student.grade_id is not None:
-        skill = db.get(Skill, skill_id)
-        if skill is None:
-            return False
-        unit = db.get(Unit, skill.unit_id)
-        if unit is None or unit.grade_id != student.grade_id:
-            return False
-    # COUNTRY: …and lie on the country path.
-    if not student.country:
-        return True
-    return db.execute(
-        select(SkillCountry.skill_id).where(
-            SkillCountry.country == student.country,
-            SkillCountry.skill_id == skill_id,
-        )
-    ).scalars().first() is not None
+    """True iff this skill is REACHABLE by the child: their target GRADE ∩ COUNTRY base,
+    PLUS the cross-grade ANCESTORS of that base (lower-grade foundations the child may
+    DESCEND to for remediation). Descent is downward only — a child never ascends to a
+    higher grade. (The skillmap DISPLAY stays grade-scoped; this access is the seam the
+    remediation/diagnostic layer will use. Within-grade + country scoping is unchanged for
+    the child's own curriculum; only lower-grade ancestors are additionally reachable.)"""
+    base_ids = {s.id for s in _path_skills(db, student)}
+    return skill_id in _ancestor_closure(db, base_ids)
 
 
 def _require_in_path(db: Session, student, skill_id: int) -> None:
@@ -204,7 +212,7 @@ def skillmap(student=Depends(auth.owned_student), db: Session = Depends(get_db))
     names = {s.id: s.name for s in db.execute(select(Skill)).scalars().all()}
     out = []
     for s in skills:
-        prereq_ids = gate.prerequisites(db, s.id)
+        prereq_ids = gate.lock_prerequisites(db, s.id)   # same-grade locks (cross-grade = descent, not a lock)
         satisfied = gate.satisfied_among(db, student_id, prereq_ids)
         sm = db.get(SkillMastery, (student_id, s.id))
         out.append(
@@ -239,6 +247,8 @@ def child_report(student=Depends(auth.owned_student), db: Session = Depends(get_
             label = "أتقن 🏆"; totals["mastered"] += 1
         elif status == "understood":
             label = "فهم ✓"; totals["understood"] += 1
+        elif status == "placed":
+            label = "نقطة البداية ➡"; totals["placed"] = totals.get("placed", 0) + 1
         elif unlocked:
             label = "متاح الآن ▶"; totals["available"] += 1
         else:
@@ -270,6 +280,46 @@ def run_diagnostic(payload: schemas.DiagnosticSubmit,
     skills = _path_skills(db, student)
     res = diagnostic.place(db, student.id, [a.model_dump() for a in payload.answers], skills)
     return schemas.DiagnosticResult(**res)
+
+
+def _adaptive_path(db: Session, student) -> list[Skill]:
+    """The skills the adaptive diagnostic may probe = the child's base path PLUS its
+    cross-grade ANCESTORS (so a struggling child can be placed at a lower-grade
+    foundation), sorted FOUNDATION → CEILING (grade order, then in-grade order)."""
+    base = _path_skills(db, student)
+    cone_ids = _ancestor_closure(db, {s.id for s in base})
+    skills = db.execute(select(Skill).where(Skill.id.in_(cone_ids))).scalars().all()
+    grade_order = {g.id: g.order for g in db.execute(select(Grade)).scalars().all()}
+    unit_grade = {u.id: u.grade_id for u in db.execute(select(Unit)).scalars().all()}
+    return sorted(skills, key=lambda s: (grade_order.get(unit_grade.get(s.unit_id), 0), s.order, s.id))
+
+
+@app.post("/api/students/{student_id}/diagnostic/adaptive", response_model=schemas.AdaptiveStep)
+def diagnostic_adaptive(payload: schemas.DiagnosticSubmit,
+                        student=Depends(auth.owned_student), db: Session = Depends(get_db)):
+    """ADAPTIVE placement — interactive & SHORT. The client accumulates answers and POSTs
+    them each step; the server replays the binary-search walk and returns either the NEXT
+    single probe or the final start-point PLACEMENT. On placement it records the start
+    pointer (the frontier's foundation marked `placed` — a lock-opener, NOT mastery: no
+    free إتقان). Probes are graded in memory, never logged (no fluency leak)."""
+    skills = _adaptive_path(db, student)
+    answers = {a.question_id: a.answer for a in payload.answers}
+    result = diagnostic.adaptive_next(db, skills, answers)
+    if result[0] == "question":
+        _, q, s = result
+        return schemas.AdaptiveStep(
+            done=False, questions_asked=len(answers),
+            next=schemas.ProbeItem(
+                skill_id=s.id, code=s.code, skill_name=s.name, question_id=q.id,
+                family=q.family, prompt=q.prompt, visual=q.visual),
+        )
+    frontier = result[1]                               # the diagnosed start skill | None
+    diagnostic.record_placement(db, student.id, frontier)
+    return schemas.AdaptiveStep(
+        done=True, questions_asked=len(answers),
+        placement=(schemas.PlacementRef(skill_id=frontier.id, code=frontier.code, name=frontier.name)
+                   if frontier else None),
+    )
 
 
 @app.get("/api/students/{student_id}/skills/{skill_id}/questions",

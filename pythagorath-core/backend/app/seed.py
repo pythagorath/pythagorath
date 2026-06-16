@@ -4670,6 +4670,34 @@ NODE_COUNTRIES.update({
 # =================== end GRADE 4 batch 8 ===================
 
 
+# =================== CROSS-GRADE EDGES (G3/G1 → G4) ===================
+# The documented cross-grade lineage, now REAL prerequisite edges connecting the four
+# grades into one DAG. They let a struggling G4 child DESCEND to the lower-grade
+# foundation (remediation / root-cause). They do NOT hard-lock the higher node — the
+# LOCK gate (gate.is_unlocked) considers SAME-GRADE prerequisites only, so every G4 path
+# unlocks exactly as before; the cross-grade edge is purely a descent/access seam.
+# (Two groups: LINEAGE = the documented same-skill G3↔G4 pairs; FOUNDATION = the lower-
+# grade base of the G4-new acts, so no G4 node is left edge-isolated.)
+G4_CROSSGRADE_EDGES = [
+    # --- LINEAGE (documented same-skill pairs) ---
+    ("g3BIG", "g4PVM"), ("g3PV", "g4PV4"), ("g3CMP4", "g4CMPM"),
+    ("g3ROUND4", "g4ROUNDM"), ("g3ROUND", "g4ROUND"), ("g3ROUND", "g4ROUND100"),
+    ("g3MULBIG", "g4MUL1"), ("g3MULBIG", "g4MUL2"),
+    ("g3DIVREM", "g4DIV1"), ("g3DIVREM", "g4DIV2"),
+    ("g3FRAC", "g4FRAC"), ("g3FREQ", "g4FREQ"), ("g3DEC", "g4DEC"),
+    ("g3PERI", "g4PERIM"), ("g3AREA3", "g4AREA"),
+    ("g3LEN", "g4METRIC"), ("g3CAPMASS", "g4METRIC"), ("g3TIME3", "g4TIME"),
+    ("g3GEO", "g4LINES"), ("g3GEO", "g4SHAPES"), ("g3SYMM", "g4SYMM"),
+    ("g3COORD", "g4COORD"), ("g1POS", "g4LOC"),
+    ("g3PROPS", "g4SEQ"), ("g3DATAR", "g4DATA"), ("g3PROB", "g4PROB"),
+    # --- FOUNDATION (lower-grade base of the G4-new acts; no node left edge-isolated) ---
+    ("g3ADD3", "g4ADDSUB"), ("g3ADD3", "g4ADD4"), ("g3ADD3", "g4PROPS"),
+    ("g3EST3", "g4EST"), ("g3ORDOPS", "g4EXPR"),
+    ("g3DATAR", "g4LINEPLOT"), ("g3DATAR", "g4GRAPH"),
+]
+# =================== end CROSS-GRADE EDGES ===================
+
+
 def seed(db: Session) -> None:
     if db.execute(select(Skill).limit(1)).scalars().first() is not None:
         return  # already seeded
@@ -4746,6 +4774,7 @@ def seed(db: Session) -> None:
         + G3_FRACTION_EDGES + G3_MEASURE_EDGES + G3_GEOM_EDGES + G3_DATA_NODES_EDGES
         + G4_EDGES + G4_ADDSUB_EDGES + G4_MULDIV_EDGES + G4_FRACTION_EDGES
         + G4_DECIMAL_EDGES + G4_MEASURE_EDGES + G4_GEOM_EDGES + G4_PATTERN_EDGES
+        + G4_CROSSGRADE_EDGES
     ):
         db.add(SkillPrerequisite(
             skill_id=code_to_id[dependent_code],

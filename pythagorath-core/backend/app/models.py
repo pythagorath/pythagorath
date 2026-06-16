@@ -335,7 +335,11 @@ class SkillMastery(Base):
     __tablename__ = "skill_mastery"
     __table_args__ = (
         CheckConstraint(
-            "status in ('in_progress', 'understood', 'mastered')",
+            # 'placed' = the adaptive diagnostic's start-point marker on a foundation node:
+            # it OPENS the lock (so the child begins at the diagnosed frontier) but is NOT
+            # understanding/mastery — never in SATISFYING_STATUSES, never shows 🏆 (no free
+            # إتقان). The 3-tier learning ladder (in_progress→understood→mastered) is intact.
+            "status in ('in_progress', 'understood', 'mastered', 'placed')",
             name="ck_skill_mastery_status",
         ),
     )

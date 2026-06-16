@@ -253,6 +253,14 @@ class DiagnosticResult(BaseModel):
     placement: PlacementRef | None
 
 
+# ----- adaptive diagnostic (interactive: start → probe → answer → next/placement) -----
+class AdaptiveStep(BaseModel):
+    done: bool
+    questions_asked: int
+    next: ProbeItem | None = None          # the next single probe to show (when not done)
+    placement: PlacementRef | None = None  # the diagnosed start point (when done)
+
+
 # ----- admin panel (question editor + phrasing layer) -----
 def _nonblank(v: str) -> str:
     if v is None or not str(v).strip():

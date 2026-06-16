@@ -125,3 +125,108 @@ def place(db: Session, student_id: int, answers: list[dict], skills: list[Skill]
             if placement else None
         ),
     }
+
+
+# ============================ ADAPTIVE placement (the heart) ============================
+# A SHORT, interactive binary search for the child's TRUE start point — the frontier
+# between what they can and can't do. It starts at the middle of the path, climbs on a
+# pass and descends on a fail (over the unified DAG, including the cross-grade edges), and
+# converges in ~log2(path) probes. ONE scan probe per node during the search; a SECOND
+# (the compressed understanding gate) only at the frontier, where the decision matters.
+#
+# It grants NO mastery. The result is a START POINTER: the frontier's foundation is marked
+# `placed` (a lock-satisfier that is NOT understanding/mastery), so the child begins at the
+# frontier without re-grinding below it — but must still MASTER everything from there up
+# ("no progression without mastery" is untouched above the frontier). Probes are graded in
+# memory and NEVER written to `answers` (no fluency leak), exactly like the exhaustive path.
+
+def adaptive_next(db: Session, skills: list[Skill], answers: dict[int, str]):
+    """Pure function of (path, answers-so-far). Returns either
+        ("question", question, skill)  → the next single probe to ask, or
+        ("placement", skill | None)    → the diagnosed start point (search done).
+    `skills` MUST already be in difficulty order (foundation → ceiling) — for a
+    cross-grade walk that means lower grade first, so descent lands on a real foundation.
+    Deterministic: the same answers always replay the same walk, so the API can be
+    stateless (the client just accumulates answers)."""
+    ordered = list(skills)
+    if not ordered:
+        return ("placement", None)
+    probes = {s.id: _probe_questions(db, s) for s in ordered}
+
+    def q0(s):
+        return probes[s.id][0] if probes[s.id] else None
+
+    def q1(s):
+        return probes[s.id][1] if len(probes[s.id]) > 1 else None
+
+    def scan_answered(s):
+        q = q0(s)
+        return q is not None and q.id in answers
+
+    def scan_pass(s):
+        q = q0(s)
+        return q is not None and q.id in answers and gate.grade(q, answers[q.id])
+
+    # --- binary search over the topological order (1 scan probe per visited node) ---
+    lo, hi, frontier = 0, len(ordered) - 1, len(ordered)
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        s = ordered[mid]
+        if not scan_answered(s):
+            return ("question", q0(s), s)        # ask the scan probe
+        if scan_pass(s):
+            lo = mid + 1                          # PASS → climb
+        else:
+            frontier = mid                        # FAIL → this is a frontier candidate; descend
+            hi = mid - 1
+
+    if frontier >= len(ordered):
+        return ("placement", ordered[-1])         # passed every scan → ceiling (fluency)
+
+    fnode = ordered[frontier]
+    qc = q1(fnode)
+    if qc is not None and qc.id not in answers:
+        return ("question", qc, fnode)            # the 2nd probe — confirm the frontier
+
+    # compressed understanding gate on the frontier's two probes
+    correct = [q for q in probes[fnode.id] if q.id in answers and gate.grade(q, answers[q.id])]
+    if gate.families_total(db, fnode.id) >= 2:
+        passed = len({q.family for q in correct if q.family is not None}) >= gate.FAMILIES_REQUIRED
+    else:
+        passed = len({q.id for q in correct}) >= gate.GENERALIZATION_REQUIRED
+    if passed and frontier + 1 < len(ordered):
+        return ("placement", ordered[frontier + 1])   # frontier actually known → start just above
+    return ("placement", fnode)
+
+
+def record_placement(db: Session, student_id: int, frontier: Skill | None) -> None:
+    """Persist the start pointer WITHOUT granting mastery: mark the frontier's lock-
+    ancestors (its foundation) `placed`. Never the frontier itself (the child must learn
+    it), never downgrade a real understood/mastered node. Re-running the diagnostic clears
+    the previous `placed` rows first."""
+    for sm in db.execute(
+        select(SkillMastery).where(
+            SkillMastery.student_id == student_id, SkillMastery.status == "placed"
+        )
+    ).scalars().all():
+        db.delete(sm)
+    db.flush()
+    if frontier is None:
+        db.commit()
+        return
+    # transitive lock-ancestors (same-grade chain) of the frontier = the assumed foundation
+    seen, stack = set(), [frontier.id]
+    while stack:
+        cur = stack.pop()
+        for p in gate.lock_prerequisites(db, cur):
+            if p not in seen:
+                seen.add(p)
+                stack.append(p)
+    for sid in seen:
+        sm = db.get(SkillMastery, (student_id, sid))
+        if sm is None:
+            db.add(SkillMastery(student_id=student_id, skill_id=sid,
+                                status="placed", understood_answer_id=0))
+        elif sm.status == "in_progress":
+            sm.status = "placed"                  # never overwrite understood/mastered
+    db.commit()

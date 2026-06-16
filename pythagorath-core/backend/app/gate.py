@@ -19,7 +19,7 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.models import Answer, Question, SkillMastery, SkillPrerequisite
+from app.models import Answer, Question, Skill, SkillMastery, SkillPrerequisite, Unit
 
 # ---- durability (STRUCTURE ONLY — the review CYCLE is not activated yet) ----
 # When a node is mastered it is scheduled for a later review; durability can only be
@@ -86,12 +86,54 @@ def satisfied_among(db: Session, student_id: int, skill_ids: list[int]) -> set[i
     )
 
 
+def _skill_grade(db: Session, skill_id: int):
+    sk = db.get(Skill, skill_id)
+    if sk is None:
+        return None
+    u = db.get(Unit, sk.unit_id)
+    return u.grade_id if u else None
+
+
+def lock_prerequisites(db: Session, skill_id: int) -> list[int]:
+    """The prerequisites that actually GATE the lock = SAME-GRADE only.
+
+    CROSS-GRADE edges connect the four grades into one DAG so a struggling child can
+    DESCEND to a lower-grade foundation (remediation). But a cross-grade ancestor must
+    NEVER hard-lock the higher node — the child reaches it only by CHOOSING to descend,
+    so locking the higher node behind it would brick the whole path. The lock (and the
+    prerequisites shown to the parent) therefore consider same-grade edges only; the
+    cross-grade edge is purely a descent/access seam. (Within-grade behaviour unchanged.)"""
+    g = _skill_grade(db, skill_id)
+    return [p for p in prerequisites(db, skill_id) if _skill_grade(db, p) == g]
+
+
+def placed_among(db: Session, student_id: int, skill_ids: list[int]) -> set[int]:
+    """Prerequisite skills the child was PLACED past by the adaptive diagnostic (status
+    == 'placed'). Placement is a start-point estimate — NOT mastery — but it DOES satisfy
+    the lock so the child can begin at the diagnosed frontier without re-grinding the
+    foundation. 'placed' is never in SATISFYING_STATUSES, so it grants no understanding/
+    mastery (no 🏆, no fluency); it only opens the start. (no free mastery — placement says
+    "start here", not "you mastered this".)"""
+    if not skill_ids:
+        return set()
+    return set(
+        db.execute(
+            select(SkillMastery.skill_id).where(
+                SkillMastery.student_id == student_id,
+                SkillMastery.skill_id.in_(skill_ids),
+                SkillMastery.status == "placed",
+            )
+        ).scalars().all()
+    )
+
+
 def is_unlocked(db: Session, student_id: int, skill_id: int) -> bool:
-    prereq = prerequisites(db, skill_id)
+    prereq = lock_prerequisites(db, skill_id)
     if not prereq:
         return True
-    satisfied = satisfied_among(db, student_id, prereq)
-    return all(p in satisfied for p in prereq)
+    # a prereq opens the node if MASTERED/UNDERSTOOD (real) or PLACED (diagnostic start).
+    ok = satisfied_among(db, student_id, prereq) | placed_among(db, student_id, prereq)
+    return all(p in ok for p in prereq)
 
 
 # ---------- understanding gate ----------
