@@ -27,6 +27,7 @@ from app import gencontent_g4b3  # noqa: F401 — G4 batch 3: ×2-digit & long d
 from app import gencontent_g4b4  # noqa: F401 — G4 batch 4: fractions (represent/equiv/ops), born live
 from app import gencontent_g4b5  # noqa: F401 — G4 batch 5: decimal fractions (represent/line/add-sub), born live
 from app import gencontent_g4b6  # noqa: F401 — G4 batch 6: measurement (metric/perimeter/area/time/volume), born live
+from app import gencontent_g4b7  # noqa: F401 — G4 batch 7: geometry (lines/angle+protractor/shapes/symmetry/coords/location), born live
 from app.db import SessionLocal, get_db
 from app.gate import grade, read_snapshot, recompute
 from app.models import (

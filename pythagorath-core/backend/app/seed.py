@@ -4339,6 +4339,175 @@ NODE_COUNTRIES.update({
 # =================== end GRADE 4 batch 6 ===================
 
 
+# =================== GRADE 4 batch 7 — الهندسة ===================
+# Born live (gencontent_g4b7.py). Body checks 2026-06-15. ONE new widget (protractor,
+# g4ANGLE — QA+SA only); the rest reuse G3/G1 widgets.
+#   • g4LINES (lines/angletype) — SA/QA/AE/KW/BH. Parallel/perpendicular + acute/right/
+#     obtuse CLASSIFICATION. Oman OUT (no lines/angles).
+#   • g4ANGLE (measure/draw) — QA+SA. Protractor measurement is a DISTINCT act from
+#     classification; its NEW widget is built for owners alone (cf. g4DECLINE). ANGLE-KW/AE
+#     reserved. NEW (no G3 analog). Depends g4LINES (classify before measure).
+#   • g4SHAPES (classify/describe) — SIX. Triangles/quadrilaterals. Pair ↔ g3GEO.
+#   • g4SYMM (line/rotational) — SA/OM/AE. Rotational is new (SA). SYMM-BH/KW reserved. ↔ g3SYMM.
+#   • g4COORD (plot/read) — SA. Coordinate plane (coord-grid, ≤10). COORD-BH reserved. ↔ g3COORD
+#     (Bahrain-single → Saudi; no documented cross-country symmetry).
+#   • g4LOC (position/between) — OM. Relative position is a DISTINCT act from the coordinate
+#     plane (relative ≠ ordered pairs) → its OWN node (cf. g4DECLINE/g4METRIC). Reuses the G1
+#     position-scene widget. Pair ↔ G1 position.
+# DAG: g4LINES → g4ANGLE only; SHAPES/SYMM/COORD/LOC are roots.
+# =================================================================================
+
+G4_GEOM_NODES = [
+    ("g4LINES", "المستقيمات والزوايا: تمييزاً", "operational", [  # SA/QA/AE/KW/BH
+        # family 1 — أنواع الخطوط (lines)
+        ("lines", "خطّان لا يتقاطعان مهما امتدّا — ماذا يُسمّيان؟", "متوازيان",
+         {"kind": "shape-pick", "options": [{"v": "متوازيان"}, {"v": "متعامدان"}]}),
+        ("lines", "خطّان يتقاطعان مكوّنين زاويةً قائمة — ماذا يُسمّيان؟", "متعامدان",
+         {"kind": "shape-pick", "options": [{"v": "متعامدان"}, {"v": "متوازيان"}]}),
+        ("lines", "خطّان يلتقيان في نقطةٍ بزاويةٍ غيرِ قائمة — ماذا يُسمّيان؟", "متقاطعان",
+         {"kind": "shape-pick", "options": [{"v": "متقاطعان"}, {"v": "متوازيان"}]}),
+        ("lines", "خطّان في مستوًى واحدٍ على بُعدٍ ثابتٍ بينهما — ماذا يُسمّيان؟", "متوازيان",
+         {"kind": "shape-pick", "options": [{"v": "متوازيان"}, {"v": "متقاطعان"}]}),
+        # family 2 — تصنيف الزوايا (angletype)
+        ("angletype", "زاويةٌ أصغرُ من الزاوية القائمة — ما نوعها؟", "حادّة",
+         {"kind": "shape-pick", "options": [{"v": "حادّة"}, {"v": "منفرجة"}]}),
+        ("angletype", "زاويةٌ أكبرُ من القائمة وأصغرُ من المستقيمة — ما نوعها؟", "منفرجة",
+         {"kind": "shape-pick", "options": [{"v": "منفرجة"}, {"v": "حادّة"}]}),
+        ("angletype", "زاويةٌ قياسها ٩٠° — ما نوعها؟", "قائمة",
+         {"kind": "shape-pick", "options": [{"v": "قائمة"}, {"v": "حادّة"}]}),
+        ("angletype", "زاويةٌ قياسها ١٨٠° (خطٌّ مستقيم) — ما نوعها؟", "مستقيمة",
+         {"kind": "shape-pick", "options": [{"v": "مستقيمة"}, {"v": "منفرجة"}]}),
+    ]),
+    ("g4ANGLE", "قياس ورسم الزوايا بالمنقلة", "operational", [  # QA + SA — NEW protractor
+        # family 1 — القراءة بالمنقلة (measure)
+        ("measure", "اقرأ قياس الزاوية بالمنقلة.", "٦٠°",
+         {"kind": "protractor", "mode": "measure", "angle": 60, "options": ["٦٠°", "١٢٠°"]}),
+        ("measure", "اقرأ قياس الزاوية بالمنقلة.", "٣٠°",
+         {"kind": "protractor", "mode": "measure", "angle": 30, "options": ["٣٠°", "١٥٠°"]}),
+        ("measure", "اقرأ قياس الزاوية بالمنقلة.", "١٢٠°",
+         {"kind": "protractor", "mode": "measure", "angle": 120, "options": ["١٢٠°", "٦٠°"]}),
+        ("measure", "اقرأ قياس الزاوية بالمنقلة.", "١٥٠°",
+         {"kind": "protractor", "mode": "measure", "angle": 150, "options": ["١٥٠°", "٣٠°"]}),
+        # family 2 — الرسم بالمنقلة (draw)
+        ("draw", "اصنع زاويةً قياسها ٤٠° على المنقلة.", "٤٠°",
+         {"kind": "protractor", "mode": "draw", "target": 40}),
+        ("draw", "اصنع زاويةً قياسها ٧٠° على المنقلة.", "٧٠°",
+         {"kind": "protractor", "mode": "draw", "target": 70}),
+        ("draw", "اصنع زاويةً قياسها ١١٠° على المنقلة.", "١١٠°",
+         {"kind": "protractor", "mode": "draw", "target": 110}),
+        ("draw", "اصنع زاويةً قياسها ١٣٠° على المنقلة.", "١٣٠°",
+         {"kind": "protractor", "mode": "draw", "target": 130}),
+    ]),
+    ("g4SHAPES", "تصنيف الأشكال وخصائصها", "operational", [  # six
+        # family 1 — التصنيف (classify) — triangles & quadrilaterals
+        ("classify", "مثلثٌ أضلاعه الثلاثة متساوية — ما نوعه؟", "متساوي الأضلاع",
+         {"kind": "shape-pick", "options": [{"v": "متساوي الأضلاع"}, {"v": "متساوي الساقين"}]}),
+        ("classify", "مثلثٌ فيه زاويةٌ قائمة — ما نوعه؟", "قائم الزاوية",
+         {"kind": "shape-pick", "options": [{"v": "قائم الزاوية"}, {"v": "حادّ الزوايا"}]}),
+        ("classify", "رباعيٌّ أضلاعه الأربعة متساوية وزواياه قائمة — ما اسمه؟", "مربّع",
+         {"kind": "shape-pick", "options": [{"v": "مربّع"}, {"v": "مستطيل"}]}),
+        ("classify", "رباعيٌّ أضلاعه الأربعة متساوية وزواياه غيرُ قائمة — ما اسمه؟", "معيّن",
+         {"kind": "shape-pick", "options": [{"v": "معيّن"}, {"v": "مربّع"}]}),
+        # family 2 — الخصائص (describe) — element-count reused
+        ("describe", "كم ضلعاً للمستطيل؟", "٤",
+         {"kind": "element-count", "shape": "rectangle", "element": "sides", "n": 4}),
+        ("describe", "كم رأساً للمثلث؟", "٣",
+         {"kind": "element-count", "shape": "triangle", "element": "vertices", "n": 3}),
+        ("describe", "كم ضلعاً للمخمّس؟", "٥",
+         {"kind": "element-count", "shape": "pentagon", "element": "sides", "n": 5}),
+        ("describe", "كم ضلعاً للمسدّس؟", "٦",
+         {"kind": "element-count", "shape": "hexagon", "element": "sides", "n": 6}),
+    ]),
+    ("g4SYMM", "التماثل الخطّي والدوراني", "operational", [  # SA/OM/AE
+        # family 1 — التماثل الخطّي (line)
+        ("line", "هل لهذا الشكل خطُّ تماثل؟", "نعم",
+         {"kind": "shape-pick", "show": "square", "options": [{"v": "نعم"}, {"v": "لا"}]}),
+        ("line", "هل لهذا الشكل خطُّ تماثل؟", "لا",
+         {"kind": "shape-pick", "show": "triangle-scalene", "options": [{"v": "نعم"}, {"v": "لا"}]}),
+        ("line", "هل لهذا الشكل خطُّ تماثل؟", "نعم",
+         {"kind": "shape-pick", "show": "circle", "options": [{"v": "نعم"}, {"v": "لا"}]}),
+        ("line", "هل لهذا الشكل خطُّ تماثل؟", "لا",
+         {"kind": "shape-pick", "show": "l-shape", "options": [{"v": "نعم"}, {"v": "لا"}]}),
+        # family 2 — التماثل الدوراني (rotational) — NEW
+        ("rotational", "هل يبقى الشكل مطابقاً لأصله بعد دورانٍ أقلَّ من دورةٍ كاملة؟ (تماثل دوراني)", "نعم",
+         {"kind": "shape-pick", "show": "square", "options": [{"v": "نعم"}, {"v": "لا"}]}),
+        ("rotational", "هل يبقى الشكل مطابقاً لأصله بعد دورانٍ أقلَّ من دورةٍ كاملة؟ (تماثل دوراني)", "لا",
+         {"kind": "shape-pick", "show": "l-shape", "options": [{"v": "نعم"}, {"v": "لا"}]}),
+        ("rotational", "هل يبقى الشكل مطابقاً لأصله بعد دورانٍ أقلَّ من دورةٍ كاملة؟ (تماثل دوراني)", "نعم",
+         {"kind": "shape-pick", "show": "rectangle", "options": [{"v": "نعم"}, {"v": "لا"}]}),
+        ("rotational", "هل يبقى الشكل مطابقاً لأصله بعد دورانٍ أقلَّ من دورةٍ كاملة؟ (تماثل دوراني)", "لا",
+         {"kind": "shape-pick", "show": "triangle-scalene", "options": [{"v": "نعم"}, {"v": "لا"}]}),
+    ]),
+    ("g4COORD", "المستوى الإحداثي والزوج المرتّب", "operational", [  # SA
+        # family 1 — التمثيل (plot)
+        ("plot", "ضع نقطةً عند الزوج المرتّب (٣، ٢).", "(٣، ٢)",
+         {"kind": "coord-grid", "mode": "plot", "max": 8, "target": [3, 2]}),
+        ("plot", "ضع نقطةً عند الزوج المرتّب (٥، ٤).", "(٥، ٤)",
+         {"kind": "coord-grid", "mode": "plot", "max": 8, "target": [5, 4]}),
+        ("plot", "ضع نقطةً عند الزوج المرتّب (١، ٦).", "(١، ٦)",
+         {"kind": "coord-grid", "mode": "plot", "max": 10, "target": [1, 6]}),
+        ("plot", "ضع نقطةً عند الزوج المرتّب (٧، ٠).", "(٧، ٠)",
+         {"kind": "coord-grid", "mode": "plot", "max": 10, "target": [7, 0]}),
+        # family 2 — القراءة (read)
+        ("read", "ما إحداثيا النقطة المعلَّمة؟", "(٢، ٥)",
+         {"kind": "coord-grid", "mode": "read", "max": 8, "point": [2, 5], "options": ["(٢، ٥)", "(٥، ٢)"]}),
+        ("read", "ما إحداثيا النقطة المعلَّمة؟", "(٦، ٣)",
+         {"kind": "coord-grid", "mode": "read", "max": 8, "point": [6, 3], "options": ["(٦، ٣)", "(٣، ٦)"]}),
+        ("read", "ما إحداثيا النقطة المعلَّمة؟", "(٠، ٤)",
+         {"kind": "coord-grid", "mode": "read", "max": 10, "point": [0, 4], "options": ["(٠، ٤)", "(٤، ٠)"]}),
+        ("read", "ما إحداثيا النقطة المعلَّمة؟", "(٣، ٣)",
+         {"kind": "coord-grid", "mode": "read", "max": 10, "point": [3, 3], "options": ["(٣، ٣)", "(٣، ٤)"]}),
+    ]),
+    ("g4LOC", "الموقع والاتجاه النسبي", "operational", [  # OM — position-scene reused
+        # family 1 — الموقع النسبي (position)
+        ("position", "انقر العنصر الذي يقع فوق الصندوق.", "فوق",
+         {"kind": "position-scene", "mode": "grid", "anchor": "📦", "objects": [
+             {"e": "🐈", "v": "فوق", "pos": "above"}, {"e": "🦜", "v": "تحت", "pos": "below"},
+             {"e": "🎈", "v": "يمين", "pos": "right"}, {"e": "⚽", "v": "يسار", "pos": "left"}]}),
+        ("position", "انقر العنصر الذي يقع تحت الصندوق.", "تحت",
+         {"kind": "position-scene", "mode": "grid", "anchor": "📦", "objects": [
+             {"e": "🌟", "v": "فوق", "pos": "above"}, {"e": "🍎", "v": "تحت", "pos": "below"},
+             {"e": "🐈", "v": "يمين", "pos": "right"}, {"e": "🦜", "v": "يسار", "pos": "left"}]}),
+        ("position", "انقر العنصر الذي يقع يمين الصندوق.", "يمين",
+         {"kind": "position-scene", "mode": "grid", "anchor": "📦", "objects": [
+             {"e": "🎈", "v": "فوق", "pos": "above"}, {"e": "⚽", "v": "تحت", "pos": "below"},
+             {"e": "🌟", "v": "يمين", "pos": "right"}, {"e": "🍎", "v": "يسار", "pos": "left"}]}),
+        ("position", "انقر العنصر الذي يقع يسار الصندوق.", "يسار",
+         {"kind": "position-scene", "mode": "grid", "anchor": "📦", "objects": [
+             {"e": "🐈", "v": "فوق", "pos": "above"}, {"e": "🎈", "v": "تحت", "pos": "below"},
+             {"e": "🦜", "v": "يمين", "pos": "right"}, {"e": "⚽", "v": "يسار", "pos": "left"}]}),
+        # family 2 — بين (between) — position-scene between mode
+        ("between", "انقر العنصر الذي يقع بين العَلَمين.", "بين",
+         {"kind": "position-scene", "mode": "between", "anchor": "🚩", "anchor2": "🚩",
+          "objects": [{"e": "🐈", "v": "بين", "pos": "between"}, {"e": "⚽", "v": "خارج", "pos": "outside"}]}),
+        ("between", "انقر العنصر الذي يقع بين العَلَمين.", "بين",
+         {"kind": "position-scene", "mode": "between", "anchor": "🚩", "anchor2": "🚩",
+          "objects": [{"e": "🦜", "v": "بين", "pos": "between"}, {"e": "🌟", "v": "خارج", "pos": "outside"}]}),
+        ("between", "انقر العنصر الذي يقع بين العَلَمين.", "بين",
+         {"kind": "position-scene", "mode": "between", "anchor": "🚩", "anchor2": "🚩",
+          "objects": [{"e": "🎈", "v": "بين", "pos": "between"}, {"e": "🍎", "v": "خارج", "pos": "outside"}]}),
+        ("between", "انقر العنصر الذي يقع بين العَلَمين.", "بين",
+         {"kind": "position-scene", "mode": "between", "anchor": "🚩", "anchor2": "🚩",
+          "objects": [{"e": "🌟", "v": "بين", "pos": "between"}, {"e": "🐈", "v": "خارج", "pos": "outside"}]}),
+    ]),
+]
+
+# DAG: classify angles before measuring them (QA و١٤-١ before ١٤-٤); the rest are roots
+G4_GEOM_EDGES = [
+    ("g4LINES", "g4ANGLE"),
+]
+
+NODE_COUNTRIES.update({
+    "g4LINES": ("SA", "QA", "AE", "KW", "BH"),        # lines + angle types — five (Oman out)
+    "g4ANGLE": ("QA", "SA"),                          # protractor measure/draw — QA + SA (new widget)
+    "g4SHAPES": ("SA", "BH", "KW", "QA", "AE", "OM"), # classify shapes — six
+    "g4SYMM": ("SA", "OM", "AE"),                     # symmetry incl. rotational — SA/OM/AE
+    "g4COORD": ("SA",),                               # coordinate plane — Saudi alone
+    "g4LOC": ("OM",),                                 # relative position/direction — Oman alone
+})
+# =================== end GRADE 4 batch 7 ===================
+
+
 def seed(db: Session) -> None:
     if db.execute(select(Skill).limit(1)).scalars().first() is not None:
         return  # already seeded
@@ -4404,13 +4573,15 @@ def seed(db: Session) -> None:
     add_unit("الكسور العشرية", 5, G4_DECIMAL_NODES, target_grade=grade4)
     # GRADE 4 — batch 6: measurement (metric conversion, perimeter, area, time, volume)
     add_unit("القياس", 6, G4_MEASURE_NODES, target_grade=grade4)
+    # GRADE 4 — batch 7: geometry (lines, angles+protractor, shapes, symmetry, coords, location)
+    add_unit("الهندسة", 7, G4_GEOM_NODES, target_grade=grade4)
 
     for prereq_code, dependent_code in (
         EDGES + GEOMETRY_EDGES + MULDIV_EDGES + DATA_EDGES + MEASURE_EDGES + LIGHT_EDGES
         + FRACTION_EDGES + G1_EDGES + G3_EDGES + G3_ADDSUB_EDGES + G3_MULDIV_EDGES
         + G3_FRACTION_EDGES + G3_MEASURE_EDGES + G3_GEOM_EDGES + G3_DATA_NODES_EDGES
         + G4_EDGES + G4_ADDSUB_EDGES + G4_MULDIV_EDGES + G4_FRACTION_EDGES
-        + G4_DECIMAL_EDGES + G4_MEASURE_EDGES
+        + G4_DECIMAL_EDGES + G4_MEASURE_EDGES + G4_GEOM_EDGES
     ):
         db.add(SkillPrerequisite(
             skill_id=code_to_id[dependent_code],

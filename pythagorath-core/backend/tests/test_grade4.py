@@ -23,7 +23,8 @@ G4_B3 = {"g4MUL2", "g4DIV1", "g4DIV2"}                                     # ا�
 G4_B4 = {"g4FRAC", "g4FREQ", "g4FRADD", "g4FRADDX", "g4FRMUL"}             # الكسور
 G4_B5 = {"g4DEC", "g4DECLINE", "g4DECADD"}                                 # الكسور العشرية
 G4_B6 = {"g4METRIC", "g4PERIM", "g4AREA", "g4TIME", "g4VOL"}               # القياس
-G4_NUM = G4_B1 | G4_B2 | G4_B3 | G4_B4 | G4_B5 | G4_B6
+G4_B7 = {"g4LINES", "g4ANGLE", "g4SHAPES", "g4SYMM", "g4COORD", "g4LOC"}   # الهندسة
+G4_NUM = G4_B1 | G4_B2 | G4_B3 | G4_B4 | G4_B5 | G4_B6 | G4_B7
 
 # per-country G4 paths (batches 1-4). Fractions: all six in g4FRAC/g4FREQ (≤12, no Oman
 # tier — Oman's fraction wall reaches 12 too); add/sub LIKE five (no Oman); g4FRADDX
@@ -34,26 +35,32 @@ G4_PATH = {
     "SA": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4PROPS", "g4EST", "g4MUL1",
            "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD",
            "g4DEC", "g4DECLINE", "g4DECADD",
-           "g4METRIC", "g4PERIM", "g4AREA", "g4TIME", "g4VOL"} | _FR,
+           "g4METRIC", "g4PERIM", "g4AREA", "g4TIME", "g4VOL",
+           "g4LINES", "g4ANGLE", "g4SHAPES", "g4SYMM", "g4COORD"} | _FR,
     "BH": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4PROPS", "g4EST", "g4MUL1",
            "g4FACT", "g4MUL2", "g4DIV1", "g4FRADD",
            "g4DEC", "g4DECADD",
-           "g4METRIC", "g4PERIM", "g4AREA"} | _FR,
+           "g4METRIC", "g4PERIM", "g4AREA",
+           "g4LINES", "g4SHAPES"} | _FR,
     "QA": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4EST", "g4MUL1", "g4FACT",
            "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRMUL",
            "g4DEC", "g4DECLINE",
-           "g4METRIC", "g4PERIM", "g4AREA"} | _FR,
+           "g4METRIC", "g4PERIM", "g4AREA",
+           "g4LINES", "g4ANGLE", "g4SHAPES"} | _FR,
     "KW": {"g4PVM", "g4CMPM", "g4ROUND", "g4ADDSUB", "g4EST", "g4MUL1", "g4FACT",
            "g4PRIME", "g4MUL2", "g4DIV1", "g4FRADD", "g4FRADDX",
            "g4DEC",
-           "g4METRIC", "g4PERIM", "g4AREA"} | _FR,
+           "g4METRIC", "g4PERIM", "g4AREA",
+           "g4LINES", "g4SHAPES"} | _FR,
     "AE": {"g4PVM", "g4CMPM", "g4ROUNDM", "g4ADDSUB", "g4EST", "g4MUL1", "g4MUL2",
            "g4DIV1", "g4FRADD",
            "g4DEC", "g4DECADD",
-           "g4METRIC", "g4PERIM", "g4AREA", "g4VOL"} | _FR,
+           "g4METRIC", "g4PERIM", "g4AREA", "g4VOL",
+           "g4LINES", "g4SHAPES", "g4SYMM"} | _FR,
     "OM": {"g4PV4", "g4ROUND100", "g4ADD4", "g4DIV2",
            "g4DEC",
-           "g4PERIM", "g4AREA", "g4TIME"} | _FR,
+           "g4PERIM", "g4AREA", "g4TIME",
+           "g4SHAPES", "g4SYMM", "g4LOC"} | _FR,
 }
 
 G4_RANGE_CAP = {
@@ -68,6 +75,8 @@ G4_RANGE_CAP = {
     # batch 5 — decimals use a places/dens/value guard, checked separately below
     # batch 6 — measurement integer ceilings
     "g4METRIC": 9000, "g4PERIM": 300, "g4AREA": 400, "g4TIME": 60, "g4VOL": 1000,
+    # batch 7 — geometry (degrees ≤180, coords ≤10, element counts ≤6; text nodes have no numerals)
+    "g4LINES": 180, "g4ANGLE": 180, "g4SHAPES": 6, "g4SYMM": 9, "g4COORD": 10, "g4LOC": 9,
 }
 # fractions are range-guarded by max DENOMINATOR ≤ 12, not an integer ceiling
 G4_FRAC_CODES = {"g4FRAC", "g4FREQ", "g4FRADD", "g4FRADDX", "g4FRMUL"}
@@ -110,6 +119,13 @@ G4_FAMILIES = {
     "g4AREA": {"multiply", "composite"},
     "g4TIME": {"read", "elapsed"},
     "g4VOL": {"estimate", "prism"},
+    # batch 7 — geometry
+    "g4LINES": {"lines", "angletype"},
+    "g4ANGLE": {"measure", "draw"},
+    "g4SHAPES": {"classify", "describe"},
+    "g4SYMM": {"line", "rotational"},
+    "g4COORD": {"plot", "read"},
+    "g4LOC": {"position", "between"},
 }
 
 _TRANS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
@@ -154,7 +170,7 @@ def test_four_grades_seeded(guardian_client):
 def test_g4_unit_nodes_and_content(db):
     _, units, skills = _g4_skills(db)
     assert [u.name for u in sorted(units, key=lambda u: u.order)] == [
-        "الأعداد", "العمليات", "الضرب والقسمة", "الكسور", "الكسور العشرية", "القياس"]
+        "الأعداد", "العمليات", "الضرب والقسمة", "الكسور", "الكسور العشرية", "القياس", "الهندسة"]
     assert {s.code for s in skills} == G4_NUM
     for s in skills:
         qs = db.execute(select(Question).where(Question.skill_id == s.id)).scalars().all()
@@ -223,7 +239,9 @@ def test_g4_edges_minimal_common(db):
                      # batch 5: FRAC→DEC→{DECLINE, DECADD} (fractions→decimals→decimal add)
                      ("g4FRAC", "g4DEC"), ("g4DEC", "g4DECLINE"), ("g4DEC", "g4DECADD"),
                      # batch 6: AREA→VOL only (volume extends area); METRIC/PERIM/AREA/TIME roots
-                     ("g4AREA", "g4VOL")}
+                     ("g4AREA", "g4VOL"),
+                     # batch 7: LINES→ANGLE only (classify before measure); SHAPES/SYMM/COORD/LOC roots
+                     ("g4LINES", "g4ANGLE")}
 
 
 def test_g4_country_paths(guardian_client):
@@ -341,6 +359,34 @@ def test_g4_area_is_root_volume_waits(guardian_client):
     assert e["g4PERIM"]["unlocked"] is True and e["g4METRIC"]["unlocked"] is True
     assert e["g4VOL"]["unlocked"] is False                            # volume waits on area
     assert {p["name"] for p in e["g4VOL"]["prerequisites"]} == {"المساحة بالضرب والمركّبة"}
+
+
+def test_g4_batch7_geometry_structure(guardian_client):
+    """Lines five (Oman out); protractor (g4ANGLE) QA+SA; shapes six; symmetry SA/OM/AE;
+    coordinate plane Saudi alone; relative position (g4LOC) Oman alone — a DISTINCT node
+    from g4COORD (relative ≠ ordered pairs), so neither leaks to the other's owner."""
+    paths = {c: _map_codes(guardian_client, _child(guardian_client, country=c, name=f"g{c}")["id"])
+             for c in ("SA", "BH", "KW", "QA", "AE", "OM")}
+    assert {c for c, p in paths.items() if "g4LINES" in p} == {"SA", "QA", "AE", "KW", "BH"}
+    assert "g4LINES" not in paths["OM"]
+    assert {c for c, p in paths.items() if "g4ANGLE" in p} == {"QA", "SA"}   # protractor owners
+    assert all("g4SHAPES" in p for p in paths.values())                      # shapes six
+    assert {c for c, p in paths.items() if "g4SYMM" in p} == {"SA", "OM", "AE"}
+    assert {c for c, p in paths.items() if "g4COORD" in p} == {"SA"}         # coordinate plane
+    assert {c for c, p in paths.items() if "g4LOC" in p} == {"OM"}           # relative position
+    assert "g4COORD" not in paths["OM"] and "g4LOC" not in paths["SA"]       # the split holds
+
+
+def test_g4_angle_waits_on_lines(guardian_client):
+    qa = _child(guardian_client, country="QA", name="ز٧")["id"]
+    e = {x["code"]: x for x in guardian_client.get(f"/api/students/{qa}/skillmap").json()}
+    assert e["g4LINES"]["unlocked"] is True                  # classify is the root
+    assert e["g4ANGLE"]["unlocked"] is False                 # measure waits on classify
+    assert {p["name"] for p in e["g4ANGLE"]["prerequisites"]} == {"المستقيمات والزوايا: تمييزاً"}
+    # g4SHAPES/g4SYMM/g4COORD/g4LOC are roots (open at entry)
+    sa = _child(guardian_client, country="SA", name="ز٧س")["id"]
+    es = {x["code"]: x for x in guardian_client.get(f"/api/students/{sa}/skillmap").json()}
+    assert es["g4SHAPES"]["unlocked"] is True and es["g4COORD"]["unlocked"] is True
 
 
 def test_g4_isolated_from_lower_grades(guardian_client):

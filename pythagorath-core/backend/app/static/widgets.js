@@ -41,6 +41,8 @@ function mountWidget(host, q, onAnswer){
   if(v.kind==='fraction') return widgetFraction(host, v, onAnswer);
   // ---- coordinate grid (G3 batch 9) — the ONLY new G3 widget ----
   if(v.kind==='coord-grid') return widgetCoordGrid(host, v, onAnswer);
+  // ---- protractor (G4 batch 7) — the ONLY new G4 widget; angle measure/draw ----
+  if(v.kind==='protractor') return widgetProtractor(host, v, onAnswer);
 }
 
 // COORDINATE GRID — the ordered pair (Bahrain ch12-7), the one genuinely new G3
@@ -91,6 +93,67 @@ function widgetCoordGrid(host, v, onAnswer){
       info.textContent='النقطة: '+pt([i,j]); onAnswer(pt([i,j])); };
     svg.appendChild(hit);
   }
+}
+
+// PROTRACTOR (G4 batch 7, g4ANGLE — the ONLY new G4 widget) — a 0–180° semicircle with
+// ticks every 10° and labels every 30°. Two acts on the SAME tool (recognise vs produce):
+//   * measure — a second arm is pre-drawn at v.angle; the child READS it and picks an option.
+//   * draw    — only the 0° arm is drawn; the child taps the arc tick to BUILD v.target,
+//               and the chosen degree (with «°») is emitted. Display-only; the gate is blind,
+//               grading the emitted/picked string. RTL-safe (geometry is LTR; only labels are Hindi).
+function widgetProtractor(host, v, onAnswer){
+  const NS='http://www.w3.org/2000/svg', R=128, cx=150, cy=150, W=300;
+  const pt=(deg,r)=>[cx + r*Math.cos(Math.PI*deg/180), cy - r*Math.sin(Math.PI*deg/180)];
+  const mkline=(x1,y1,x2,y2,st)=>{ const l=document.createElementNS(NS,'line');
+    l.setAttribute('x1',x1); l.setAttribute('y1',y1); l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+    l.setAttribute('style',st); return l; };
+  const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox',`0 0 ${W} ${cy+22}`);
+  svg.setAttribute('width','100%'); svg.style.cssText='max-width:300px;display:block;margin:6px auto';
+  svg.setAttribute('dir','ltr');
+  // body (semicircle) + baseline
+  const [ax,ay]=pt(0,R), [bx,by]=pt(180,R);
+  const arc=document.createElementNS(NS,'path');
+  arc.setAttribute('d',`M ${ax} ${ay} A ${R} ${R} 0 0 0 ${bx} ${by} Z`);
+  arc.setAttribute('style','fill:#EFF6FB;stroke:#155E7D;stroke-width:2'); svg.appendChild(arc);
+  // ticks every 10°, labels every 30°
+  for(let d=0; d<=180; d+=10){
+    const [x1,y1]=pt(d,R), [x2,y2]=pt(d, d%30===0?R-15:R-9);
+    svg.appendChild(mkline(x1,y1,x2,y2, `stroke:#155E7D;stroke-width:${d%30===0?1.6:0.8}`));
+    if(d%30===0){ const [lx,ly]=pt(d,R-28); const tx=document.createElementNS(NS,'text');
+      tx.setAttribute('x',lx); tx.setAttribute('y',ly+4); tx.setAttribute('text-anchor','middle');
+      tx.setAttribute('style','font-size:11px;fill:#155E7D;font-weight:700'); tx.textContent=toHindi(d);
+      svg.appendChild(tx); }
+  }
+  const dot=document.createElementNS(NS,'circle'); dot.setAttribute('cx',cx); dot.setAttribute('cy',cy);
+  dot.setAttribute('r',3.5); dot.setAttribute('style','fill:#155E7D'); svg.appendChild(dot);
+  // fixed 0° arm (always shown)
+  svg.appendChild(mkline(cx,cy,ax,ay,'stroke:#E8833A;stroke-width:3'));
+  const info=document.createElement('div'); info.className='muted'; info.style='text-align:center';
+
+  if(v.mode==='measure'){
+    const [rx,ry]=pt(v.angle,R);
+    svg.appendChild(mkline(cx,cy,rx,ry,'stroke:#E8833A;stroke-width:3'));
+    host.appendChild(svg);
+    info.textContent='اقرأ قياس الزاوية بالمنقلة واختر الإجابة.'; host.appendChild(info);
+    const opts=document.createElement('div'); opts.className='btb-controls';
+    opts.style='display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:6px';
+    (v.options||[]).forEach(o=>{ const b=document.createElement('button'); b.className='sec';
+      b.textContent=o; b.style.fontSize='20px'; b.onclick=()=>onAnswer(o); opts.appendChild(b); });
+    host.appendChild(opts); return;
+  }
+  // draw — tap the arc tick that builds the requested angle
+  let drawn=null;
+  for(let d=0; d<=180; d+=5){
+    const [hx,hy]=pt(d,R); const hit=document.createElementNS(NS,'circle');
+    hit.setAttribute('cx',hx); hit.setAttribute('cy',hy); hit.setAttribute('r',8);
+    hit.setAttribute('style','fill:transparent;cursor:pointer');
+    hit.onclick=()=>{ if(drawn) svg.removeChild(drawn);
+      const [rx,ry]=pt(d,R); drawn=mkline(cx,cy,rx,ry,'stroke:#29A9E0;stroke-width:3'); svg.appendChild(drawn);
+      info.textContent='الزاوية: '+toHindi(d)+'°'; onAnswer(toHindi(d)+'°'); };
+    svg.appendChild(hit);
+  }
+  host.appendChild(svg);
+  info.textContent='اصنع الزاوية المطلوبة: انقر التدريج المناسب على القوس.'; host.appendChild(info);
 }
 
 // FRACTIONS — a fraction of a REGION (a bar split into equal parts). Isolated like the
