@@ -24,6 +24,44 @@
          line-height:1; margin:0 4px; font-size:.86em; color:#178FC9; }
   .frac b{ border-bottom:1.7px solid currentColor; padding:0 4px; font-weight:700; }
   .frac i{ padding:0 4px; font-style:normal; }
+
+  /* ---------- admin shell (frame only — placeholders until accounts/subscription exist) ---------- */
+  .topnav{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; padding:0 2px; flex-wrap:wrap; }
+  .brandgrp{ display:flex; align-items:center; gap:11px; }
+  .brandgrp .logo{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:19px; color:#D97E0A; }
+  .brandgrp .tag{ font-size:12.5px; color:#9A8F82; padding-right:11px; border-right:1.5px solid #E9DFD0; }
+  .navgrp{ display:flex; align-items:center; gap:8px; }
+  .navlink{ display:inline-flex; align-items:center; gap:6px; font-family:'Readex Pro',sans-serif;
+            font-size:13.5px; font-weight:600; color:#155E7D; background:#fff; border:1px solid #EFE7DA;
+            border-radius:999px; padding:7px 13px; cursor:pointer;
+            box-shadow:0 8px 18px -14px rgba(21,94,125,.5); transition:transform .08s,border-color .15s; }
+  .navlink:hover{ transform:translateY(-1px); border-color:#CDE4F0; }
+  .navlink svg{ width:16px; height:16px; }
+  /* child switcher */
+  .switcher{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:0 0 12px; padding:0 2px; }
+  .switcher .swlabel{ font-size:13px; color:#8A8178; font-weight:600; margin-left:2px; }
+  .chip-child{ font-family:'Readex Pro',sans-serif; font-size:14px; font-weight:700; color:#155E7D;
+               background:#fff; border:1.5px solid #EFE7DA; border-radius:999px; padding:7px 15px; cursor:pointer; transition:all .12s; }
+  .chip-child:hover{ border-color:#CDE4F0; }
+  .chip-child.active{ background:linear-gradient(135deg,#163E52,#1B6E97); color:#fff; border-color:transparent;
+                      box-shadow:0 10px 22px -14px rgba(21,94,125,.8); }
+  .addchild{ display:inline-flex; align-items:center; gap:5px; font-family:'Readex Pro',sans-serif;
+             font-size:13.5px; font-weight:700; color:#D97E0A; background:#FFF7EC; border:1.5px dashed #E9C48B;
+             border-radius:999px; padding:7px 14px; cursor:pointer; transition:all .12s; }
+  .addchild:hover{ background:#FFF1DA; border-color:#D9A24A; }
+  /* coming-soon modal */
+  .overlay{ position:fixed; inset:0; background:rgba(18,42,54,.46); display:flex; align-items:center; justify-content:center;
+            padding:20px; z-index:50; opacity:0; pointer-events:none; transition:opacity .18s; }
+  .overlay.show{ opacity:1; pointer-events:auto; }
+  .modal{ background:#fff; border-radius:22px; max-width:360px; width:100%; padding:26px 22px; text-align:center;
+          box-shadow:0 30px 60px -20px rgba(21,94,125,.6); transform:translateY(8px) scale(.98); transition:transform .18s; }
+  .overlay.show .modal{ transform:none; }
+  .modal .ic{ width:58px; height:58px; border-radius:50%; background:linear-gradient(135deg,#E6F4FB,#D7ECF8);
+              color:#178FC9; display:flex; align-items:center; justify-content:center; margin:0 auto 14px; }
+  .modal h3{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:21px; color:#155E7D; margin:0 0 8px; }
+  .modal p{ font-size:14.5px; color:#5A5249; line-height:1.7; margin:0 0 18px; }
+  .modal .ok{ font-family:'Readex Pro',sans-serif; font-weight:700; font-size:15px; color:#fff;
+              background:linear-gradient(135deg,#163E52,#1B6E97); border:0; border-radius:13px; padding:11px 26px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -60,6 +98,11 @@ const SVG = {
   cap:'<svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;"><path d="M8 4.5h8v3.2a4 4 0 0 1-8 0z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 6.2H5.6v.8a2.8 2.8 0 0 0 2.8 2.8M16 6.2h2.4v.8a2.8 2.8 0 0 1-2.8 2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 11.7v3.1M9.6 19.5h4.8M10.4 19.5v-1.4h3.2v1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   stepDone:'<svg viewBox="0 0 24 24" fill="none" style="width:22px;height:22px;"><circle cx="12" cy="12" r="9" fill="#E8F7EE"/><path d="M8.2 12.2l2.6 2.6 4.8-5.2" stroke="#1E945B" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   stepTodo:'<svg viewBox="0 0 24 24" fill="none" style="width:22px;height:22px;"><circle cx="12" cy="12" r="8.4" stroke="#CFC6BA" stroke-width="1.7"/></svg>',
+  // admin-shell icons
+  card:'<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.7"/><path d="M6.5 15.5h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8.5" r="3.6" stroke="currentColor" stroke-width="1.7"/><path d="M5 19.5c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" style="width:15px;height:15px;"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  modalClock:'<svg viewBox="0 0 24 24" fill="none" style="width:28px;height:28px;"><circle cx="12" cy="12" r="8.6" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.4V12l3.2 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   // فيثاغورث mascot (the warm character that "speaks" in the struggle card)
   pyth:'<svg viewBox="0 0 300 300" fill="none" style="width:40px;height:40px;animation:bobm 4s ease-in-out infinite;"><defs><radialGradient id="pab" cx="38%" cy="30%" r="78%"><stop offset="0%" stop-color="#FFD27E"/><stop offset="38%" stop-color="#F9AC36"/><stop offset="78%" stop-color="#F1991F"/><stop offset="100%" stop-color="#DD7E05"/></radialGradient><radialGradient id="pan" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#7FD0F2"/><stop offset="100%" stop-color="#1E9BD7"/></radialGradient></defs><g><line x1="160" y1="40" x2="146" y2="22" stroke="#8AD0F0" stroke-width="3" stroke-linecap="round"/><line x1="160" y1="40" x2="182" y2="28" stroke="#8AD0F0" stroke-width="3" stroke-linecap="round"/><circle cx="144" cy="20" r="5" fill="#29A9E0"/><circle cx="184" cy="26" r="5" fill="#29A9E0"/><path d="M150 66 Q150 48 160 40" stroke="#EE9420" stroke-width="6" stroke-linecap="round" fill="none"/><circle cx="160" cy="38" r="11" fill="url(#pan)"/></g><path d="M76 156 Q46 126 42 96" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><path d="M224 158 Q254 178 256 204" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><ellipse cx="150" cy="180" rx="112" ry="116" fill="url(#pab)"/><ellipse cx="112" cy="120" rx="56" ry="38" fill="#FFFFFF" opacity=".22"/><circle cx="42" cy="92" r="17" fill="#F6A92F"/><circle cx="256" cy="208" r="17" fill="#F6A92F"/><ellipse cx="92" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="208" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="120" cy="160" rx="29" ry="33" fill="#fff"/><ellipse cx="190" cy="160" rx="29" ry="33" fill="#fff"/><circle cx="127" cy="168" r="15" fill="#163E52"/><circle cx="183" cy="168" r="15" fill="#163E52"/><circle cx="122" cy="162" r="6" fill="#fff"/><circle cx="178" cy="162" r="6" fill="#fff"/><path d="M102 130 Q120 122 138 129" stroke="#163E52" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M172 129 Q190 122 208 130" stroke="#163E52" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M128 196 Q150 204 172 196 Q167 220 150 222 Q133 220 128 196 Z" fill="#1B4A5E"/></svg>',
 };
@@ -69,21 +112,94 @@ const CARD = 'background:#fff;border:1px solid #EFE7DA;border-radius:20px;paddin
 const H2 = (color,icon,text)=>`<h2 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:18px;margin:0 0 11px;color:${color};display:flex;align-items:center;gap:9px;"><span style="display:inline-flex;color:${color};">${icon}</span>${text}</h2>`;
 const CHIP = (text)=>`<span style="display:inline-block;margin-top:11px;background:#E6F4FB;color:#178FC9;border-radius:999px;padding:5px 14px;font-size:13px;font-weight:700;">${text}</span>`;
 
-// ---------- data load (live, unchanged binding) ----------
+// ---------- admin shell (UI frame only — no engine/API beyond the existing read) ----------
+let STUDENTS = [];      // from /api/students (read-only list the page already used)
+let currentSid = null;
+
+function shellHTML(){
+  return `<div class="topnav">
+      <div class="brandgrp"><span class="logo">فيثاغورث</span><span class="tag">لوحة وليّ الأمر</span></div>
+      <div class="navgrp">
+        <button class="navlink" onclick="comingSoon('اشتراكي')">${SVG.card} اشتراكي</button>
+        <button class="navlink" onclick="comingSoon('حسابي')">${SVG.user} حسابي</button>
+      </div>
+    </div>
+    <div class="switcher" id="switcher"></div>
+    <div id="board"><div class="err">… جارٍ التحميل</div></div>
+    <div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal" role="dialog" aria-modal="true">
+        <div class="ic">${SVG.modalClock}</div>
+        <h3>قريباً</h3>
+        <p id="modalText"></p>
+        <button class="ok" onclick="closeModal()">حسناً</button>
+      </div>
+    </div>`;
+}
+
+function renderSwitcher(){
+  const sw = document.getElementById('switcher');
+  if(!sw) return;
+  let h = '';
+  if(STUDENTS.length > 1){
+    h += '<span class="swlabel">الأبناء</span>';
+    h += STUDENTS.map(k=>`<button class="chip-child${String(k.id)===String(currentSid)?' active':''}" onclick="switchChild(${k.id})">${k.name}</button>`).join('');
+  }
+  h += `<button class="addchild" onclick="comingSoon('إضافة طفل')">${SVG.plus} إضافة طفل</button>`;
+  sw.innerHTML = h;
+}
+
+function switchChild(sid){
+  if(String(sid) === String(currentSid)) return;
+  currentSid = sid;
+  const u = new URL(location); u.searchParams.set('student', sid); history.replaceState(null,'',u);
+  renderSwitcher();
+  loadBoard(sid);
+}
+
+// placeholders for systems not built yet (subscription, add-child, account) — never breaks anything
+function comingSoon(feature){
+  const t = document.getElementById('modalText');
+  if(t) t.innerHTML = `ميزة «${feature}» قيد الإنشاء، وستتوفّر قريباً بإذن الله.`;
+  const o = document.getElementById('overlay');
+  if(o) o.classList.add('show');
+}
+function closeModal(){ const o = document.getElementById('overlay'); if(o) o.classList.remove('show'); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+// ---------- data load (live, unchanged bindings) ----------
 async function load(){
   const app = document.getElementById('app');
-  let sid = new URLSearchParams(location.search).get('student');
   try{
-    if(!sid){
-      const kids = await (await fetch('/api/students')).json();
-      if(!Array.isArray(kids) || !kids.length){ app.innerHTML='<div class="err">لا يوجد أطفال بعد. سجّل دخولك وأضِف طفلاً.</div>'; return; }
-      sid = kids[0].id;
-    }
-    const r = await fetch(`/api/students/${sid}/dashboard`);
+    const r = await fetch('/api/students');
     if(r.status===401){ app.innerHTML='<div class="err">سجّل الدخول لعرض لوحة طفلك.</div>'; return; }
     if(!r.ok){ app.innerHTML='<div class="err">تعذّر تحميل اللوحة.</div>'; return; }
-    render(await r.json());
+    const kids = await r.json();
+    STUDENTS = Array.isArray(kids) ? kids : [];
+    app.innerHTML = shellHTML();          // builds nav + switcher + #board + modal
+    const param = new URLSearchParams(location.search).get('student');
+    currentSid = STUDENTS.length
+      ? ((param && STUDENTS.some(k=>String(k.id)===param)) ? param : STUDENTS[0].id)
+      : null;
+    renderSwitcher();
+    if(!currentSid){
+      document.getElementById('board').innerHTML =
+        '<div class="err">لا يوجد أطفال بعد. أضِف طفلاً للبدء. 🌱</div>';
+      return;
+    }
+    await loadBoard(currentSid);
   }catch(e){ app.innerHTML='<div class="err">تعذّر الاتصال بالخادم.</div>'; }
+}
+
+async function loadBoard(sid){
+  const board = document.getElementById('board');
+  if(!board) return;
+  board.innerHTML = '<div class="err">… جارٍ التحميل</div>';
+  try{
+    const r = await fetch(`/api/students/${sid}/dashboard`);
+    if(r.status===401){ board.innerHTML='<div class="err">سجّل الدخول لعرض لوحة طفلك.</div>'; return; }
+    if(!r.ok){ board.innerHTML='<div class="err">تعذّر تحميل اللوحة.</div>'; return; }
+    render(await r.json());
+  }catch(e){ board.innerHTML='<div class="err">تعذّر الاتصال بالخادم.</div>'; }
 }
 
 function statCard(bg, color, icon, big, lbl){
@@ -94,19 +210,11 @@ function statCard(bg, color, icon, big, lbl){
     </div>`;
 }
 
+// the educational board — unchanged look, real data, into #board
 function render(d){
   const c = d.cards, s = d.struggle;
   const headerSub = (d.child.grade ? d.child.grade + ' · ' : '') + 'منهج ' + d.child.curriculum;
   let html = '';
-
-  // brand bar (text wordmark — no external logo asset)
-  html += `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;padding:0 2px;">
-      <div style="display:flex;align-items:center;gap:11px;">
-        <span style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:19px;color:#D97E0A;">فيثاغورث</span>
-        <span style="font-size:12.5px;color:#9A8F82;padding-right:11px;border-right:1.5px solid #E9DFD0;">لوحة وليّ الأمر</span>
-      </div>
-      <span style="font-size:12.5px;color:#B0A595;">موطن التعليم</span>
-    </div>`;
 
   // 1 · header
   html += `<div style="position:relative;overflow:hidden;border-radius:24px;padding:22px;margin:14px 0;background:linear-gradient(135deg,#163E52 0%,#1B6E97 68%,#1E84B6 100%);box-shadow:0 22px 46px -26px rgba(21,94,125,.7);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
@@ -177,7 +285,7 @@ function render(d){
       ${CHIP(d.next.reason)}
     </div>`;
 
-  document.getElementById('app').innerHTML = html;
+  document.getElementById('board').innerHTML = html;
 }
 load();
 </script>
