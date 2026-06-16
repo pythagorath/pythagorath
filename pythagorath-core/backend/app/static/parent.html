@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لوحة وليّ الأمر — فيثاغورث</title>
+<link rel="stylesheet" href="/static/brand.css">
+<style>
+  /* warm wash over the brand surface (home-of-education feel) */
+  body{ background-color:#FBF7F0; }
+  .wrap{ max-width:760px; margin:0 auto; padding:14px; position:relative; z-index:1; }
+  .pcard{ background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+          box-shadow:var(--sh); padding:16px; margin:12px 0; }
+  .head{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+         background:linear-gradient(135deg,var(--deep),#1B7FB0); color:#fff; }
+  .head h1{ font-family:var(--fun); margin:0 0 2px; font-size:22px; }
+  .head .sub{ opacity:.9; font-size:14px; }
+  .streak{ background:rgba(255,255,255,.16); border-radius:var(--r-pill); padding:8px 14px;
+           font-weight:800; font-size:18px; white-space:nowrap; }
+  .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .stat{ text-align:center; padding:14px 8px; border-radius:var(--r); border:1px solid var(--line);
+         background:var(--card); }
+  .stat .big{ font-family:var(--fun); font-size:26px; font-weight:800; }
+  .stat .lbl{ color:var(--muted); font-size:13px; margin-top:2px; }
+  .stat.coins .big{ color:var(--orange-d); } .stat.mast .big{ color:var(--ok); }
+  .stat.time .big{ color:var(--cyan-d); }
+  h2.sec{ font-family:var(--fun); font-size:17px; margin:0 0 8px; color:var(--deep);
+          display:flex; align-items:center; gap:7px; }
+  .muted{ color:var(--muted); }
+  /* struggle card — warm amber, not alarming red */
+  .struggle{ background:linear-gradient(180deg,#FFF6EC,#FFEFD9); border:1px solid #F3CF97; }
+  .struggle .why{ font-weight:600; margin:6px 0; }
+  .struggle .ph{ background:#fff; border-radius:12px; padding:10px 12px; margin-top:8px;
+                 border-right:4px solid var(--orange); font-size:14px; color:#5a4421; }
+  .plan li{ list-style:none; margin:6px 0; display:flex; align-items:center; gap:8px; }
+  .plan .done{ color:var(--ok); font-weight:800; } .plan .todo{ color:var(--muted); }
+  .bar{ height:12px; background:#EAEEF2; border-radius:var(--r-pill); overflow:hidden; margin-top:8px; }
+  .bar>i{ display:block; height:100%; background:linear-gradient(90deg,var(--cyan),var(--cyan-d)); }
+  .chip{ display:inline-block; background:var(--cyan-l); color:var(--cyan-d); border-radius:var(--r-pill);
+         padding:3px 10px; font-size:13px; font-weight:700; }
+  .lst li{ list-style:none; margin:6px 0; display:flex; align-items:center; gap:8px; }
+  .next-skill{ font-weight:700; font-size:16px; }
+  /* Arabic fraction (numerator over denominator) — for ALL surfaces; never ½ */
+  .frac{ display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle;
+         line-height:1; margin:0 2px; font-size:.92em; }
+  .frac b{ border-bottom:1.6px solid currentColor; padding:0 3px; font-weight:700; }
+  .frac i{ padding:0 3px; font-style:normal; }
+  .err{ text-align:center; padding:40px 16px; color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="mathbg" aria-hidden="true"></div>
+<div class="wrap" id="app"><div class="err">… جارٍ التحميل</div></div>
+<script>
+const H = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
+// render Arabic text: stack any a/b as a proper fraction, then Hindi-ize remaining digits
+function ar(s){
+  s = String(s == null ? "" : s);
+  s = s.replace(/(\d+)\s*\/\s*(\d+)/g, (m,a,b)=>`<span class="frac"><b>${H(a)}</b><i>${H(b)}</i></span>`);
+  return s.replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
+}
+const el = (h)=>{ const d=document.createElement('div'); d.innerHTML=h; return d.firstElementChild; };
+
+async function load(){
+  const app = document.getElementById('app');
+  let sid = new URLSearchParams(location.search).get('student');
+  try{
+    if(!sid){
+      const kids = await (await fetch('/api/students')).json();
+      if(!Array.isArray(kids) || !kids.length){ app.innerHTML='<div class="err">لا يوجد أطفال بعد. سجّل دخولك وأضِف طفلاً.</div>'; return; }
+      sid = kids[0].id;
+    }
+    const r = await fetch(`/api/students/${sid}/dashboard`);
+    if(r.status===401){ app.innerHTML='<div class="err">سجّل الدخول لعرض لوحة طفلك.</div>'; return; }
+    if(!r.ok){ app.innerHTML='<div class="err">تعذّر تحميل اللوحة.</div>'; return; }
+    render(await r.json());
+  }catch(e){ app.innerHTML='<div class="err">تعذّر الاتصال بالخادم.</div>'; }
+}
+
+function render(d){
+  const c = d.cards, s = d.struggle;
+  let html = '';
+  // 1 — header
+  html += `<div class="pcard head">
+      <div><h1>${d.child.name}</h1>
+        <div class="sub">${d.child.grade || ''} · منهج ${d.child.curriculum}</div></div>
+      <div class="streak">🔥 ${H(d.streak_days)} ${d.streak_days===1?'يوم':'أيّام'} متتالية</div>
+    </div>`;
+  // 2 — three stat cards
+  html += `<div class="cards">
+      <div class="stat mast"><div class="big">${H(c.mastered)}<span class="muted" style="font-size:16px">/${H(c.total)}</span></div><div class="lbl">مهارة أتقنها</div></div>
+      <div class="stat coins"><div class="big">${H(c.coins)} 🪙</div><div class="lbl">نقاطه (الكوينز)</div></div>
+      <div class="stat time"><div class="big">${H(c.week_minutes)}</div><div class="lbl">دقيقة هذا الأسبوع</div></div>
+    </div>`;
+  // 3 — where is the child now
+  html += `<div class="pcard"><h2 class="sec">📍 أين طفلك الآن</h2>
+      <div class="next-skill">${ar(d.location.description)}</div>
+      <div class="chip" style="margin-top:6px">${d.location.level}</div></div>`;
+  // 4 — struggling + why (amber) — or all-good
+  if(s.has){
+    html += `<div class="pcard struggle"><h2 class="sec">🧭 أين يتعثّر — ولماذا</h2>
+        <div class="why">${ar(s.why)}</div>
+        <div class="ph">✨ ${ar(s.pythagorath_line)}</div></div>`;
+    // 5 — remediation plan
+    const steps = s.plan.steps.map(st=>`<li><span class="${st.done?'done':'todo'}">${st.done?'✓':'○'}</span> ${ar(st.label)}</li>`).join('');
+    html += `<div class="pcard"><h2 class="sec">🩺 خطة العلاج</h2>
+        <ul class="plan">${steps}</ul>
+        <div class="bar"><i style="width:${s.plan.progress_percent}%"></i></div>
+        <div class="muted" style="font-size:13px;margin-top:4px">نسبة إنجاز العلاج: ${H(s.plan.progress_percent)}٪</div></div>`;
+  } else {
+    html += `<div class="pcard"><h2 class="sec">🌱 الحالة</h2><div>${ar(s.message)}</div></div>`;
+  }
+  // 6 — last mastered
+  if(d.last_mastered.length){
+    const items = d.last_mastered.map(m=>`<li>🏆 ${ar(m.skill)}</li>`).join('');
+    html += `<div class="pcard"><h2 class="sec">⭐ آخر ما أتقن</h2><ul class="lst">${items}</ul></div>`;
+  }
+  // 7 — what's next
+  html += `<div class="pcard"><h2 class="sec">➡️ القادم</h2>
+      <div class="next-skill">${ar(d.next.skill || '—')}</div>
+      <div class="chip" style="margin-top:6px">${d.next.reason}</div></div>`;
+
+  document.getElementById('app').innerHTML = html;
+}
+load();
+</script>
+</body>
+</html>

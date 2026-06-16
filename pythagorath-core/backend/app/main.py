@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 
 from app import access, admin, auth, consent, diagnostic, gate, generators, payments, phrasing, schemas, seed
 from app import path as learning_path
+from app import dashboard as parent_dashboard
 from app import gencontent  # noqa: F401 — registers the m1 live generators (the 22 critical nodes)
 from app import gencontent_m2  # noqa: F401 — registers the m2 live generators (the 27 high-risk nodes)
 from app import gencontent_m3  # noqa: F401 — registers the m3 live generators (the remaining 74 nodes)
@@ -261,6 +262,15 @@ def child_report(student=Depends(auth.owned_student), db: Session = Depends(get_
         "totals": totals,
         "skills": out,
     }
+
+
+@app.get("/api/students/{student_id}/dashboard")
+def dashboard(student=Depends(auth.owned_student), db: Session = Depends(get_db)):
+    """The guardian dashboard — a READ-ONLY, parent-language aggregation over the heart
+    (path/lock/mastery/answers). Plain descriptions (term in parentheses), Hindi numerals
+    handled in the UI; computes streak/weekly-time in the child's local Gulf day and a
+    DISPLAY-ONLY coins number. Touches no engine state. owned_student → 401/403/404."""
+    return parent_dashboard.build(db, student, learning_path.next_skill, _path_skills(db, student))
 
 
 @app.get("/api/students/{student_id}/diagnostic/probes", response_model=list[schemas.ProbeItem])
@@ -606,3 +616,8 @@ def admin_page():
 @app.get("/landing")
 def landing_page():
     return FileResponse(_STATIC / "landing.html")
+
+
+@app.get("/parent")
+def parent_page():
+    return FileResponse(_STATIC / "parent.html")
