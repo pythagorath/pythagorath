@@ -261,6 +261,13 @@ class AdaptiveStep(BaseModel):
     placement: PlacementRef | None = None  # the diagnosed start point (when done)
 
 
+# ----- personal learning path: the next skill to study + why -----
+class NextSkill(BaseModel):
+    reason: str                            # remediation | continue | new | review | done
+    skill: PlacementRef | None = None      # the next skill (None only when done)
+    remediating_for: PlacementRef | None = None  # the struggling node we descended FROM (remediation)
+
+
 # ----- admin panel (question editor + phrasing layer) -----
 def _nonblank(v: str) -> str:
     if v is None or not str(v).strip():

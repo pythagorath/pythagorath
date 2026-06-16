@@ -13,6 +13,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import access, admin, auth, consent, diagnostic, gate, generators, payments, phrasing, schemas, seed
+from app import path as learning_path
 from app import gencontent  # noqa: F401 — registers the m1 live generators (the 22 critical nodes)
 from app import gencontent_m2  # noqa: F401 — registers the m2 live generators (the 27 high-risk nodes)
 from app import gencontent_m3  # noqa: F401 — registers the m3 live generators (the remaining 74 nodes)
@@ -320,6 +321,24 @@ def diagnostic_adaptive(payload: schemas.DiagnosticSubmit,
         placement=(schemas.PlacementRef(skill_id=frontier.id, code=frontier.code, name=frontier.name)
                    if frontier else None),
     )
+
+
+@app.get("/api/students/{student_id}/next", response_model=schemas.NextSkill)
+def next_skill(student=Depends(auth.owned_student), db: Session = Depends(get_db)):
+    """The child's ONE next study target + WHY — the personal learning path. A pure read
+    (lock + mastery + the unified DAG): remediation (descend to a foundation gap) >
+    continue > new frontier > review > done. Only UNLOCKED, in-curriculum nodes are
+    offered (no progression before mastery; all-owners). owned_student → 401/403/404."""
+    res = learning_path.next_skill(db, student, _path_skills(db, student))
+
+    def ref(skill_id):
+        if skill_id is None:
+            return None
+        s = db.get(Skill, skill_id)
+        return schemas.PlacementRef(skill_id=s.id, code=s.code, name=s.name)
+
+    return schemas.NextSkill(reason=res["reason"], skill=ref(res["skill_id"]),
+                             remediating_for=ref(res["remediating_for"]))
 
 
 @app.get("/api/students/{student_id}/skills/{skill_id}/questions",
