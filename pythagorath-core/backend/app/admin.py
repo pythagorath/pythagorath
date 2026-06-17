@@ -23,11 +23,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app import gate, parent_terms, phrasing, schemas
+from app import gate, generators, parent_terms, phrasing, schemas
 from app.db import get_db
 from app.models import (
-    AppSetting, GCC_COUNTRIES, Answer, Grade, Plan, Question, QuestionPhrasing,
-    Skill, SkillMastery, Student, Subscription, User,
+    AppSetting, GCC_COUNTRIES, Answer, Grade, Plan, Question, QuestionInstance,
+    QuestionPhrasing, Skill, SkillMastery, Student, Subscription, User,
 )
 from app.path import STRUGGLE_THRESHOLD
 
@@ -457,6 +457,11 @@ def overview(db: Session = Depends(get_db)):
         Question.status == "published")).scalar_one()
     needs_review = db.execute(select(func.count(Question.id)).where(
         Question.status != "published")).scalar_one()
+    # HONEST count: published_q is the STORED template/published rows; the engine LIVE-
+    # GENERATES per child from generators on `live_nodes` skills (effectively unlimited
+    # unique questions). `generated_instances` = live copies issued so far.
+    live_nodes = len(generators.REGISTRY)
+    generated_instances = db.execute(select(func.count(QuestionInstance.id))).scalar_one()
 
     return {
         "cards": {"parents": parents, "children": children, "active_week": len(active)},
@@ -464,6 +469,7 @@ def overview(db: Session = Depends(get_db)):
         "content_health": {
             "skills": skills_total, "published_questions": published_q,
             "curricula": len(GCC_COUNTRIES), "needs_review": needs_review,
+            "live_nodes": live_nodes, "generated_instances": generated_instances,
         },
         "struggled": _struggled(db, limit=8),
     }

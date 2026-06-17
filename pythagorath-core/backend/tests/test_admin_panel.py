@@ -34,6 +34,11 @@ def test_overview_reads_real_data(admin_client, db, h):
     assert d["cards"]["children"] >= 1
     assert d["content_health"]["skills"] > 0
     assert d["content_health"]["curricula"] == 6
+    # HONEST count: stored published rows + the live-generation engine surfaced separately
+    ch = d["content_health"]
+    assert ch["live_nodes"] > 0                           # skills that generate live
+    assert ch["generated_instances"] >= 0                 # live copies issued so far
+    assert ch["published_questions"] >= 0
     assert len(d["activity_7d"]) == 7
     assert isinstance(d["struggled"], list)
 

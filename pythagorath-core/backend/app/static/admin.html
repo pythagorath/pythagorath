@@ -21,44 +21,64 @@
   .side{ flex:0 0 232px; background:linear-gradient(180deg,#163E52,#114457); color:#fff; padding:18px 14px; position:sticky; top:0; height:100vh; overflow:auto; }
   .brand{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:20px; margin:4px 8px 4px; }
   .brand .sub{ display:block; font-size:12px; color:rgba(255,255,255,.6); font-weight:400; font-family:'Readex Pro',sans-serif; }
-  .navgrp{ margin-top:16px; }
-  .navgrp .lbl{ font-size:11.5px; color:rgba(255,255,255,.5); margin:14px 10px 6px; font-weight:700; letter-spacing:.3px; }
+  .navgrp .lbl{ font-size:11.5px; color:rgba(255,255,255,.5); margin:14px 10px 6px; font-weight:700; }
   .nav{ display:flex; align-items:center; gap:9px; width:100%; text-align:right; background:none; border:0; color:rgba(255,255,255,.86);
         font-family:'Readex Pro',sans-serif; font-size:14.5px; font-weight:600; padding:10px 11px; border-radius:11px; cursor:pointer; }
-  .nav:hover{ background:rgba(255,255,255,.08); }
-  .nav.active{ background:rgba(255,255,255,.16); color:#fff; }
+  .nav:hover{ background:rgba(255,255,255,.08); } .nav.active{ background:rgba(255,255,255,.16); color:#fff; }
   .nav .ic{ width:18px; text-align:center; }
   .nav .soon{ margin-inline-start:auto; font-size:10.5px; background:rgba(255,255,255,.18); border-radius:999px; padding:2px 7px; }
-  .logout{ margin-top:18px; color:rgba(255,255,255,.7); font-size:13px; background:none; border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:8px; width:100%; cursor:pointer; }
 
-  .main{ flex:1; padding:24px 26px 60px; max-width:1100px; }
+  .wrap{ flex:1; display:flex; flex-direction:column; min-width:0; }
+  /* topbar */
+  .topbar{ position:sticky; top:0; z-index:30; display:flex; align-items:center; gap:14px; background:#fff; border-bottom:1px solid #EAE2D4; padding:11px 22px; }
+  .gsearch{ position:relative; flex:1; max-width:420px; }
+  .gsearch input{ width:100%; padding:9px 14px; border:1.5px solid #E3DACB; border-radius:999px; font-family:inherit; font-size:14px; background:#FBF9F4; }
+  .gres{ position:absolute; top:44px; right:0; left:0; background:#fff; border:1px solid #EAE2D4; border-radius:14px; box-shadow:0 18px 40px -20px rgba(21,94,125,.5); overflow:hidden; display:none; z-index:40; }
+  .gres.show{ display:block; } .gres .gi{ padding:9px 14px; cursor:pointer; font-size:14px; display:flex; gap:8px; align-items:center; } .gres .gi:hover{ background:#FBF7F0; }
+  .gres .gt{ font-size:11px; color:#9A8F82; padding:7px 14px 3px; }
+  .spacer{ flex:1; }
+  .hbtn{ position:relative; background:#F4F1EA; border:1px solid #EAE2D4; border-radius:12px; padding:8px 11px; cursor:pointer; font-size:16px; }
+  .badge{ position:absolute; top:-6px; left:-6px; background:#E2654E; color:#fff; border-radius:999px; font-size:10.5px; font-weight:800; min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; padding:0 4px; }
+  .prof{ display:flex; align-items:center; gap:9px; background:#F4F1EA; border:1px solid #EAE2D4; border-radius:12px; padding:6px 11px 6px 9px; cursor:pointer; }
+  .av{ width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#163E52,#1B6E97); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-family:'Baloo Bhaijaan 2',cursive; }
+  .prof .em{ font-size:13px; color:#5A5249; max-width:170px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .drop{ position:absolute; top:50px; left:22px; min-width:230px; background:#fff; border:1px solid #EAE2D4; border-radius:14px; box-shadow:0 18px 40px -20px rgba(21,94,125,.5); overflow:hidden; display:none; z-index:40; }
+  .drop.show{ display:block; } .drop .di{ padding:11px 15px; cursor:pointer; font-size:14px; display:flex; gap:9px; align-items:flex-start; } .drop .di:hover{ background:#FBF7F0; }
+  .drop .dh{ padding:10px 15px; font-size:12px; color:#9A8F82; border-bottom:1px solid #F0EADF; } .drop .empty{ padding:16px 15px; color:#9A8F82; font-size:13.5px; }
+
+  .main{ padding:24px 26px 60px; max-width:1100px; }
   h2.sec{ font-family:'Baloo Bhaijaan 2',cursive; font-size:22px; color:#155E7D; margin:0 0 4px; }
   .muted{ color:#8A8178; font-size:14px; }
-  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin:16px 0; }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px; margin:16px 0; }
   .stat{ background:#fff; border:1px solid #EFE7DA; border-radius:16px; padding:16px 18px; box-shadow:0 12px 26px -22px rgba(21,94,125,.6); }
   .stat .big{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:30px; color:#155E7D; }
-  .stat.orange .big{ color:#D97E0A; } .stat.green .big{ color:#1E945B; } .stat.cyan .big{ color:#178FC9; }
-  .stat .lbl{ color:#8A8178; font-size:13.5px; margin-top:3px; }
+  .stat.orange .big{ color:#D97E0A; } .stat.green .big{ color:#1E945B; } .stat.cyan .big{ color:#178FC9; } .stat.live .big{ color:#7A4FB0; }
+  .stat .lbl{ color:#8A8178; font-size:13px; margin-top:3px; } .stat .hint{ color:#A89F92; font-size:11.5px; margin-top:2px; }
   .panel{ background:#fff; border:1px solid #EFE7DA; border-radius:16px; padding:18px; margin:14px 0; box-shadow:0 12px 26px -22px rgba(21,94,125,.55); }
   .panel h3{ font-family:'Baloo Bhaijaan 2',cursive; font-size:16px; color:#1B6E45; margin:0 0 12px; }
+  .note{ background:#F3EEFA; border:1px solid #E0D3F2; border-radius:12px; padding:11px 14px; color:#5B3FB0; font-size:13.5px; margin:10px 0; }
   .bars{ display:flex; align-items:flex-end; gap:10px; height:120px; padding-top:8px; }
   .bar{ flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; height:100%; justify-content:flex-end; }
   .bar .col{ width:70%; min-height:3px; background:linear-gradient(180deg,#37B6E6,#178FC9); border-radius:6px 6px 0 0; }
   .bar .n{ font-size:12px; font-weight:800; color:#155E7D; } .bar .d{ font-size:11px; color:#9A8F82; }
   table{ width:100%; border-collapse:collapse; font-size:14px; }
   th,td{ text-align:right; padding:9px 10px; border-bottom:1px solid #F0EADF; }
+  th.s{ cursor:pointer; user-select:none; } th.s:hover{ color:#155E7D; }
   th{ color:#8A8178; font-size:12.5px; font-weight:700; }
   tr.clickable{ cursor:pointer; } tr.clickable:hover{ background:#FBF7F0; }
   .pill{ display:inline-block; border-radius:999px; padding:2px 10px; font-size:12px; font-weight:700; }
   .pill.ok{ background:#E8F7EE; color:#1E945B; } .pill.warn{ background:#FFF1DA; color:#D97E0A; } .pill.gray{ background:#EEF1F4; color:#7C8893; }
-  .search{ width:100%; max-width:320px; padding:10px 13px; border:1.5px solid #E3DACB; border-radius:12px; font-family:inherit; font-size:14px; margin:6px 0 12px; }
-  .soonbox{ text-align:center; padding:48px 16px; color:#8A8178; }
-  .soonbox .em{ font-size:40px; } .soonbox h3{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; font-size:20px; margin:10px 0 4px; }
-  .linkbtn{ display:inline-block; margin-top:6px; background:#E6F4FB; color:#178FC9; border-radius:999px; padding:7px 15px; font-weight:700; font-size:13.5px; text-decoration:none; }
-  .row2{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-  select.sk{ padding:9px 12px; border:1.5px solid #E3DACB; border-radius:11px; font-family:inherit; font-size:14px; min-width:260px; }
+  .tctrl{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+  .tctrl input, .tctrl select{ padding:8px 12px; border:1.5px solid #E3DACB; border-radius:11px; font-family:inherit; font-size:13.5px; background:#fff; }
+  .tctrl input.q{ min-width:200px; flex:1; max-width:280px; }
+  .exp{ background:#E8F7EE; color:#1E945B; border:1px solid #BFE6CB; border-radius:11px; padding:8px 14px; cursor:pointer; font-weight:700; font-size:13.5px; margin-inline-start:auto; }
+  .pager{ display:flex; gap:8px; align-items:center; justify-content:center; margin-top:12px; color:#5A5249; font-size:13.5px; }
+  .pager button{ background:#F4F1EA; border:1px solid #E3DACB; border-radius:9px; padding:6px 12px; cursor:pointer; font-family:inherit; } .pager button:disabled{ opacity:.45; cursor:default; }
+  .emptyst{ text-align:center; padding:40px 16px; color:#9A8F82; } .emptyst .em{ font-size:34px; }
+  .linkbtn{ display:inline-block; background:#E6F4FB; color:#178FC9; border:0; border-radius:999px; padding:8px 15px; font-weight:700; font-size:13.5px; cursor:pointer; text-decoration:none; }
+  .soonbox{ text-align:center; padding:48px 16px; color:#8A8178; } .soonbox .em{ font-size:40px; } .soonbox h3{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; font-size:20px; margin:10px 0 4px; }
   .err{ color:#C0392B; }
-  .modal{ position:fixed; inset:0; background:rgba(18,42,54,.45); display:none; align-items:center; justify-content:center; padding:20px; z-index:50; }
+  .modal{ position:fixed; inset:0; background:rgba(18,42,54,.45); display:none; align-items:center; justify-content:center; padding:20px; z-index:60; }
   .modal.show{ display:flex; }
   .modal .box{ background:#fff; border-radius:18px; max-width:520px; width:100%; max-height:86vh; overflow:auto; padding:22px; }
   .modal h3{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; margin:0 0 8px; }
@@ -76,136 +96,183 @@ async function api(path, opts){
   if(!r.ok){ const e=new Error('حدث خطأ'); e.status=r.status; try{e.detail=(await r.json()).detail;}catch(_){} throw e; }
   return r.status===204 ? null : r.json();
 }
+let ME=null, OV=null, STUDENTS=[], PARENTS=[], NODES=null, NOTIFS=[], CURRENT='overview', STUDENT_FILTER=null;
 
 const SECTIONS = [
-  {grp:'الإدارة', items:[
-    {id:'overview', ic:'🏠', name:'الرئيسية'},
-    {id:'students', ic:'🧒', name:'الطلّاب'},
-    {id:'parents', ic:'👪', name:'أولياء الأمور'},
-  ]},
-  {grp:'المحتوى والجودة', items:[
-    {id:'questions', ic:'❓', name:'الأسئلة'},
-    {id:'skills', ic:'🗂️', name:'المهارات'},
-    {id:'reports', ic:'📊', name:'التقارير'},
-  ]},
-  {grp:'الاشتراك والتسعير', items:[
-    {id:'pricing', ic:'💳', name:'التسعير والخطط', soon:true},
-    {id:'subs', ic:'🔁', name:'الاشتراكات', soon:true},
-  ]},
-  {grp:'', items:[ {id:'settings', ic:'⚙️', name:'الإعدادات'} ]},
+  {grp:'الإدارة', items:[{id:'overview',ic:'🏠',name:'الرئيسية'},{id:'students',ic:'🧒',name:'الطلّاب'},{id:'parents',ic:'👪',name:'أولياء الأمور'}]},
+  {grp:'المحتوى والجودة', items:[{id:'questions',ic:'❓',name:'الأسئلة'},{id:'skills',ic:'🗂️',name:'المهارات'},{id:'reports',ic:'📊',name:'التقارير'}]},
+  {grp:'الاشتراك والتسعير', items:[{id:'pricing',ic:'💳',name:'التسعير والخطط',soon:true},{id:'subs',ic:'🔁',name:'الاشتراكات',soon:true}]},
+  {grp:'', items:[{id:'settings',ic:'⚙️',name:'الإعدادات'}]},
 ];
-let CURRENT='overview';
 
 async function boot(){
-  let me=null;
-  try{ me = await api('/api/auth/me'); }
-  catch(e){ return showGate(); }
-  if(me.role !== 'admin'){ return showForbidden(me.email); }
+  try{ ME = await api('/api/auth/me'); }catch(e){ return showGate(); }
+  if(ME.role !== 'admin'){ return showForbidden(ME.email); }
+  try{ [OV, STUDENTS, PARENTS] = await Promise.all([api('/api/admin/overview'), api('/api/admin/students'), api('/api/admin/parents')]); }
+  catch(e){ STUDENTS=STUDENTS||[]; PARENTS=PARENTS||[]; }
+  buildNotifs();
   renderShell();
   go('overview');
 }
-
-function showGate(){
-  document.getElementById('app').innerHTML = `<div class="gate">
-    <h1>لوحة الإدارة</h1><p>هذه اللوحة للمالك فقط. سجّل الدخول.</p>
-    <input id="ge" type="email" placeholder="البريد"><input id="gp" type="password" placeholder="كلمة السر">
-    <div class="err" id="gerr"></div>
-    <button onclick="doLogin()">دخول</button></div>`;
-}
-function showForbidden(email){
-  document.getElementById('app').innerHTML = `<div class="gate">
-    <h1>غير مصرَّح</h1><p>الحساب «${email||''}» ليس مالكاً. هذه اللوحة للمالك فقط.</p>
-    <button onclick="logout()">تسجيل الخروج</button></div>`;
-}
-async function doLogin(){
-  const email=document.getElementById('ge').value.trim(), password=document.getElementById('gp').value;
+function showGate(){ document.getElementById('app').innerHTML = `<div class="gate"><h1>لوحة الإدارة</h1><p>هذه اللوحة للمالك فقط. سجّل الدخول.</p>
+  <input id="ge" type="email" placeholder="البريد"><input id="gp" type="password" placeholder="كلمة السر"><div class="err" id="gerr"></div>
+  <button onclick="doLogin()">دخول</button></div>`; }
+function showForbidden(email){ document.getElementById('app').innerHTML = `<div class="gate"><h1>غير مصرَّح</h1><p>الحساب «${email||''}» ليس مالكاً. هذه اللوحة للمالك فقط.</p><button onclick="logout()">تسجيل الخروج</button></div>`; }
+async function doLogin(){ const email=document.getElementById('ge').value.trim(), password=document.getElementById('gp').value;
   try{ await api('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})}); boot(); }
-  catch(e){ document.getElementById('gerr').textContent = e.detail || 'بريد أو كلمة سر غير صحيحة'; }
-}
+  catch(e){ document.getElementById('gerr').textContent = e.detail || 'بريد أو كلمة سر غير صحيحة'; } }
 async function logout(){ try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){} location.reload(); }
+
+function buildNotifs(){
+  NOTIFS=[];
+  const nr = OV && OV.content_health ? OV.content_health.needs_review : 0;
+  if(nr>0) NOTIFS.push({txt:`${H(nr)} سؤال بحاجة مراجعة`, act:()=>go('questions')});
+  const undiag = STUDENTS.filter(s=>!s.diagnosed).length;
+  if(undiag>0) NOTIFS.push({txt:`${H(undiag)} طفل لم يُشخَّص بعد`, act:()=>{ STUDENT_FILTER={status:'undiagnosed'}; go('students'); }});
+  const stuck = (OV && OV.struggled || []).filter(r=>r.stuck>0);
+  if(stuck.length) NOTIFS.push({txt:`تعثّر مرتفع: ${stuck[0].name}`, act:()=>go('reports')});
+}
 
 function renderShell(){
   let nav='';
-  for(const g of SECTIONS){
-    if(g.grp) nav += `<div class="lbl">${g.grp}</div>`;
-    for(const it of g.items){
-      nav += `<button class="nav" data-id="${it.id}" onclick="go('${it.id}')"><span class="ic">${it.ic}</span>${it.name}${it.soon?'<span class="soon">قريباً</span>':''}</button>`;
-    }
-  }
+  for(const g of SECTIONS){ if(g.grp) nav+=`<div class="lbl">${g.grp}</div>`;
+    for(const it of g.items) nav+=`<button class="nav" data-id="${it.id}" onclick="go('${it.id}')"><span class="ic">${it.ic}</span>${it.name}${it.soon?'<span class="soon">قريباً</span>':''}</button>`; }
+  const initial = (ME.email||'؟').trim()[0].toUpperCase();
   document.getElementById('app').innerHTML = `<div class="shell">
-    <aside class="side">
-      <div class="brand">فيثاغورث<span class="sub">لوحة الإدارة</span></div>
-      <div class="navgrp">${nav}</div>
-      <button class="logout" onclick="logout()">تسجيل الخروج</button>
-    </aside>
-    <main class="main" id="content"></main>
+    <aside class="side"><div class="brand">فيثاغورث<span class="sub">لوحة الإدارة</span></div><div class="navgrp">${nav}</div></aside>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="gsearch"><input placeholder="بحث عامّ (طالب أو وليّ أمر)…" oninput="gsearch(this.value)" onfocus="gsearch(this.value)"><div class="gres" id="gres"></div></div>
+        <div class="spacer"></div>
+        <button class="hbtn" onclick="toggle('ndrop',event)">🔔${NOTIFS.length?`<span class="badge">${H(NOTIFS.length)}</span>`:''}</button>
+        <div class="prof" onclick="toggle('pdrop',event)"><span class="av">${initial}</span><span class="em">${ME.email}</span><span>▾</span></div>
+        <div class="drop" id="ndrop" style="left:64px"><div class="dh">الإشعارات</div>${NOTIFS.length?NOTIFS.map((n,i)=>`<div class="di" onclick="notif(${i})">🔸 ${n.txt}</div>`).join(''):'<div class="empty">لا إشعارات الآن 🌿</div>'}</div>
+        <div class="drop" id="pdrop"><div class="dh">${ME.email}</div><div class="di" onclick="closeDrops();go('settings')">⚙️ الإعدادات</div><div class="di" onclick="logout()">🚪 تسجيل الخروج</div></div>
+      </div>
+      <main class="main" id="content"></main>
+    </div>
     <div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="box" id="modalBox"></div></div>
   </div>`;
+  document.addEventListener('click', ()=>closeDrops());
 }
+function toggle(id,ev){ ev.stopPropagation(); const el=document.getElementById(id); const open=el.classList.contains('show'); closeDrops(); if(!open) el.classList.add('show'); }
+function closeDrops(){ document.querySelectorAll('.drop,.gres').forEach(d=>d.classList.remove('show')); }
+function notif(i){ closeDrops(); NOTIFS[i].act(); }
+
+function gsearch(q){
+  const box=document.getElementById('gres'); q=(q||'').trim();
+  if(!q){ box.classList.remove('show'); return; }
+  const st=STUDENTS.filter(s=>(s.name||'').includes(q)).slice(0,5);
+  const pa=PARENTS.filter(p=>(p.email||'').includes(q)).slice(0,5);
+  if(!st.length && !pa.length){ box.innerHTML='<div class="empty" style="padding:14px">لا نتائج</div>'; box.classList.add('show'); return; }
+  box.innerHTML = (st.length?'<div class="gt">طلّاب</div>'+st.map(s=>`<div class="gi" onclick="closeDrops();studentDetail(${s.id})">🧒 ${s.name} <span class="muted">· ${s.grade||''}</span></div>`).join(''):'')
+    + (pa.length?'<div class="gt">أولياء الأمور</div>'+pa.map(p=>`<div class="gi" onclick="closeDrops();go('parents')">👪 ${p.email}</div>`).join(''):'');
+  box.classList.add('show');
+}
+
 function go(id){
-  CURRENT=id;
+  CURRENT=id; closeDrops();
   document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
   const c=document.getElementById('content'); c.innerHTML='<p class="muted">… جارٍ التحميل</p>';
-  ({overview:secOverview, students:secStudents, parents:secParents, questions:secQuestions,
-    skills:secSkills, reports:secReports, pricing:secSoon, subs:secSoon, settings:secSettings}[id])(c);
+  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,pricing:secSoon,subs:secSoon,settings:secSettings}[id])(c);
 }
 function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 function modal(html){ document.getElementById('modalBox').innerHTML=`<button class="x" onclick="closeModal()">✕</button>`+html; document.getElementById('modal').classList.add('show'); }
+const stat=(cls,n,lbl,hint)=>`<div class="stat ${cls}"><div class="big">${H(n)}</div><div class="lbl">${lbl}</div>${hint?`<div class="hint">${hint}</div>`:''}</div>`;
 
-const stat = (cls,n,lbl)=>`<div class="stat ${cls}"><div class="big">${H(n)}</div><div class="lbl">${lbl}</div></div>`;
+// ============ reusable table (search / filter / sort / paginate / CSV / empty) ============
+const TBL={};
+function makeTable(id, cfg){
+  TBL[id]={cfg, st:{q:'',sort:cfg.sort0||null,dir:1,page:1,filters:{}}};
+  let f='';
+  for(const fl of (cfg.filters||[])) f+=`<select onchange="tblF('${id}','${fl.id}',this.value)"><option value="">${fl.label}</option>${fl.options.map(o=>`<option value="${o.v}">${o.label}</option>`).join('')}</select>`;
+  return `<div class="tctrl">
+      <input class="q" placeholder="بحث…" oninput="tblQ('${id}',this.value)">
+      ${f}<button class="exp" onclick="tblExport('${id}')">⬇ تصدير CSV</button>
+    </div><div id="${id}-wrap"></div>`;
+}
+function tblRows(id){ const {cfg,st}=TBL[id]; let rows=cfg.rows.slice();
+  for(const fl of (cfg.filters||[])){ const v=st.filters[fl.id]; if(v) rows=rows.filter(r=>fl.test(r,v)); }
+  if(st.q){ rows=rows.filter(r=>cfg.search(r, st.q)); }
+  if(st.sort){ const col=cfg.columns.find(c=>c.key===st.sort); if(col){ rows.sort((a,b)=>{ const va=col.sortVal?col.sortVal(a):'', vb=col.sortVal?col.sortVal(b):''; return (va>vb?1:va<vb?-1:0)*st.dir; }); } }
+  return rows;
+}
+function drawBody(id){ const {cfg,st}=TBL[id]; const all=tblRows(id); const ps=cfg.pageSize||15;
+  const pages=Math.max(1,Math.ceil(all.length/ps)); if(st.page>pages) st.page=pages;
+  const rows=all.slice((st.page-1)*ps, (st.page-1)*ps+ps);
+  const wrap=document.getElementById(id+'-wrap');
+  if(!all.length){ wrap.innerHTML=`<div class="emptyst"><div class="em">🗃️</div>${cfg.empty||'لا نتائج.'}</div>`; return; }
+  const head=cfg.columns.map(c=>`<th class="${c.sortVal?'s':''}" ${c.sortVal?`onclick="tblSort('${id}','${c.key}')"`:''}>${c.label}${st.sort===c.key?(st.dir>0?' ▲':' ▼'):''}</th>`).join('');
+  const body=rows.map(r=>`<tr class="${cfg.onRow?'clickable':''}" ${cfg.onRow?`onclick="${cfg.onRow}(${r[cfg.idKey]})"`:''}>${cfg.columns.map(c=>`<td>${c.cell(r)}</td>`).join('')}</tr>`).join('');
+  let pager=''; if(pages>1){ pager=`<div class="pager"><button onclick="tblPage('${id}',-1)" ${st.page<=1?'disabled':''}>السابق</button>
+    <span>صفحة ${H(st.page)} من ${H(pages)} · ${H(all.length)} نتيجة</span>
+    <button onclick="tblPage('${id}',1)" ${st.page>=pages?'disabled':''}>التالي</button></div>`; }
+  wrap.innerHTML = `<div class="panel" style="padding:8px 14px"><table><tr>${head}</tr>${body}</table></div>${pager}`;
+}
+function tblQ(id,v){ TBL[id].st.q=v; TBL[id].st.page=1; drawBody(id); }
+function tblF(id,fid,v){ TBL[id].st.filters[fid]=v; TBL[id].st.page=1; drawBody(id); }
+function tblSort(id,key){ const st=TBL[id].st; if(st.sort===key) st.dir*=-1; else { st.sort=key; st.dir=1; } drawBody(id); }
+function tblPage(id,d){ TBL[id].st.page+=d; drawBody(id); }
+function tblExport(id){ const {cfg}=TBL[id]; const rows=tblRows(id);
+  const head=cfg.columns.map(c=>c.label); const lines=[head.join(',')];
+  for(const r of rows){ lines.push(cfg.columns.map(c=>{ let v=c.csv?c.csv(r):(c.sortVal?c.sortVal(r):''); v=String(v==null?'':v).replace(/"/g,'""'); return /[",\n]/.test(v)?`"${v}"`:v; }).join(',')); }
+  const blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=(cfg.exportName||'export')+'.csv'; a.click(); URL.revokeObjectURL(a.href);
+}
+
+// ---------- الرئيسية ----------
+async function secOverview(c){
+  if(!OV){ try{ OV=await api('/api/admin/overview'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; } }
+  const ch=OV.content_health, mx=Math.max(1, ...OV.activity_7d.map(a=>a.answers));
+  c.innerHTML = `<h2 class="sec">نظرة عامّة</h2><div class="muted">حالة المنصّة الآن — من بيانات الأطفال الفعلية.</div>
+    <div class="cards">${stat('green',OV.cards.parents,'وليّ أمر')}${stat('cyan',OV.cards.children,'طفل')}${stat('orange',OV.cards.active_week,'نشِط هذا الأسبوع')}</div>
+    <div class="panel"><h3>النشاط آخر ٧ أيّام</h3>
+      <div class="bars">${OV.activity_7d.map(a=>`<div class="bar"><div class="n">${H(a.answers)}</div><div class="col" style="height:${Math.round(100*a.answers/mx)}%"></div><div class="d">${H(a.date.slice(5))}</div></div>`).join('')}</div>
+      <div class="muted" style="margin-top:8px">العمود = عدد الإجابات في اليوم.</div></div>
+    <h3 style="font-family:'Baloo Bhaijaan 2',cursive;color:#155E7D;margin:20px 0 0">صحّة المحتوى</h3>
+    <div class="cards">${stat('',ch.skills,'مهارة')}${stat('',ch.published_questions,'سؤال مخزّن منشور')}${stat('live',ch.live_nodes,'مهارة توليد حيّ','تُولَّد أسئلة لكل طفل')}${stat('',ch.curricula,'منهج')}${stat('orange',ch.needs_review,'بحاجة مراجعة')}</div>
+    <div class="note">العدّ الصادق: <b>${H(ch.published_questions)}</b> سؤالاً مخزّناً منشوراً (قوالب)، والمحرّك يُولّد أسئلةً حيّةً لكل طفل من <b>${H(ch.live_nodes)}</b> مهارة توليد — نُسخ مولَّدة حتى الآن: <b>${H(ch.generated_instances)}</b>.</div>
+    <div class="panel"><h3>أكثر المهارات تعثّراً</h3>${struggleTable(OV.struggled)}</div>`;
+}
 function struggleTable(rows){
   if(!rows.length) return '<div class="muted">لا تعثّر مُسجَّل بعد.</div>';
   return `<table><tr><th>المهارة</th><th>نسبة الخطأ</th><th>عالقون</th><th>محاولات</th></tr>${
     rows.map(r=>`<tr><td>${r.name}</td><td><span class="pill ${r.error_rate>=50?'warn':'gray'}">${H(r.error_rate)}٪</span></td><td>${H(r.stuck)}</td><td>${H(r.attempts)}</td></tr>`).join('')}</table>`;
 }
 
-// ---------- الرئيسية ----------
-async function secOverview(c){
-  let d; try{ d=await api('/api/admin/overview'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
-  const ch=d.content_health, mx=Math.max(1, ...d.activity_7d.map(a=>a.answers));
-  c.innerHTML = `<h2 class="sec">نظرة عامّة</h2><div class="muted">حالة المنصّة الآن — كله من بيانات الأطفال الفعلية.</div>
-    <div class="cards">
-      ${stat('green', d.cards.parents, 'وليّ أمر')}
-      ${stat('cyan', d.cards.children, 'طفل')}
-      ${stat('orange', d.cards.active_week, 'نشِط هذا الأسبوع')}
-    </div>
-    <div class="panel"><h3>النشاط آخر ٧ أيّام</h3>
-      <div class="bars">${d.activity_7d.map(a=>`<div class="bar"><div class="n">${H(a.answers)}</div><div class="col" style="height:${Math.round(100*a.answers/mx)}%"></div><div class="d">${H(a.date.slice(5))}</div></div>`).join('')}</div>
-      <div class="muted" style="margin-top:8px">العمود = عدد الإجابات في اليوم.</div>
-    </div>
-    <div class="cards">
-      ${stat('', ch.skills, 'مهارة')}
-      ${stat('', ch.published_questions, 'سؤال منشور')}
-      ${stat('', ch.curricula, 'منهج')}
-      ${stat('orange', ch.needs_review, 'سؤال بحاجة مراجعة')}
-    </div>
-    <div class="panel"><h3>أكثر المهارات تعثّراً</h3>${struggleTable(d.struggled)}</div>`;
-}
-
 // ---------- الطلّاب ----------
-let STUDENTS=[];
 async function secStudents(c){
   try{ STUDENTS=await api('/api/admin/students'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
-  c.innerHTML = `<h2 class="sec">الطلّاب</h2><div class="muted">${H(STUDENTS.length)} طفل. انقر صفّاً للتفاصيل.</div>
-    <input class="search" id="ssearch" placeholder="بحث بالاسم أو وليّ الأمر…" oninput="renderStudents()">
-    <div class="panel" id="stbl"></div>`;
-  renderStudents();
-}
-function renderStudents(){
-  const q=(document.getElementById('ssearch').value||'').trim();
-  const rows=STUDENTS.filter(s=>!q || (s.name||'').includes(q) || (s.parent||'').includes(q));
-  document.getElementById('stbl').innerHTML = rows.length ? `<table>
-    <tr><th>الاسم</th><th>الصف</th><th>المنهج</th><th>وليّ الأمر</th><th>إجابات</th><th>مُتقَنة</th><th>كوينز</th><th>آخر نشاط</th></tr>
-    ${rows.map(s=>`<tr class="clickable" onclick="studentDetail(${s.id})">
-      <td>${s.name}${s.diagnosed?'':' <span class="pill gray">لم يُشخَّص</span>'}</td><td>${s.grade||'—'}</td><td>${CO[s.country]||'—'}</td>
-      <td>${s.parent||'—'}</td><td>${H(s.answers)}</td><td>${H(s.mastered)}</td><td>${H(s.coins)}</td><td>${day(s.last_active)}</td></tr>`).join('')}
-    </table>` : '<div class="muted">لا نتائج.</div>';
+  const grades=[...new Set(STUDENTS.map(s=>s.grade).filter(Boolean))];
+  const tableHtml = makeTable('stbl', {
+    rows: STUDENTS, idKey:'id', onRow:'studentDetail', pageSize:15, exportName:'students',
+    empty:'لا أطفال بعد.', sort0:null,
+    search:(s,q)=>(s.name||'').includes(q)||(s.parent||'').includes(q),
+    filters:[
+      {id:'grade', label:'كل الصفوف', options:grades.map(g=>({v:g,label:g})), test:(s,v)=>s.grade===v},
+      {id:'country', label:'كل المناهج', options:Object.keys(CO).map(k=>({v:k,label:CO[k]})), test:(s,v)=>s.country===v},
+      {id:'status', label:'كل الحالات', options:[{v:'diag',label:'مُشخَّص'},{v:'undiagnosed',label:'لم يُشخَّص'}], test:(s,v)=>v==='diag'?s.diagnosed:!s.diagnosed},
+    ],
+    columns:[
+      {key:'name',label:'الاسم',sortVal:s=>s.name,csv:s=>s.name,cell:s=>`${s.name}${s.diagnosed?'':' <span class="pill gray">لم يُشخَّص</span>'}`},
+      {key:'grade',label:'الصف',sortVal:s=>s.grade||'',csv:s=>s.grade||'',cell:s=>s.grade||'—'},
+      {key:'country',label:'المنهج',sortVal:s=>s.country||'',csv:s=>CO[s.country]||'',cell:s=>CO[s.country]||'—'},
+      {key:'parent',label:'وليّ الأمر',sortVal:s=>s.parent||'',csv:s=>s.parent||'',cell:s=>s.parent||'—'},
+      {key:'answers',label:'إجابات',sortVal:s=>s.answers,csv:s=>s.answers,cell:s=>H(s.answers)},
+      {key:'mastered',label:'مُتقَنة',sortVal:s=>s.mastered,csv:s=>s.mastered,cell:s=>H(s.mastered)},
+      {key:'coins',label:'كوينز',sortVal:s=>s.coins,csv:s=>s.coins,cell:s=>H(s.coins)},
+      {key:'last_active',label:'آخر نشاط',sortVal:s=>s.last_active||'',csv:s=>s.last_active||'',cell:s=>day(s.last_active)},
+    ],
+  });
+  c.innerHTML = `<h2 class="sec">الطلّاب</h2><div class="muted">${H(STUDENTS.length)} طفل. انقر صفّاً للتفاصيل.</div>${tableHtml}`;
+  if(STUDENT_FILTER){ TBL.stbl.st.filters=Object.assign({},STUDENT_FILTER); STUDENT_FILTER=null;
+    c.querySelectorAll('.tctrl select').forEach(sel=>{ if(sel.querySelector('option[value="undiagnosed"]')) sel.value='undiagnosed'; }); }
+  drawBody('stbl');
 }
 async function studentDetail(id){
   let d; try{ d=await api(`/api/admin/students/${id}`); }catch(e){ alert('تعذّر التحميل'); return; }
   const t=d.totals;
-  modal(`<h3>${d.child.name}</h3>
-    <div class="muted">${d.child.grade||''} · ${CO[d.child.country]||'—'} · وليّ الأمر: ${d.child.parent||'—'}</div>
+  modal(`<h3>${d.child.name}</h3><div class="muted">${d.child.grade||''} · ${CO[d.child.country]||'—'} · وليّ الأمر: ${d.child.parent||'—'}</div>
     <div class="cards" style="margin:12px 0">${stat('green',t.mastered,'مُتقَنة')}${stat('cyan',t.understood,'مفهومة')}${stat('orange',t.answers,'إجابة')}${stat('',d.child.coins,'كوينز 🪙')}</div>
     <h3 style="font-size:15px">آخر ما أتقن</h3>${d.mastered.length?('<ul>'+d.mastered.map(m=>`<li>${m}</li>`).join('')+'</ul>'):'<div class="muted">لا شيء بعد.</div>'}
     <h3 style="font-size:15px">آخر الإجابات</h3>${d.recent.length?`<table>${d.recent.map(r=>`<tr><td>${r.correct?'✅':'❌'}</td><td>${r.skill}</td><td class="muted">${day(r.at)}</td></tr>`).join('')}</table>`:'<div class="muted">لا إجابات بعد.</div>'}`);
@@ -213,72 +280,106 @@ async function studentDetail(id){
 
 // ---------- أولياء الأمور ----------
 async function secParents(c){
-  let d; try{ d=await api('/api/admin/parents'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
-  c.innerHTML = `<h2 class="sec">أولياء الأمور</h2><div class="muted">${H(d.length)} وليّ أمر.</div>
-    <div class="panel">${d.length?`<table><tr><th>البريد</th><th>عدد الأطفال</th><th>انضمّ</th></tr>
-    ${d.map(p=>`<tr><td>${p.email}</td><td>${H(p.children)}</td><td>${day(p.joined)}</td></tr>`).join('')}</table>`:'<div class="muted">لا أولياء أمور بعد.</div>'}</div>`;
+  try{ PARENTS=await api('/api/admin/parents'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  const tableHtml = makeTable('ptbl', {
+    rows:PARENTS, pageSize:15, exportName:'parents', empty:'لا أولياء أمور بعد.',
+    search:(p,q)=>(p.email||'').includes(q),
+    columns:[
+      {key:'email',label:'البريد',sortVal:p=>p.email,csv:p=>p.email,cell:p=>p.email},
+      {key:'children',label:'عدد الأطفال',sortVal:p=>p.children,csv:p=>p.children,cell:p=>H(p.children)},
+      {key:'joined',label:'انضمّ',sortVal:p=>p.joined||'',csv:p=>p.joined||'',cell:p=>day(p.joined)},
+    ],
+  });
+  c.innerHTML = `<h2 class="sec">أولياء الأمور</h2><div class="muted">${H(PARENTS.length)} وليّ أمر.</div>${tableHtml}`;
+  drawBody('ptbl');
 }
 
 // ---------- الأسئلة ----------
-let NODES=null;
 async function secQuestions(c){
   if(!NODES){ try{ NODES=await api('/api/admin/nodes'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; } }
   c.innerHTML = `<h2 class="sec">الأسئلة</h2>
     <div class="muted">تصفّح أسئلة أي مهارة وإحصاءات الخطأ. للتعديل/النشر/التعليم استخدم المحرّر التفصيلي.</div>
-    <div class="row2" style="margin:12px 0">
-      <select class="sk" id="qskill" onchange="loadSkillQ()"><option value="">— اختر مهارة —</option>
-        ${NODES.map(n=>`<option value="${n.id}">${n.name} (${n.code})</option>`).join('')}</select>
-      <a class="linkbtn" href="/admin/editor" target="_blank">المحرّر التفصيلي ↗</a>
-    </div>
+    <div class="tctrl" style="margin-top:12px">
+      <select id="qskill" onchange="loadSkillQ()"><option value="">— اختر مهارة —</option>${NODES.map(n=>`<option value="${n.id}">${n.name} (${n.code})</option>`).join('')}</select>
+      <button class="linkbtn" onclick="openEditor()">المحرّر التفصيلي ↗</button></div>
     <div id="qbox"></div>`;
 }
+function openEditor(){ const w=window.open('/admin/editor','_blank'); if(!w) location.href='/admin/editor'; }
 async function loadSkillQ(){
   const id=document.getElementById('qskill').value; const box=document.getElementById('qbox');
   if(!id){ box.innerHTML=''; return; }
   box.innerHTML='<p class="muted">… جارٍ التحميل</p>';
   let d; try{ d=await api(`/api/admin/skills/${id}/stats`); }catch(e){ box.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
-  box.innerHTML = `<div class="panel"><h3>${d.skill.plain}</h3>
-    <table><tr><th>العائلة</th><th>الحالة</th><th>السؤال</th><th>محاولات</th><th>نسبة الخطأ</th></tr>
-    ${d.questions.map(q=>`<tr><td>${q.family||'—'}</td><td>${q.status==='published'?'<span class="pill ok">منشور</span>':'<span class="pill warn">مسوّدة</span>'}</td>
-      <td>${q.prompt}</td><td>${H(q.attempts)}</td><td>${q.error_rate==null?'—':`<span class="pill ${q.error_rate>=50?'warn':'gray'}">${H(q.error_rate)}٪</span>`}</td></tr>`).join('')}</table></div>`;
+  const tableHtml = makeTable('qtbl', {
+    rows:d.questions, pageSize:15, exportName:'questions_'+d.skill.code, empty:'لا أسئلة لهذه المهارة.',
+    search:(q,s)=>(q.prompt||'').includes(s),
+    filters:[{id:'status',label:'كل الحالات',options:[{v:'published',label:'منشور'},{v:'draft',label:'مسوّدة'}],
+      test:(q,v)=>v==='published'?q.status==='published':q.status!=='published'}],
+    columns:[
+      {key:'family',label:'العائلة',sortVal:q=>q.family||'',csv:q=>q.family||'',cell:q=>q.family||'—'},
+      {key:'status',label:'الحالة',sortVal:q=>q.status,csv:q=>q.status,cell:q=>q.status==='published'?'<span class="pill ok">منشور</span>':'<span class="pill warn">مسوّدة</span>'},
+      {key:'prompt',label:'السؤال',sortVal:q=>q.prompt,csv:q=>q.prompt,cell:q=>q.prompt},
+      {key:'attempts',label:'محاولات',sortVal:q=>q.attempts,csv:q=>q.attempts,cell:q=>H(q.attempts)},
+      {key:'error_rate',label:'نسبة الخطأ',sortVal:q=>q.error_rate==null?-1:q.error_rate,csv:q=>q.error_rate==null?'':q.error_rate,cell:q=>q.error_rate==null?'—':`<span class="pill ${q.error_rate>=50?'warn':'gray'}">${H(q.error_rate)}٪</span>`},
+    ],
+  });
+  box.innerHTML = `<div style="margin-top:6px"><b>${d.skill.plain}</b></div>${tableHtml}`;
+  drawBody('qtbl');
 }
 
 // ---------- المهارات ----------
 async function secSkills(c){
   if(!NODES){ try{ NODES=await api('/api/admin/nodes'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; } }
-  c.innerHTML = `<h2 class="sec">المهارات</h2><div class="muted">${H(NODES.length)} مهارة في الشبكة.</div>
-    <div class="panel"><table><tr><th>الكود</th><th>المهارة</th><th>منشورة</th><th>العائلات</th><th>قابلة للإتقان</th><th>مجّانية</th></tr>
-    ${NODES.map(n=>`<tr><td class="muted">${n.code}</td><td>${n.name}</td><td>${H(n.snapshot.published_count)}</td>
-      <td>${n.snapshot.published_families.join('، ')||'—'}</td>
-      <td>${n.snapshot.masterable?'<span class="pill ok">نعم</span>':'<span class="pill warn">لا</span>'}</td>
-      <td>${n.is_free?'<span class="pill gray">مجّانية</span>':''}</td></tr>`).join('')}</table></div>`;
+  const rows=NODES.map(n=>({code:n.code,name:n.name,pub:n.snapshot.published_count,fams:n.snapshot.published_families.join('، '),master:n.snapshot.masterable,free:n.is_free}));
+  const tableHtml = makeTable('sktbl', {
+    rows, pageSize:20, exportName:'skills', empty:'لا مهارات.',
+    search:(r,q)=>(r.name||'').includes(q)||(r.code||'').includes(q),
+    filters:[{id:'master',label:'الكل',options:[{v:'y',label:'قابلة للإتقان'},{v:'n',label:'غير قابلة'}],test:(r,v)=>v==='y'?r.master:!r.master}],
+    columns:[
+      {key:'code',label:'الكود',sortVal:r=>r.code,csv:r=>r.code,cell:r=>`<span class="muted">${r.code}</span>`},
+      {key:'name',label:'المهارة',sortVal:r=>r.name,csv:r=>r.name,cell:r=>r.name},
+      {key:'pub',label:'منشورة',sortVal:r=>r.pub,csv:r=>r.pub,cell:r=>H(r.pub)},
+      {key:'fams',label:'العائلات',csv:r=>r.fams,cell:r=>r.fams||'—'},
+      {key:'master',label:'قابلة للإتقان',sortVal:r=>r.master?1:0,csv:r=>r.master?'نعم':'لا',cell:r=>r.master?'<span class="pill ok">نعم</span>':'<span class="pill warn">لا</span>'},
+      {key:'free',label:'مجّانية',csv:r=>r.free?'نعم':'لا',cell:r=>r.free?'<span class="pill gray">مجّانية</span>':''},
+    ],
+  });
+  c.innerHTML = `<h2 class="sec">المهارات</h2><div class="muted">${H(NODES.length)} مهارة في الشبكة.</div>${tableHtml}`;
+  drawBody('sktbl');
 }
 
 // ---------- التقارير ----------
 async function secReports(c){
   let d; try{ d=await api('/api/admin/reports'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
-  c.innerHTML = `<h2 class="sec">التقارير</h2><div class="muted">أين يتعثّر الأطفال — المهارات الأصعب (من البيانات الفعلية).</div>
-    <div class="panel"><h3>المهارات الأكثر تعثّراً</h3>${struggleTable(d.struggled)}</div>`;
+  const tableHtml = makeTable('rtbl', {
+    rows:d.struggled, pageSize:20, exportName:'struggle_report', empty:'لا تعثّر مُسجَّل بعد.',
+    search:(r,q)=>(r.name||'').includes(q),
+    columns:[
+      {key:'name',label:'المهارة',sortVal:r=>r.name,csv:r=>r.name,cell:r=>r.name},
+      {key:'error_rate',label:'نسبة الخطأ',sortVal:r=>r.error_rate,csv:r=>r.error_rate,cell:r=>`<span class="pill ${r.error_rate>=50?'warn':'gray'}">${H(r.error_rate)}٪</span>`},
+      {key:'stuck',label:'عالقون',sortVal:r=>r.stuck,csv:r=>r.stuck,cell:r=>H(r.stuck)},
+      {key:'attempts',label:'محاولات',sortVal:r=>r.attempts,csv:r=>r.attempts,cell:r=>H(r.attempts)},
+    ],
+  });
+  c.innerHTML = `<h2 class="sec">التقارير</h2><div class="muted">أين يتعثّر الأطفال — المهارات الأصعب (من البيانات الفعلية).</div>${tableHtml}`;
+  drawBody('rtbl');
 }
 
 // ---------- الإعدادات ----------
 async function secSettings(c){
   let t='mutadarrij'; try{ t=(await api('/api/admin/theme')).theme; }catch(e){}
   c.innerHTML = `<h2 class="sec">الإعدادات</h2>
-    <div class="panel"><h3>سمة العرض</h3><div class="row2">
-      ${['mutadarrij','ameen','mutawwar'].map(x=>`<button class="linkbtn" style="border:0;cursor:pointer;${x===t?'background:#155E7D;color:#fff':''}" onclick="setTheme('${x}')">${({mutadarrij:'متدرّج',ameen:'أمين',mutawwar:'مطوّر'})[x]}</button>`).join('')}
+    <div class="panel"><h3>سمة العرض</h3><div class="tctrl">
+      ${['mutadarrij','ameen','mutawwar'].map(x=>`<button class="linkbtn" style="${x===t?'background:#155E7D;color:#fff':''}" onclick="setTheme('${x}')">${({mutadarrij:'متدرّج',ameen:'أمين',mutawwar:'مطوّر'})[x]}</button>`).join('')}
     </div></div>
     <div class="soonbox"><div class="em">⚙️</div><h3>إعدادات أخرى — قريباً</h3><div>تُضاف مع الأنظمة القادمة.</div></div>`;
 }
 async function setTheme(x){ try{ await api('/api/admin/theme',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({theme:x})}); go('settings'); }catch(e){ alert('تعذّر'); } }
 
-// ---------- placeholder (التسعير / الاشتراكات) ----------
-function secSoon(c){
-  const t = CURRENT==='pricing' ? 'التسعير والخطط' : 'الاشتراكات';
-  c.innerHTML = `<h2 class="sec">${t}</h2>
-    <div class="soonbox"><div class="em">🚧</div><h3>قريباً</h3>
-      <div>يُبنى مع نظام الاشتراك (الخطوة ٧)، ثم يُربط بالتحكّم المركزي من هذه اللوحة.</div></div>`;
-}
+// ---------- placeholder ----------
+function secSoon(c){ const t=CURRENT==='pricing'?'التسعير والخطط':'الاشتراكات';
+  c.innerHTML = `<h2 class="sec">${t}</h2><div class="soonbox"><div class="em">🚧</div><h3>قريباً</h3>
+    <div>يُبنى مع نظام الاشتراك (الخطوة ٧)، ثم يُربط بالتحكّم المركزي من هذه اللوحة.</div></div>`; }
 
 boot();
 </script>
