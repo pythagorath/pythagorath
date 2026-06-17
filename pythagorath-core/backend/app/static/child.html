@@ -4,72 +4,98 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>مغامرتي — فيثاغورث</title>
-<!-- brand.css imports the fonts + colour tokens; final look comes from Claude Design later -->
+<!-- brand.css imports the fonts + colour tokens + the shared .frac stacked-fraction style -->
 <link rel="stylesheet" href="/static/brand.css">
 <style>
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; }
   body{
-    font-family:'Readex Pro',sans-serif; color:#2C2620; min-height:100vh;
-    background:#FBF7F0;
+    font-family:'Readex Pro',sans-serif; color:#143A1F; min-height:100vh;
+    background:#F4FAF6;
     background-image:
-      radial-gradient(58% 30% at 92% 0%,rgba(243,154,31,.12),transparent 60%),
-      radial-gradient(54% 28% at 6% 4%,rgba(41,169,224,.12),transparent 60%);
+      radial-gradient(60% 32% at 90% 0%,rgba(243,154,31,.16),transparent 62%),
+      radial-gradient(56% 30% at 8% 5%,rgba(41,169,224,.16),transparent 62%);
   }
-  @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-  @keyframes pulse{ 0%,100%{box-shadow:0 0 0 0 rgba(41,169,224,.45)} 50%{box-shadow:0 0 0 14px rgba(41,169,224,0)} }
-  .wrap{ max-width:560px; margin:0 auto; padding:22px 18px 60px; }
-  .err{ text-align:center; padding:60px 16px; color:#9A8F82; font-size:17px; }
+  @keyframes bobn{ 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-7px) rotate(2deg)} }
+  @keyframes pulsen{ 0%,100%{box-shadow:0 0 0 0 rgba(41,169,224,.5),0 14px 24px -12px rgba(14,110,156,.7)} 50%{box-shadow:0 0 0 15px rgba(41,169,224,0),0 14px 24px -12px rgba(14,110,156,.7)} }
+  @keyframes twinkle{ 0%,100%{opacity:.4;transform:scale(.8)} 50%{opacity:1;transform:scale(1.15)} }
+  .wrap{ max-width:540px; margin:0 auto; padding:26px 16px 64px; }
+  .err{ text-align:center; padding:60px 16px; color:#7E9488; font-size:17px; }
 
-  /* top bar: name + coins + streak (big, kid-friendly) */
+  .brandbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; padding:0 4px; }
+  .brandbar .logo{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:18px; color:#D97E0A; }
+  .brandbar .tag{ font-size:12.5px; color:#9DB4A6; font-weight:600; }
+
+  /* top bar — avatar + greeting + name + coins/streak */
   .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
            background:linear-gradient(135deg,#163E52,#1B6E97 70%,#1E84B6); color:#fff;
-           border-radius:24px; padding:16px 18px; box-shadow:0 22px 46px -26px rgba(21,94,125,.7); }
-  .topbar .who{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:24px; }
+           border-radius:22px; padding:15px 18px; box-shadow:0 22px 44px -26px rgba(21,94,125,.75); }
+  .avatar{ display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%;
+           background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.25);
+           font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:20px; }
+  .hello{ font-size:12px; color:rgba(255,255,255,.72); margin-bottom:1px; }
+  .who{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:22px; line-height:1; }
   .pills{ display:flex; gap:8px; }
   .pill{ display:inline-flex; align-items:center; gap:7px; background:rgba(255,255,255,.16);
-         border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:8px 14px;
-         font-weight:800; font-size:18px; white-space:nowrap; }
+         border:1px solid rgba(255,255,255,.24); border-radius:999px; padding:8px 13px; font-weight:800; font-size:16px; }
+  .pill svg{ width:18px; height:18px; flex:0 0 auto; }
 
-  /* big call-to-action: the current skill + the GO button */
-  .cta{ background:#fff; border:1px solid #EFE7DA; border-radius:24px; padding:20px; margin:16px 0;
-        text-align:center; box-shadow:0 16px 34px -24px rgba(21,94,125,.6); }
-  .cta .lead{ color:#8A8178; font-size:15px; margin-bottom:4px; }
-  .cta .skill{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:22px; color:#155E7D; line-height:1.4; }
-  .cta .reason{ display:inline-block; margin-top:8px; background:#E6F4FB; color:#178FC9;
-                border-radius:999px; padding:5px 14px; font-size:14px; font-weight:700; }
-  .gobtn{ display:block; width:100%; margin-top:16px; border:0; cursor:pointer;
-          font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:24px; color:#fff;
-          background:linear-gradient(135deg,#F39A1F,#E8833A); border-radius:20px; padding:18px 20px;
-          box-shadow:0 16px 30px -12px rgba(217,126,10,.7); transition:transform .08s; }
+  /* CTA — current station + GO */
+  .cta{ position:relative; overflow:hidden; background:#fff; border:1px solid #E6EFE9; border-radius:24px;
+        padding:20px; margin:15px 0 8px; text-align:center; box-shadow:0 18px 36px -24px rgba(21,94,125,.55); }
+  .cta .pi{ position:absolute; left:-18px; top:-30px; font-family:'Baloo Bhaijaan 2',cursive; font-size:130px;
+            color:#178FC9; opacity:.05; line-height:1; }
+  .cta .lead{ position:relative; color:#8A9D90; font-size:14px; font-weight:600; margin-bottom:5px;
+              display:flex; align-items:center; justify-content:center; gap:7px; }
+  .cta .lead svg{ width:17px; height:17px; color:#37B6E6; }
+  .cta .skill{ position:relative; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:23px; color:#155E7D; line-height:1.35; }
+  .cta .reason{ position:relative; display:inline-block; margin-top:9px; background:#E6F4FB; color:#178FC9;
+                border-radius:999px; padding:5px 15px; font-size:13.5px; font-weight:700; }
+  .gobtn{ position:relative; display:flex; align-items:center; justify-content:center; gap:9px; width:100%; margin-top:16px;
+          border:0; cursor:pointer; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:23px; color:#fff;
+          background:linear-gradient(135deg,#F9AC36,#E8833A); border-radius:18px; padding:16px 20px;
+          box-shadow:0 16px 28px -12px rgba(217,126,10,.7); transition:transform .08s; }
   .gobtn:hover{ transform:translateY(-2px); } .gobtn:active{ transform:translateY(1px); }
+  .gobtn svg{ width:22px; height:22px; }
 
-  /* mascot placeholder (نُمَيْر) — sits beside the current station */
-  .namir{ flex:0 0 auto; width:54px; height:54px; border-radius:50%;
-          background:linear-gradient(135deg,#FFE6BE,#F9AC36); color:#7A4A06;
-          display:flex; align-items:center; justify-content:center; font-family:'Baloo Bhaijaan 2',cursive;
-          font-weight:800; font-size:13px; animation:bob 4s ease-in-out infinite;
-          box-shadow:0 10px 20px -10px rgba(217,126,10,.7); }
+  /* journey title */
+  .jtitle{ display:flex; align-items:center; justify-content:center; gap:9px; margin:28px 0 8px; }
+  .jtitle svg{ width:22px; height:22px; color:#1E945B; flex:0 0 auto; }
+  .jtitle h2{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:20px; color:#1B6E45; margin:0; }
 
-  /* the station journey (vertical path) */
-  .journey{ margin-top:8px; }
-  .jtitle{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:18px; color:#155E7D; margin:18px 4px 10px; }
-  .station{ display:flex; align-items:center; gap:14px; position:relative; padding:6px 0; }
-  .dot{ flex:0 0 auto; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-        font-size:24px; border:3px solid transparent; position:relative; z-index:1; }
-  /* connector line between stations */
-  .station:not(:last-child) .dot::after{ content:""; position:absolute; top:54px; right:50%; transform:translateX(50%);
-        width:4px; height:34px; background:#E7E2D8; border-radius:2px; z-index:0; }
-  .dot.mastered{ background:linear-gradient(135deg,#FFD27E,#F39A1F); color:#fff; border-color:#E68A0C; }
-  .dot.available{ background:#fff; color:#178FC9; border-color:#9FD3EC; }
-  .dot.current{ background:linear-gradient(135deg,#37B6E6,#178FC9); color:#fff; border-color:#0E6E9C;
-                width:62px; height:62px; font-size:28px; animation:pulse 1.8s ease-out infinite; }
-  .station:not(:last-child) .dot.current::after{ top:62px; }
-  .dot.locked{ background:#F1ECE3; color:#BBB1A2; border-color:#E0D9CC; }
-  .label{ flex:1; font-size:17px; font-weight:700; color:#3A4750; line-height:1.5; }
-  .station.lockedrow .label{ color:#A89F92; font-weight:600; }
-  .station.currentrow .label{ color:#155E7D; font-weight:800; }
-  /* Arabic stacked fractions (.frac) come from brand.css — rendered by the shared stackFrac() */
+  /* the data-driven trail (any number of stations, long names safe) */
+  .trail{ position:relative; margin:6px auto 0; }
+  .srow{ display:flex; align-items:center; gap:14px; min-height:88px; }
+  .rail{ position:relative; flex:0 0 64px; align-self:stretch; display:flex; align-items:center; justify-content:center; }
+  .conn{ position:absolute; right:calc(50% - 3px); width:6px; background:#E4EDE7; border-radius:3px; }
+  .conn.top{ top:0; height:50%; } .conn.bot{ bottom:0; height:50%; }
+  .conn.done{ background:linear-gradient(180deg,#FFC766,#F0941D); }
+  .conn.up{ background:#E4EDE7; opacity:.0; }                   /* hidden segment (first/last edges) */
+  .dot{ position:relative; z-index:2; width:54px; height:54px; border-radius:50%;
+        display:flex; align-items:center; justify-content:center; border:3px solid transparent; }
+  .dot svg{ width:25px; height:25px; }
+  .dot.mastered{ background:linear-gradient(135deg,#FFD27E,#F39A1F); border-color:#E68A0C;
+                 box-shadow:0 12px 20px -10px rgba(217,126,10,.75); color:#fff; }
+  .dot.available{ background:#fff; border-color:#9FD3EC; color:#178FC9; }
+  .dot.current{ width:62px; height:62px; background:linear-gradient(135deg,#37B6E6,#178FC9); border-color:#0E6E9C;
+                color:#fff; animation:pulsen 1.9s ease-out infinite; }
+  .dot.locked{ background:#EDF1EE; border-color:#DCE3DD; color:#A9B4AC; }
+  .lab{ flex:1; }
+  .labcard{ display:inline-block; border-radius:14px; padding:9px 14px; font-size:15px; font-weight:700; line-height:1.5; }
+  .lab.mastered .labcard{ background:#fff; border:1px solid #EEE7DB; color:#5B6B61; box-shadow:0 8px 18px -14px rgba(21,94,125,.6); }
+  .lab.available .labcard{ background:#fff; border:1px solid #E6EFE9; color:#2C3A43; box-shadow:0 8px 18px -14px rgba(21,94,125,.5); }
+  .lab.current .labcard{ background:linear-gradient(135deg,#37B6E6,#178FC9); color:#fff; box-shadow:0 12px 22px -12px rgba(14,110,156,.8); }
+  .lab.locked .labcard{ background:#F3F6F3; border:1px dashed #D6DED7; color:#A4AFA7; }
+  /* نُمَيْر beside the current station */
+  .namir{ position:relative; display:inline-block; width:74px; vertical-align:middle; margin-left:6px; animation:bobn 4.2s ease-in-out infinite; }
+  .namir .bubble{ position:absolute; right:-2px; top:-26px; background:#fff; border:1px solid #E6EFE9; border-radius:12px;
+                  padding:3px 9px; font-size:11px; font-weight:700; color:#1B6E45; white-space:nowrap;
+                  box-shadow:0 8px 16px -12px rgba(21,94,125,.6); }
+  .namir svg{ width:74px; height:74px; display:block; }
+  /* treasure goal at the end */
+  .dot.treasure{ background:#EDF1EE; border-color:#DCE3DD; color:#A9B4AC; width:58px; height:58px; }
+  .twink{ position:absolute; right:8px; top:-2px; color:#F0A82B; animation:twinkle 2.4s ease-in-out infinite; }
+  .twink svg{ width:16px; height:16px; }
 </style>
 </head>
 <body>
@@ -78,12 +104,29 @@
 <script>
 // ---------- mandatory UI helpers ----------
 const H = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
-// Arabic fraction + Hindi numerals — delegates to the SHARED stackFrac() (widgets.js), so
-// both Hindi (١/٢) and Latin (1/2) fractions stack identically across every surface.
+// Arabic fraction + Hindi numerals — the SHARED stackFrac() (widgets.js), so Hindi (١/٢) and
+// Latin (1/2) fractions both stack identically across every surface.
 function ar(s){ return stackFrac(s); }
 
 let SID = null;
 
+// ---------- brand SVG art (from Claude Design) ----------
+const SVG = {
+  coin:'<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" fill="#FFD27E" stroke="#F0A82B" stroke-width="1.4"/><circle cx="12" cy="12" r="5.4" fill="none" stroke="#E08A1E" stroke-width="1.3" opacity=".6"/><path d="M12 8.6v6.8M13.7 10.1c0-.8-.85-1.3-1.9-1.3s-1.9.45-1.9 1.25.78 1.05 1.9 1.2 2 .5 2 1.35-.85 1.3-2 1.3-2-.45-2-1.3" stroke="#B5710F" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  flame:'<svg viewBox="0 0 24 24" fill="none"><path d="M12.5 3c.3 2.6-1.4 3.4-2.4 5-1.1 1.8-.4 4 1 4.6 .2-1 .9-1.6 1.4-2.4 .9 1 2 2 2 3.7a4.4 4.4 0 1 1-8.8 .2c0-3.7 3.9-4.8 3.4-9.1 1 .6 2.4 1.9 2.4 4-.1.7-.1 1.4-.4 2" fill="#FF9F45" stroke="#F0731F" stroke-width="1.2" stroke-linejoin="round"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="none"><path d="M12 21s6.5-5.4 6.5-10.5a6.5 6.5 0 1 0-13 0C5.5 15.6 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10.3" r="2.3" stroke="currentColor" stroke-width="1.8"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="none"><path d="M9 6l8 6-8 6z" fill="currentColor"/></svg>',
+  playW:'<svg viewBox="0 0 24 24" fill="none"><path d="M9 6l9 6-9 6z" fill="#fff"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none"><path d="M12 4l2.2 4.5 5 .7-3.6 3.5.85 5L12 15.9 7.55 17.7l.85-5L4.8 9.2l5-.7z" fill="#fff"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none"><rect x="6" y="10.5" width="12" height="9" rx="2.2" fill="currentColor"/><path d="M8.4 10.5V8a3.6 3.6 0 0 1 7.2 0v2.5" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
+  map:'<svg viewBox="0 0 24 24" fill="none"><path d="M9 4 4 6.2v13.3l5-2.2 6 2.2 5-2.2V6l-5 2.2-6-2.2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 4v13.3M15 6.4v13.3" stroke="currentColor" stroke-width="1.7"/></svg>',
+  chest:'<svg viewBox="0 0 24 24" fill="none"><rect x="4.5" y="9.5" width="15" height="9.5" rx="2" fill="currentColor"/><path d="M4.5 13h15" stroke="#EDF1EE" stroke-width="1.5"/><rect x="10.5" y="11.5" width="3" height="3.4" rx="1" fill="#EDF1EE"/><path d="M7 9.5a5 5 0 0 1 10 0" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
+  twinkle:'<svg viewBox="0 0 24 24"><path d="M12 3l1.6 6.4L20 11l-6.4 1.6L12 19l-1.6-6.4L4 11l6.4-1.6z" fill="currentColor"/></svg>',
+  // نُمَيْر — the caped mascot (Claude Design)
+  namir:'<svg viewBox="0 0 120 120" fill="none"><ellipse cx="60" cy="112" rx="26" ry="5" fill="#16455A" opacity=".10"/><path d="M30 60 Q6 52 4 30 Q26 38 40 56 Z" fill="#1E9BD7"/><ellipse cx="60" cy="66" rx="38" ry="40" fill="#F9AC36"/><ellipse cx="46" cy="50" rx="15" ry="10" fill="#fff" opacity=".22"/><ellipse cx="60" cy="78" rx="25" ry="26" fill="#FFE9C8"/><path d="M84 56 Q104 50 110 64 Q98 70 84 68 Z" fill="#29A9E0"/><path d="M60 18 q-4 -10 4 -12 q5 6 0 13" fill="#F0731F"/><circle cx="64" cy="9" r="5" fill="#FFD27E" stroke="#F0A82B" stroke-width="1.4"/><ellipse cx="49" cy="56" rx="11" ry="13" fill="#fff"/><ellipse cx="71" cy="56" rx="11" ry="13" fill="#fff"/><circle cx="51" cy="59" r="6.2" fill="#163E52"/><circle cx="69" cy="59" r="6.2" fill="#163E52"/><circle cx="49" cy="56" r="2.2" fill="#fff"/><circle cx="67" cy="56" r="2.2" fill="#fff"/><path d="M55 70 L65 70 L60 78 Z" fill="#F0731F"/><ellipse cx="38" cy="70" rx="7" ry="4.5" fill="#F2683C" opacity=".34"/><ellipse cx="82" cy="70" rx="7" ry="4.5" fill="#F2683C" opacity=".34"/><path d="M52 96 l-5 8 M60 99 v9 M68 96 l5 8" stroke="#F0731F" stroke-width="3" stroke-linecap="round"/></svg>',
+};
+
+// ---------- data load (live, unchanged binding) ----------
 async function load(){
   const app = document.getElementById('app');
   try{
@@ -113,53 +156,73 @@ function go(d){
 }
 
 function render(d){
+  const init = (d.child.name || '').trim()[0] || '؟';
   let html = '';
+
+  // brand bar
+  html += `<div class="brandbar"><span class="logo">فيثاغورث</span><span class="tag">موطن التعليم</span></div>`;
 
   // top bar — name + coins + streak (Hindi numerals)
   html += `<div class="topbar">
-      <div class="who">${d.child.name}</div>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <span class="avatar">${init}</span>
+        <div><div class="hello">مرحباً يا بطل</div><div class="who">${d.child.name}</div></div>
+      </div>
       <div class="pills">
-        <span class="pill">🪙 ${H(d.coins)}</span>
-        <span class="pill">🔥 ${H(d.streak_days)}</span>
+        <span class="pill">${SVG.coin} ${H(d.coins)}</span>
+        <span class="pill">${SVG.flame} ${H(d.streak_days)}</span>
       </div>
     </div>`;
 
   // big CTA — what to do right now
   if(d.needs_diagnostic){
-    html += `<div class="cta">
-        <div class="lead">لنبدأ مغامرتك</div>
-        <div class="skill">لنكتشف مستواك أولاً!</div>
-        <button class="gobtn" onclick='go(${JSON.stringify(d)})'>هيّا نبدأ! 🚀</button>
+    html += `<div class="cta"><div class="pi" aria-hidden="true">&pi;</div>
+        <div class="lead">${SVG.pin} لنبدأ مغامرتك</div>
+        <div class="skill">لنكتشف مستواك أوّلاً!</div>
+        <button class="gobtn" onclick='go(${JSON.stringify(d)})'>هيّا نبدأ! ${SVG.playW}</button>
       </div>`;
   } else if(d.current && d.current.skill_id){
-    html += `<div class="cta">
-        <div class="lead">محطّتك الآن</div>
+    html += `<div class="cta"><div class="pi" aria-hidden="true">&pi;</div>
+        <div class="lead">${SVG.pin} محطّتك الآن</div>
         <div class="skill">${ar(d.current.name)}</div>
         <div class="reason">${d.current.reason}</div>
-        <button class="gobtn" onclick='go(${JSON.stringify(d)})'>هيّا نكمل! ▶</button>
+        <button class="gobtn" onclick='go(${JSON.stringify(d)})'>هيّا نُكمل! ${SVG.playW}</button>
       </div>`;
   } else {
-    html += `<div class="cta">
+    html += `<div class="cta"><div class="pi" aria-hidden="true">&pi;</div>
         <div class="skill">🎉 أتممتَ كل المحطّات!</div>
-        <div class="lead" style="margin-top:8px">واصِل المراجعة لتبقى بطلاً.</div>
+        <div class="lead" style="margin-top:8px;justify-content:center">واصِل المراجعة لتبقى بطلاً.</div>
       </div>`;
   }
 
-  // the station journey — the child's path in order, with visual state
-  html += '<div class="journey"><div class="jtitle">🗺️ خريطة مغامرتي</div>';
-  for(const s of d.stations){
-    const icon = s.visual==='mastered' ? '🏆'
-               : s.visual==='current'  ? '⭐'
-               : s.visual==='locked'   ? '🔒' : '◉';
+  // journey title
+  html += `<div class="jtitle">${SVG.map}<h2>خريطة مغامرتي</h2></div>`;
+
+  // the data-driven trail — every station from the real path, in order
+  html += '<div class="trail">';
+  const st = d.stations;
+  st.forEach((s, i) => {
+    const icon = s.visual==='mastered' ? SVG.star
+               : s.visual==='current'  ? SVG.playW
+               : s.visual==='locked'   ? SVG.lock : SVG.play;
+    // connector colouring: a segment is "done" when the station above it is mastered
+    const topDone = i>0 && st[i-1].mastered;
+    const botDone = s.mastered;
+    const connTop = i===0 ? 'conn top up' : (topDone ? 'conn top done' : 'conn top');
+    const connBot = 'conn bot' + (botDone ? ' done' : '');
     const namir = s.is_current
-      ? `<span class="namir" title="نُمَيْر">نُمَيْر</span>` : '';
-    const rowcls = s.visual==='current' ? ' currentrow' : (s.visual==='locked' ? ' lockedrow' : '');
-    html += `<div class="station${rowcls}">
-        <span class="dot ${s.visual}">${icon}</span>
-        <span class="label">${ar(s.name)}</span>
-        ${namir}
+      ? `<span class="namir"><span class="bubble">أنا معك!</span>${SVG.namir}</span>` : '';
+    html += `<div class="srow">
+        <div class="rail"><span class="${connTop}"></span><span class="${connBot}"></span><span class="dot ${s.visual}">${icon}</span></div>
+        <div class="lab ${s.visual}"><span class="labcard">${ar(s.name)}</span>${namir}</div>
       </div>`;
-  }
+  });
+  // treasure goal at the very end (decorative — the destination)
+  const lastDone = st.length && st[st.length-1].mastered;
+  html += `<div class="srow">
+      <div class="rail"><span class="conn top${lastDone?' done':''}"></span><span class="conn bot up"></span><span class="dot treasure">${SVG.chest}<span class="twink">${SVG.twinkle}</span></span></div>
+      <div class="lab locked"><span class="labcard">كنز الأبطال 🏅</span></div>
+    </div>`;
   html += '</div>';
 
   document.getElementById('app').innerHTML = html;
