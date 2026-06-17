@@ -452,8 +452,9 @@ async function startDiagnostic(){
     const d=document.createElement('div'); d.className='q';
     d.innerHTML=`<div class="row" style="justify-content:space-between">
         <span class="badge fam-${p.family}">${FAM_AR[p.family]||p.family||''}</span>
-        <button class="muteBtn" type="button" onclick="speak(this.closest('.q').querySelector('.prompt').textContent)">🔊</button></div>
-      <div class="prompt">${p.prompt}</div>`;
+        <button class="muteBtn" type="button" onclick="speak(this.closest('.q').querySelector('.prompt').dataset.raw)">🔊</button></div>
+      <div class="prompt">${stackFrac(p.prompt)}</div>`;
+    d.querySelector('.prompt').dataset.raw = p.prompt;   // raw text for TTS (display is stacked)
     box.appendChild(d);
     renderQInput(d, {id:p.question_id, family:p.family, prompt:p.prompt, visual:p.visual}, 'diagnostic');
   }
@@ -511,9 +512,10 @@ function renderCurrent(){
   const d=document.createElement('div'); d.className='q';
   d.innerHTML=`<div class="row" style="justify-content:space-between">
       <span class="badge fam-${q.family}">${FAM_AR[q.family]||q.family||''}</span>
-      <button class="muteBtn" type="button" onclick="speak(document.getElementById('curPrompt').textContent)">🔊 استمع</button></div>
-    <div class="prompt" id="curPrompt">${q.prompt}</div>`;
+      <button class="muteBtn" type="button" onclick="speak(document.getElementById('curPrompt').dataset.raw)">🔊 استمع</button></div>
+    <div class="prompt" id="curPrompt">${stackFrac(q.prompt)}</div>`;
   qbox.appendChild(d);
+  document.getElementById('curPrompt').dataset.raw = q.prompt;   // raw text for TTS (display is stacked)
   renderQInput(d, q, 'practice');
   // speed timer starts at narration-end OR first interaction (whichever first) — not at
   // display — so listening time never pollutes the fluency speed measurement.
@@ -540,9 +542,9 @@ function renderQInput(host, q, mode){
     const fb=document.createElement('span'); fb.className='fb'; fb.id='fb-'+q.id; host.appendChild(fb);
     if(mode==='diagnostic'){
       const hidden=document.createElement('input'); hidden.type='hidden'; hidden.id='probe-'+q.id; host.appendChild(hidden);
-      mountWidget(w, q, (ans)=>{ hidden.value=String(ans); fb.textContent='تم تحديد: '+toHindi(ans); fb.className='fb ok'; });
+      mountWidget(w, q, (ans)=>{ hidden.value=String(ans); fb.innerHTML='تم تحديد: '+stackFrac(ans); fb.className='fb ok'; });
     } else {
-      mountWidget(w, q, (ans)=>{ pendingAns=ans; fb.textContent='اخترت: '+toHindi(ans); fb.className='fb'; });
+      mountWidget(w, q, (ans)=>{ pendingAns=ans; fb.innerHTML='اخترت: '+stackFrac(ans); fb.className='fb'; });
       host.appendChild(submitButton(q, ()=>pendingAns));
     }
   } else if(mode==='practice'){

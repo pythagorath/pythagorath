@@ -19,11 +19,7 @@
   @keyframes bobm{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
   .wrap{ max-width:720px; margin:0 auto; padding:30px 20px 56px; }
   .err{ text-align:center; padding:60px 16px; color:#9A8F82; font-size:15px; }
-  /* Arabic fraction (numerator stacked OVER denominator) — never ½ */
-  .frac{ display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle;
-         line-height:1; margin:0 4px; font-size:.86em; color:#178FC9; }
-  .frac b{ border-bottom:1.7px solid currentColor; padding:0 4px; font-weight:700; }
-  .frac i{ padding:0 4px; font-style:normal; }
+  /* Arabic stacked fractions (.frac) come from brand.css — rendered by the shared stackFrac() */
 
   /* ---------- admin shell (frame only — placeholders until accounts/subscription exist) ---------- */
   .topnav{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; padding:0 2px; flex-wrap:wrap; }
@@ -66,15 +62,13 @@
 </head>
 <body>
 <div class="wrap" id="app"><div class="err">… جارٍ التحميل</div></div>
+<script src="/static/widgets.js"></script>
 <script>
 // ---------- mandatory UI helpers ----------
 const H = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
-// render Arabic text: stack any a/b as a proper fraction, then Hindi-ize remaining digits
-function ar(s){
-  s = String(s == null ? "" : s);
-  s = s.replace(/(\d+)\s*\/\s*(\d+)/g, (m,a,b)=>`<span class="frac"><b>${H(a)}</b><i>${H(b)}</i></span>`);
-  return s.replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
-}
+// Arabic fraction + Hindi numerals — delegates to the SHARED stackFrac() (widgets.js), so
+// both Hindi (١/٢) and Latin (1/2) fractions stack identically across every surface.
+function ar(s){ return stackFrac(s); }
 function streakLabel(days){
   if(days <= 0) return 'ابدأ سلسلتك اليوم';
   if(days === 1) return 'يومٌ واحد متتالٍ';

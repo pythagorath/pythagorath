@@ -69,22 +69,18 @@
   .label{ flex:1; font-size:17px; font-weight:700; color:#3A4750; line-height:1.5; }
   .station.lockedrow .label{ color:#A89F92; font-weight:600; }
   .station.currentrow .label{ color:#155E7D; font-weight:800; }
-  .frac{ display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle;
-         line-height:1; margin:0 4px; font-size:.86em; color:#178FC9; }
-  .frac b{ border-bottom:1.7px solid currentColor; padding:0 4px; font-weight:700; }
-  .frac i{ padding:0 4px; font-style:normal; }
+  /* Arabic stacked fractions (.frac) come from brand.css — rendered by the shared stackFrac() */
 </style>
 </head>
 <body>
 <div class="wrap" id="app"><div class="err">… جارٍ التحميل</div></div>
+<script src="/static/widgets.js"></script>
 <script>
 // ---------- mandatory UI helpers ----------
 const H = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
-function ar(s){
-  s = String(s == null ? "" : s);
-  s = s.replace(/(\d+)\s*\/\s*(\d+)/g, (m,a,b)=>`<span class="frac"><b>${H(a)}</b><i>${H(b)}</i></span>`);
-  return s.replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
-}
+// Arabic fraction + Hindi numerals — delegates to the SHARED stackFrac() (widgets.js), so
+// both Hindi (١/٢) and Latin (1/2) fractions stack identically across every surface.
+function ar(s){ return stackFrac(s); }
 
 let SID = null;
 

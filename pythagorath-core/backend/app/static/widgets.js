@@ -8,6 +8,19 @@
 const FAM_AR = { aggregative:"تجميعية", magnitude:"مقدارية", decompositional:"تفكيكية", sequential:"تسلسلية" };
 const toHindi = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
 
+// Shared Arabic stacked-fraction renderer — the SINGLE source for every surface (the
+// solver index.html + the parent/child dashboards). Stacks any «numerator/denominator»
+// (Hindi ٠-٩ OR Latin 0-9 digits, slash ONLY between digits) into a vertical fraction
+// (بسط فوق مقام بخطٍّ أفقي), then Hindi-izes any remaining standalone digits. Returns an
+// HTML string. Constrained to digit/digit so no other «/» is touched. It does NOT touch
+// the fraction-bar ANSWER widget below (frac-bar/frac-seg) — that is a different component.
+function stackFrac(s){
+  s = String(s == null ? "" : s);
+  s = s.replace(/([0-9٠-٩]+)\s*\/\s*([0-9٠-٩]+)/g,
+    (m, a, b) => `<span class="frac"><b>${toHindi(a)}</b><i>${toHindi(b)}</i></span>`);
+  return s.replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
+}
+
 function mountWidget(host, q, onAnswer){
   const v=q.visual;
   if(v.kind==='number-line') return widgetNumberLine(host, v, onAnswer);
@@ -192,15 +205,15 @@ function widgetFraction(host, v, onAnswer){
     host.appendChild(bar(v.parts, v.shaded, false));
     const info=mk('div','muted'); info.textContent='ما الكسر الملوّن؟ انقر الإجابة.'; host.appendChild(info);
     const opts=mk('div','btb-controls');
-    for(const o of v.options){ const btn=mk('button','sec'); btn.textContent=o; btn.style.fontSize='20px';
-      btn.onclick=()=>onAnswer(o); opts.appendChild(btn); }
+    for(const o of v.options){ const btn=mk('button','sec'); btn.dataset.val=o; btn.innerHTML=stackFrac(o); btn.style.fontSize='20px';
+      btn.onclick=()=>onAnswer(btn.dataset.val); opts.appendChild(btn); }
     host.appendChild(opts); return;
   }
   if(v.mode==='shade'){
     const info=mk('div','muted'); info.textContent=`ظلِّل ${toHindi(v.target)} من ${toHindi(v.parts)} أجزاء متساوية (انقر الأجزاء).`;
     host.appendChild(info);
     let count=0; const cnt=mk('div'); cnt.style='font-weight:800;margin:6px';
-    const upd=()=>cnt.textContent=`الملوّن: ${toHindi(count)} / ${toHindi(v.parts)}`;
+    const upd=()=>cnt.innerHTML='الملوّن: '+stackFrac(toHindi(count)+'/'+toHindi(v.parts));
     const b=bar(v.parts, 0, true, (i,s)=>{ if(s.classList.contains('on')){ s.classList.remove('on'); count--; }
       else { s.classList.add('on'); count++; } upd(); });
     host.appendChild(b); host.appendChild(cnt);
@@ -224,8 +237,8 @@ function widgetFraction(host, v, onAnswer){
     info.textContent=`الملوّن ${toHindi(v.shaded)} من ${toHindi(rows*cols)} — انقر الصورة المطابقة.`;
     host.appendChild(info);
     const opts=mk('div','btb-controls');
-    for(const o of v.options){ const btn=mk('button','sec'); btn.textContent=o; btn.style.fontSize='20px';
-      btn.onclick=()=>onAnswer(o); opts.appendChild(btn); }
+    for(const o of v.options){ const btn=mk('button','sec'); btn.dataset.val=o; btn.innerHTML=stackFrac(o); btn.style.fontSize='20px';
+      btn.onclick=()=>onAnswer(btn.dataset.val); opts.appendChild(btn); }
     host.appendChild(opts); return;
   }
   if(v.mode==='compare'){
@@ -236,8 +249,9 @@ function widgetFraction(host, v, onAnswer){
       const b=bar(fr.parts, fr.shaded, false); b.style.width='100%'; b.style.maxWidth='none';
       wrap.appendChild(b);
       const t=mk('div'); t.style='font-size:20px;font-weight:800;margin-top:4px';
-      t.textContent=toHindi(fr.shaded)+'/'+toHindi(fr.parts); wrap.appendChild(t);
-      wrap.onclick=()=>onAnswer(toHindi(fr.shaded)+'/'+toHindi(fr.parts));
+      const frLab=toHindi(fr.shaded)+'/'+toHindi(fr.parts);
+      t.innerHTML=stackFrac(frLab); wrap.appendChild(t);
+      wrap.onclick=()=>onAnswer(frLab);
       row.appendChild(wrap);
     }
     host.appendChild(row); return;
@@ -334,9 +348,9 @@ function widgetNumberLine(host, v, onAnswer){
         if(i===v.mark) t.classList.add('sel');
         t.disabled = true;
       } else {
-        t.textContent = label(i);
+        t.dataset.val = label(i); t.innerHTML = stackFrac(t.dataset.val);
         t.onclick=()=>{ line.querySelectorAll('.tick').forEach(x=>x.classList.remove('sel'));
-          t.classList.add('sel'); onAnswer(t.textContent); };
+          t.classList.add('sel'); onAnswer(t.dataset.val); };
       }
       line.appendChild(t);
     }

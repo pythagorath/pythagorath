@@ -159,6 +159,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan)}
 .frac-seg.on{background:var(--orange)}
 .frac-seg[data-i]{cursor:pointer}
 .frac-seg[data-i]:hover{outline:2px solid var(--cyan)}
+/* Arabic stacked-fraction TEXT (بسط فوق مقام بخطٍّ أفقي) — the shared display component
+   rendered by stackFrac() in widgets.js, used by the solver + both dashboards. Distinct
+   from the .frac-bar answer widget above; never the western ½ glyph. */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 3px;font-size:.9em}
+.frac b{border-bottom:1.6px solid currentColor;padding:0 3px;font-weight:700}
+.frac i{padding:0 3px;font-style:normal}
 /* sequence */
 .seqtrack{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
 .seqcard{min-width:46px;padding:10px 12px;border:2px solid var(--cyan-2);border-radius:10px;background:var(--cyan-l);font-size:22px;font-weight:800;text-align:center;color:var(--cyan-d)}
