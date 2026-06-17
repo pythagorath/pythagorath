@@ -32,12 +32,11 @@ def test_structure_curriculum_and_coins(db, h):
     stu = _g4(db, h)
     diagnostic.record_placement(db, stu.id, _sk(db, "g4PVM"))
     _master(db, h, stu.id, _sk(db, "g4PVM"))
+    stu.coins = 137; db.commit()                                  # the REAL persisted balance
     d = _build(db, stu)
     assert d["child"]["name"] == stu.name
     assert d["child"]["curriculum"] == "السعودية" and d["child"]["grade"] == "الصف الرابع"
-    correct = db.execute(select(func.count(Answer.id)).where(
-        Answer.student_id == stu.id, Answer.is_correct.is_(True))).scalar_one()
-    assert d["cards"]["coins"] == d["cards"]["mastered"] * 10 + correct      # derived, display-only
+    assert d["cards"]["coins"] == 137                             # surfaced as-is (no derivation)
     assert d["cards"]["mastered"] >= 1 and d["cards"]["total"] > 0
 
 

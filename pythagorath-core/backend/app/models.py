@@ -22,9 +22,11 @@ from sqlalchemy import (
     CheckConstraint,
     DateTime,
     ForeignKey,
+    Index,
     Integer,
     String,
     UniqueConstraint,
+    text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -262,6 +264,60 @@ class Student(Base):
     # opened by the `placed` markers, not by this pointer — so it grants no mastery.
     placement_skill_id: Mapped[int | None] = mapped_column(
         ForeignKey("skills.id", ondelete="SET NULL"), nullable=True
+    )
+    # The child's REAL coin balance — a persisted, accumulating total (NOT derived at
+    # display). A REWARD for the gate result, never an input to it: written only as a
+    # side-effect in /api/answers AFTER recompute. Source of truth + audit = coin_events;
+    # this is the cached running sum for O(1) reads. See app/coins.py.
+    coins: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default="0"
+    )
+
+
+class CoinEvent(Base):
+    """Append-only ledger of every coin award — the source of truth behind the cached
+    ``students.coins`` balance. It makes awards IDEMPOTENT (a child never double-earns)
+    and gives transparency ("how did I earn my coins") + the basis for future spending
+    (a store / games). Coins are a REWARD side-effect of the gate result — never an input
+    to the understanding/fluency gates.
+
+    Two kinds:
+      * ``correct``  — a small award per correct answer (immediate progress). One per
+        answer, enforced by ``unique(answer_id)``.
+      * ``mastery``  — the big award at the mastery transition (the grand prize). One per
+        (student, skill) EVER, enforced by a partial unique index where kind='mastery'.
+    """
+
+    __tablename__ = "coin_events"
+    __table_args__ = (
+        CheckConstraint("kind in ('correct','mastery')", name="ck_coin_event_kind"),
+        CheckConstraint("amount > 0", name="ck_coin_event_amount"),
+        # one 'correct' award per answer (NULLs are distinct → mastery rows don't collide)
+        UniqueConstraint("answer_id", name="uq_coin_event_answer"),
+        # one 'mastery' award per (student, skill) ever — partial, so many 'correct' rows
+        # for the same skill are still allowed
+        Index(
+            "uq_coin_event_mastery", "student_id", "skill_id",
+            unique=True,
+            sqlite_where=text("kind = 'mastery'"),
+            postgresql_where=text("kind = 'mastery'"),
+        ),
+    )
+    id: Mapped[int] = mapped_column(primary_key=True)
+    student_id: Mapped[int] = mapped_column(
+        ForeignKey("students.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    skill_id: Mapped[int] = mapped_column(
+        ForeignKey("skills.id", ondelete="CASCADE"), nullable=False
+    )
+    kind: Mapped[str] = mapped_column(String(10), nullable=False)
+    amount: Mapped[int] = mapped_column(Integer, nullable=False)
+    # the answer that earned a 'correct' award (NULL for 'mastery' awards)
+    answer_id: Mapped[int | None] = mapped_column(
+        ForeignKey("answers.id", ondelete="CASCADE"), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
     )
 
 

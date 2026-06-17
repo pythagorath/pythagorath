@@ -10,7 +10,7 @@ the dashboard's exact derivation (single source — the two surfaces must agree)
 """
 from datetime import datetime, timezone
 
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import gate, parent_terms
@@ -41,9 +41,6 @@ def build(db: Session, student, next_skill_fn, path_skills) -> dict:
 
     mast = {sm.skill_id: sm for sm in db.execute(
         select(SkillMastery).where(SkillMastery.student_id == sid)).scalars().all()}
-    mastered = [s for s in skills if mast.get(s.id) and mast[s.id].status == "mastered"]
-    correct = db.execute(select(func.count(Answer.id)).where(
-        Answer.student_id == sid, Answer.is_correct.is_(True))).scalar_one()
 
     # streak in the child's local Gulf day (same derivation as the parent dashboard)
     off = _GULF_OFFSET.get(student.country, 3)
@@ -89,7 +86,7 @@ def build(db: Session, student, next_skill_fn, path_skills) -> dict:
 
     return {
         "child": {"name": student.name},
-        "coins": len(mastered) * 10 + correct,     # DISPLAY-ONLY derived (matches dashboard)
+        "coins": student.coins or 0,                # the REAL persisted balance (coins.py)
         "streak_days": streak,
         "needs_diagnostic": needs_diagnostic,
         "current": current,                         # None only while needs_diagnostic

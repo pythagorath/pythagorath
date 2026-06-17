@@ -16,6 +16,7 @@ from app import access, admin, auth, consent, diagnostic, gate, generators, paym
 from app import path as learning_path
 from app import dashboard as parent_dashboard
 from app import adventure as child_adventure
+from app import coins
 from app import gencontent  # noqa: F401 — registers the m1 live generators (the 22 critical nodes)
 from app import gencontent_m2  # noqa: F401 — registers the m2 live generators (the 27 high-risk nodes)
 from app import gencontent_m3  # noqa: F401 — registers the m3 live generators (the remaining 74 nodes)
@@ -599,16 +600,30 @@ def submit_answer(payload: schemas.AnswerRequest,
     is_correct = grade(instance if instance is not None else question, payload.answer)
     if instance is not None:
         instance.answered = True
-    db.add(
-        Answer(
-            student_id=payload.student_id,
-            question_id=question.id,
-            is_correct=is_correct,
-            elapsed_ms=payload.elapsed_ms,
-        )
+    ans = Answer(
+        student_id=payload.student_id,
+        question_id=question.id,
+        is_correct=is_correct,
+        elapsed_ms=payload.elapsed_ms,
     )
+    db.add(ans)
     db.flush()
+
+    # mastery TRANSITION is read by comparing status before/after recompute (recompute is
+    # the engine — read BEFORE it mutates the row). The gates are byte-identical below.
+    prev_sm = db.get(SkillMastery, (payload.student_id, question.skill_id))
+    prior_mastered = prev_sm is not None and prev_sm.status == "mastered"
+
     snap = recompute(db, payload.student_id, question.skill_id)
+
+    # COINS — a reward SIDE-EFFECT of the gate result (never an input to it): a small award
+    # per correct answer, a big one at the mastery transition. Quality only — no coins for a
+    # wrong answer or for speed. recompute/the gates are untouched.
+    if is_correct:
+        coins.award_correct(db, student, question.skill_id, ans.id)
+    if snap["mastered"] and not prior_mastered:
+        coins.award_mastery(db, student, question.skill_id)
+
     db.commit()
     return schemas.AnswerResult(is_correct=is_correct, **snap)
 

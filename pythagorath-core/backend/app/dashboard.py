@@ -7,7 +7,7 @@ evening session counts on the right date.
 """
 from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import gate, parent_terms
@@ -51,8 +51,6 @@ def build(db: Session, student, next_skill_fn, path_skills) -> dict:
     mast = {sm.skill_id: sm for sm in db.execute(
         select(SkillMastery).where(SkillMastery.student_id == sid)).scalars().all()}
     mastered = [s for s in skills if mast.get(s.id) and mast[s.id].status == "mastered"]
-    correct = db.execute(select(func.count(Answer.id)).where(
-        Answer.student_id == sid, Answer.is_correct.is_(True))).scalar_one()
 
     # streak + weekly minutes in the child's local Gulf day
     off = timedelta(hours=_GULF_OFFSET.get(student.country, 3))
@@ -123,7 +121,7 @@ def build(db: Session, student, next_skill_fn, path_skills) -> dict:
         "streak_days": streak,
         "cards": {
             "mastered": len(mastered), "total": len(skills),
-            "coins": len(mastered) * 10 + correct,     # DISPLAY-ONLY derived
+            "coins": student.coins or 0,               # the REAL persisted balance (coins.py)
             "week_minutes": round(week_ms / 60000),
         },
         "location": {"description": desc(here), "level": level},

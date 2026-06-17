@@ -70,11 +70,9 @@ def test_coins_and_streak(db, h):
     stu = _g4(db, h)
     diagnostic.record_placement(db, stu.id, _sk(db, "g4PVM"))
     _master(db, h, stu.id, _sk(db, "g4PVM"))
+    stu.coins = 84; db.commit()                            # the REAL persisted balance
     d = _build(db, stu)
-    correct = db.execute(select(func.count(Answer.id)).where(
-        Answer.student_id == stu.id, Answer.is_correct.is_(True))).scalar_one()
-    mastered = sum(1 for s in d["stations"] if s["mastered"])
-    assert d["coins"] == mastered * 10 + correct           # matches the dashboard derivation
+    assert d["coins"] == 84                                # surfaced as-is (no derivation)
     assert d["streak_days"] >= 1
 
 
