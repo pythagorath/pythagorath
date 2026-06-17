@@ -6,7 +6,7 @@ from pathlib import Path
 
 from alembic import command
 from alembic.config import Config
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import select
@@ -172,7 +172,40 @@ def device_children(guardian=Depends(auth.device_guardian), db: Session = Depend
     (NOT the parent session) — so the parent account is never exposed on the child's device."""
     rows = db.execute(select(Student).where(Student.owner_user_id == guardian.id)
                       .order_by(Student.id)).scalars().all()
-    return {"children": [{"id": s.id, "name": s.name} for s in rows]}
+    return {"children": [{"id": s.id, "name": s.name, "has_secret": bool(s.secret_picture)}
+                         for s in rows]}
+
+
+@app.post("/api/device/child-login")
+def child_login(payload: dict = Body(...), response: Response = None,
+                guardian=Depends(auth.device_guardian), db: Session = Depends(get_db)):
+    """The child taps their SECRET PICTURE on a PAIRED device → set the CHILD cookie. The
+    child must belong to THIS device's guardian (isolation). First login SETS the picture;
+    afterwards it must MATCH. Sets pyth_child scoped to exactly this student."""
+    sid = payload.get("student_id")
+    pic = (payload.get("secret_picture") or "").strip()
+    s = db.get(Student, sid) if sid is not None else None
+    if s is None or s.owner_user_id != guardian.id:
+        raise HTTPException(403, "ليس من أطفال هذا الجهاز")
+    if pic not in auth.SECRET_PICTURES:
+        raise HTTPException(400, "صورة غير صالحة")
+    if s.secret_picture is None:
+        s.secret_picture = pic                         # first-time: the child chooses it
+        db.commit()
+    elif s.secret_picture != pic:
+        raise HTTPException(401, "الصورة السرّية غير صحيحة")
+    auth.set_child_cookie(response, auth.create_child_token(s.id))
+    return {"id": s.id, "name": s.name}
+
+
+@app.get("/api/child/me")
+def child_me(request: Request, db: Session = Depends(get_db)):
+    """The current child (from the CHILD cookie) — for child-mode surfaces. 401 otherwise."""
+    cid = auth.child_token_student_id(request)
+    s = db.get(Student, cid) if cid is not None else None
+    if s is None:
+        raise HTTPException(401, "لا جلسة طفل")
+    return {"id": s.id, "name": s.name}
 
 
 # ---- public site config (brand identity / integrations / whatsapp) for site.js ----
@@ -621,8 +654,8 @@ def checkout(body: schemas.SubscribeRequest, user=Depends(auth.current_user), db
 
 # ---- answer → grade → recompute understanding gate ----
 @app.post("/api/answers", response_model=schemas.AnswerResult)
-def submit_answer(payload: schemas.AnswerRequest,
-                  user=Depends(auth.current_user), db: Session = Depends(get_db)):
+def submit_answer(payload: schemas.AnswerRequest, request: Request,
+                  db: Session = Depends(get_db)):
     # exactly ONE reference: a fixed question (dual mode) or a live instance
     if (payload.question_id is None) == (payload.instance_id is None):
         raise HTTPException(422, "أرسل question_id أو instance_id — واحداً فقط")
@@ -636,12 +669,18 @@ def submit_answer(payload: schemas.AnswerRequest,
         question = db.get(Question, payload.question_id)
     if question is None:
         raise HTTPException(404, "question not found")
-    # Ownership: the answer's student must belong to the caller (isolation boundary).
+    # Ownership (THE isolation boundary): the answer's student must belong to EITHER the
+    # caller-guardian (session) OR the child themselves (a CHILD cookie for EXACTLY this
+    # student). Never another child/guardian. (Extended for accounts step 6 — gates intact.)
     student = db.get(Student, payload.student_id)
     if student is None:
         raise HTTPException(404, "student not found")
-    if student.owner_user_id != user.id:
-        raise HTTPException(403, "ليس من أطفالك")
+    _u = auth.optional_user(request, db)
+    _child = auth.child_token_student_id(request)
+    _is_owner = _u is not None and student.owner_user_id == _u.id
+    _is_child = _child is not None and _child == student.id
+    if not (_is_owner or _is_child):
+        raise HTTPException(401 if (_u is None and _child is None) else 403, "ليس من أطفالك")
     # A live instance is issued to ONE child, answered ONCE (server-held truth).
     if instance is not None:
         if instance.student_id != student.id:
@@ -654,9 +693,9 @@ def submit_answer(payload: schemas.AnswerRequest,
     # report/reviews). Distinct, structurally, from the lock below.
     _require_in_path(db, student, question.skill_id)
 
-    # PAYWALL (commercial, 402) — checked BEFORE and SEPARATELY from the educational
-    # lock. Unpaid → 402 «اشترك»; paid-but-prerequisite-unmet → 403 «مقفل». Never mixed.
-    access.require_skill_access(db, user.id, db.get(Skill, question.skill_id))
+    # PAYWALL (commercial, 402) — gated on the OWNER's subscription (the child inherits the
+    # guardian's access). Checked BEFORE and SEPARATELY from the educational lock.
+    access.require_skill_access(db, student.owner_user_id, db.get(Skill, question.skill_id))
 
     # LOCK gate (educational, 403, reason=locked): prerequisites not all understood.
     if not gate.is_unlocked(db, payload.student_id, question.skill_id):

@@ -174,16 +174,24 @@ def require_admin(user: User = Depends(current_user)) -> User:
 
 
 def owned_student(
-    student_id: int, user: User = Depends(current_user), db: Session = Depends(get_db)
+    student_id: int, request: Request, db: Session = Depends(get_db)
 ) -> Student:
-    """THE isolation boundary. 404 if the child does not exist; 403 if it is not
-    THIS user's child. A NULL-owner child matches no user → unreachable."""
+    """THE isolation boundary. Access is granted to EITHER the guardian who owns the child
+    (session) OR the child themselves (a CHILD cookie scoped to EXACTLY this student) — never
+    to any other child or guardian. 404 if absent; 401 if no auth at all; 403 if authed but
+    not entitled. (Extended for accounts step 6 part C — the gates/engine are untouched.)"""
     st = db.get(Student, student_id)
     if st is None:
         raise HTTPException(404, "الطفل غير موجود")
-    if st.owner_user_id != user.id:
-        raise HTTPException(403, "ليس من أطفالك")
-    return st
+    user = optional_user(request, db)
+    child_id = child_token_student_id(request)
+    if user is not None and st.owner_user_id == user.id:
+        return st                                    # the owning guardian
+    if child_id is not None and child_id == student_id:
+        return st                                    # the child themselves (exact match only)
+    if user is None and child_id is None:
+        raise HTTPException(401, "غير مُصادَق")
+    raise HTTPException(403, "ليس من أطفالك")
 
 
 # ---------- bootstrap admin ----------
@@ -233,7 +241,12 @@ def me(user: User = Depends(current_user)):
 def _children_of(db: Session, guardian_id: int) -> list[dict]:
     rows = db.execute(select(Student).where(Student.owner_user_id == guardian_id)
                       .order_by(Student.id)).scalars().all()
-    return [{"id": s.id, "name": s.name} for s in rows]
+    return [{"id": s.id, "name": s.name, "has_secret": bool(s.secret_picture)} for s in rows]
+
+
+# The fixed "secret picture" set a child taps to log in (a friendly per-child selector,
+# not a password — the real boundary is the device pairing). Mirrored in device.html.
+SECRET_PICTURES = {"🐶", "🐱", "⭐", "⚽", "🍎", "🦋", "🌙", "🚗", "🌸", "🐠", "🎈", "🦁"}
 
 
 @router.post("/pairing-code")

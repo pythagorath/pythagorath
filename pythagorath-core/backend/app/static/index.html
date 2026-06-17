@@ -532,6 +532,7 @@ async function openReport(k){
 }
 
 async function backToMap(){
+  if(CHILD_MODE){ location.href='/child'; return; }   // child stays in their protected adventure
   const map=await api(`/api/students/${student.id}/skillmap`);
   document.getElementById('mapTitle').textContent = `خريطة المهارات — أهلاً ${student.name}`;
   const box=document.getElementById('map'); box.innerHTML='';
@@ -749,10 +750,29 @@ async function tryDeepLink(){
   }catch(e){ /* leave whatever afterLogin already showed */ }
 }
 
-// ---- on load: apply the active theme, then resume session / show login ----
+// ---- CHILD MODE (accounts step 6 part C): a paired device + child cookie. The solver
+// runs for the CHILD themselves — no guardian session, no parent chrome reachable. The
+// child can only address THEIR OWN skills (the cookie is scoped to one student). ----
+let CHILD_MODE=false;
+async function tryChildMode(){
+  let child=null; try{ child = await api('/api/child/me'); }catch(e){ return false; }
+  if(!child) return false;
+  CHILD_MODE=true; student={id:child.id, name:child.name}; lastPlacement=null;
+  const p=new URLSearchParams(location.search);
+  const skid=p.get('skill'), nm=p.get('name'), diag=p.get('diagnostic');
+  try{
+    if(diag){ await startDiagnostic(); }
+    else if(skid){ await openSkill(parseInt(skid,10), nm || child.name); }
+    else { location.href='/child'; }              // no target → back to the adventure map
+  }catch(e){ location.href='/child'; }
+  return true;
+}
+
+// ---- on load: child mode first, else apply theme + resume guardian session / show login ----
 updateMuteBtn();
 (async()=>{
   try{ const t=await api('/api/theme'); document.documentElement.dataset.theme=t.theme; }catch(e){}
+  if(await tryChildMode()) return;
   try{ await afterLogin(); await tryDeepLink(); }catch(e){ show('authView'); showAuthTab('login'); }
 })();
 </script>

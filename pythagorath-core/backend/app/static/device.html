@@ -25,6 +25,9 @@
   .kid .av{ width:64px; height:64px; border-radius:50%; margin:0 auto 8px; display:flex; align-items:center; justify-content:center;
     font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:28px; color:#fff; background:linear-gradient(135deg,#37B6E6,#178FC9); }
   .kid .nm{ font-weight:800; color:#155E7D; font-size:17px; }
+  .pics{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:18px; }
+  .pic{ font-size:38px; background:#fff; border:2px solid #E6EFE9; border-radius:18px; padding:14px 6px; cursor:pointer; text-align:center; transition:all .12s; }
+  .pic:hover{ border-color:#9FD3EC; transform:translateY(-2px); }
   .foot{ text-align:center; margin-top:14px; } .foot a{ color:#9DB4A6; font-size:13px; cursor:pointer; }
   .empty{ padding:24px 8px; }
 </style>
@@ -76,13 +79,24 @@ function selfPick(kids){
     return;
   }
   V.innerHTML = `<div class="card"><h2>اختر نفسك 👋</h2><div class="muted">انقر صورتك للبدء.</div>
-    <div class="kids">${kids.map(k=>`<div class="kid" onclick="pickChild(${k.id},'${(k.name||'').replace(/'/g,'')}')">
+    <div class="kids">${kids.map(k=>`<div class="kid" onclick="pickChild(${k.id},'${(k.name||'').replace(/'/g,'')}',${k.has_secret?1:0})">
       <div class="av">${(k.name||'؟').trim()[0]}</div><div class="nm">${k.name}</div></div>`).join('')}</div>
     <div class="foot"><a onclick="unpair()">ليس جهازك؟ فكّ الربط</a></div></div>`;
 }
-function pickChild(id, name){
-  // Part (C): the secret-picture login + child mode. Placeholder for now.
-  alert('قريباً: «انقر صورتك السرّية» ثم تبدأ مغامرتك (الجزء ج).');
+const PICS = ["🐶","🐱","⭐","⚽","🍎","🦋","🌙","🚗","🌸","🐠","🎈","🦁"];   // mirrors auth.SECRET_PICTURES
+function pickChild(id, name, hasSecret){
+  V.innerHTML = `<div class="card"><h2>أهلاً ${name}! 👋</h2>
+    <div class="muted">${hasSecret?'انقر صورتك السرّية للدخول.':'اختر صورتك السرّية — وتذكّرها للمرّات القادمة.'}</div>
+    <div class="pics">${PICS.map(p=>`<div class="pic" onclick="chooseSecret(${id},'${p}')">${p}</div>`).join('')}</div>
+    <div class="err" id="serr"></div>
+    <div class="foot"><a onclick="boot()">رجوع</a></div></div>`;
+}
+async function chooseSecret(id, pic){
+  const err=document.getElementById('serr'); if(err) err.textContent='';
+  try{ await api('/api/device/child-login',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({student_id:id, secret_picture:pic})});
+    location.href='/child';                       // → child mode (the real adventure)
+  }catch(e){ if(err) err.textContent = e.status===401 ? 'ليست صورتك السرّية — حاوِل مرّة أخرى.' : (e.detail||'تعذّر الدخول'); }
 }
 async function unpair(){ try{ await api('/api/auth/device-logout',{method:'POST'}); }catch(e){} codeEntry(); }
 

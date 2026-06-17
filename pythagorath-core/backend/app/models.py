@@ -278,6 +278,10 @@ class Student(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=_utcnow
     )
+    # The child's "secret picture" login token (accounts step 6 part C) — an emoji key the
+    # child picks on FIRST login, then taps to enter. A FRIENDLY per-child selector, not a
+    # password; the real boundary is the device pairing. NULL = not chosen yet.
+    secret_picture: Mapped[str | None] = mapped_column(String(24), nullable=True)
 
 
 class CoinEvent(Base):

@@ -108,7 +108,7 @@ const H = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
 // Latin (1/2) fractions both stack identically across every surface.
 function ar(s){ return stackFrac(s); }
 
-let SID = null;
+let SID = null, CHILD_MODE = false;
 
 // ---------- brand SVG art (from Claude Design) ----------
 const SVG = {
@@ -132,7 +132,12 @@ async function load(){
   try{
     let sid = new URLSearchParams(location.search).get('student');
     if(!sid){
-      const r = await fetch('/api/students');
+      // CHILD MODE: resolve self from the child cookie (paired device, child logged in)
+      const cm = await fetch('/api/child/me');
+      if(cm.ok){ CHILD_MODE = true; sid = (await cm.json()).id; }
+    }
+    if(!sid){
+      const r = await fetch('/api/students');                 // guardian preview fallback
       if(r.status===401){ app.innerHTML='<div class="err">سجّل الدخول أولاً.</div>'; return; }
       const kids = await r.json();
       if(!Array.isArray(kids) || !kids.length){ app.innerHTML='<div class="err">لا يوجد أطفال بعد.</div>'; return; }
@@ -146,12 +151,14 @@ async function load(){
   }catch(e){ app.innerHTML='<div class="err">تعذّر الاتصال بالخادم.</div>'; }
 }
 
-// "هيّا نكمل!" → open the current skill directly in the solver (index.html), or the diagnostic
+// "هيّا نكمل!" → open the current skill in the solver. In child mode the solver resolves
+// the child from the cookie (no student id in the URL — child can't address other children).
 function go(d){
-  if(d.needs_diagnostic){ location.href = `/?student=${SID}&diagnostic=1`; return; }
+  const base = CHILD_MODE ? '/?' : `/?student=${SID}&`;
+  if(d.needs_diagnostic){ location.href = base + 'diagnostic=1'; return; }
   const cur = d.current;
   if(cur && cur.skill_id){
-    location.href = `/?student=${SID}&skill=${cur.skill_id}&name=${encodeURIComponent(cur.name)}`;
+    location.href = base + `skill=${cur.skill_id}&name=${encodeURIComponent(cur.name)}`;
   }
 }
 
