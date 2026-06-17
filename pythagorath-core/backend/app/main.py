@@ -166,6 +166,15 @@ def get_theme(db: Session = Depends(get_db)):
     return {"theme": active_theme(db)}
 
 
+@app.get("/api/device/children")
+def device_children(guardian=Depends(auth.device_guardian), db: Session = Depends(get_db)):
+    """The paired DEVICE's selectable children ("اختر نفسك"). Requires the device cookie
+    (NOT the parent session) — so the parent account is never exposed on the child's device."""
+    rows = db.execute(select(Student).where(Student.owner_user_id == guardian.id)
+                      .order_by(Student.id)).scalars().all()
+    return {"children": [{"id": s.id, "name": s.name} for s in rows]}
+
+
 # ---- public site config (brand identity / integrations / whatsapp) for site.js ----
 _BRAND_DEFAULTS = {"primary": "#155E7D", "secondary": "#F39A1F"}
 
@@ -722,6 +731,12 @@ def landing_page():
 def account_page():
     """The guardian onboarding journey: sign up → add child (with consent) → prepare device."""
     return FileResponse(_STATIC / "account.html")
+
+
+@app.get("/device")
+def device_page():
+    """The child's device: enter the pairing code → «اختر نفسك» (child selection)."""
+    return FileResponse(_STATIC / "device.html")
 
 
 @app.get("/parent")

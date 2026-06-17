@@ -327,6 +327,25 @@ class CoinEvent(Base):
     )
 
 
+class PairingCode(Base):
+    """A short-lived, ONE-TIME code that links a child's DEVICE to a guardian (accounts
+    step 6). The guardian generates it; the child's device redeems it once to receive a
+    DEVICE cookie (list/select that guardian's children) — WITHOUT exposing the parent
+    account. Security: 4-digit, single-use (`used`), expires (~10 min)."""
+
+    __tablename__ = "pairing_codes"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    code: Mapped[str] = mapped_column(String(8), nullable=False, index=True)
+    guardian_user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    used: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )
+
+
 class ConsentRecord(Base):
     """A registered parental-consent event — the legal record for collecting a
     child's data. Captured atomically WITH child creation: who consented (user),

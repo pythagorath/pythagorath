@@ -154,16 +154,28 @@ function confirmChild(kid){
 }
 function setup(id, name){
   V.innerHTML = `<div class="card"><h2>هيّئ جهاز ${name}</h2>
-    <div class="muted">اختر طريقة لجعل ${name} يدخل على جهازه بأمان (دون كشف حسابك).</div>
+    <div class="muted">اختر طريقة ليدخل ${name} على جهازه بأمان (دون كشف حسابك).</div>
     <div class="setup">
-      <button onclick="soon()"><div class="t">رمز ربط <span class="rec">موصى</span></div><div class="d">رمز مؤقّت من ٤ أرقام تُدخله على جهاز الطفل — لا يكشف حسابك.</div></button>
-      <button onclick="soon()"><div class="t">تهيئة مباشرة</div><div class="d">تدخل بحسابك مرّةً على جهاز الطفل ثم تحوّله لوضع الطفل.</div></button>
-      <button onclick="soon()"><div class="t">جهاز مشترك</div><div class="d">يفتح على «اختر نفسك» ليتشارك الأطفال الجهاز.</div></button>
+      <button onclick="genCode()"><div class="t">رمز ربط <span class="rec">موصى</span></div><div class="d">رمز مؤقّت من ٤ أرقام تُدخله على جهاز الطفل — لا يكشف حسابك.</div></button>
+      <button onclick="directDevice()"><div class="t">تهيئة مباشرة / جهاز مشترك</div><div class="d">حوّل هذا الجهاز لوضع الطفل («اختر نفسك») — تُمسح جلستك منه.</div></button>
     </div>
-    <div class="muted" style="margin-top:12px;text-align:center">⚙️ تُفعّل هذه الطرق في الخطوة التالية.</div>
+    <div id="setupOut"></div>
     <div class="toplink"><a onclick="home()" style="cursor:pointer">رجوع للّوحة</a></div></div>`;
 }
-function soon(){ alert('قريباً — تُفعّل تهيئة الجهاز في الخطوة التالية (ب).'); }
+async function genCode(){
+  try{ const r=await api('/api/auth/pairing-code',{method:'POST'});
+    document.getElementById('setupOut').innerHTML = `<div class="card" style="text-align:center;background:#FBF9F4">
+      <div class="muted">على جهاز الطفل، افتح <b>صفحة جهاز الطفل</b> وأدخل هذا الرمز:</div>
+      <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:44px;letter-spacing:10px;color:#155E7D;margin:10px 0">${H(r.code)}</div>
+      <div class="muted">ينتهي خلال ${H(r.ttl_minutes)} دقائق · استعمال واحد</div>
+      <a class="btn" style="display:block;text-decoration:none;margin-top:12px" href="/device" target="_blank">افتح صفحة جهاز الطفل ↗</a></div>`;
+  }catch(e){ alert('تعذّر توليد الرمز'); }
+}
+async function directDevice(){
+  if(!confirm('سيتحوّل هذا الجهاز إلى وضع الطفل، وتُمسح جلستك منه. متابعة؟')) return;
+  try{ await api('/api/auth/device-from-session',{method:'POST'}); location.href='/device'; }
+  catch(e){ alert('تعذّر تهيئة الجهاز'); }
+}
 
 boot();
 </script>

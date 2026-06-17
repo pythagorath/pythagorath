@@ -31,6 +31,10 @@ class RegisterRequest(BaseModel):
         return _valid_password(v)
 
 
+class PairRequest(BaseModel):
+    code: str
+
+
 class LoginRequest(BaseModel):
     email: str
     password: str

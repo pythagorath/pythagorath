@@ -24,6 +24,14 @@ SECRET_KEY: str = os.environ.get("SECRET_KEY", "dev-insecure-change-me-012345678
 SESSION_COOKIE: str = "pyth_session"
 SESSION_TTL_HOURS: int = int(os.environ.get("SESSION_TTL_HOURS", "24"))
 RESET_TTL_MINUTES: int = int(os.environ.get("RESET_TTL_MINUTES", "30"))
+# Child-device cookies (accounts step 6): a DEVICE token (lists/selects a guardian's
+# children) and a CHILD token (one child's adventure). NEITHER authorizes guardian/admin
+# endpoints — so the parent account is never exposed on a child's device.
+DEVICE_COOKIE: str = "pyth_device"
+CHILD_COOKIE: str = "pyth_child"
+DEVICE_TTL_DAYS: int = int(os.environ.get("DEVICE_TTL_DAYS", "90"))
+CHILD_TTL_DAYS: int = int(os.environ.get("CHILD_TTL_DAYS", "30"))
+PAIRING_TTL_MINUTES: int = int(os.environ.get("PAIRING_TTL_MINUTES", "10"))
 # Send the cookie only over HTTPS in production (env COOKIE_SECURE=1). Dev/tests use
 # plain HTTP, so default off, otherwise the cookie would never be sent back.
 COOKIE_SECURE: bool = os.environ.get("COOKIE_SECURE", "0") == "1"

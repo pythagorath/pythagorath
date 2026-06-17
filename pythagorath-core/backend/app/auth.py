@@ -12,6 +12,8 @@ constitutional core.
 """
 from datetime import datetime, timedelta, timezone
 
+import secrets
+
 import jwt
 from argon2 import PasswordHasher
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
@@ -20,7 +22,7 @@ from sqlalchemy.orm import Session
 
 from app import config, schemas
 from app.db import get_db
-from app.models import Student, User
+from app.models import PairingCode, Student, User
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 _ph = PasswordHasher()
@@ -78,6 +80,64 @@ def set_session_cookie(resp: Response, token: str) -> None:
 
 def clear_session_cookie(resp: Response) -> None:
     resp.delete_cookie(config.SESSION_COOKIE, path="/")
+
+
+# ---------- child-device tokens (accounts step 6) ----------
+def create_device_token(guardian_id: int) -> str:
+    return _encode({"sub": str(guardian_id)}, "device", timedelta(days=config.DEVICE_TTL_DAYS))
+
+
+def create_child_token(student_id: int) -> str:
+    return _encode({"sub": str(student_id)}, "child", timedelta(days=config.CHILD_TTL_DAYS))
+
+
+def set_device_cookie(resp: Response, token: str) -> None:
+    resp.set_cookie(config.DEVICE_COOKIE, token, httponly=True, secure=config.COOKIE_SECURE,
+                    samesite="lax", max_age=config.DEVICE_TTL_DAYS * 86400, path="/")
+
+
+def set_child_cookie(resp: Response, token: str) -> None:
+    resp.set_cookie(config.CHILD_COOKIE, token, httponly=True, secure=config.COOKIE_SECURE,
+                    samesite="lax", max_age=config.CHILD_TTL_DAYS * 86400, path="/")
+
+
+def clear_device_cookie(resp: Response) -> None:
+    resp.delete_cookie(config.DEVICE_COOKIE, path="/")
+
+
+def clear_child_cookie(resp: Response) -> None:
+    resp.delete_cookie(config.CHILD_COOKIE, path="/")
+
+
+def device_guardian_id(request: Request) -> int | None:
+    """The guardian id from a valid DEVICE cookie, else None. NEVER grants guardian/admin
+    access (those require a 'session' token) — only authorizes the device's children list."""
+    token = request.cookies.get(config.DEVICE_COOKIE)
+    if not token:
+        return None
+    data = _decode(token, "device")
+    return int(data["sub"]) if data else None
+
+
+def child_token_student_id(request: Request) -> int | None:
+    """The student id from a valid CHILD cookie, else None (used by the learner boundary)."""
+    token = request.cookies.get(config.CHILD_COOKIE)
+    if not token:
+        return None
+    data = _decode(token, "child")
+    return int(data["sub"]) if data else None
+
+
+def device_guardian(request: Request, db: Session = Depends(get_db)) -> User:
+    """Dependency: the guardian whose children this paired DEVICE may list/select. 401 if
+    the device isn't paired. Does NOT expose the parent account (no session, no email/pwd)."""
+    gid = device_guardian_id(request)
+    if gid is None:
+        raise HTTPException(401, "هذا الجهاز غير مربوط")
+    u = db.get(User, gid)
+    if u is None:
+        raise HTTPException(401, "ربط غير صالح")
+    return u
 
 
 # ---------- dependencies ----------
@@ -167,6 +227,71 @@ def logout(response: Response):
 @router.get("/me", response_model=schemas.UserRead)
 def me(user: User = Depends(current_user)):
     return user
+
+
+# ---------- child-device pairing (accounts step 6 part B) ----------
+def _children_of(db: Session, guardian_id: int) -> list[dict]:
+    rows = db.execute(select(Student).where(Student.owner_user_id == guardian_id)
+                      .order_by(Student.id)).scalars().all()
+    return [{"id": s.id, "name": s.name} for s in rows]
+
+
+@router.post("/pairing-code")
+def make_pairing_code(response: Response, user: User = Depends(current_user),
+                      db: Session = Depends(get_db)):
+    """GUARDIAN-only: mint a 4-digit, one-time, ~10-min code for a child device. The code
+    value is kept unique among currently-active codes so redemption is unambiguous."""
+    now = datetime.now(timezone.utc)
+    active = {pc.code for pc in db.execute(
+        select(PairingCode).where(PairingCode.used.is_(False),
+                                  PairingCode.expires_at > now)).scalars().all()}
+    code = f"{secrets.randbelow(10000):04d}"
+    while code in active:
+        code = f"{secrets.randbelow(10000):04d}"
+    pc = PairingCode(code=code, guardian_user_id=user.id,
+                     expires_at=now + timedelta(minutes=config.PAIRING_TTL_MINUTES))
+    db.add(pc)
+    db.commit()
+    return {"code": code, "expires_at": pc.expires_at.isoformat(),
+            "ttl_minutes": config.PAIRING_TTL_MINUTES}
+
+
+@router.post("/pair")
+def pair_device(body: schemas.PairRequest, response: Response, db: Session = Depends(get_db)):
+    """CHILD DEVICE: redeem a code → set the DEVICE cookie + return the guardian's children
+    for "اختر نفسك". One-time (marks used) + expiry checked. The parent account is NOT
+    exposed — the device cookie authorizes only listing/selecting that guardian's children."""
+    now = datetime.now(timezone.utc)
+    pc = db.execute(
+        select(PairingCode).where(
+            PairingCode.code == (body.code or "").strip(),
+            PairingCode.used.is_(False),
+            PairingCode.expires_at > now,
+        ).order_by(PairingCode.id.desc())
+    ).scalars().first()
+    if pc is None:
+        raise HTTPException(400, "رمز غير صالح أو منتهٍ")
+    pc.used = True                                   # single-use
+    db.commit()
+    set_device_cookie(response, create_device_token(pc.guardian_user_id))
+    return {"children": _children_of(db, pc.guardian_user_id)}
+
+
+@router.post("/device-from-session")
+def device_from_session(response: Response, user: User = Depends(current_user),
+                        db: Session = Depends(get_db)):
+    """DIRECT setup: a logged-in guardian turns THIS device into the child's device — sets
+    the device cookie and CLEARS the parent session, so the parent account isn't left open."""
+    set_device_cookie(response, create_device_token(user.id))
+    clear_session_cookie(response)
+    return {"children": _children_of(db, user.id)}
+
+
+@router.post("/device-logout")
+def device_logout(response: Response):
+    clear_device_cookie(response)
+    clear_child_cookie(response)
+    return {"ok": True}
 
 
 @router.post("/password-reset/request", status_code=204)

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>جهاز الطفل — فيثاغورث</title>
+<link rel="stylesheet" href="/static/brand.css">
+<style>
+  *{ box-sizing:border-box; } html,body{ margin:0; }
+  body{ font-family:'Readex Pro',sans-serif; color:#143A1F; background:#F4FAF6; min-height:100vh;
+    background-image:radial-gradient(58% 30% at 92% 0%,rgba(243,154,31,.12),transparent 60%),radial-gradient(54% 28% at 6% 4%,rgba(41,169,224,.12),transparent 60%); }
+  .wrap{ max-width:520px; margin:0 auto; padding:30px 18px 60px; }
+  .brand{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:22px; color:#D97E0A; text-align:center; }
+  .brand small{ display:block; color:#9DB4A6; font-size:12.5px; font-weight:400; font-family:'Readex Pro',sans-serif; }
+  .card{ background:#fff; border:1px solid #E6EFE9; border-radius:24px; padding:26px; margin:18px 0; box-shadow:0 18px 38px -26px rgba(21,94,125,.5); text-align:center; }
+  h2{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; font-size:23px; margin:0 0 6px; }
+  .muted{ color:#7E9488; font-size:14px; }
+  .codein{ width:100%; max-width:240px; margin:16px auto 4px; display:block; text-align:center; letter-spacing:14px;
+    font-family:'Baloo Bhaijaan 2',cursive; font-size:34px; padding:12px; border:2px solid #CDE9D8; border-radius:16px; color:#155E7D; }
+  .btn{ width:100%; margin-top:14px; border:0; border-radius:16px; padding:15px; cursor:pointer; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:18px; color:#fff; background:linear-gradient(135deg,#163E52,#1B6E97); }
+  .err{ color:#C0392B; font-size:14px; min-height:18px; margin-top:8px; }
+  .kids{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:14px; margin-top:18px; }
+  .kid{ background:#fff; border:2px solid #E6EFE9; border-radius:20px; padding:18px 10px; cursor:pointer; transition:all .12s; }
+  .kid:hover{ border-color:#9FD3EC; transform:translateY(-2px); }
+  .kid .av{ width:64px; height:64px; border-radius:50%; margin:0 auto 8px; display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:28px; color:#fff; background:linear-gradient(135deg,#37B6E6,#178FC9); }
+  .kid .nm{ font-weight:800; color:#155E7D; font-size:17px; }
+  .foot{ text-align:center; margin-top:14px; } .foot a{ color:#9DB4A6; font-size:13px; cursor:pointer; }
+  .empty{ padding:24px 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand" data-brand>فيثاغورث<small>موطن التعليم</small></div>
+  <div id="view"><div class="card"><p class="muted">… جارٍ التحميل</p></div></div>
+</div>
+<script src="/static/site.js"></script>
+<script>
+const H = n => String(n==null?'':n).replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[+d]);
+const V = document.getElementById('view');
+async function api(path, opts){
+  const r = await fetch(path, opts);
+  if(!r.ok){ const e=new Error('err'); e.status=r.status; try{ e.detail=(await r.json()).detail; }catch(_){} throw e; }
+  return r.status===204?null:r.json();
+}
+
+async function boot(){
+  try{ const d = await api('/api/device/children'); selfPick(d.children); }   // already paired
+  catch(e){ codeEntry(); }                                                     // needs a code
+}
+
+function codeEntry(msg){
+  V.innerHTML = `<div class="card">
+    <h2>جهاز الطفل</h2>
+    <div class="muted">اطلب من والدك رمز الربط (٤ أرقام) وأدخله هنا.</div>
+    <input class="codein" id="code" inputmode="numeric" maxlength="4" placeholder="••••" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+    <div class="err" id="cerr">${msg||''}</div>
+    <button class="btn" onclick="doPair()">ربط الجهاز</button>
+  </div>`;
+  setTimeout(()=>{ const i=document.getElementById('code'); if(i) i.focus(); }, 60);
+}
+async function doPair(){
+  const code=(document.getElementById('code').value||'').trim();
+  const err=document.getElementById('cerr'); err.textContent='';
+  if(code.length<4){ err.textContent='أدخل الرمز كاملاً (٤ أرقام).'; return; }
+  try{ const d=await api('/api/auth/pair',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})});
+    selfPick(d.children); }
+  catch(e){ err.textContent = e.detail || 'رمز غير صالح أو منتهٍ.'; }
+}
+
+function selfPick(kids){
+  if(!kids || !kids.length){
+    V.innerHTML = `<div class="card"><div class="empty"><h2>لا يوجد أطفال بعد</h2>
+      <div class="muted">اطلب من والدك إضافة طفل أولاً.</div></div>
+      <div class="foot"><a onclick="unpair()">ليس جهازك؟ فكّ الربط</a></div></div>`;
+    return;
+  }
+  V.innerHTML = `<div class="card"><h2>اختر نفسك 👋</h2><div class="muted">انقر صورتك للبدء.</div>
+    <div class="kids">${kids.map(k=>`<div class="kid" onclick="pickChild(${k.id},'${(k.name||'').replace(/'/g,'')}')">
+      <div class="av">${(k.name||'؟').trim()[0]}</div><div class="nm">${k.name}</div></div>`).join('')}</div>
+    <div class="foot"><a onclick="unpair()">ليس جهازك؟ فكّ الربط</a></div></div>`;
+}
+function pickChild(id, name){
+  // Part (C): the secret-picture login + child mode. Placeholder for now.
+  alert('قريباً: «انقر صورتك السرّية» ثم تبدأ مغامرتك (الجزء ج).');
+}
+async function unpair(){ try{ await api('/api/auth/device-logout',{method:'POST'}); }catch(e){} codeEntry(); }
+
+boot();
+</script>
+</body>
+</html>
