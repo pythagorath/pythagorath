@@ -81,6 +81,19 @@ def clear_session_cookie(resp: Response) -> None:
 
 
 # ---------- dependencies ----------
+def optional_user(request: Request, db: Session = Depends(get_db)) -> User | None:
+    """Like current_user but NEVER raises — returns None for anonymous callers. For
+    public surfaces (announcements) that personalise IF logged in, else show the public
+    set. Read-only."""
+    token = request.cookies.get(config.SESSION_COOKIE)
+    if not token:
+        return None
+    data = _decode(token, "session")
+    if not data:
+        return None
+    return db.get(User, int(data["sub"]))
+
+
 def current_user(request: Request, db: Session = Depends(get_db)) -> User:
     token = request.cookies.get(config.SESSION_COOKIE)
     if not token:

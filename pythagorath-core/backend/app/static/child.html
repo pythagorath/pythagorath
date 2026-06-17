@@ -160,7 +160,7 @@ function render(d){
   let html = '';
 
   // brand bar
-  html += `<div class="brandbar"><span class="logo">فيثاغورث</span><span class="tag">موطن التعليم</span></div>`;
+  html += `<div class="brandbar"><span class="logo" data-brand>فيثاغورث</span><span class="tag">موطن التعليم</span></div>`;
 
   // top bar — name + coins + streak (Hindi numerals)
   html += `<div class="topbar">
@@ -229,5 +229,6 @@ function render(d){
 }
 load();
 </script>
+<script src="/static/site.js"></script>
 </body>
 </html>

@@ -77,6 +77,11 @@
   .emptyst{ text-align:center; padding:40px 16px; color:#9A8F82; } .emptyst .em{ font-size:34px; }
   .linkbtn{ display:inline-block; background:#E6F4FB; color:#178FC9; border:0; border-radius:999px; padding:8px 15px; font-weight:700; font-size:13.5px; cursor:pointer; text-decoration:none; }
   .soonbox{ text-align:center; padding:48px 16px; color:#8A8178; } .soonbox .em{ font-size:40px; } .soonbox h3{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; font-size:20px; margin:10px 0 4px; }
+  .frow{ margin:9px 0; } .frow label{ display:block; font-size:13px; color:#5A5249; margin-bottom:4px; font-weight:600; }
+  .frow input, .frow textarea, .frow select{ width:100%; max-width:380px; padding:9px 12px; border:1.5px solid #E3DACB; border-radius:11px; font-family:inherit; font-size:14px; }
+  .frow input[type=color]{ width:60px; height:38px; padding:2px; } .frow input[type=checkbox]{ width:auto; }
+  .savebtn{ margin-top:10px; background:linear-gradient(135deg,#163E52,#1B6E97); color:#fff; border:0; border-radius:12px; padding:10px 22px; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; cursor:pointer; }
+  .okmsg{ color:#1E945B; font-weight:700; margin-inline-start:10px; }
   .err{ color:#C0392B; }
   .modal{ position:fixed; inset:0; background:rgba(18,42,54,.45); display:none; align-items:center; justify-content:center; padding:20px; z-index:60; }
   .modal.show{ display:flex; }
@@ -101,6 +106,7 @@ let ME=null, OV=null, STUDENTS=[], PARENTS=[], NODES=null, NOTIFS=[], CURRENT='o
 const SECTIONS = [
   {grp:'الإدارة', items:[{id:'overview',ic:'🏠',name:'الرئيسية'},{id:'students',ic:'🧒',name:'الطلّاب'},{id:'parents',ic:'👪',name:'أولياء الأمور'}]},
   {grp:'المحتوى والجودة', items:[{id:'questions',ic:'❓',name:'الأسئلة'},{id:'skills',ic:'🗂️',name:'المهارات'},{id:'reports',ic:'📊',name:'التقارير'}]},
+  {grp:'التحكّم بالمنصّة', items:[{id:'integrations',ic:'🔌',name:'التكاملات'},{id:'ads',ic:'📣',name:'الإعلانات'}]},
   {grp:'الاشتراك والتسعير', items:[{id:'pricing',ic:'💳',name:'التسعير والخطط',soon:true},{id:'subs',ic:'🔁',name:'الاشتراكات',soon:true}]},
   {grp:'', items:[{id:'settings',ic:'⚙️',name:'الإعدادات'}]},
 ];
@@ -174,7 +180,7 @@ function go(id){
   CURRENT=id; closeDrops();
   document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
   const c=document.getElementById('content'); c.innerHTML='<p class="muted">… جارٍ التحميل</p>';
-  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,pricing:secSoon,subs:secSoon,settings:secSettings}[id])(c);
+  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,integrations:secIntegrations,ads:secAds,pricing:secSoon,subs:secSoon,settings:secSettings}[id])(c);
 }
 function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 function modal(html){ document.getElementById('modalBox').innerHTML=`<button class="x" onclick="closeModal()">✕</button>`+html; document.getElementById('modal').classList.add('show'); }
@@ -365,15 +371,109 @@ async function secReports(c){
   drawBody('rtbl');
 }
 
-// ---------- الإعدادات ----------
+// ---------- التكاملات ----------
+const val=id=>document.getElementById(id).value.trim();
+async function saveSettings(obj, sec){
+  try{ await api('/api/admin/settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
+    const m=document.getElementById(sec+'-msg'); if(m){ m.textContent='✓ حُفظ'; setTimeout(()=>m.textContent='',1800); } }
+  catch(e){ alert('تعذّر الحفظ'); }
+}
+async function secIntegrations(c){
+  let s={}; try{ s=await api('/api/admin/settings'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  c.innerHTML = `<h2 class="sec">التكاملات</h2><div class="muted">ضع المعرّف ليُحقن التتبّع تلقائياً في صفحات العملاء (لا في لوحة الإدارة).</div>
+    <div class="panel"><h3>التحليلات والتتبّع</h3>
+      <div class="frow"><label>Google Analytics — Measurement ID</label><input id="ga" value="${s.integration_ga||''}" placeholder="G-XXXXXXXXXX"></div>
+      <div class="frow"><label>Facebook Pixel — Pixel ID</label><input id="fbp" value="${s.integration_fbpixel||''}" placeholder="١٢٣٤٥٦٧٨٩٠"></div>
+      <button class="savebtn" onclick="saveSettings({integration_ga:val('ga'),integration_fbpixel:val('fbp')},'integrations')">حفظ</button>
+      <span id="integrations-msg" class="okmsg"></span>
+    </div><div class="muted">قابلة للتوسّع لاحقاً بتكاملات أخرى.</div>`;
+}
+
+// ---------- الإعلانات ----------
+async function secAds(c){
+  let ads; try{ ads=await api('/api/admin/announcements'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  c.innerHTML = `<h2 class="sec">الإعلانات</h2><div class="muted">إعلانات داخل المنصّة للعملاء. تظهر مرّة، ولا تتكرّر بعد أن يغلقها العميل.</div>
+    <div class="panel"><h3>إعلان جديد</h3>
+      <div class="frow"><label>العنوان</label><input id="an_title"></div>
+      <div class="frow"><label>النص</label><textarea id="an_body" rows="2"></textarea></div>
+      <div class="row2"><div class="frow"><label>كود خصم (اختياري)</label><input id="an_code"></div>
+        <div class="frow"><label>رابط (اختياري)</label><input id="an_link" placeholder="https://"></div></div>
+      <div class="row2">
+        <div class="frow"><label>الشكل</label><select id="an_format"><option value="popup">نافذة منبثقة</option><option value="banner">شريط علوي</option></select></div>
+        <div class="frow"><label>لمن يظهر</label><select id="an_tt" onchange="adTarget()"><option value="all">كل العملاء</option><option value="unsubscribed">غير المشتركين</option><option value="grade">صف معيّن</option><option value="country">دولة</option></select></div>
+        <div class="frow" id="an_tv_wrap" style="display:none"><label>القيمة</label><span id="an_tv_holder"></span></div>
+      </div>
+      <div class="row2"><div class="frow"><label>يبدأ (اختياري)</label><input type="date" id="an_start"></div>
+        <div class="frow"><label>ينتهي (اختياري)</label><input type="date" id="an_end"></div></div>
+      <button class="savebtn" onclick="createAd()">نشر الإعلان</button><span id="ads-msg" class="okmsg"></span>
+    </div>
+    <div class="panel"><h3>الإعلانات الحالية</h3>${adsTable(ads)}</div>`;
+}
+function adTarget(){ const tt=document.getElementById('an_tt').value, wrap=document.getElementById('an_tv_wrap'), h=document.getElementById('an_tv_holder');
+  if(tt==='grade'){ const g=[...new Set(STUDENTS.map(s=>s.grade).filter(Boolean))]; h.innerHTML=`<select id="an_tv">${g.map(x=>`<option>${x}</option>`).join('')}</select>`; wrap.style.display=''; }
+  else if(tt==='country'){ h.innerHTML=`<select id="an_tv">${Object.keys(CO).map(k=>`<option value="${k}">${CO[k]}</option>`).join('')}</select>`; wrap.style.display=''; }
+  else { wrap.style.display='none'; h.innerHTML=''; } }
+async function createAd(){
+  const tv=document.getElementById('an_tv');
+  const body={title:val('an_title'),body:document.getElementById('an_body').value.trim(),code:val('an_code')||null,link:val('an_link')||null,
+    format:document.getElementById('an_format').value,target_type:document.getElementById('an_tt').value,
+    target_value:tv?tv.value:null,starts_at:document.getElementById('an_start').value||null,ends_at:document.getElementById('an_end').value||null,active:true};
+  if(!body.title||!body.body){ alert('العنوان والنص مطلوبان'); return; }
+  try{ await api('/api/admin/announcements',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); go('ads'); }
+  catch(e){ alert(e.detail||'تعذّر النشر'); } }
+function adsTable(ads){
+  if(!ads.length) return '<div class="emptyst"><div class="em">📣</div>لا إعلانات بعد.</div>';
+  const TT={all:'الكل',unsubscribed:'غير المشتركين',grade:'صف',country:'دولة'};
+  return `<table><tr><th>العنوان</th><th>الشكل</th><th>الاستهداف</th><th>الحالة</th><th></th></tr>${
+    ads.map(a=>`<tr><td>${a.title}</td><td>${a.format==='popup'?'منبثقة':'شريط'}</td>
+      <td>${TT[a.target_type]}${a.target_value?(' · '+(CO[a.target_value]||a.target_value)):''}</td>
+      <td>${a.active?'<span class="pill ok">فعّال</span>':'<span class="pill gray">موقوف</span>'}</td>
+      <td><button class="linkbtn" onclick="toggleAd(${a.id},${a.active?'false':'true'})">${a.active?'إيقاف':'تفعيل'}</button>
+        <button class="linkbtn" style="background:#FBEAE4;color:#B53B27" onclick="delAd(${a.id})">حذف</button></td></tr>`).join('')}</table>`;
+}
+async function toggleAd(id,active){ try{ await api(`/api/admin/announcements/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({active})}); go('ads'); }catch(e){ alert('تعذّر'); } }
+async function delAd(id){ if(!confirm('حذف الإعلان؟')) return; try{ await api(`/api/admin/announcements/${id}`,{method:'DELETE'}); go('ads'); }catch(e){ alert('تعذّر'); } }
+
+// ---------- الإعدادات (هوية + واتساب + سمة العرض) ----------
+const BRAND_DEFAULT={primary:'#155E7D',secondary:'#F39A1F'};
+let PENDING_LOGO=null;
 async function secSettings(c){
-  let t='mutadarrij'; try{ t=(await api('/api/admin/theme')).theme; }catch(e){}
+  let s={}, t='mutadarrij';
+  try{ s=await api('/api/admin/settings'); }catch(e){}
+  try{ t=(await api('/api/admin/theme')).theme; }catch(e){}
+  PENDING_LOGO=null;
   c.innerHTML = `<h2 class="sec">الإعدادات</h2>
+    <div class="panel"><h3>هوية المنصّة</h3>
+      <div class="frow"><label>اسم المنصّة</label><input id="bname" value="${s.brand_name||''}" placeholder="فيثاغورث"></div>
+      <div class="frow"><label>الشعار (صورة صغيرة)</label><input type="file" accept="image/*" onchange="readLogo(this)">
+        <div id="logoPrev">${s.brand_logo?`<img src="${s.brand_logo}" style="height:36px;margin-top:6px;vertical-align:middle"> <button class="linkbtn" onclick="clearLogo()">إزالة</button>`:'<span class="muted">لا شعار — يُعرض اسم المنصّة نصّاً.</span>'}</div></div>
+      <div class="row2">
+        <div class="frow"><label>اللون الأساسي</label><input type="color" id="bp" value="${s.brand_primary||BRAND_DEFAULT.primary}"></div>
+        <div class="frow"><label>اللون الثانوي</label><input type="color" id="bs" value="${s.brand_secondary||BRAND_DEFAULT.secondary}"></div>
+      </div>
+      <button class="savebtn" onclick="saveBrand()">حفظ الهوية</button>
+      <button class="linkbtn" onclick="resetBrand()">إرجاع للافتراضي</button>
+      <span id="brand-msg" class="okmsg"></span>
+      <div class="muted" style="margin-top:6px">الافتراضي محفوظ — يمكنك الرجوع إليه في أي وقت.</div>
+    </div>
+    <div class="panel"><h3>زرّ واتساب للدعم</h3>
+      <div class="frow"><label>الرقم (دوليّ بلا +)</label><input id="wnum" value="${s.whatsapp_number||''}" placeholder="٩٦٦٥XXXXXXXX"></div>
+      <div class="frow"><label><input type="checkbox" id="wen" ${s.whatsapp_enabled==='1'?'checked':''}> إظهار زرّ واتساب للعملاء</label></div>
+      <button class="savebtn" onclick="saveSettings({whatsapp_number:val('wnum'),whatsapp_enabled:document.getElementById('wen').checked?'1':'0'},'wa')">حفظ</button>
+      <span id="wa-msg" class="okmsg"></span>
+    </div>
     <div class="panel"><h3>سمة العرض</h3><div class="tctrl">
       ${['mutadarrij','ameen','mutawwar'].map(x=>`<button class="linkbtn" style="${x===t?'background:#155E7D;color:#fff':''}" onclick="setTheme('${x}')">${({mutadarrij:'متدرّج',ameen:'أمين',mutawwar:'مطوّر'})[x]}</button>`).join('')}
-    </div></div>
-    <div class="soonbox"><div class="em">⚙️</div><h3>إعدادات أخرى — قريباً</h3><div>تُضاف مع الأنظمة القادمة.</div></div>`;
+    </div></div>`;
 }
+function readLogo(inp){ const f=inp.files[0]; if(!f) return;
+  if(f.size>400000){ alert('الصورة كبيرة — استخدم شعاراً صغيراً (أقل من ٤٠٠ ك.ب).'); inp.value=''; return; }
+  const r=new FileReader(); r.onload=()=>{ PENDING_LOGO=r.result; document.getElementById('logoPrev').innerHTML=`<img src="${r.result}" style="height:36px;margin-top:6px;vertical-align:middle"> <span class="muted">(غير محفوظ بعد)</span>`; }; r.readAsDataURL(f); }
+function clearLogo(){ PENDING_LOGO=''; document.getElementById('logoPrev').innerHTML='<span class="muted">سيُزال عند الحفظ.</span>'; }
+async function saveBrand(){ const obj={brand_name:val('bname'),brand_primary:document.getElementById('bp').value,brand_secondary:document.getElementById('bs').value};
+  if(PENDING_LOGO!==null) obj.brand_logo=PENDING_LOGO; await saveSettings(obj,'brand'); PENDING_LOGO=null; }
+async function resetBrand(){ if(!confirm('إرجاع الاسم/الشعار/الألوان للافتراضي؟')) return;
+  try{ await api('/api/admin/settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({brand_name:'',brand_logo:'',brand_primary:'',brand_secondary:''})}); go('settings'); }catch(e){ alert('تعذّر'); } }
 async function setTheme(x){ try{ await api('/api/admin/theme',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({theme:x})}); go('settings'); }catch(e){ alert('تعذّر'); } }
 
 // ---------- placeholder ----------

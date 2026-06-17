@@ -19,14 +19,14 @@ structure.
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app import gate, generators, parent_terms, phrasing, schemas
 from app.db import get_db
 from app.models import (
-    AppSetting, GCC_COUNTRIES, Answer, Grade, Plan, Question, QuestionInstance,
+    Announcement, AppSetting, GCC_COUNTRIES, Answer, Grade, Plan, Question, QuestionInstance,
     QuestionPhrasing, Skill, SkillMastery, Student, Subscription, User,
 )
 from app.path import STRUGGLE_THRESHOLD
@@ -585,3 +585,121 @@ def skill_stats(skill_id: int, db: Session = Depends(get_db)):
 def reports(db: Session = Depends(get_db)):
     """Where children stumble (full list) — the manager's quality lens."""
     return {"struggled": _struggled(db, limit=40)}
+
+
+# ============================================================================
+#  PLATFORM CONTROL — settings (integrations / brand identity / whatsapp) + ads.
+#  This is the SETTINGS layer the owner manages: writes are allowed HERE (config/
+#  presentation only). The engine / gates / content are never touched.
+# ============================================================================
+SETTINGS_KEYS = {
+    "integration_ga", "integration_fbpixel",
+    "brand_name", "brand_logo", "brand_primary", "brand_secondary",
+    "whatsapp_number", "whatsapp_enabled",
+}
+ANN_FORMATS = {"popup", "banner"}
+ANN_TARGETS = {"all", "unsubscribed", "grade", "country"}
+
+
+def _set(db: Session, key: str, value: str):
+    s = db.get(AppSetting, key)
+    if s is None:
+        db.add(AppSetting(key=key, value=value))
+    else:
+        s.value = value
+
+
+@router.get("/settings")
+def get_settings(db: Session = Depends(get_db)):
+    rows = {s.key: s.value for s in db.execute(select(AppSetting)).scalars().all()}
+    return {k: rows.get(k, "") for k in SETTINGS_KEYS}
+
+
+@router.put("/settings")
+def put_settings(body: dict = Body(...), db: Session = Depends(get_db)):
+    """Whitelisted key→value writes (presentation/config). Unknown keys are ignored."""
+    for k, v in body.items():
+        if k in SETTINGS_KEYS:
+            _set(db, k, "" if v is None else str(v))
+    db.commit()
+    return get_settings(db)
+
+
+def _ann_dict(a: Announcement) -> dict:
+    return {
+        "id": a.id, "title": a.title, "body": a.body, "code": a.code, "link": a.link,
+        "format": a.format, "target_type": a.target_type, "target_value": a.target_value,
+        "active": a.active,
+        "starts_at": a.starts_at.isoformat() if a.starts_at else None,
+        "ends_at": a.ends_at.isoformat() if a.ends_at else None,
+        "created_at": a.created_at.isoformat() if a.created_at else None,
+    }
+
+
+def _parse_dt(v):
+    if not v:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(v))
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
+@router.get("/announcements")
+def list_announcements(db: Session = Depends(get_db)):
+    rows = db.execute(select(Announcement).order_by(Announcement.id.desc())).scalars().all()
+    return [_ann_dict(a) for a in rows]
+
+
+@router.post("/announcements")
+def create_announcement(body: dict = Body(...), db: Session = Depends(get_db)):
+    title = (body.get("title") or "").strip()
+    text_body = (body.get("body") or "").strip()
+    if not title or not text_body:
+        raise HTTPException(400, "العنوان والنص مطلوبان")
+    fmt = body.get("format", "popup")
+    tt = body.get("target_type", "all")
+    if fmt not in ANN_FORMATS or tt not in ANN_TARGETS:
+        raise HTTPException(400, "شكل أو استهداف غير معروف")
+    a = Announcement(
+        title=title[:160], body=text_body[:600],
+        code=(body.get("code") or None), link=(body.get("link") or None),
+        format=fmt, target_type=tt,
+        target_value=(body.get("target_value") or None),
+        active=bool(body.get("active", True)),
+        starts_at=_parse_dt(body.get("starts_at")), ends_at=_parse_dt(body.get("ends_at")),
+    )
+    db.add(a); db.commit(); db.refresh(a)
+    return _ann_dict(a)
+
+
+@router.patch("/announcements/{ann_id}")
+def update_announcement(ann_id: int, body: dict = Body(...), db: Session = Depends(get_db)):
+    a = db.get(Announcement, ann_id)
+    if a is None:
+        raise HTTPException(404, "الإعلان غير موجود")
+    if "active" in body:
+        a.active = bool(body["active"])
+    for f in ("title", "body", "code", "link", "target_value"):
+        if f in body:
+            setattr(a, f, body[f] or None if f in ("code", "link", "target_value") else body[f])
+    if body.get("format") in ANN_FORMATS:
+        a.format = body["format"]
+    if body.get("target_type") in ANN_TARGETS:
+        a.target_type = body["target_type"]
+    if "starts_at" in body:
+        a.starts_at = _parse_dt(body["starts_at"])
+    if "ends_at" in body:
+        a.ends_at = _parse_dt(body["ends_at"])
+    db.commit(); db.refresh(a)
+    return _ann_dict(a)
+
+
+@router.delete("/announcements/{ann_id}")
+def delete_announcement(ann_id: int, db: Session = Depends(get_db)):
+    a = db.get(Announcement, ann_id)
+    if a is None:
+        raise HTTPException(404, "الإعلان غير موجود")
+    db.delete(a); db.commit()
+    return {"ok": True}

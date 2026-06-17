@@ -36,9 +36,9 @@ from app import gencontent_g4b8  # noqa: F401 — G4 batch 8 (final): patterns/a
 from app.db import SessionLocal, get_db
 from app.gate import grade, read_snapshot, recompute
 from app.models import (
-    AppSetting, GCC_COUNTRIES, Answer, ConsentRecord, Grade, Payment, Plan, Question,
-    QuestionInstance, Skill, SkillCountry, SkillMastery, SkillPrerequisite, Student,
-    Subscription, Unit,
+    Announcement, AppSetting, GCC_COUNTRIES, Answer, ConsentRecord, Grade, Payment, Plan,
+    Question, QuestionInstance, Skill, SkillCountry, SkillMastery, SkillPrerequisite,
+    Student, Subscription, Unit,
 )
 
 
@@ -164,6 +164,67 @@ def list_students(user: Student = Depends(auth.current_user), db: Session = Depe
 def get_theme(db: Session = Depends(get_db)):
     """The active visual theme (public — applied on the login/landing screen too)."""
     return {"theme": active_theme(db)}
+
+
+# ---- public site config (brand identity / integrations / whatsapp) for site.js ----
+_BRAND_DEFAULTS = {"primary": "#155E7D", "secondary": "#F39A1F"}
+
+
+@app.get("/api/site")
+def site_config(db: Session = Depends(get_db)):
+    """PUBLIC presentation config the customer surfaces inject (brand / tracking IDs /
+    whatsapp). Read-only; never touched by the engine. site.js is defensive: any blank
+    value is a no-op."""
+    rows = {s.key: s.value for s in db.execute(select(AppSetting)).scalars().all()}
+    g = lambda k: rows.get(k, "")
+    return {
+        "brand": {"name": g("brand_name"), "logo": g("brand_logo"),
+                  "primary": g("brand_primary"), "secondary": g("brand_secondary")},
+        "integrations": {"ga": g("integration_ga"), "fbpixel": g("integration_fbpixel")},
+        "whatsapp": {"enabled": g("whatsapp_enabled") == "1", "number": g("whatsapp_number")},
+        "defaults": _BRAND_DEFAULTS,
+    }
+
+
+@app.get("/api/announcements")
+def public_announcements(student_id: int | None = None,
+                         user=Depends(auth.optional_user), db: Session = Depends(get_db)):
+    """Active announcements TARGETED to the viewer (optional auth: anonymous → 'all' only).
+    Targeting is server-side: all / unsubscribed (owner has no active access) / grade /
+    country (from the viewer's student). The 'don't nag' frequency is the client's
+    (localStorage of dismissed ids). PRESENTATION ONLY — reads, never writes."""
+    now = datetime.now(timezone.utc)
+    rows = db.execute(select(Announcement).where(Announcement.active.is_(True))
+                      .order_by(Announcement.id.desc())).scalars().all()
+
+    # viewer context (only when authenticated + owns the student)
+    student = None
+    if user is not None and student_id is not None:
+        s = db.get(Student, student_id)
+        if s is not None and s.owner_user_id == user.id:
+            student = s
+    unsubscribed = (user is not None) and (not access.has_access(db, user.id))
+
+    def matches(a: Announcement) -> bool:
+        if a.starts_at and (a.starts_at if a.starts_at.tzinfo else a.starts_at.replace(tzinfo=timezone.utc)) > now:
+            return False
+        if a.ends_at and (a.ends_at if a.ends_at.tzinfo else a.ends_at.replace(tzinfo=timezone.utc)) < now:
+            return False
+        t = a.target_type
+        if t == "all":
+            return True
+        if t == "unsubscribed":
+            return unsubscribed
+        if t == "grade":
+            g = db.get(Grade, student.grade_id) if (student and student.grade_id) else None
+            return bool(g and g.name == a.target_value)
+        if t == "country":
+            return bool(student and student.country == a.target_value)
+        return False
+
+    out = [{"id": a.id, "title": a.title, "body": a.body, "code": a.code, "link": a.link,
+            "format": a.format} for a in rows if matches(a)]
+    return out
 
 
 @app.get("/api/consent")

@@ -105,7 +105,7 @@
   <span style="left:82%;top:84%;font-size:26px;color:var(--cyan)">٥</span>
 </div>
 <header class="brand">
-  <div class="logo"><span class="mark">π</span> فيثاغورث</div>
+  <div class="logo" data-brand><span class="mark">π</span> فيثاغورث</div>
   <span class="tag">متعة تعلّم الرياضيات</span>
   <span class="spacer"></span>
   <button id="muteBtn" class="muteBtn" onclick="toggleMute()">🔊 الصوت</button>
@@ -756,5 +756,6 @@ updateMuteBtn();
   try{ await afterLogin(); await tryDeepLink(); }catch(e){ show('authView'); showAuthTab('login'); }
 })();
 </script>
+<script src="/static/site.js"></script>
 </body>
 </html>

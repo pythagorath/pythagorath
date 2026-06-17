@@ -112,7 +112,7 @@ let currentSid = null;
 
 function shellHTML(){
   return `<div class="topnav">
-      <div class="brandgrp"><span class="logo">فيثاغورث</span><span class="tag">لوحة وليّ الأمر</span></div>
+      <div class="brandgrp"><span class="logo" data-brand>فيثاغورث</span><span class="tag">لوحة وليّ الأمر</span></div>
       <div class="navgrp">
         <button class="navlink" onclick="comingSoon('اشتراكي')">${SVG.card} اشتراكي</button>
         <button class="navlink" onclick="comingSoon('حسابي')">${SVG.user} حسابي</button>
@@ -283,5 +283,6 @@ function render(d){
 }
 load();
 </script>
+<script src="/static/site.js"></script>
 </body>
 </html>

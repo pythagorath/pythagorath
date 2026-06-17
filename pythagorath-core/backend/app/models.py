@@ -25,6 +25,7 @@ from sqlalchemy import (
     Index,
     Integer,
     String,
+    Text,
     UniqueConstraint,
     text,
 )
@@ -470,12 +471,41 @@ class Subscription(Base):
 
 
 class AppSetting(Base):
-    """Tiny key→value store for admin-managed app settings (e.g. the active visual
-    theme). Visual/config only — never read by the constitutional logic."""
+    """Tiny key→value store for admin-managed app settings (visual theme, integrations,
+    brand identity, whatsapp). Visual/config only — never read by the constitutional logic.
+    `value` is TEXT so it can hold longer values (e.g. a logo data-URL)."""
 
     __tablename__ = "app_settings"
     key: Mapped[str] = mapped_column(String(40), primary_key=True)
-    value: Mapped[str] = mapped_column(String(120), nullable=False)
+    value: Mapped[str] = mapped_column(Text, nullable=False)
+
+
+class Announcement(Base):
+    """An owner-authored in-app announcement (a customer promo/notice). PRESENTATION ONLY:
+    shown on the customer surfaces by `site.js`; never read by the engine/gates. Targeting
+    (all / unsubscribed / a grade / a country) is computed server-side at fetch time; the
+    'don't nag' frequency is the client's (localStorage of dismissed ids)."""
+
+    __tablename__ = "announcements"
+    __table_args__ = (
+        CheckConstraint("format in ('popup','banner')", name="ck_ann_format"),
+        CheckConstraint("target_type in ('all','unsubscribed','grade','country')",
+                        name="ck_ann_target"),
+    )
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(String(160), nullable=False)
+    body: Mapped[str] = mapped_column(String(600), nullable=False)
+    code: Mapped[str | None] = mapped_column(String(60), nullable=True)        # discount code
+    link: Mapped[str | None] = mapped_column(String(400), nullable=True)
+    format: Mapped[str] = mapped_column(String(10), nullable=False, default="popup")
+    target_type: Mapped[str] = mapped_column(String(16), nullable=False, default="all")
+    target_value: Mapped[str | None] = mapped_column(String(60), nullable=True)  # grade name / country code
+    active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    starts_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    ends_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )
 
 
 class Payment(Base):
