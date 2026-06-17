@@ -156,3 +156,95 @@ def test_child_limit_allows_up_to_max(admin_client, unsubscribed_client):
         "name": "د", "consent_version": consent.CURRENT_VERSION,
         "grade_id": [g["id"] for g in unsubscribed_client.get("/api/grades").json() if g["order"] == 2][0]})
     assert over.status_code == 403
+
+
+# ---------- manual payments: methods config + receipts + review (part B) ----------
+_IMG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+_PDF = "data:application/pdf;base64,JVBERi0xLjQKJeLjz9MK"
+
+
+def _enable(admin_client, **kw):
+    return admin_client.put("/api/admin/settings", json=kw)
+
+
+def test_payment_methods_default_visa_on(guardian_client):
+    info = guardian_client.get("/api/payment-info").json()
+    assert info["visa"] is True and info["bank"]["on"] is False and info["phone"]["on"] is False
+
+
+def test_owner_controls_visible_methods(admin_client, guardian_client):
+    _enable(admin_client, pay_visa_on="", pay_bank_on="1", pay_bank="بنك مسقط — 123",
+            pay_phone_on="1", pay_phone="96891234567")
+    info = guardian_client.get("/api/payment-info").json()
+    assert info["visa"] is False
+    assert info["bank"]["on"] is True and info["bank"]["details"] == "بنك مسقط — 123"
+    assert info["phone"]["on"] is True and info["phone"]["number"] == "96891234567"
+
+
+def test_receipt_requires_enabled_method(admin_client, unsubscribed_client):
+    plan = admin_client.post("/api/admin/plans", json={"name": "ش", "price": 2000}).json()
+    # bank not enabled → 400
+    r = unsubscribed_client.post("/api/receipts", json={
+        "plan_id": plan["id"], "method": "bank", "file": _IMG, "filename": "r.png"})
+    assert r.status_code == 400
+
+
+def test_receipt_upload_pending_then_approve_opens_wall(admin_client, unsubscribed_client):
+    plan = admin_client.post("/api/admin/plans", json={
+        "name": "شهري", "price": 2000, "trial_days": 0, "period": "monthly"}).json()
+    _enable(admin_client, pay_bank_on="1", pay_bank="بنك — حساب")
+    # customer uploads a receipt → pending, no access yet
+    up = unsubscribed_client.post("/api/receipts", json={
+        "plan_id": plan["id"], "method": "bank", "file": _IMG, "filename": "إيصال.png"})
+    assert up.status_code == 200 and up.json()["status"] == "pending"
+    assert unsubscribed_client.get("/api/subscription").json()["has_access"] is False
+    # admin sees it pending + can open the file
+    pend = admin_client.get("/api/admin/receipts?status=pending").json()
+    assert len(pend) == 1 and pend[0]["status"] == "pending"
+    rid = pend[0]["id"]
+    full = admin_client.get(f"/api/admin/receipts/{rid}").json()
+    assert full["file"] == _IMG
+    # approve → guardian gets access AND the child can reach paid content
+    ap = admin_client.post(f"/api/admin/receipts/{rid}/approve")
+    assert ap.status_code == 200 and ap.json()["status"] == "approved"
+    assert unsubscribed_client.get("/api/subscription").json()["has_access"] is True
+    skill_id, _ = _skill_q(admin_client, "B3")
+    assert _questions(unsubscribed_client, skill_id).status_code == 200   # wall open for the child
+
+
+def test_receipt_reject_shows_reason_no_access(admin_client, unsubscribed_client):
+    plan = admin_client.post("/api/admin/plans", json={"name": "ش", "price": 2000}).json()
+    _enable(admin_client, pay_phone_on="1", pay_phone="96890000000")
+    up = unsubscribed_client.post("/api/receipts", json={
+        "plan_id": plan["id"], "method": "phone", "file": _PDF, "filename": "r.pdf"}).json()
+    rid = up["id"]
+    rej = admin_client.post(f"/api/admin/receipts/{rid}/reject", json={"note": "الإيصال غير واضح"})
+    assert rej.status_code == 200 and rej.json()["status"] == "rejected"
+    mine = unsubscribed_client.get("/api/receipts").json()
+    assert mine[0]["status"] == "rejected" and mine[0]["note"] == "الإيصال غير واضح"
+    assert unsubscribed_client.get("/api/subscription").json()["has_access"] is False
+
+
+def test_receipt_rejects_non_image_pdf(admin_client, unsubscribed_client):
+    plan = admin_client.post("/api/admin/plans", json={"name": "ش", "price": 2000}).json()
+    _enable(admin_client, pay_bank_on="1", pay_bank="x")
+    bad = unsubscribed_client.post("/api/receipts", json={
+        "plan_id": plan["id"], "method": "bank", "file": "data:text/plain;base64,aGk=", "filename": "x.txt"})
+    assert bad.status_code == 422
+
+
+def test_receipt_review_requires_admin(admin_client, guardian_client, unsubscribed_client):
+    plan = admin_client.post("/api/admin/plans", json={"name": "ش", "price": 2000}).json()
+    _enable(admin_client, pay_bank_on="1", pay_bank="x")
+    up = unsubscribed_client.post("/api/receipts", json={
+        "plan_id": plan["id"], "method": "bank", "file": _IMG}).json()
+    assert guardian_client.post(f"/api/admin/receipts/{up['id']}/approve").status_code == 403
+
+
+def test_receipt_double_review_blocked(admin_client, unsubscribed_client):
+    plan = admin_client.post("/api/admin/plans", json={"name": "ش", "price": 2000}).json()
+    _enable(admin_client, pay_bank_on="1", pay_bank="x")
+    up = unsubscribed_client.post("/api/receipts", json={
+        "plan_id": plan["id"], "method": "bank", "file": _IMG}).json()
+    assert admin_client.post(f"/api/admin/receipts/{up['id']}/approve").status_code == 200
+    assert admin_client.post(f"/api/admin/receipts/{up['id']}/approve").status_code == 409

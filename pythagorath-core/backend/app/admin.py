@@ -23,11 +23,11 @@ from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app import gate, generators, parent_terms, phrasing, schemas
+from app import access, auth, gate, generators, parent_terms, phrasing, schemas
 from app.db import get_db
 from app.models import (
-    Announcement, AppSetting, GCC_COUNTRIES, Answer, Grade, Plan, Question, QuestionInstance,
-    QuestionPhrasing, Skill, SkillMastery, Student, Subscription, User,
+    Announcement, AppSetting, GCC_COUNTRIES, Answer, Grade, Payment, Plan, Question,
+    QuestionInstance, QuestionPhrasing, Receipt, Skill, SkillMastery, Student, Subscription, User,
 )
 from app.path import STRUGGLE_THRESHOLD
 
@@ -208,6 +208,85 @@ def admin_list_subscriptions(db: Session = Depends(get_db)):
          "access_until": r.access_until.isoformat() if r.access_until else None}
         for r in rows
     ]
+
+
+# ---- manual-payment receipts: the owner reviews uploaded proofs ----
+_METHOD_AR = {"bank": "تحويل بنكي", "phone": "تحويل لرقم هاتف"}
+
+
+def _receipt_row(r: Receipt, emails: dict, plans: dict) -> dict:
+    """Lightweight (no file blob) — for the list."""
+    return {"id": r.id, "user": emails.get(r.user_id), "plan": plans.get(r.plan_id),
+            "method": _METHOD_AR.get(r.method, r.method), "amount": r.amount,
+            "currency": r.currency, "status": r.status, "note": r.note,
+            "filename": r.filename,
+            "created_at": r.created_at.isoformat() if r.created_at else None}
+
+
+@router.get("/receipts")
+def admin_list_receipts(status: str | None = None, db: Session = Depends(get_db)):
+    """All receipts (or filtered by status, e.g. ?status=pending) — without the file blob."""
+    q = select(Receipt).order_by(Receipt.id.desc())
+    if status in ("pending", "approved", "rejected"):
+        q = q.where(Receipt.status == status)
+    rows = db.execute(q).scalars().all()
+    emails = {u.id: u.email for u in db.execute(select(User)).scalars().all()}
+    plans = {p.id: p.name for p in db.execute(select(Plan)).scalars().all()}
+    return [_receipt_row(r, emails, plans) for r in rows]
+
+
+@router.get("/receipts/{rid}")
+def admin_get_receipt(rid: int, db: Session = Depends(get_db)):
+    """One receipt WITH the file (data-URL) so the owner can view the image/PDF."""
+    r = db.get(Receipt, rid)
+    if r is None:
+        raise HTTPException(404, "الإيصال غير موجود")
+    emails = {r.user_id: (db.get(User, r.user_id).email if db.get(User, r.user_id) else None)}
+    plans = {r.plan_id: (db.get(Plan, r.plan_id).name if r.plan_id and db.get(Plan, r.plan_id) else None)}
+    out = _receipt_row(r, emails, plans)
+    out["file"] = r.file
+    return out
+
+
+@router.post("/receipts/{rid}/approve")
+def admin_approve_receipt(rid: int, admin_user: User = Depends(auth.require_admin),
+                          db: Session = Depends(get_db)):
+    """Approve → grant/extend the guardian's subscription (access_until per the plan's
+    period) and record a paid Payment. The paywall then opens for the guardian AND their
+    children (children inherit via owner_user_id). The engine/gates are untouched."""
+    r = db.get(Receipt, rid)
+    if r is None:
+        raise HTTPException(404, "الإيصال غير موجود")
+    if r.status != "pending":
+        raise HTTPException(409, "هذا الإيصال روجِع من قبل")
+    plan = db.get(Plan, r.plan_id) if r.plan_id else None
+    if plan is None:
+        raise HTTPException(400, "خطّة الإيصال لم تَعُد متوفّرة")
+    sub = access.grant_subscription(db, r.user_id, plan)
+    db.add(Payment(subscription_id=sub.id, amount=r.amount, currency=r.currency,
+                   status="paid", provider_ref=f"receipt:{r.id}"))
+    r.status = "approved"
+    r.reviewed_by = admin_user.id
+    db.commit()
+    return {"id": r.id, "status": r.status,
+            "access_until": sub.access_until.isoformat() if sub.access_until else None}
+
+
+@router.post("/receipts/{rid}/reject")
+def admin_reject_receipt(rid: int, body: schemas.ReceiptReviewRequest,
+                         admin_user: User = Depends(auth.require_admin),
+                         db: Session = Depends(get_db)):
+    """Reject with a reason (shown to the customer). Grants no access."""
+    r = db.get(Receipt, rid)
+    if r is None:
+        raise HTTPException(404, "الإيصال غير موجود")
+    if r.status != "pending":
+        raise HTTPException(409, "هذا الإيصال روجِع من قبل")
+    r.status = "rejected"
+    r.note = (body.note or "").strip() or "لم يُقبل الإيصال."
+    r.reviewed_by = admin_user.id
+    db.commit()
+    return {"id": r.id, "status": r.status, "note": r.note}
 
 
 # ---------------- create / edit drafts ----------------
@@ -600,6 +679,8 @@ SETTINGS_KEYS = {
     "integration_ga", "integration_fbpixel",
     "brand_name", "brand_logo", "brand_primary", "brand_secondary",
     "whatsapp_number", "whatsapp_enabled",
+    # payment config (step 7 part B) — which methods show to customers + transfer details
+    "pay_visa_on", "pay_bank_on", "pay_phone_on", "pay_bank", "pay_phone",
 }
 ANN_FORMATS = {"popup", "banner"}
 ANN_TARGETS = {"all", "unsubscribed", "grade", "country"}

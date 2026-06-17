@@ -134,6 +134,42 @@ class SubscribeRequest(BaseModel):
     plan_id: int
 
 
+# manual payment (part B): the guardian transfers by bank/phone and uploads a proof.
+# ~2MB cap on the inline data-URL (a data-URL is ~33% larger than the raw bytes).
+_RECEIPT_MAX_CHARS = 2_800_000
+
+
+class ReceiptCreate(BaseModel):
+    plan_id: int
+    method: str                      # bank | phone
+    file: str                        # data-URL (image/* or application/pdf)
+    filename: str | None = None
+
+    @field_validator("method")
+    @classmethod
+    def _method(cls, v):
+        if v not in ("bank", "phone"):
+            raise ValueError("طريقة غير معروفة")
+        return v
+
+    @field_validator("file")
+    @classmethod
+    def _file(cls, v):
+        v = (v or "").strip()
+        if not v.startswith("data:"):
+            raise ValueError("الإيصال مطلوب (صورة أو PDF)")
+        head = v[:64].lower()
+        if not ("image/" in head or "application/pdf" in head):
+            raise ValueError("الملفّ يجب أن يكون صورة أو PDF")
+        if len(v) > _RECEIPT_MAX_CHARS:
+            raise ValueError("حجم الملفّ كبير — الحدّ ٢ ميجابايت")
+        return v
+
+
+class ReceiptReviewRequest(BaseModel):
+    note: str | None = None          # rejection reason / admin note
+
+
 class SubscriptionRead(BaseModel):
     status: str | None = None
     access_until: str | None = None

@@ -556,3 +556,36 @@ class Payment(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=_utcnow
     )
+
+
+class Receipt(Base):
+    """A MANUAL-payment proof (step 7 part B): the guardian transfers by bank/phone, then
+    uploads an image/PDF here. The owner reviews it and approves (→ grants/extends a real
+    subscription) or rejects (with a reason). Entirely in the commercial layer — the engine
+    never reads it. The file is a data-URL kept inline (~2MB cap, no file directory)."""
+
+    __tablename__ = "receipts"
+    __table_args__ = (
+        CheckConstraint("method in ('bank','phone')", name="ck_receipt_method"),
+        CheckConstraint("status in ('pending','approved','rejected')", name="ck_receipt_status"),
+    )
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    plan_id: Mapped[int | None] = mapped_column(
+        ForeignKey("plans.id", ondelete="SET NULL"), nullable=True
+    )
+    method: Mapped[str] = mapped_column(String(10), nullable=False)        # bank | phone
+    amount: Mapped[int] = mapped_column(Integer, nullable=False)           # smallest unit (baisa)
+    currency: Mapped[str] = mapped_column(String(8), nullable=False, default="OMR")
+    file: Mapped[str] = mapped_column(Text, nullable=False)                # data-URL (image/PDF)
+    filename: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="pending")
+    note: Mapped[str | None] = mapped_column(String(500), nullable=True)   # rejection reason / note
+    reviewed_by: Mapped[int | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )

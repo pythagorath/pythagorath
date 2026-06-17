@@ -83,6 +83,9 @@
   .savebtn{ margin-top:10px; background:linear-gradient(135deg,#163E52,#1B6E97); color:#fff; border:0; border-radius:12px; padding:10px 22px; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; cursor:pointer; }
   .okmsg{ color:#1E945B; font-weight:700; margin-inline-start:10px; }
   .err{ color:#C0392B; }
+  .tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+  .tabs button{ background:#F1EBE0; border:0; border-radius:11px; padding:8px 16px; cursor:pointer; font-family:inherit; font-weight:700; color:#7C6F5E; }
+  .tabs button.on{ background:#155E7D; color:#fff; }
   .modal{ position:fixed; inset:0; background:rgba(18,42,54,.45); display:none; align-items:center; justify-content:center; padding:20px; z-index:60; }
   .modal.show{ display:flex; }
   .modal .box{ background:#fff; border-radius:18px; max-width:520px; width:100%; max-height:86vh; overflow:auto; padding:22px; }
@@ -107,7 +110,7 @@ const SECTIONS = [
   {grp:'الإدارة', items:[{id:'overview',ic:'🏠',name:'الرئيسية'},{id:'students',ic:'🧒',name:'الطلّاب'},{id:'parents',ic:'👪',name:'أولياء الأمور'}]},
   {grp:'المحتوى والجودة', items:[{id:'questions',ic:'❓',name:'الأسئلة'},{id:'skills',ic:'🗂️',name:'المهارات'},{id:'reports',ic:'📊',name:'التقارير'}]},
   {grp:'التحكّم بالمنصّة', items:[{id:'integrations',ic:'🔌',name:'التكاملات'},{id:'ads',ic:'📣',name:'الإعلانات'}]},
-  {grp:'الاشتراك والتسعير', items:[{id:'pricing',ic:'💳',name:'التسعير والخطط'},{id:'subs',ic:'🔁',name:'الاشتراكات'}]},
+  {grp:'الاشتراك والتسعير', items:[{id:'pricing',ic:'💳',name:'التسعير والخطط'},{id:'paymethods',ic:'🏦',name:'طرق الدفع'},{id:'receipts',ic:'🧾',name:'الإيصالات'},{id:'subs',ic:'🔁',name:'الاشتراكات'}]},
   {grp:'', items:[{id:'settings',ic:'⚙️',name:'الإعدادات'}]},
 ];
 
@@ -180,7 +183,7 @@ function go(id){
   CURRENT=id; closeDrops();
   document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
   const c=document.getElementById('content'); c.innerHTML='<p class="muted">… جارٍ التحميل</p>';
-  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,integrations:secIntegrations,ads:secAds,pricing:secPricing,subs:secSubs,settings:secSettings}[id])(c);
+  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,integrations:secIntegrations,ads:secAds,pricing:secPricing,paymethods:secPayMethods,receipts:secReceipts,subs:secSubs,settings:secSettings}[id])(c);
 }
 function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 function modal(html){ document.getElementById('modalBox').innerHTML=`<button class="x" onclick="closeModal()">✕</button>`+html; document.getElementById('modal').classList.add('show'); }
@@ -531,6 +534,81 @@ async function secSubs(c){
     ${subs.map(s=>`<tr><td>${s.user||'—'}</td><td>${s.plan||'—'}</td>
       <td><span class="pill ${s.status==='active'||s.status==='trial'?'ok':'gray'}">${SUB_AR[s.status]||s.status}</span></td>
       <td>${s.access_until?day(s.access_until):'—'}</td></tr>`).join('')}</table>`:'<div class="emptyst"><div class="em">🔁</div>لا اشتراكات بعد.</div>'}</div>`;
+}
+
+// ---------- طرق الدفع (تحكّم المالك بالطرق الظاهرة + تفاصيل التحويل) ----------
+const onbox = (id,on,lbl)=>`<label class="frow" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="${id}" ${on?'checked':''} style="width:auto"> ${lbl}</label>`;
+async function secPayMethods(c){
+  let s; try{ s=await api('/api/admin/settings'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  c.innerHTML = `<h2 class="sec">طرق الدفع</h2>
+    <div class="muted">اختر الطرق التي تظهر للعميل، واملأ تفاصيل التحويل اليدوي.</div>
+    <div class="panel"><h3>الطرق الظاهرة للعميل</h3>
+      ${onbox('pm_visa', (s.pay_visa_on||'1')==='1', 'بطاقة / فيزا (تلقائيّة)')}
+      ${onbox('pm_bank', s.pay_bank_on==='1', 'تحويل بنكي (يدوي — بإيصال)')}
+      ${onbox('pm_phone', s.pay_phone_on==='1', 'تحويل لرقم هاتف (يدوي — بإيصال)')}
+    </div>
+    <div class="panel"><h3>تفاصيل التحويل البنكي</h3>
+      <div class="frow"><label>الحساب البنكي (اسم البنك، رقم الحساب/الآيبان)</label>
+        <textarea id="pm_bankd" rows="3" placeholder="بنك … — الحساب: …  — الآيبان: OM…">${(s.pay_bank||'').replace(/</g,'&lt;')}</textarea></div>
+    </div>
+    <div class="panel"><h3>تفاصيل التحويل لرقم هاتف</h3>
+      <div class="frow"><label>رقم الهاتف للتحويل</label><input id="pm_phoned" value="${(s.pay_phone||'').replace(/"/g,'&quot;')}" placeholder="٩٦٨٩XXXXXXXX"></div>
+    </div>
+    <button class="savebtn" onclick="savePayMethods()">حفظ</button>
+    <span id="pm-msg" class="okmsg"></span>`;
+}
+async function savePayMethods(){
+  const body={
+    pay_visa_on: document.getElementById('pm_visa').checked?'1':'',
+    pay_bank_on: document.getElementById('pm_bank').checked?'1':'',
+    pay_phone_on: document.getElementById('pm_phone').checked?'1':'',
+    pay_bank: document.getElementById('pm_bankd').value,
+    pay_phone: document.getElementById('pm_phoned').value,
+  };
+  try{ await api('/api/admin/settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const m=document.getElementById('pm-msg'); m.textContent='تم الحفظ ✓'; setTimeout(()=>m.textContent='',2000);
+  }catch(e){ alert('تعذّر الحفظ'); }
+}
+
+// ---------- الإيصالات (مراجعة المالك) ----------
+const REC_AR = {pending:'قيد المراجعة', approved:'مقبول', rejected:'مرفوض'};
+let REC_FILTER='pending';
+async function secReceipts(c){
+  let recs; try{ recs=await api('/api/admin/receipts'+(REC_FILTER?('?status='+REC_FILTER):'')); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  const tab=(k,l)=>`<button class="${REC_FILTER===k?'on':''}" onclick="REC_FILTER='${k}';go('receipts')">${l}</button>`;
+  c.innerHTML = `<h2 class="sec">الإيصالات</h2><div class="muted">راجِع إيصالات الدفع اليدوي.</div>
+    <div class="tabs" style="margin:10px 0">${tab('pending','قيد المراجعة')}${tab('approved','المقبولة')}${tab('rejected','المرفوضة')}${tab('','الكل')}</div>
+    <div class="panel">${recs.length?`<table><tr><th>وليّ الأمر</th><th>الخطّة</th><th>الطريقة</th><th>المبلغ</th><th>التاريخ</th><th>الحالة</th><th></th></tr>
+    ${recs.map(r=>`<tr><td>${r.user||'—'}</td><td>${r.plan||'—'}</td><td>${r.method}</td><td>${omr(r.amount)}</td>
+      <td>${day(r.created_at)}</td>
+      <td><span class="pill ${r.status==='approved'?'ok':(r.status==='rejected'?'gray':'warn')}">${REC_AR[r.status]||r.status}</span>${r.note?`<div class="muted" style="font-size:11px">${r.note}</div>`:''}</td>
+      <td><button class="linkbtn" onclick="viewReceipt(${r.id})">عرض</button></td></tr>`).join('')}</table>`
+    :'<div class="emptyst"><div class="em">🧾</div>لا إيصالات في هذا التصنيف.</div>'}</div>`;
+}
+async function viewReceipt(id){
+  let r; try{ r=await api(`/api/admin/receipts/${id}`); }catch(e){ alert('تعذّر فتح الإيصال'); return; }
+  const isPdf=/^data:application\/pdf/i.test(r.file);
+  const viewer=isPdf
+    ? `<embed src="${r.file}" type="application/pdf" style="width:100%;height:60vh;border:1px solid #E3DACB;border-radius:10px">`
+    : `<img src="${r.file}" alt="إيصال" style="max-width:100%;border:1px solid #E3DACB;border-radius:10px">`;
+  const actions = r.status==='pending'
+    ? `<div style="display:flex;gap:8px;margin-top:12px">
+         <button class="savebtn" style="margin:0" onclick="approveReceipt(${r.id})">قبول وتفعيل الاشتراك</button>
+         <button class="linkbtn" onclick="rejectReceipt(${r.id})">رفض…</button></div>`
+    : `<div class="muted" style="margin-top:10px">الحالة: ${REC_AR[r.status]||r.status}${r.note?` — ${r.note}`:''}</div>`;
+  modal(`<h3>إيصال — ${r.user||''}</h3>
+    <div class="muted" style="margin-bottom:8px">${r.plan||'—'} · ${r.method} · ${omr(r.amount)} · ${day(r.created_at)}${r.filename?` · ${r.filename}`:''}</div>
+    ${viewer}${actions}`);
+}
+async function approveReceipt(id){
+  try{ await api(`/api/admin/receipts/${id}/approve`,{method:'POST'}); closeModal(); go('receipts'); }
+  catch(e){ alert(e.detail||'تعذّر القبول'); }
+}
+async function rejectReceipt(id){
+  const note=prompt('سبب الرفض (يظهر للعميل):','');
+  if(note===null) return;
+  try{ await api(`/api/admin/receipts/${id}/reject`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({note})}); closeModal(); go('receipts'); }
+  catch(e){ alert(e.detail||'تعذّر الرفض'); }
 }
 
 boot();

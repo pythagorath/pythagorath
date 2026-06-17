@@ -37,7 +37,7 @@ from app.db import SessionLocal, get_db
 from app.gate import grade, read_snapshot, recompute
 from app.models import (
     Announcement, AppSetting, GCC_COUNTRIES, Answer, ConsentRecord, Grade, Payment, Plan,
-    Question, QuestionInstance, Skill, SkillCountry, SkillMastery, SkillPrerequisite,
+    Question, QuestionInstance, Receipt, Skill, SkillCountry, SkillMastery, SkillPrerequisite,
     Student, Subscription, Unit,
 )
 
@@ -669,6 +669,61 @@ def checkout(body: schemas.SubscribeRequest, user=Depends(auth.current_user), db
     ))
     db.commit()
     return _sub_response(db, user)
+
+
+# ---- manual payments (part B): owner-set methods + bank/phone, customer uploads a receipt ----
+def _payment_methods(db: Session) -> dict:
+    """The OWNER-controlled payment config the customer surface reads. Visa defaults ON
+    (the mock/real card path); bank & phone are opt-in (shown only once the owner enables
+    them AND fills the details). Bank/phone details are surfaced only when that method is on."""
+    rows = {s.key: s.value for s in db.execute(select(AppSetting)).scalars().all()}
+    g = lambda k, d="": rows.get(k, d)
+    return {
+        "visa": g("pay_visa_on", "1") == "1",
+        "bank": {"on": g("pay_bank_on") == "1", "details": g("pay_bank")},
+        "phone": {"on": g("pay_phone_on") == "1", "number": g("pay_phone")},
+    }
+
+
+@app.get("/api/payment-info")
+def payment_info(user=Depends(auth.current_user), db: Session = Depends(get_db)):
+    """The visible payment methods + transfer details for the customer (owner-controlled)."""
+    return _payment_methods(db)
+
+
+@app.post("/api/receipts")
+def upload_receipt(body: schemas.ReceiptCreate, user=Depends(auth.current_user),
+                   db: Session = Depends(get_db)):
+    """Submit a manual-payment proof → status 'pending' (awaits owner review). The amount is
+    taken from the PLAN (server-trusted, not the client). The method must be enabled by the
+    owner. Opens NO access on its own — only an approval does."""
+    plan = db.get(Plan, body.plan_id)
+    if plan is None or not plan.is_active:
+        raise HTTPException(404, "الخطة غير موجودة")
+    methods = _payment_methods(db)
+    if not methods.get(body.method, {}).get("on"):
+        raise HTTPException(400, "طريقة الدفع هذه غير متاحة")
+    r = Receipt(user_id=user.id, plan_id=plan.id, method=body.method,
+                amount=plan.price, currency=plan.currency,
+                file=body.file, filename=body.filename, status="pending")
+    db.add(r)
+    db.commit()
+    db.refresh(r)
+    return {"id": r.id, "status": r.status,
+            "created_at": r.created_at.isoformat() if r.created_at else None}
+
+
+@app.get("/api/receipts")
+def my_receipts(user=Depends(auth.current_user), db: Session = Depends(get_db)):
+    """The guardian's own receipts (status + any rejection reason). No file blob — the
+    customer already has their copy; this is the review status."""
+    rows = db.execute(select(Receipt).where(Receipt.user_id == user.id)
+                      .order_by(Receipt.id.desc())).scalars().all()
+    plans = {p.id: p.name for p in db.execute(select(Plan)).scalars().all()}
+    method_ar = {"bank": "تحويل بنكي", "phone": "تحويل لرقم هاتف"}
+    return [{"id": r.id, "plan": plans.get(r.plan_id), "method": method_ar.get(r.method, r.method),
+             "amount": r.amount, "currency": r.currency, "status": r.status, "note": r.note,
+             "created_at": r.created_at.isoformat() if r.created_at else None} for r in rows]
 
 
 # ---- answer → grade → recompute understanding gate ----
