@@ -465,6 +465,11 @@ class Plan(Base):
     price: Mapped[int] = mapped_column(Integer, nullable=False)        # smallest unit (e.g. baisa)
     currency: Mapped[str] = mapped_column(String(8), nullable=False, default="OMR")
     trial_days: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    # Family-tiered pricing (step 7): how many children this plan covers, and its billing
+    # period. The yearly "discount" is just a lower owner-set price — no special logic.
+    max_children: Mapped[int] = mapped_column(Integer, nullable=False, default=1, server_default="1")
+    period: Mapped[str] = mapped_column(String(10), nullable=False, default="monthly",
+                                        server_default="monthly")
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=_utcnow

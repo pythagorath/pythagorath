@@ -148,7 +148,8 @@ def admin_list_plans(db: Session = Depends(get_db)):
 @router.post("/plans", response_model=schemas.PlanRead)
 def admin_create_plan(body: schemas.PlanCreate, db: Session = Depends(get_db)):
     p = Plan(name=body.name, price=body.price, currency=body.currency,
-             trial_days=body.trial_days, is_active=body.is_active)
+             trial_days=body.trial_days, max_children=body.max_children, period=body.period,
+             is_active=body.is_active)
     db.add(p)
     db.commit()
     db.refresh(p)
@@ -198,9 +199,12 @@ def admin_set_theme(body: schemas.ThemeRequest, db: Session = Depends(get_db)):
 
 @router.get("/subscriptions")
 def admin_list_subscriptions(db: Session = Depends(get_db)):
+    emails = {u.id: u.email for u in db.execute(select(User)).scalars().all()}
+    plans = {p.id: p.name for p in db.execute(select(Plan)).scalars().all()}
     rows = db.execute(select(Subscription).order_by(Subscription.id.desc())).scalars().all()
     return [
-        {"id": r.id, "user_id": r.user_id, "plan_id": r.plan_id, "status": r.status,
+        {"id": r.id, "user": emails.get(r.user_id), "plan": plans.get(r.plan_id),
+         "status": r.status,
          "access_until": r.access_until.isoformat() if r.access_until else None}
         for r in rows
     ]

@@ -79,6 +79,8 @@ class PlanRead(BaseModel):
     price: int
     currency: str
     trial_days: int
+    max_children: int
+    period: str
     is_active: bool
 
 
@@ -87,6 +89,8 @@ class PlanCreate(BaseModel):
     price: int
     currency: str = "OMR"
     trial_days: int = 0
+    max_children: int = 1
+    period: str = "monthly"
     is_active: bool = True
 
     @field_validator("name")
@@ -101,12 +105,28 @@ class PlanCreate(BaseModel):
             raise ValueError("must be >= 0")
         return v
 
+    @field_validator("max_children")
+    @classmethod
+    def _pos(cls, v):
+        if v is None or v < 1:
+            raise ValueError("must be >= 1")
+        return v
+
+    @field_validator("period")
+    @classmethod
+    def _period(cls, v):
+        if v not in ("monthly", "yearly"):
+            raise ValueError("period must be monthly or yearly")
+        return v
+
 
 class PlanPatch(BaseModel):
     name: str | None = None
     price: int | None = None
     currency: str | None = None
     trial_days: int | None = None
+    max_children: int | None = None
+    period: str | None = None
     is_active: bool | None = None
 
 

@@ -9,7 +9,7 @@ from alembic.config import Config
 from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app import access, admin, auth, consent, diagnostic, gate, generators, payments, phrasing, schemas, seed
@@ -298,6 +298,24 @@ def create_student(payload: schemas.StudentCreate,
     grade = db.get(Grade, payload.grade_id)
     if grade is None:
         raise HTTPException(400, "الصف المستهدف غير صالح")
+    # FAMILY-PLAN child limit (step 7): if the guardian has an ACTIVE/TRIAL plan, they can't
+    # add more children than it covers. With no active plan (onboarding) there's no cap here —
+    # the paywall still gates the actual learning content.
+    now = datetime.now(timezone.utc)
+    sub = db.execute(select(Subscription).where(
+        Subscription.user_id == user.id,
+        Subscription.status.in_(("trial", "active")),
+        Subscription.access_until.is_not(None), Subscription.access_until > now,
+    ).order_by(Subscription.id.desc())).scalars().first()
+    if sub is not None and sub.plan_id is not None:
+        plan = db.get(Plan, sub.plan_id)
+        if plan is not None:
+            n = db.execute(select(func.count(Student.id)).where(
+                Student.owner_user_id == user.id)).scalar_one()
+            if n >= plan.max_children:
+                count_ar = str(plan.max_children).translate(str.maketrans("0123456789", "٠١٢٣٤٥٦٧٨٩"))
+                raise HTTPException(403, f"خطّتك تسمح بـ{count_ar} "
+                                    f"{'طفل' if plan.max_children == 1 else 'أطفال'} — رقِّ خطّتك لإضافة المزيد.")
     country = payload.country if payload.country in GCC_COUNTRIES else None
     st = Student(name=name, grade_id=grade.id, country=country, owner_user_id=user.id)
     db.add(st)
@@ -637,10 +655,11 @@ def checkout(body: schemas.SubscribeRequest, user=Depends(auth.current_user), db
         raise HTTPException(404, "الخطة غير موجودة")
     co = payments.provider.create_checkout(user, plan)
     confirmed = bool(co.get("auto_confirmed")) and payments.provider.verify(co["provider_ref"])
+    days = 365 if plan.period == "yearly" else 30        # the owner-set period
     sub = Subscription(
         user_id=user.id, plan_id=plan.id,
         status="active" if confirmed else "expired",
-        access_until=(datetime.now(timezone.utc) + timedelta(days=30)) if confirmed else None,
+        access_until=(datetime.now(timezone.utc) + timedelta(days=days)) if confirmed else None,
     )
     db.add(sub)
     db.flush()

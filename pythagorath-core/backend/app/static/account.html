@@ -92,8 +92,10 @@ async function doAuth(){
 async function logout(){ try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){} AUTH_TAB='login'; showAuth(); }
 
 // ---------- 2) home: empty or children ----------
+let SUB=null;
 async function home(){
   let kids=[]; try{ kids = await api('/api/students'); }catch(e){ return showAuth(); }
+  try{ SUB = await api('/api/subscription'); }catch(e){ SUB=null; }
   if(!kids.length){
     V.innerHTML = `<div class="card"><div class="empty"><div class="em">👶</div>
       <h2>أهلاً بك!</h2><div class="muted">لم تُضِف طفلاً بعد. لنبدأ بإضافة طفلك الأول.</div>
@@ -101,12 +103,25 @@ async function home(){
       <div class="toplink"><a onclick="logout()" style="cursor:pointer">تسجيل الخروج</a></div></div>`;
     return;
   }
-  V.innerHTML = `<div class="card"><h2>أطفالك</h2><div class="muted">${H(kids.length)} ${kids.length===1?'طفل':'أطفال'}.</div>
+  V.innerHTML = `${subBanner()}<div class="card"><h2>أطفالك</h2><div class="muted">${H(kids.length)} ${kids.length===1?'طفل':'أطفال'}.</div>
     ${kids.map(k=>`<div class="kid"><span class="av">${(k.name||'؟').trim()[0]}</span>
       <div class="nm">${k.name}<div class="meta">${gradeName(k.grade_id)||''} · ${coName(k.country)||'—'}</div></div>
       <button class="ghost" onclick="setup(${k.id},'${(k.name||'').replace(/'/g,'')}')">هيّئ جهازه</button></div>`).join('')}
     <button class="btn" style="margin-top:14px" onclick="addChild()">＋ أضف طفلاً</button>
     <div class="toplink"><a href="/parent">لوحة المتابعة ↗</a> · <a onclick="logout()" style="cursor:pointer">خروج</a></div></div>`;
+}
+const SUB_AR = {trial:'تجربة مجانية', active:'اشتراك فعّال', expired:'منتهٍ', canceled:'ملغى'};
+function subBanner(){
+  if(SUB && SUB.has_access){
+    return `<div class="card" style="background:#F1FAF4;border-color:#CBEBD7">
+      <h2 style="color:#1E945B">✓ ${SUB_AR[SUB.status]||'فعّال'}</h2>
+      <div class="muted">وصول مفتوح${SUB.access_until?` حتى ${H(SUB.access_until.slice(0,10))}`:''} — لك ولأطفالك.</div>
+      <button class="ghost" style="margin-top:12px;width:auto;padding:8px 16px" onclick="plans()">تغيير الخطّة</button></div>`;
+  }
+  return `<div class="card" style="background:#FFF7EC;border-color:#F6E3C2">
+    <h2 style="color:#D97E0A">افتح التعلّم الكامل</h2>
+    <div class="muted">${SUB&&SUB.status==='expired'?'انتهى وصولك. ':''}اشترك ليبدأ أطفالك رحلتهم بلا حدود.</div>
+    <button class="btn orange" onclick="plans()">عرض الخطط والاشتراك</button></div>`;
 }
 function coName(c){ const f=CO.find(x=>x[0]===c); return f?f[1]:null; }
 function gradeName(id){ if(!GRADES) return null; const g=GRADES.find(x=>x.id===id); return g?g.name:null; }
@@ -175,6 +190,50 @@ async function directDevice(){
   if(!confirm('سيتحوّل هذا الجهاز إلى وضع الطفل، وتُمسح جلستك منه. متابعة؟')) return;
   try{ await api('/api/auth/device-from-session',{method:'POST'}); location.href='/device'; }
   catch(e){ alert('تعذّر تهيئة الجهاز'); }
+}
+
+// ---------- 6) plans + subscribe (التجربة / فيزا) ----------
+const omr = b => H((Number(b||0)/1000).toFixed(3));
+const PERIOD = {monthly:'شهري', yearly:'سنوي'};
+async function plans(){
+  V.innerHTML = `<div class="card"><p class="muted">… جارٍ تحميل الخطط</p></div>`;
+  let list; try{ list = await api('/api/plans'); }catch(e){ V.innerHTML='<div class="card"><p class="err">تعذّر التحميل</p></div>'; return; }
+  if(!list.length){
+    V.innerHTML = `<div class="card"><div class="empty"><div class="em">💳</div>
+      <h2>لا خطط متاحة بعد</h2><div class="muted">سيتمّ تفعيل الخطط قريباً.</div></div>
+      <div class="toplink"><a onclick="home()" style="cursor:pointer">رجوع</a></div></div>`;
+    return;
+  }
+  V.innerHTML = `<div class="card"><h2>اختر خطّتك</h2>
+    <div class="muted">السعر بالريال العُماني. الوصول يفتح لك ولأطفالك فوراً.</div>
+    ${list.map(p=>`<div class="kid" style="display:block;padding:16px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="nm" style="font-size:17px">${p.name}</div>
+        <span class="meta">${PERIOD[p.period]||p.period} · حتى ${H(p.max_children)} ${p.max_children==1?'طفل':'أطفال'}</span></div>
+      <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;color:#155E7D;font-size:24px;margin:6px 0">
+        ${omr(p.price)} <span style="font-size:13px;color:#9A8F82">ر.ع. / ${PERIOD[p.period]||p.period}</span></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${p.trial_days>0?`<button class="btn orange" style="flex:1;margin-top:0" onclick="startTrial(${p.id})">ابدأ التجربة (${H(p.trial_days)} يوم)</button>`:''}
+        <button class="btn" style="flex:1;margin-top:0" onclick="payVisa(${p.id})">اشترك — فيزا</button></div>
+    </div>`).join('')}
+    <div class="err" id="perr"></div>
+    <div class="toplink"><a onclick="home()" style="cursor:pointer">رجوع</a></div></div>`;
+}
+async function startTrial(id){
+  const err=document.getElementById('perr'); if(err) err.textContent='';
+  try{ await api('/api/subscription/trial',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan_id:id})}); subscribed(); }
+  catch(e){ if(err) err.textContent = e.detail || 'تعذّر بدء التجربة.'; }
+}
+async function payVisa(id){
+  const err=document.getElementById('perr'); if(err) err.textContent='';
+  try{ const r=await api('/api/subscription/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan_id:id})});
+    if(r.has_access){ subscribed(); } else { if(err) err.textContent='تعذّر إتمام الدفع.'; } }
+  catch(e){ if(err) err.textContent = e.detail || 'تعذّر إتمام الدفع.'; }
+}
+function subscribed(){
+  V.innerHTML = `<div class="card"><div class="empty"><div class="em">🎉</div>
+    <h2>تمّ تفعيل اشتراكك!</h2><div class="muted">التعلّم مفتوح الآن لك ولأطفالك.</div></div>
+    <button class="btn orange big" onclick="home()">إلى لوحتك</button></div>`;
 }
 
 boot();

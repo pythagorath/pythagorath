@@ -101,3 +101,58 @@ def test_admin_plan_crud(admin_client):
 
 def test_plan_management_requires_admin(guardian_client):
     assert guardian_client.post("/api/admin/plans", json={"name": "x", "price": 1}).status_code == 403
+
+
+# ---------- family tiers (step 7 part A: max_children + period) ----------
+def test_plan_tiers_reflect_to_customer(admin_client, unsubscribed_client):
+    """Owner sets max_children/period → reflected to the customer-facing /api/plans."""
+    admin_client.post("/api/admin/plans", json={
+        "name": "عائلية", "price": 5000, "trial_days": 0, "max_children": 3, "period": "yearly"})
+    plans = unsubscribed_client.get("/api/plans").json()
+    fam = next(p for p in plans if p["name"] == "عائلية")
+    assert fam["max_children"] == 3 and fam["period"] == "yearly" and fam["price"] == 5000
+
+
+def test_plan_defaults_single_monthly(admin_client):
+    p = admin_client.post("/api/admin/plans", json={"name": "أساسية", "price": 2000}).json()
+    assert p["max_children"] == 1 and p["period"] == "monthly"
+
+
+def test_invalid_period_and_max_children_rejected(admin_client):
+    assert admin_client.post("/api/admin/plans", json={
+        "name": "x", "price": 1, "period": "weekly"}).status_code == 422
+    assert admin_client.post("/api/admin/plans", json={
+        "name": "y", "price": 1, "max_children": 0}).status_code == 422
+
+
+def test_yearly_checkout_grants_longer_access(admin_client, unsubscribed_client, db):
+    plan = admin_client.post("/api/admin/plans", json={
+        "name": "سنوية", "price": 20000, "trial_days": 0, "period": "yearly"}).json()
+    sub = unsubscribed_client.post("/api/subscription/checkout", json={"plan_id": plan["id"]}).json()
+    assert sub["has_access"] is True
+    until = datetime.fromisoformat(sub["access_until"])
+    assert (until - datetime.now(timezone.utc)).days > 300        # ~365, not 30
+
+
+def test_child_limit_enforced(admin_client, unsubscribed_client):
+    plan = admin_client.post("/api/admin/plans", json={
+        "name": "فردية", "price": 2000, "trial_days": 0, "max_children": 1}).json()
+    unsubscribed_client.post("/api/subscription/checkout", json={"plan_id": plan["id"]})
+    first = _child(unsubscribed_client, "أول")
+    assert "id" in first                                          # within the limit
+    second = unsubscribed_client.post("/api/students", json={
+        "name": "ثانٍ", "consent_version": consent.CURRENT_VERSION,
+        "grade_id": [g["id"] for g in unsubscribed_client.get("/api/grades").json() if g["order"] == 2][0]})
+    assert second.status_code == 403                              # over the plan's limit
+
+
+def test_child_limit_allows_up_to_max(admin_client, unsubscribed_client):
+    plan = admin_client.post("/api/admin/plans", json={
+        "name": "عائلية", "price": 5000, "trial_days": 0, "max_children": 3}).json()
+    unsubscribed_client.post("/api/subscription/checkout", json={"plan_id": plan["id"]})
+    for nm in ("أ", "ب", "ج"):
+        assert "id" in _child(unsubscribed_client, nm)
+    over = unsubscribed_client.post("/api/students", json={
+        "name": "د", "consent_version": consent.CURRENT_VERSION,
+        "grade_id": [g["id"] for g in unsubscribed_client.get("/api/grades").json() if g["order"] == 2][0]})
+    assert over.status_code == 403

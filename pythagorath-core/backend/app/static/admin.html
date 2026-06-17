@@ -107,7 +107,7 @@ const SECTIONS = [
   {grp:'الإدارة', items:[{id:'overview',ic:'🏠',name:'الرئيسية'},{id:'students',ic:'🧒',name:'الطلّاب'},{id:'parents',ic:'👪',name:'أولياء الأمور'}]},
   {grp:'المحتوى والجودة', items:[{id:'questions',ic:'❓',name:'الأسئلة'},{id:'skills',ic:'🗂️',name:'المهارات'},{id:'reports',ic:'📊',name:'التقارير'}]},
   {grp:'التحكّم بالمنصّة', items:[{id:'integrations',ic:'🔌',name:'التكاملات'},{id:'ads',ic:'📣',name:'الإعلانات'}]},
-  {grp:'الاشتراك والتسعير', items:[{id:'pricing',ic:'💳',name:'التسعير والخطط',soon:true},{id:'subs',ic:'🔁',name:'الاشتراكات',soon:true}]},
+  {grp:'الاشتراك والتسعير', items:[{id:'pricing',ic:'💳',name:'التسعير والخطط'},{id:'subs',ic:'🔁',name:'الاشتراكات'}]},
   {grp:'', items:[{id:'settings',ic:'⚙️',name:'الإعدادات'}]},
 ];
 
@@ -180,7 +180,7 @@ function go(id){
   CURRENT=id; closeDrops();
   document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
   const c=document.getElementById('content'); c.innerHTML='<p class="muted">… جارٍ التحميل</p>';
-  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,integrations:secIntegrations,ads:secAds,pricing:secSoon,subs:secSoon,settings:secSettings}[id])(c);
+  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,integrations:secIntegrations,ads:secAds,pricing:secPricing,subs:secSubs,settings:secSettings}[id])(c);
 }
 function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 function modal(html){ document.getElementById('modalBox').innerHTML=`<button class="x" onclick="closeModal()">✕</button>`+html; document.getElementById('modal').classList.add('show'); }
@@ -476,10 +476,62 @@ async function resetBrand(){ if(!confirm('إرجاع الاسم/الشعار/ا�
   try{ await api('/api/admin/settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({brand_name:'',brand_logo:'',brand_primary:'',brand_secondary:''})}); go('settings'); }catch(e){ alert('تعذّر'); } }
 async function setTheme(x){ try{ await api('/api/admin/theme',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({theme:x})}); go('settings'); }catch(e){ alert('تعذّر'); } }
 
-// ---------- placeholder ----------
-function secSoon(c){ const t=CURRENT==='pricing'?'التسعير والخطط':'الاشتراكات';
-  c.innerHTML = `<h2 class="sec">${t}</h2><div class="soonbox"><div class="em">🚧</div><h3>قريباً</h3>
-    <div>يُبنى مع نظام الاشتراك (الخطوة ٧)، ثم يُربط بالتحكّم المركزي من هذه اللوحة.</div></div>`; }
+// ---------- التسعير والخطط (مُدار من اللوحة) ----------
+const omr = b => H((Number(b||0)/1000).toFixed(3)) + ' ر.ع.';
+const PERIOD = {monthly:'شهري', yearly:'سنوي'};
+let PLAN_EDIT = null;
+async function secPricing(c){
+  let plans; try{ plans=await api('/api/admin/plans'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  const e = PLAN_EDIT ? plans.find(p=>p.id===PLAN_EDIT) : null;
+  c.innerHTML = `<h2 class="sec">التسعير والخطط</h2>
+    <div class="muted">خطط أسرية متدرّجة — المالك يحدّد الأسعار والحدود والتجربة (لا ثوابت في الكود). العملة: ر.ع.</div>
+    <div class="panel"><h3>${e?'تعديل خطّة':'خطّة جديدة'}</h3>
+      <div class="frow"><label>الاسم</label><input id="pl_name" value="${e?e.name:''}" placeholder="عائلية (حتى ٣)"></div>
+      <div class="row2">
+        <div class="frow"><label>السعر (ر.ع.)</label><input id="pl_price" type="number" step="0.001" min="0" value="${e?(e.price/1000):''}" placeholder="٣٫٠٠٠"></div>
+        <div class="frow"><label>الدورة</label><select id="pl_period"><option value="monthly" ${e&&e.period==='monthly'?'selected':''}>شهري</option><option value="yearly" ${e&&e.period==='yearly'?'selected':''}>سنوي</option></select></div>
+      </div>
+      <div class="row2">
+        <div class="frow"><label>حدّ الأطفال</label><input id="pl_max" type="number" min="1" value="${e?e.max_children:1}"></div>
+        <div class="frow"><label>أيام التجربة</label><input id="pl_trial" type="number" min="0" value="${e?e.trial_days:0}"></div>
+      </div>
+      <div class="frow"><label><input type="checkbox" id="pl_active" ${!e||e.is_active?'checked':''}> مفعّلة (تظهر للعملاء)</label></div>
+      <button class="savebtn" onclick="savePlan(${e?e.id:'null'})">${e?'حفظ التعديل':'إنشاء الخطّة'}</button>
+      ${e?`<button class="linkbtn" onclick="PLAN_EDIT=null;go('pricing')">إلغاء</button>`:''}
+    </div>
+    <div class="panel"><h3>الخطط الحالية</h3>${plans.length?`<table>
+      <tr><th>الاسم</th><th>السعر</th><th>الدورة</th><th>حدّ الأطفال</th><th>تجربة</th><th>الحالة</th><th></th></tr>
+      ${plans.map(p=>`<tr><td>${p.name}</td><td>${omr(p.price)}</td><td>${PERIOD[p.period]||p.period}</td>
+        <td>${H(p.max_children)}</td><td>${H(p.trial_days)} يوم</td>
+        <td>${p.is_active?'<span class="pill ok">مفعّلة</span>':'<span class="pill gray">موقوفة</span>'}</td>
+        <td><button class="linkbtn" onclick="PLAN_EDIT=${p.id};go('pricing')">تعديل</button>
+          <button class="linkbtn" onclick="togglePlan(${p.id},${p.is_active?'false':'true'})">${p.is_active?'إيقاف':'تفعيل'}</button></td></tr>`).join('')}
+      </table>`:'<div class="emptyst"><div class="em">💳</div>لا خطط بعد — أنشئ أوّل خطّة.</div>'}</div>`;
+}
+async function savePlan(id){
+  const price=Math.round(parseFloat((document.getElementById('pl_price').value||'0').replace('٫','.'))*1000);
+  const body={ name:val('pl_name'), price:price, currency:'OMR',
+    period:document.getElementById('pl_period').value, max_children:parseInt(document.getElementById('pl_max').value||'1',10),
+    trial_days:parseInt(document.getElementById('pl_trial').value||'0',10), is_active:document.getElementById('pl_active').checked };
+  if(!body.name){ alert('أدخل اسم الخطّة'); return; }
+  try{
+    if(id){ await api(`/api/admin/plans/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); }
+    else { await api('/api/admin/plans',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); }
+    PLAN_EDIT=null; go('pricing');
+  }catch(e){ alert(e.detail||'تعذّر الحفظ'); }
+}
+async function togglePlan(id,active){ try{ await api(`/api/admin/plans/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({is_active:active})}); go('pricing'); }catch(e){ alert('تعذّر'); } }
+
+// ---------- الاشتراكات (عرض) ----------
+const SUB_AR = {trial:'تجربة', active:'فعّال', expired:'منتهٍ', canceled:'ملغى'};
+async function secSubs(c){
+  let subs; try{ subs=await api('/api/admin/subscriptions'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  c.innerHTML = `<h2 class="sec">الاشتراكات</h2><div class="muted">${H(subs.length)} اشتراك.</div>
+    <div class="panel">${subs.length?`<table><tr><th>وليّ الأمر</th><th>الخطّة</th><th>الحالة</th><th>حتى</th></tr>
+    ${subs.map(s=>`<tr><td>${s.user||'—'}</td><td>${s.plan||'—'}</td>
+      <td><span class="pill ${s.status==='active'||s.status==='trial'?'ok':'gray'}">${SUB_AR[s.status]||s.status}</span></td>
+      <td>${s.access_until?day(s.access_until):'—'}</td></tr>`).join('')}</table>`:'<div class="emptyst"><div class="em">🔁</div>لا اشتراكات بعد.</div>'}</div>`;
+}
 
 boot();
 </script>
