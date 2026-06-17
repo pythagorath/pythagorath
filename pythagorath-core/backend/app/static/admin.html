@@ -1,311 +1,286 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>فيثاغورث — لوحة المدير</title>
-<style>
-  :root { --orange:#F39A24; --ink:#1A1A1A; --bg:#FFFDF8; --ok:#10b981; --no:#ef4444; }
-  * { box-sizing:border-box; font-family:"Tajawal",system-ui,Arial,sans-serif; }
-  body { margin:0; background:var(--bg); color:var(--ink); }
-  header { padding:16px 22px; border-bottom:1px solid #eee; font-weight:800; color:var(--orange); font-size:22px; display:flex; justify-content:space-between; align-items:center; }
-  header a { color:#666; font-size:14px; }
-  main { max-width:920px; margin:0 auto; padding:22px; }
-  .card { background:#fff; border:1px solid #eee; border-radius:14px; padding:16px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,.04); }
-  input[type=text], textarea, select { font-size:15px; padding:8px 10px; border:2px solid #ddd; border-radius:8px; font-family:inherit; }
-  textarea { width:100%; }
-  button { font-size:15px; font-weight:700; padding:8px 14px; border:0; border-radius:9px; background:var(--orange); color:#fff; cursor:pointer; }
-  button:disabled{ opacity:.5; cursor:not-allowed; }
-  button.sec{ background:#eee; color:#333; } button.danger{ background:#fee2e2; color:#b91c1c; }
-  button.ghost{ background:transparent; color:#666; border:1px solid #ddd; }
-  .node > h2{ font-size:18px; margin:0 0 4px; } .node .code{ color:#aaa; font-size:13px; }
-  .snap{ font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px; display:inline-block; }
-  .snap.ok{ background:#d1fae5; color:#065f46; } .snap.bad{ background:#fee2e2; color:#b91c1c; }
-  .q { border:1px solid #f0f0f0; border-radius:10px; padding:10px 12px; margin:8px 0; }
-  .q.draft{ background:#fffbeb; border-color:#fde68a; }
-  .q.pub{ background:#fff; }
-  .prompt{ font-size:16px; font-weight:700; }
-  .meta{ font-size:13px; color:#777; margin-top:4px; }
-  .badge { display:inline-block; font-size:12px; font-weight:700; padding:2px 9px; border-radius:999px; }
-  .fam-aggregative{ background:#dcfce7; color:#166534; } .fam-magnitude{ background:#dbeafe; color:#1e40af; }
-  .fam-decompositional{ background:#fef3c7; color:#92400e; } .fam-sequential{ background:#ede9fe; color:#5b21b6; }
-  .pill{ font-size:12px; font-weight:800; padding:2px 8px; border-radius:999px; }
-  .pill.published{ background:#d1fae5; color:#065f46; } .pill.draft{ background:#fef3c7; color:#92400e; }
-  .pill.overlay{ background:#e0e7ff; color:#3730a3; }
-  .actions{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
-  .form{ background:#f9fafb; border:1px dashed #ddd; border-radius:10px; padding:12px; margin-top:8px; }
-  .form label{ display:block; font-size:13px; font-weight:700; margin:8px 0 3px; }
-  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .phr{ display:flex; gap:6px; align-items:flex-start; margin:6px 0; }
-  .phr .cn{ min-width:70px; font-weight:700; font-size:13px; padding-top:8px; }
-  .err{ color:#b91c1c; font-weight:700; font-size:13px; }
-  /* ---- widget CSS (shared with the child page, for live preview) ---- */
-  .widget{ margin:8px 0; }
-  .nline{ display:flex; gap:2px; align-items:flex-end; border-bottom:3px solid #cbd5e1; padding-bottom:0; width:100%; overflow-x:hidden; }
-  .tick{ flex:1 1 22px; min-width:0; max-width:46px; background:#fff; border:1px solid #e5e7eb; color:#475569; font-weight:700; font-size:13px; padding:8px 1px; border-radius:6px 6px 0 0; cursor:pointer; }
-  .tick.start{ background:#10b981; color:#fff; border-color:#10b981; }
-  .tick.sel{ background:var(--orange); color:#fff; border-color:var(--orange); transform:translateY(-4px); }
-  .frames{ display:flex; gap:16px; margin:8px 0; }
-  .frame{ display:grid; grid-template-columns:repeat(5,34px); grid-template-rows:repeat(2,34px); gap:3px; padding:6px; background:#f8fafc; border:2px solid #cbd5e1; border-radius:8px; }
-  .cell{ border:1px solid #e2e8f0; border-radius:50%; background:#fff; }
-  .cell.filled-start{ background:#3b82f6; } .cell.filled-add{ background:var(--orange); cursor:pointer; }
-  .cell:not(.filled-start){ cursor:pointer; }
-  .decomp{ background:#fffbeb; border:2px solid #fde68a; border-radius:10px; padding:12px; text-align:center; }
-  .bond{ font-size:26px; font-weight:800; display:flex; gap:8px; justify-content:center; align-items:center; }
-  .bond .split{ display:inline-flex; flex-direction:column; align-items:center; }
-  .bond .parts{ display:flex; gap:6px; font-size:18px; margin-top:4px; }
-  .bond .part{ border:1px dashed #d97706; border-radius:6px; padding:2px 8px; }
-  .bond .part.comp{ background:#dcfce7; border-color:#16a34a; color:#166534; }
-  .bond .part.q, .blank{ background:#fff; color:var(--orange); }
-  .eq{ font-size:22px; font-weight:800; margin-top:8px; }
-  .blank{ border:1px dashed var(--orange); border-radius:6px; padding:0 10px; }
-  .keypad{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-top:10px; }
-  .keypad button{ min-width:40px; background:#fff; color:#333; border:1px solid #ddd; }
-  .btb-controls{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
-  .btb-area{ display:flex; gap:18px; align-items:flex-end; min-height:108px; padding:10px; background:#f8fafc; border:2px solid #cbd5e1; border-radius:8px; }
-  .btb-rods{ display:flex; gap:6px; align-items:flex-end; }
-  .btb-cubes{ display:grid; grid-template-columns:repeat(5,18px); grid-auto-rows:18px; gap:3px; align-content:flex-end; }
-  .btb-flats{ display:flex; gap:6px; align-items:flex-end; }
-  .flat{ width:46px; height:100px; border:1px solid #1d4ed8; border-radius:3px; background-color:#3b82f6; background-image:linear-gradient(rgba(255,255,255,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.55) 1px,transparent 1px); background-size:9px 9px; }
-  .rod{ width:18px; height:100px; background:repeating-linear-gradient(#3b82f6,#3b82f6 8px,#2563eb 8px,#2563eb 10px); border:1px solid #1d4ed8; border-radius:3px; }
-  .cube{ width:18px; height:18px; background:var(--orange); border:1px solid #d97706; border-radius:3px; }
-  .frac-bar{ display:flex; border:2px solid #334155; border-radius:8px; overflow:hidden; max-width:300px; height:58px; margin:8px 0; background:#fff; }
-  .frac-seg{ flex:1; border-right:1px solid #334155; background:#fff; }
-  .frac-seg:last-child{ border-right:none; }
-  .frac-seg.on{ background:var(--orange); }
-  .frac-seg[data-i]{ cursor:pointer; }
-  .seqtrack{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:8px 0; }
-  .seqcard{ min-width:46px; padding:10px 12px; border:2px solid #cbd5e1; border-radius:8px; background:#f8fafc; font-size:22px; font-weight:800; text-align:center; }
-  .seqcard.seqq{ border:2px dashed var(--orange); background:#fff7ed; color:var(--orange); }
-  .rod.removable, .cube.removable{ cursor:pointer; } .muted{ color:#888; }
-  /* modal */
-  .overlay-bg{ position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; align-items:center; justify-content:center; padding:20px; z-index:50; }
-  .modal{ background:#fff; border-radius:14px; padding:18px; max-width:560px; width:100%; max-height:90vh; overflow:auto; }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لوحة الإدارة — فيثاغورث</title>
 <link rel="stylesheet" href="/static/brand.css">
+<style>
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  body{ font-family:'Readex Pro',sans-serif; color:#2C2620; background:#F6F4EF; min-height:100vh; }
+  a{ color:inherit; }
+  .gate{ max-width:380px; margin:12vh auto; background:#fff; border:1px solid #EFE7DA; border-radius:18px; padding:26px; box-shadow:0 18px 36px -24px rgba(21,94,125,.5); }
+  .gate h1{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; font-size:22px; margin:0 0 6px; }
+  .gate p{ color:#8A8178; font-size:14px; margin:0 0 14px; }
+  .gate input{ width:100%; margin:6px 0; padding:11px 13px; border:1.5px solid #E3DACB; border-radius:12px; font-family:inherit; font-size:15px; }
+  .gate button{ width:100%; margin-top:8px; border:0; border-radius:13px; padding:12px; cursor:pointer; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:16px; color:#fff; background:linear-gradient(135deg,#163E52,#1B6E97); }
+  .gate .err{ color:#C0392B; font-size:13px; min-height:18px; }
+
+  .shell{ display:flex; min-height:100vh; }
+  .side{ flex:0 0 232px; background:linear-gradient(180deg,#163E52,#114457); color:#fff; padding:18px 14px; position:sticky; top:0; height:100vh; overflow:auto; }
+  .brand{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:20px; margin:4px 8px 4px; }
+  .brand .sub{ display:block; font-size:12px; color:rgba(255,255,255,.6); font-weight:400; font-family:'Readex Pro',sans-serif; }
+  .navgrp{ margin-top:16px; }
+  .navgrp .lbl{ font-size:11.5px; color:rgba(255,255,255,.5); margin:14px 10px 6px; font-weight:700; letter-spacing:.3px; }
+  .nav{ display:flex; align-items:center; gap:9px; width:100%; text-align:right; background:none; border:0; color:rgba(255,255,255,.86);
+        font-family:'Readex Pro',sans-serif; font-size:14.5px; font-weight:600; padding:10px 11px; border-radius:11px; cursor:pointer; }
+  .nav:hover{ background:rgba(255,255,255,.08); }
+  .nav.active{ background:rgba(255,255,255,.16); color:#fff; }
+  .nav .ic{ width:18px; text-align:center; }
+  .nav .soon{ margin-inline-start:auto; font-size:10.5px; background:rgba(255,255,255,.18); border-radius:999px; padding:2px 7px; }
+  .logout{ margin-top:18px; color:rgba(255,255,255,.7); font-size:13px; background:none; border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:8px; width:100%; cursor:pointer; }
+
+  .main{ flex:1; padding:24px 26px 60px; max-width:1100px; }
+  h2.sec{ font-family:'Baloo Bhaijaan 2',cursive; font-size:22px; color:#155E7D; margin:0 0 4px; }
+  .muted{ color:#8A8178; font-size:14px; }
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin:16px 0; }
+  .stat{ background:#fff; border:1px solid #EFE7DA; border-radius:16px; padding:16px 18px; box-shadow:0 12px 26px -22px rgba(21,94,125,.6); }
+  .stat .big{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:30px; color:#155E7D; }
+  .stat.orange .big{ color:#D97E0A; } .stat.green .big{ color:#1E945B; } .stat.cyan .big{ color:#178FC9; }
+  .stat .lbl{ color:#8A8178; font-size:13.5px; margin-top:3px; }
+  .panel{ background:#fff; border:1px solid #EFE7DA; border-radius:16px; padding:18px; margin:14px 0; box-shadow:0 12px 26px -22px rgba(21,94,125,.55); }
+  .panel h3{ font-family:'Baloo Bhaijaan 2',cursive; font-size:16px; color:#1B6E45; margin:0 0 12px; }
+  .bars{ display:flex; align-items:flex-end; gap:10px; height:120px; padding-top:8px; }
+  .bar{ flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; height:100%; justify-content:flex-end; }
+  .bar .col{ width:70%; min-height:3px; background:linear-gradient(180deg,#37B6E6,#178FC9); border-radius:6px 6px 0 0; }
+  .bar .n{ font-size:12px; font-weight:800; color:#155E7D; } .bar .d{ font-size:11px; color:#9A8F82; }
+  table{ width:100%; border-collapse:collapse; font-size:14px; }
+  th,td{ text-align:right; padding:9px 10px; border-bottom:1px solid #F0EADF; }
+  th{ color:#8A8178; font-size:12.5px; font-weight:700; }
+  tr.clickable{ cursor:pointer; } tr.clickable:hover{ background:#FBF7F0; }
+  .pill{ display:inline-block; border-radius:999px; padding:2px 10px; font-size:12px; font-weight:700; }
+  .pill.ok{ background:#E8F7EE; color:#1E945B; } .pill.warn{ background:#FFF1DA; color:#D97E0A; } .pill.gray{ background:#EEF1F4; color:#7C8893; }
+  .search{ width:100%; max-width:320px; padding:10px 13px; border:1.5px solid #E3DACB; border-radius:12px; font-family:inherit; font-size:14px; margin:6px 0 12px; }
+  .soonbox{ text-align:center; padding:48px 16px; color:#8A8178; }
+  .soonbox .em{ font-size:40px; } .soonbox h3{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; font-size:20px; margin:10px 0 4px; }
+  .linkbtn{ display:inline-block; margin-top:6px; background:#E6F4FB; color:#178FC9; border-radius:999px; padding:7px 15px; font-weight:700; font-size:13.5px; text-decoration:none; }
+  .row2{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  select.sk{ padding:9px 12px; border:1.5px solid #E3DACB; border-radius:11px; font-family:inherit; font-size:14px; min-width:260px; }
+  .err{ color:#C0392B; }
+  .modal{ position:fixed; inset:0; background:rgba(18,42,54,.45); display:none; align-items:center; justify-content:center; padding:20px; z-index:50; }
+  .modal.show{ display:flex; }
+  .modal .box{ background:#fff; border-radius:18px; max-width:520px; width:100%; max-height:86vh; overflow:auto; padding:22px; }
+  .modal h3{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; margin:0 0 8px; }
+  .x{ float:left; cursor:pointer; color:#9A8F82; border:0; background:none; font-size:20px; }
+</style>
 </head>
 <body>
-<header><span>🛠️ لوحة المدير — محرّر الأسئلة واللفظ</span><a href="/">↩ تطبيق الطفل</a></header>
-<main><div id="root">…تحميل</div></main>
-
-<div class="overlay-bg" id="modalBg"><div class="modal" id="modal"></div></div>
-
-<script src="/static/widgets.js"></script>
+<div id="app"><div class="gate"><p>… جارٍ التحميل</p></div></div>
 <script>
-let META=null, NODES=[];
-const TEMPLATES = {
-  'number-line':   {kind:'number-line',min:0,max:20,start:8,jump:5},
-  'ten-frame':     {kind:'ten-frame',start:8,add:5},
-  'decomposition': {kind:'decomposition',mode:'place-add',a:52,b:36},
-  'base-ten-blocks':{kind:'base-ten-blocks',target:63},
-  'subtract-blocks':{kind:'subtract-blocks',minuend:52,subtract:7},
-  'sequence':      {kind:'sequence',terms:[63,64,65]},
-  'regroup-blocks':{kind:'regroup-blocks',rods:4,cubes:7,ask:'ones'},
-};
-
+const H = n => String(n==null?'':n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[+d]);
+const CO = {SA:'السعودية',QA:'قطر',BH:'البحرين',KW:'الكويت',OM:'عُمان',AE:'الإمارات'};
+const day = s => s ? H(String(s).slice(0,10)) : '—';
 async function api(path, opts){
-  const r=await fetch(path,opts);
-  if(!r.ok){ let m=r.statusText; try{ const j=await r.json(); m=j.detail||m; }catch(e){} throw new Error(m); }
-  return r.status===204?null:r.json();
-}
-const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-async function loadAll(){
-  META = META || await api('/api/admin/meta');
-  NODES = await api('/api/admin/nodes');
-  render();
+  const r = await fetch(path, opts);
+  if(!r.ok){ const e=new Error('حدث خطأ'); e.status=r.status; try{e.detail=(await r.json()).detail;}catch(_){} throw e; }
+  return r.status===204 ? null : r.json();
 }
 
-let activeTheme='mutadarrij';
-const THEME_LABELS={ameen:'أمين (دافئ كالبوستر)', mutawwar:'مطوّر (عصري نظيف)', mutadarrij:'متدرّج (متوازن بعمر)'};
-async function loadTheme(){ try{ const t=await api('/api/admin/theme'); activeTheme=t.theme; document.documentElement.dataset.theme=t.theme; }catch(e){} }
-async function setTheme(name){
-  try{ await api('/api/admin/theme',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({theme:name})});
-    activeTheme=name; document.documentElement.dataset.theme=name; render();
-  }catch(e){ alert(e.message); }
-}
-function themeBar(){
-  const d=document.createElement('div'); d.className='card';
-  let html='<b>🎨 تصميم التطبيق النشط:</b> ';
-  for(const k of ['ameen','mutawwar','mutadarrij'])
-    html+=`<button class="${activeTheme===k?'':'sec'}" onclick="setTheme('${k}')" style="margin:4px">${THEME_LABELS[k]}</button>`;
-  html+='<div class="muted" style="font-size:13px;margin-top:6px">كلها على هوية فيثاغورث (البرتقالي/الفيروزي/الشخصية) — يُطبَّق على التطبيق فوراً.</div>';
-  d.innerHTML=html; return d;
-}
-function render(){
-  const root=document.getElementById('root'); root.innerHTML='';
-  root.appendChild(themeBar());
-  for(const node of NODES){
-    const card=document.createElement('div'); card.className='card node';
-    const s=node.snapshot;
-    const snapTxt = s.masterable
-      ? `قابلة للإتقان ✓ — ${s.is_multi?`عائلات منشورة: ${s.published_families.length}`:`عناصر منشورة: ${s.published_count}`}`
-      : 'غير قابلة للإتقان ✗';
-    card.innerHTML = `<h2>${esc(node.name)} <span class="code">${esc(node.code||'')}</span></h2>
-      <div><span class="snap ${s.masterable?'ok':'bad'}">${snapTxt}</span>
-      <span class="muted" style="font-size:12px"> — ${s.is_multi?'عقدة متعددة العائلات (تبقى ≥ عائلتين)':'عقدة أحادية (تبقى ≥ عنصرين)'}</span></div>`;
-    const qwrap=document.createElement('div');
-    for(const q of node.questions){ qwrap.appendChild(renderQ(node, q)); }
-    card.appendChild(qwrap);
-    const addBtn=document.createElement('button'); addBtn.className='sec'; addBtn.textContent='➕ أضف سؤالاً (مسودة)';
-    const formHost=document.createElement('div');
-    addBtn.onclick=()=>{ if(formHost.firstChild){ formHost.innerHTML=''; } else { formHost.appendChild(buildForm(node, null)); } };
-    card.appendChild(addBtn); card.appendChild(formHost);
-    root.appendChild(card);
-  }
-}
+const SECTIONS = [
+  {grp:'الإدارة', items:[
+    {id:'overview', ic:'🏠', name:'الرئيسية'},
+    {id:'students', ic:'🧒', name:'الطلّاب'},
+    {id:'parents', ic:'👪', name:'أولياء الأمور'},
+  ]},
+  {grp:'المحتوى والجودة', items:[
+    {id:'questions', ic:'❓', name:'الأسئلة'},
+    {id:'skills', ic:'🗂️', name:'المهارات'},
+    {id:'reports', ic:'📊', name:'التقارير'},
+  ]},
+  {grp:'الاشتراك والتسعير', items:[
+    {id:'pricing', ic:'💳', name:'التسعير والخطط', soon:true},
+    {id:'subs', ic:'🔁', name:'الاشتراكات', soon:true},
+  ]},
+  {grp:'', items:[ {id:'settings', ic:'⚙️', name:'الإعدادات'} ]},
+];
+let CURRENT='overview';
 
-function renderQ(node, q){
-  const div=document.createElement('div'); div.className='q '+(q.status==='published'?'pub':'draft');
-  const pill = q.status==='published' ? '<span class="pill published">منشور</span>'
-    : (q.draft_of ? '<span class="pill overlay">نسخة تحرير لسؤال منشور</span>' : '<span class="pill draft">مسودة</span>');
-  const kind = q.visual ? q.visual.kind : 'نصّي';
-  const phrCount = Object.keys(q.phrasings||{}).length;
-  div.innerHTML = `<div>${pill} <span class="badge fam-${esc(q.family)}">${esc(q.family||'بلا عائلة')}</span></div>
-    <div class="prompt">${esc(q.prompt)}</div>
-    <div class="meta">الإجابة: <b>${esc(q.answer)}</b> · الودجة: <b>${esc(kind)}</b>${q.difficulty?` · صعوبة: ${esc(q.difficulty)}`:''} · صياغات دول: <b>${phrCount}</b></div>`;
-  const act=document.createElement('div'); act.className='actions';
-  const host=document.createElement('div');   // edit form / inline area
-  const mk=(label, cls, fn)=>{ const b=document.createElement('button'); b.className=cls; b.textContent=label; b.onclick=fn; return b; };
-  act.appendChild(mk('👁 معاينة','ghost',()=>openPreview(q.id)));
-  if(q.status==='published'){
-    act.appendChild(mk('✏ تعديل','sec', async()=>{ try{ const clone=await api(`/api/admin/questions/${q.id}/edit`,{method:'POST'}); await loadAll(); }catch(e){ alert(e.message);} }));
-    act.appendChild(mk('⏸ إلغاء النشر','sec', ()=>guarded(`/api/admin/questions/${q.id}/unpublish`,'POST')));
-    act.appendChild(mk('🗑 حذف','danger', ()=>{ if(confirm('حذف السؤال المنشور؟')) guarded(`/api/admin/questions/${q.id}`,'DELETE'); }));
-  } else {
-    act.appendChild(mk('✏ حرّر','sec',()=>{ if(host.firstChild) host.innerHTML=''; else host.appendChild(buildForm(node, q)); }));
-    act.appendChild(mk('🚀 نشر','',()=>guarded(`/api/admin/questions/${q.id}/publish`,'POST')));
-    act.appendChild(mk('🗑 حذف','danger', ()=>{ if(confirm('حذف المسودة؟')) guarded(`/api/admin/questions/${q.id}`,'DELETE'); }));
-  }
-  div.appendChild(act); div.appendChild(host);
-  return div;
-}
-
-async function guarded(path, method){
-  try{ await api(path,{method}); await loadAll(); }
-  catch(e){ alert(e.message); }   // the constitutional guard's message surfaces here
-}
-
-// build a create (q=null) or edit (q=draft) form
-function buildForm(node, q){
-  const f=document.createElement('div'); f.className='form';
-  const isEdit = !!q;
-  const famOpts = META.families.map(x=>`<option value="${x}" ${q&&q.family===x?'selected':''}>${x}</option>`).join('');
-  const kindOpts = ['<option value="">— نصّي (بلا ودجة) —</option>']
-    .concat(META.widget_kinds.map(k=>`<option value="${k}" ${q&&q.visual&&q.visual.kind===k?'selected':''}>${k}</option>`)).join('');
-  f.innerHTML = `
-    <div class="grid">
-      <div><label>العائلة (إلزامية)</label><select class="fFam">${famOpts}</select></div>
-      <div><label>الصعوبة (حرة)</label><input type="text" class="fDiff" value="${esc(q?q.difficulty:'')}" placeholder="مثلاً: متوسط"/></div>
-    </div>
-    <label>النص (الصياغة الافتراضية)</label><textarea class="fPrompt" rows="2">${esc(q?q.prompt:'')}</textarea>
-    <div class="grid">
-      <div><label>الإجابة</label><input type="text" class="fAns" value="${esc(q?q.answer:'')}"/></div>
-      <div><label>نوع الودجة</label><select class="fKind">${kindOpts}</select></div>
-    </div>
-    <label>تكوين الودجة (visual — JSON)</label><textarea class="fVisual" rows="3" style="font-family:monospace;direction:ltr">${q&&q.visual?esc(JSON.stringify(q.visual)):''}</textarea>
-    <div class="err fErr"></div>
-    <div class="actions"><button class="fSave">${isEdit?'حفظ المسودة':'إنشاء مسودة'}</button></div>`;
-  const kindSel=f.querySelector('.fKind'), visual=f.querySelector('.fVisual');
-  kindSel.onchange=()=>{ const k=kindSel.value; visual.value = k && TEMPLATES[k] ? JSON.stringify(TEMPLATES[k]) : ''; };
-  f.querySelector('.fSave').onclick=async()=>{
-    const err=f.querySelector('.fErr'); err.textContent='';
-    const body={ family:f.querySelector('.fFam').value, prompt:f.querySelector('.fPrompt').value,
-      answer:f.querySelector('.fAns').value, difficulty:f.querySelector('.fDiff').value||null };
-    const vtxt=visual.value.trim();
-    if(vtxt){ try{ body.visual=JSON.parse(vtxt); }catch(e){ err.textContent='تكوين الودجة ليس JSON صالحاً'; return; } }
-    else body.visual=null;
-    try{
-      if(isEdit) await api(`/api/admin/questions/${q.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-      else await api(`/api/admin/skills/${node.id}/questions`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-      await loadAll();
-    }catch(e){ err.textContent=e.message; }
-  };
-  if(isEdit) f.appendChild(buildPhrasings(q));   // wording per country (drafts only)
-  return f;
-}
-
-// per-country wording editors (only meaningful on a draft)
-function buildPhrasings(q){
-  const box=document.createElement('div');
-  box.innerHTML='<label>صياغات الدول (اللفظ فقط — العائلة والإجابة مقفلتان)</label>';
-  for(const c of META.countries){
-    const row=document.createElement('div'); row.className='phr';
-    const cur=(q.phrasings||{})[c.code]||'';
-    row.innerHTML=`<div class="cn">${c.name}</div>
-      <textarea rows="2" style="flex:1" placeholder="${esc(c.hint)}">${esc(cur)}</textarea>`;
-    const ta=row.querySelector('textarea');
-    const btns=document.createElement('div'); btns.style='display:flex;flex-direction:column;gap:4px';
-    const save=document.createElement('button'); save.className='sec'; save.textContent='حفظ'; save.style='padding:5px 10px';
-    save.onclick=async()=>{ const t=ta.value.trim(); try{
-      if(t) await api(`/api/admin/questions/${q.id}/phrasing/${c.code}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:t})});
-      else await api(`/api/admin/questions/${q.id}/phrasing/${c.code}`,{method:'DELETE'});
-      await loadAll(); }catch(e){ alert(e.message); } };
-    const clr=document.createElement('button'); clr.className='ghost'; clr.textContent='مسح'; clr.style='padding:5px 10px';
-    clr.onclick=async()=>{ try{ await api(`/api/admin/questions/${q.id}/phrasing/${c.code}`,{method:'DELETE'}); await loadAll(); }catch(e){ alert(e.message);} };
-    btns.appendChild(save); btns.appendChild(clr); row.appendChild(btns);
-    box.appendChild(row);
-  }
-  return box;
-}
-
-// ---- preview (as the child sees it) ----
-async function openPreview(qid, country){
-  country = country!==undefined ? country : '';
-  const p=await api(`/api/admin/questions/${qid}/preview${country?`?country=${country}`:''}`);
-  const m=document.getElementById('modal');
-  const opts=['<option value="">— الافتراضية —</option>']
-    .concat(META.countries.map(c=>`<option value="${c.code}" ${country===c.code?'selected':''}>${c.name}</option>`)).join('');
-  const node=p.node;
-  m.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center">
-      <h2 style="margin:0">معاينة كما يراها الطفل</h2><button class="ghost" id="mClose">إغلاق</button></div>
-    <div style="margin:10px 0"><b>الدولة:</b> <select id="mCountry">${opts}</select>
-      <span class="snap ${node.masterable?'ok':'bad'}" style="margin-inline-start:8px">${node.masterable?'العقدة قابلة للإتقان ✓':'العقدة غير قابلة للإتقان ✗'}</span></div>
-    <div><span class="badge fam-${esc(p.family)}">${esc(p.family||'')}</span>
-      <span class="pill ${p.status}">${p.status==='published'?'منشور':'مسودة'}</span></div>
-    <div class="prompt" style="margin:8px 0;font-size:18px">${esc(p.prompt)}</div>
-    <div id="mWidget"></div>
-    <div class="muted" style="margin-top:10px;font-size:13px">الإجابة الصحيحة (للمدير فقط): <b>${esc(p.answer)}</b>${country&&p.prompt!==p.default_prompt?` · <span style="color:#2563eb">صياغة ${esc(country)} مخصّصة</span>`:(country?' · لا تخصيص لهذه الدولة → الافتراضية':'')}</div>`;
-  document.getElementById('mClose').onclick=closeModal;
-  document.getElementById('mCountry').onchange=(e)=>openPreview(qid, e.target.value);
-  const host=m.querySelector('#mWidget');
-  if(p.visual){ const w=document.createElement('div'); w.className='widget'; host.appendChild(w);
-    const fb=document.createElement('div'); fb.className='muted'; fb.style='margin-top:6px'; host.appendChild(fb);
-    mountWidget(w, {visual:p.visual}, (ans)=>{ fb.textContent='أخرجت الودجة: '+toHindi(ans); });
-  } else { host.innerHTML='<div class="muted">سؤال نصّي — إدخال مباشر للإجابة.</div>'; }
-  document.getElementById('modalBg').style.display='flex';
-}
-function closeModal(){ document.getElementById('modalBg').style.display='none'; }
-document.getElementById('modalBg').onclick=(e)=>{ if(e.target.id==='modalBg') closeModal(); };
-
-// ---- admin auth gate ----
-function showAdminLogin(me){
-  const root=document.getElementById('root');
-  const notAdmin = me ? `<p style="color:#b91c1c;font-weight:700">الحساب «${esc(me.email)}» ليس مديراً. ادخل بحساب مدير.</p>` : '';
-  root.innerHTML=`<div class="card" style="max-width:420px;margin:40px auto">
-    <h2>دخول المدير</h2>${notAdmin}
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <input id="aEmail" type="text" placeholder="البريد"/>
-      <input id="aPass" type="password" placeholder="كلمة السر"/>
-      <div class="err" id="aErr"></div>
-      <div class="actions"><button id="aLogin">دخول</button>
-        ${me?'<button class="ghost" id="aLogout">خروج</button>':''}</div>
-    </div></div>`;
-  document.getElementById('aLogin').onclick=async()=>{
-    const email=document.getElementById('aEmail').value.trim(), password=document.getElementById('aPass').value;
-    try{ await api('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})}); init(); }
-    catch(e){ document.getElementById('aErr').textContent=e.message; }
-  };
-  const lo=document.getElementById('aLogout'); if(lo) lo.onclick=async()=>{ try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){} init(); };
-}
-
-async function init(){
+async function boot(){
   let me=null;
-  try{ me = await api('/api/auth/me'); }catch(e){}
-  if(me && me.role==='admin'){ await loadTheme(); await loadAll().catch(e=>{ document.getElementById('root').textContent='خطأ: '+e.message; }); }
-  else { showAdminLogin(me); }
+  try{ me = await api('/api/auth/me'); }
+  catch(e){ return showGate(); }
+  if(me.role !== 'admin'){ return showForbidden(me.email); }
+  renderShell();
+  go('overview');
 }
-init();
+
+function showGate(){
+  document.getElementById('app').innerHTML = `<div class="gate">
+    <h1>لوحة الإدارة</h1><p>هذه اللوحة للمالك فقط. سجّل الدخول.</p>
+    <input id="ge" type="email" placeholder="البريد"><input id="gp" type="password" placeholder="كلمة السر">
+    <div class="err" id="gerr"></div>
+    <button onclick="doLogin()">دخول</button></div>`;
+}
+function showForbidden(email){
+  document.getElementById('app').innerHTML = `<div class="gate">
+    <h1>غير مصرَّح</h1><p>الحساب «${email||''}» ليس مالكاً. هذه اللوحة للمالك فقط.</p>
+    <button onclick="logout()">تسجيل الخروج</button></div>`;
+}
+async function doLogin(){
+  const email=document.getElementById('ge').value.trim(), password=document.getElementById('gp').value;
+  try{ await api('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})}); boot(); }
+  catch(e){ document.getElementById('gerr').textContent = e.detail || 'بريد أو كلمة سر غير صحيحة'; }
+}
+async function logout(){ try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){} location.reload(); }
+
+function renderShell(){
+  let nav='';
+  for(const g of SECTIONS){
+    if(g.grp) nav += `<div class="lbl">${g.grp}</div>`;
+    for(const it of g.items){
+      nav += `<button class="nav" data-id="${it.id}" onclick="go('${it.id}')"><span class="ic">${it.ic}</span>${it.name}${it.soon?'<span class="soon">قريباً</span>':''}</button>`;
+    }
+  }
+  document.getElementById('app').innerHTML = `<div class="shell">
+    <aside class="side">
+      <div class="brand">فيثاغورث<span class="sub">لوحة الإدارة</span></div>
+      <div class="navgrp">${nav}</div>
+      <button class="logout" onclick="logout()">تسجيل الخروج</button>
+    </aside>
+    <main class="main" id="content"></main>
+    <div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="box" id="modalBox"></div></div>
+  </div>`;
+}
+function go(id){
+  CURRENT=id;
+  document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  const c=document.getElementById('content'); c.innerHTML='<p class="muted">… جارٍ التحميل</p>';
+  ({overview:secOverview, students:secStudents, parents:secParents, questions:secQuestions,
+    skills:secSkills, reports:secReports, pricing:secSoon, subs:secSoon, settings:secSettings}[id])(c);
+}
+function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+function modal(html){ document.getElementById('modalBox').innerHTML=`<button class="x" onclick="closeModal()">✕</button>`+html; document.getElementById('modal').classList.add('show'); }
+
+const stat = (cls,n,lbl)=>`<div class="stat ${cls}"><div class="big">${H(n)}</div><div class="lbl">${lbl}</div></div>`;
+function struggleTable(rows){
+  if(!rows.length) return '<div class="muted">لا تعثّر مُسجَّل بعد.</div>';
+  return `<table><tr><th>المهارة</th><th>نسبة الخطأ</th><th>عالقون</th><th>محاولات</th></tr>${
+    rows.map(r=>`<tr><td>${r.name}</td><td><span class="pill ${r.error_rate>=50?'warn':'gray'}">${H(r.error_rate)}٪</span></td><td>${H(r.stuck)}</td><td>${H(r.attempts)}</td></tr>`).join('')}</table>`;
+}
+
+// ---------- الرئيسية ----------
+async function secOverview(c){
+  let d; try{ d=await api('/api/admin/overview'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  const ch=d.content_health, mx=Math.max(1, ...d.activity_7d.map(a=>a.answers));
+  c.innerHTML = `<h2 class="sec">نظرة عامّة</h2><div class="muted">حالة المنصّة الآن — كله من بيانات الأطفال الفعلية.</div>
+    <div class="cards">
+      ${stat('green', d.cards.parents, 'وليّ أمر')}
+      ${stat('cyan', d.cards.children, 'طفل')}
+      ${stat('orange', d.cards.active_week, 'نشِط هذا الأسبوع')}
+    </div>
+    <div class="panel"><h3>النشاط آخر ٧ أيّام</h3>
+      <div class="bars">${d.activity_7d.map(a=>`<div class="bar"><div class="n">${H(a.answers)}</div><div class="col" style="height:${Math.round(100*a.answers/mx)}%"></div><div class="d">${H(a.date.slice(5))}</div></div>`).join('')}</div>
+      <div class="muted" style="margin-top:8px">العمود = عدد الإجابات في اليوم.</div>
+    </div>
+    <div class="cards">
+      ${stat('', ch.skills, 'مهارة')}
+      ${stat('', ch.published_questions, 'سؤال منشور')}
+      ${stat('', ch.curricula, 'منهج')}
+      ${stat('orange', ch.needs_review, 'سؤال بحاجة مراجعة')}
+    </div>
+    <div class="panel"><h3>أكثر المهارات تعثّراً</h3>${struggleTable(d.struggled)}</div>`;
+}
+
+// ---------- الطلّاب ----------
+let STUDENTS=[];
+async function secStudents(c){
+  try{ STUDENTS=await api('/api/admin/students'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  c.innerHTML = `<h2 class="sec">الطلّاب</h2><div class="muted">${H(STUDENTS.length)} طفل. انقر صفّاً للتفاصيل.</div>
+    <input class="search" id="ssearch" placeholder="بحث بالاسم أو وليّ الأمر…" oninput="renderStudents()">
+    <div class="panel" id="stbl"></div>`;
+  renderStudents();
+}
+function renderStudents(){
+  const q=(document.getElementById('ssearch').value||'').trim();
+  const rows=STUDENTS.filter(s=>!q || (s.name||'').includes(q) || (s.parent||'').includes(q));
+  document.getElementById('stbl').innerHTML = rows.length ? `<table>
+    <tr><th>الاسم</th><th>الصف</th><th>المنهج</th><th>وليّ الأمر</th><th>إجابات</th><th>مُتقَنة</th><th>كوينز</th><th>آخر نشاط</th></tr>
+    ${rows.map(s=>`<tr class="clickable" onclick="studentDetail(${s.id})">
+      <td>${s.name}${s.diagnosed?'':' <span class="pill gray">لم يُشخَّص</span>'}</td><td>${s.grade||'—'}</td><td>${CO[s.country]||'—'}</td>
+      <td>${s.parent||'—'}</td><td>${H(s.answers)}</td><td>${H(s.mastered)}</td><td>${H(s.coins)}</td><td>${day(s.last_active)}</td></tr>`).join('')}
+    </table>` : '<div class="muted">لا نتائج.</div>';
+}
+async function studentDetail(id){
+  let d; try{ d=await api(`/api/admin/students/${id}`); }catch(e){ alert('تعذّر التحميل'); return; }
+  const t=d.totals;
+  modal(`<h3>${d.child.name}</h3>
+    <div class="muted">${d.child.grade||''} · ${CO[d.child.country]||'—'} · وليّ الأمر: ${d.child.parent||'—'}</div>
+    <div class="cards" style="margin:12px 0">${stat('green',t.mastered,'مُتقَنة')}${stat('cyan',t.understood,'مفهومة')}${stat('orange',t.answers,'إجابة')}${stat('',d.child.coins,'كوينز 🪙')}</div>
+    <h3 style="font-size:15px">آخر ما أتقن</h3>${d.mastered.length?('<ul>'+d.mastered.map(m=>`<li>${m}</li>`).join('')+'</ul>'):'<div class="muted">لا شيء بعد.</div>'}
+    <h3 style="font-size:15px">آخر الإجابات</h3>${d.recent.length?`<table>${d.recent.map(r=>`<tr><td>${r.correct?'✅':'❌'}</td><td>${r.skill}</td><td class="muted">${day(r.at)}</td></tr>`).join('')}</table>`:'<div class="muted">لا إجابات بعد.</div>'}`);
+}
+
+// ---------- أولياء الأمور ----------
+async function secParents(c){
+  let d; try{ d=await api('/api/admin/parents'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  c.innerHTML = `<h2 class="sec">أولياء الأمور</h2><div class="muted">${H(d.length)} وليّ أمر.</div>
+    <div class="panel">${d.length?`<table><tr><th>البريد</th><th>عدد الأطفال</th><th>انضمّ</th></tr>
+    ${d.map(p=>`<tr><td>${p.email}</td><td>${H(p.children)}</td><td>${day(p.joined)}</td></tr>`).join('')}</table>`:'<div class="muted">لا أولياء أمور بعد.</div>'}</div>`;
+}
+
+// ---------- الأسئلة ----------
+let NODES=null;
+async function secQuestions(c){
+  if(!NODES){ try{ NODES=await api('/api/admin/nodes'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; } }
+  c.innerHTML = `<h2 class="sec">الأسئلة</h2>
+    <div class="muted">تصفّح أسئلة أي مهارة وإحصاءات الخطأ. للتعديل/النشر/التعليم استخدم المحرّر التفصيلي.</div>
+    <div class="row2" style="margin:12px 0">
+      <select class="sk" id="qskill" onchange="loadSkillQ()"><option value="">— اختر مهارة —</option>
+        ${NODES.map(n=>`<option value="${n.id}">${n.name} (${n.code})</option>`).join('')}</select>
+      <a class="linkbtn" href="/admin/editor" target="_blank">المحرّر التفصيلي ↗</a>
+    </div>
+    <div id="qbox"></div>`;
+}
+async function loadSkillQ(){
+  const id=document.getElementById('qskill').value; const box=document.getElementById('qbox');
+  if(!id){ box.innerHTML=''; return; }
+  box.innerHTML='<p class="muted">… جارٍ التحميل</p>';
+  let d; try{ d=await api(`/api/admin/skills/${id}/stats`); }catch(e){ box.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  box.innerHTML = `<div class="panel"><h3>${d.skill.plain}</h3>
+    <table><tr><th>العائلة</th><th>الحالة</th><th>السؤال</th><th>محاولات</th><th>نسبة الخطأ</th></tr>
+    ${d.questions.map(q=>`<tr><td>${q.family||'—'}</td><td>${q.status==='published'?'<span class="pill ok">منشور</span>':'<span class="pill warn">مسوّدة</span>'}</td>
+      <td>${q.prompt}</td><td>${H(q.attempts)}</td><td>${q.error_rate==null?'—':`<span class="pill ${q.error_rate>=50?'warn':'gray'}">${H(q.error_rate)}٪</span>`}</td></tr>`).join('')}</table></div>`;
+}
+
+// ---------- المهارات ----------
+async function secSkills(c){
+  if(!NODES){ try{ NODES=await api('/api/admin/nodes'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; } }
+  c.innerHTML = `<h2 class="sec">المهارات</h2><div class="muted">${H(NODES.length)} مهارة في الشبكة.</div>
+    <div class="panel"><table><tr><th>الكود</th><th>المهارة</th><th>منشورة</th><th>العائلات</th><th>قابلة للإتقان</th><th>مجّانية</th></tr>
+    ${NODES.map(n=>`<tr><td class="muted">${n.code}</td><td>${n.name}</td><td>${H(n.snapshot.published_count)}</td>
+      <td>${n.snapshot.published_families.join('، ')||'—'}</td>
+      <td>${n.snapshot.masterable?'<span class="pill ok">نعم</span>':'<span class="pill warn">لا</span>'}</td>
+      <td>${n.is_free?'<span class="pill gray">مجّانية</span>':''}</td></tr>`).join('')}</table></div>`;
+}
+
+// ---------- التقارير ----------
+async function secReports(c){
+  let d; try{ d=await api('/api/admin/reports'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  c.innerHTML = `<h2 class="sec">التقارير</h2><div class="muted">أين يتعثّر الأطفال — المهارات الأصعب (من البيانات الفعلية).</div>
+    <div class="panel"><h3>المهارات الأكثر تعثّراً</h3>${struggleTable(d.struggled)}</div>`;
+}
+
+// ---------- الإعدادات ----------
+async function secSettings(c){
+  let t='mutadarrij'; try{ t=(await api('/api/admin/theme')).theme; }catch(e){}
+  c.innerHTML = `<h2 class="sec">الإعدادات</h2>
+    <div class="panel"><h3>سمة العرض</h3><div class="row2">
+      ${['mutadarrij','ameen','mutawwar'].map(x=>`<button class="linkbtn" style="border:0;cursor:pointer;${x===t?'background:#155E7D;color:#fff':''}" onclick="setTheme('${x}')">${({mutadarrij:'متدرّج',ameen:'أمين',mutawwar:'مطوّر'})[x]}</button>`).join('')}
+    </div></div>
+    <div class="soonbox"><div class="em">⚙️</div><h3>إعدادات أخرى — قريباً</h3><div>تُضاف مع الأنظمة القادمة.</div></div>`;
+}
+async function setTheme(x){ try{ await api('/api/admin/theme',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({theme:x})}); go('settings'); }catch(e){ alert('تعذّر'); } }
+
+// ---------- placeholder (التسعير / الاشتراكات) ----------
+function secSoon(c){
+  const t = CURRENT==='pricing' ? 'التسعير والخطط' : 'الاشتراكات';
+  c.innerHTML = `<h2 class="sec">${t}</h2>
+    <div class="soonbox"><div class="em">🚧</div><h3>قريباً</h3>
+      <div>يُبنى مع نظام الاشتراك (الخطوة ٧)، ثم يُربط بالتحكّم المركزي من هذه اللوحة.</div></div>`;
+}
+
+boot();
 </script>
 </body>
 </html>

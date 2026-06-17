@@ -16,13 +16,20 @@ structure.
     family, nor a single-family node below two live items — exactly the gate's own
     understanding rule, applied to what the child can actually attempt.
 """
+from collections import defaultdict
+from datetime import datetime, timedelta, timezone
+
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app import gate, phrasing, schemas
+from app import gate, parent_terms, phrasing, schemas
 from app.db import get_db
-from app.models import AppSetting, GCC_COUNTRIES, Plan, Question, QuestionPhrasing, Skill, Subscription
+from app.models import (
+    AppSetting, GCC_COUNTRIES, Answer, Grade, Plan, Question, QuestionPhrasing,
+    Skill, SkillMastery, Student, Subscription, User,
+)
+from app.path import STRUGGLE_THRESHOLD
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 THEMES = {"ameen", "mutawwar", "mutadarrij"}
@@ -374,3 +381,201 @@ def preview(qid: int, country: str | None = None, db: Session = Depends(get_db))
         "country": country if phrasing.is_country(country) else None,
         "node": _node_snapshot(db, q.skill_id),
     }
+
+
+# ============================================================================
+#  MANAGER DASHBOARD — READ-ONLY aggregations over the heart (owner panel).
+#  Every route here is already guarded by require_admin (router dependency).
+#  Pure reads: they touch no gate / engine / content. Plain skill names via
+#  parent_terms; Hindi numerals handled in the UI.
+# ============================================================================
+def _q_skill_map(db: Session) -> dict:
+    return dict(db.execute(select(Question.id, Question.skill_id)).all())
+
+
+def _struggled(db: Session, limit: int) -> list[dict]:
+    """Where children actually stumble — per skill: error rate (wrong/total) and the
+    number of children STUCK (status in_progress with >= STRUGGLE_THRESHOLD attempts).
+    Read-only over answers + skill_mastery; ranked stuck → error_rate → attempts."""
+    qskill = _q_skill_map(db)
+    total, wrong, per_stu = defaultdict(int), defaultdict(int), defaultdict(int)
+    for qid, correct, stu in db.execute(
+            select(Answer.question_id, Answer.is_correct, Answer.student_id)).all():
+        sk = qskill.get(qid)
+        if sk is None:
+            continue
+        total[sk] += 1
+        if not correct:
+            wrong[sk] += 1
+        per_stu[(sk, stu)] += 1
+    stuck = defaultdict(int)
+    for stu, sk, status in db.execute(
+            select(SkillMastery.student_id, SkillMastery.skill_id, SkillMastery.status)).all():
+        if status == "in_progress" and per_stu.get((sk, stu), 0) >= STRUGGLE_THRESHOLD:
+            stuck[sk] += 1
+    skills = {s.id: s for s in db.execute(select(Skill)).scalars().all()}
+    rows = []
+    for sk, t in total.items():
+        s = skills.get(sk)
+        if s is None or t == 0:
+            continue
+        rows.append({
+            "code": s.code,
+            "name": parent_terms.describe(s.code, s.name),
+            "attempts": t,
+            "error_rate": round(100 * wrong[sk] / t),
+            "stuck": stuck.get(sk, 0),
+        })
+    rows.sort(key=lambda r: (r["stuck"], r["error_rate"], r["attempts"]), reverse=True)
+    return rows[:limit]
+
+
+@router.get("/overview")
+def overview(db: Session = Depends(get_db)):
+    parents = db.execute(select(func.count(User.id)).where(User.role == "guardian")).scalar_one()
+    children = db.execute(select(func.count(Student.id))).scalar_one()
+    now = datetime.now(timezone.utc)
+    since = now - timedelta(days=7)
+
+    days = [(now - timedelta(days=i)).date() for i in range(6, -1, -1)]
+    by_day = {d.isoformat(): {"answers": 0, "students": set()} for d in days}
+    active = set()
+    for stu, ts in db.execute(select(Answer.student_id, Answer.created_at)).all():
+        if ts.tzinfo is None:
+            ts = ts.replace(tzinfo=timezone.utc)
+        if ts >= since:
+            active.add(stu)
+            key = ts.date().isoformat()
+            if key in by_day:
+                by_day[key]["answers"] += 1
+                by_day[key]["students"].add(stu)
+    activity = [{"date": k, "answers": v["answers"], "sessions": len(v["students"])}
+                for k, v in by_day.items()]
+
+    skills_total = db.execute(select(func.count(Skill.id))).scalar_one()
+    published_q = db.execute(select(func.count(Question.id)).where(
+        Question.status == "published")).scalar_one()
+    needs_review = db.execute(select(func.count(Question.id)).where(
+        Question.status != "published")).scalar_one()
+
+    return {
+        "cards": {"parents": parents, "children": children, "active_week": len(active)},
+        "activity_7d": activity,
+        "content_health": {
+            "skills": skills_total, "published_questions": published_q,
+            "curricula": len(GCC_COUNTRIES), "needs_review": needs_review,
+        },
+        "struggled": _struggled(db, limit=8),
+    }
+
+
+@router.get("/students")
+def students(db: Session = Depends(get_db)):
+    emails = {u.id: u.email for u in db.execute(select(User)).scalars().all()}
+    grades = {g.id: g.name for g in db.execute(select(Grade)).scalars().all()}
+    a_count, last = defaultdict(int), {}
+    for stu, ts in db.execute(select(Answer.student_id, Answer.created_at)).all():
+        a_count[stu] += 1
+        if ts.tzinfo is None:
+            ts = ts.replace(tzinfo=timezone.utc)
+        if stu not in last or ts > last[stu]:
+            last[stu] = ts
+    mastered = defaultdict(int)
+    for stu, status in db.execute(select(SkillMastery.student_id, SkillMastery.status)).all():
+        if status == "mastered":
+            mastered[stu] += 1
+    out = []
+    for s in db.execute(select(Student).order_by(Student.id)).scalars().all():
+        out.append({
+            "id": s.id, "name": s.name, "grade": grades.get(s.grade_id),
+            "country": s.country, "parent": emails.get(s.owner_user_id),
+            "answers": a_count.get(s.id, 0), "mastered": mastered.get(s.id, 0),
+            "coins": s.coins or 0,
+            "last_active": last[s.id].isoformat() if s.id in last else None,
+            "diagnosed": s.placement_skill_id is not None,
+        })
+    return out
+
+
+@router.get("/parents")
+def parents(db: Session = Depends(get_db)):
+    n_child = defaultdict(int)
+    for owner in db.execute(select(Student.owner_user_id)).scalars().all():
+        if owner:
+            n_child[owner] += 1
+    out = []
+    for u in db.execute(select(User).where(User.role == "guardian").order_by(User.id)).scalars().all():
+        out.append({
+            "id": u.id, "email": u.email, "children": n_child.get(u.id, 0),
+            "joined": u.created_at.isoformat() if u.created_at else None,
+        })
+    return out
+
+
+@router.get("/students/{student_id}")
+def student_detail(student_id: int, db: Session = Depends(get_db)):
+    s = db.get(Student, student_id)
+    if s is None:
+        raise HTTPException(404, "student not found")
+    grade = db.get(Grade, s.grade_id).name if s.grade_id else None
+    parent = db.get(User, s.owner_user_id).email if s.owner_user_id else None
+    skills = {sk.id: sk for sk in db.execute(select(Skill)).scalars().all()}
+    mast = db.execute(select(SkillMastery).where(SkillMastery.student_id == student_id)).scalars().all()
+    totals = {"mastered": 0, "understood": 0, "in_progress": 0, "placed": 0}
+    mastered_list = []
+    for sm in mast:
+        totals[sm.status] = totals.get(sm.status, 0) + 1
+        if sm.status == "mastered" and sm.skill_id in skills:
+            sk = skills[sm.skill_id]
+            mastered_list.append(parent_terms.describe(sk.code, sk.name))
+    answers = db.execute(select(func.count(Answer.id)).where(
+        Answer.student_id == student_id)).scalar_one()
+    qskill = _q_skill_map(db)
+    recent = []
+    for qid, correct, ts in db.execute(
+            select(Answer.question_id, Answer.is_correct, Answer.created_at)
+            .where(Answer.student_id == student_id)
+            .order_by(Answer.id.desc()).limit(10)).all():
+        sk = skills.get(qskill.get(qid))
+        recent.append({
+            "skill": parent_terms.describe(sk.code, sk.name) if sk else "—",
+            "correct": bool(correct),
+            "at": ts.isoformat() if ts else None,
+        })
+    return {
+        "child": {"id": s.id, "name": s.name, "grade": grade, "country": s.country,
+                  "parent": parent, "coins": s.coins or 0,
+                  "diagnosed": s.placement_skill_id is not None},
+        "totals": {**totals, "answers": answers},
+        "mastered": mastered_list[:12],
+        "recent": recent,
+    }
+
+
+@router.get("/skills/{skill_id}/stats")
+def skill_stats(skill_id: int, db: Session = Depends(get_db)):
+    s = db.get(Skill, skill_id)
+    if s is None:
+        raise HTTPException(404, "skill not found")
+    total, wrong = defaultdict(int), defaultdict(int)
+    for qid, correct in db.execute(select(Answer.question_id, Answer.is_correct)).all():
+        total[qid] += 1
+        if not correct:
+            wrong[qid] += 1
+    qs = db.execute(select(Question).where(Question.skill_id == skill_id)
+                    .order_by(Question.id)).scalars().all()
+    out = []
+    for q in qs:
+        t = total.get(q.id, 0)
+        out.append({
+            "id": q.id, "family": q.family, "status": q.status, "prompt": q.prompt,
+            "attempts": t, "error_rate": round(100 * wrong.get(q.id, 0) / t) if t else None,
+        })
+    return {"skill": {"id": s.id, "code": s.code, "name": s.name,
+                      "plain": parent_terms.describe(s.code, s.name)}, "questions": out}
+
+
+@router.get("/reports")
+def reports(db: Session = Depends(get_db)):
+    """Where children stumble (full list) — the manager's quality lens."""
+    return {"struggled": _struggled(db, limit=40)}

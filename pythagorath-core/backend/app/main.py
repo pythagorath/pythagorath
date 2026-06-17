@@ -646,6 +646,12 @@ def admin_page():
     return FileResponse(_STATIC / "admin.html")
 
 
+@app.get("/admin/editor")
+def admin_editor_page():
+    """The detailed question editor (preserved) — linked from the dashboard's Questions section."""
+    return FileResponse(_STATIC / "admin_editor.html")
+
+
 @app.get("/landing")
 def landing_page():
     return FileResponse(_STATIC / "landing.html")
