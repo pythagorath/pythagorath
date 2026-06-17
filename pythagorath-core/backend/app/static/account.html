@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حساب وليّ الأمر — فيثاغورث</title>
+<link rel="stylesheet" href="/static/brand.css">
+<style>
+  *{ box-sizing:border-box; } html,body{ margin:0; }
+  body{ font-family:'Readex Pro',sans-serif; color:#2C2620; background:#FBF7F0; min-height:100vh;
+    background-image:radial-gradient(58% 30% at 92% 0%,rgba(243,154,31,.10),transparent 60%),radial-gradient(54% 28% at 6% 4%,rgba(41,169,224,.10),transparent 60%); }
+  .wrap{ max-width:560px; margin:0 auto; padding:26px 18px 60px; }
+  .brand{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:22px; color:#D97E0A; text-align:center; margin-bottom:4px; }
+  .brand small{ display:block; color:#9A8F82; font-size:12.5px; font-weight:400; font-family:'Readex Pro',sans-serif; }
+  .card{ background:#fff; border:1px solid #EFE7DA; border-radius:22px; padding:24px; margin:16px 0; box-shadow:0 18px 38px -26px rgba(21,94,125,.55); }
+  h2{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; font-size:22px; margin:0 0 4px; }
+  .muted{ color:#8A8178; font-size:14px; }
+  label{ display:block; font-size:13.5px; color:#5A5249; font-weight:600; margin:12px 0 5px; }
+  input,select{ width:100%; padding:11px 13px; border:1.5px solid #E3DACB; border-radius:12px; font-family:inherit; font-size:15px; background:#fff; }
+  .btn{ width:100%; margin-top:16px; border:0; border-radius:14px; padding:14px; cursor:pointer; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:17px; color:#fff; background:linear-gradient(135deg,#163E52,#1B6E97); }
+  .btn.orange{ background:linear-gradient(135deg,#F39A1F,#E8833A); }
+  .btn.big{ font-size:19px; padding:16px; }
+  .ghost{ background:none; border:1.5px solid #E3DACB; color:#5A5249; border-radius:12px; padding:10px; cursor:pointer; font-family:inherit; font-weight:700; }
+  .tabs{ display:flex; gap:8px; margin-bottom:8px; }
+  .tabs button{ flex:1; background:#F1EBE0; border:0; border-radius:11px; padding:10px; cursor:pointer; font-family:inherit; font-weight:700; color:#7C6F5E; }
+  .tabs button.on{ background:#155E7D; color:#fff; }
+  .err{ color:#C0392B; font-size:13.5px; min-height:18px; margin-top:6px; }
+  .consent{ max-height:150px; overflow:auto; background:#FBF9F4; border:1px solid #EEE6D8; border-radius:12px; padding:12px; font-size:13px; color:#5A5249; line-height:1.7; white-space:pre-wrap; }
+  .chk{ display:flex; gap:9px; align-items:flex-start; margin-top:10px; font-size:14px; }
+  .chk input{ width:auto; margin-top:3px; }
+  .kid{ display:flex; align-items:center; gap:12px; border:1px solid #EFE7DA; border-radius:14px; padding:12px 14px; margin:8px 0; }
+  .kid .av{ width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,#163E52,#1B6E97); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; }
+  .kid .nm{ flex:1; font-weight:700; } .kid .meta{ color:#9A8F82; font-size:12.5px; }
+  .empty{ text-align:center; padding:30px 10px; } .empty .em{ font-size:46px; }
+  .steps{ display:flex; gap:6px; justify-content:center; margin:6px 0 12px; }
+  .dot{ width:9px; height:9px; border-radius:50%; background:#E3DACB; } .dot.on{ background:#F39A1F; }
+  .setup{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+  .setup button{ text-align:right; background:#fff; border:1.5px solid #E3DACB; border-radius:14px; padding:14px; cursor:pointer; font-family:inherit; }
+  .setup .t{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; color:#155E7D; font-size:16px; }
+  .setup .t .rec{ font-size:11px; background:#E8F7EE; color:#1E945B; border-radius:999px; padding:2px 8px; margin-inline-start:6px; }
+  .setup .d{ color:#8A8178; font-size:13px; margin-top:3px; }
+  .toplink{ text-align:center; margin-top:10px; } .toplink a{ color:#178FC9; font-weight:700; text-decoration:none; font-size:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand" data-brand>فيثاغورث<small>موطن التعليم</small></div>
+  <div id="view"><div class="card"><p class="muted">… جارٍ التحميل</p></div></div>
+</div>
+<script src="/static/site.js"></script>
+<script>
+const H = n => String(n==null?'':n).replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[+d]);
+const CO = [["SA","السعودية"],["AE","الإمارات"],["QA","قطر"],["KW","الكويت"],["OM","عُمان"],["BH","البحرين"]];
+const V = document.getElementById('view');
+let AUTH_TAB='register', GRADES=null, CONSENT=null;
+async function api(path, opts){
+  const r = await fetch(path, opts);
+  if(!r.ok){ const e=new Error('err'); e.status=r.status; try{ e.detail=(await r.json()).detail; }catch(_){} throw e; }
+  return r.status===204?null:r.json();
+}
+
+async function boot(){
+  try{ await api('/api/auth/me'); await home(); }
+  catch(e){ showAuth(); }
+}
+
+// ---------- 1) auth (هبوط/تسجيل) ----------
+function showAuth(){
+  V.innerHTML = `<div class="card">
+    <h2>${AUTH_TAB==='register'?'إنشاء حساب وليّ الأمر':'تسجيل الدخول'}</h2>
+    <div class="muted">ابدأ رحلة طفلك مع فيثاغورث.</div>
+    <div class="tabs" style="margin-top:14px">
+      <button class="${AUTH_TAB==='register'?'on':''}" onclick="setTab('register')">حساب جديد</button>
+      <button class="${AUTH_TAB==='login'?'on':''}" onclick="setTab('login')">لديّ حساب</button>
+    </div>
+    <label>البريد الإلكتروني</label><input id="email" type="email" placeholder="name@example.com">
+    <label>كلمة السر</label><input id="pass" type="password" placeholder="٨ أحرف على الأقل">
+    <div class="err" id="aerr"></div>
+    <button class="btn" onclick="doAuth()">${AUTH_TAB==='register'?'إنشاء الحساب':'دخول'}</button>
+  </div>`;
+}
+function setTab(t){ AUTH_TAB=t; showAuth(); }
+async function doAuth(){
+  const email=document.getElementById('email').value.trim(), password=document.getElementById('pass').value;
+  const err=document.getElementById('aerr'); err.textContent='';
+  try{
+    if(AUTH_TAB==='register') await api('/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    await api('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    await home();
+  }catch(e){ err.textContent = e.detail || (e.status===409?'البريد مستخدم':'بريد أو كلمة سر غير صحيحة'); }
+}
+async function logout(){ try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){} AUTH_TAB='login'; showAuth(); }
+
+// ---------- 2) home: empty or children ----------
+async function home(){
+  let kids=[]; try{ kids = await api('/api/students'); }catch(e){ return showAuth(); }
+  if(!kids.length){
+    V.innerHTML = `<div class="card"><div class="empty"><div class="em">👶</div>
+      <h2>أهلاً بك!</h2><div class="muted">لم تُضِف طفلاً بعد. لنبدأ بإضافة طفلك الأول.</div>
+      <button class="btn orange big" style="margin-top:18px" onclick="addChild()">＋ أضف طفلك الأول</button></div>
+      <div class="toplink"><a onclick="logout()" style="cursor:pointer">تسجيل الخروج</a></div></div>`;
+    return;
+  }
+  V.innerHTML = `<div class="card"><h2>أطفالك</h2><div class="muted">${H(kids.length)} ${kids.length===1?'طفل':'أطفال'}.</div>
+    ${kids.map(k=>`<div class="kid"><span class="av">${(k.name||'؟').trim()[0]}</span>
+      <div class="nm">${k.name}<div class="meta">${gradeName(k.grade_id)||''} · ${coName(k.country)||'—'}</div></div>
+      <button class="ghost" onclick="setup(${k.id},'${(k.name||'').replace(/'/g,'')}')">هيّئ جهازه</button></div>`).join('')}
+    <button class="btn" style="margin-top:14px" onclick="addChild()">＋ أضف طفلاً</button>
+    <div class="toplink"><a href="/parent">لوحة المتابعة ↗</a> · <a onclick="logout()" style="cursor:pointer">خروج</a></div></div>`;
+}
+function coName(c){ const f=CO.find(x=>x[0]===c); return f?f[1]:null; }
+function gradeName(id){ if(!GRADES) return null; const g=GRADES.find(x=>x.id===id); return g?g.name:null; }
+
+// ---------- 3) add child (+ consent) ----------
+async function addChild(){
+  if(!GRADES){ try{ GRADES = await api('/api/grades'); }catch(e){ GRADES=[]; } }
+  if(!CONSENT){ try{ CONSENT = await api('/api/consent'); }catch(e){ CONSENT={text:'',version:null}; } }
+  V.innerHTML = `<div class="card">
+    <div class="steps"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+    <h2>إضافة طفل</h2><div class="muted">معلومات بسيطة لنبدأ مساره المناسب.</div>
+    <label>اسم الطفل</label><input id="cname" placeholder="مثال: سالم">
+    <label>الدولة (المنهج)</label><select id="ccountry">${CO.map(c=>`<option value="${c[0]}">${c[1]}</option>`).join('')}</select>
+    <label>الصف المستهدف</label><select id="cgrade"><option value="">— اختر الصف —</option>${GRADES.map(g=>`<option value="${g.id}">${g.name}</option>`).join('')}</select>
+    <label>شروط حماية بيانات الطفل</label>
+    <div class="consent">${(CONSENT.text||'').replace(/</g,'&lt;')}</div>
+    <label class="chk"><input type="checkbox" id="cconsent"><span>أوافق على شروط حماية بيانات طفلي (إلزاميّ).</span></label>
+    <div class="err" id="cerr"></div>
+    <button class="btn orange" onclick="createChild()">إنشاء ملف الطفل</button>
+    <div class="toplink"><a onclick="home()" style="cursor:pointer">رجوع</a></div></div>`;
+}
+async function createChild(){
+  const err=document.getElementById('cerr'); err.textContent='';
+  const name=document.getElementById('cname').value.trim();
+  const country=document.getElementById('ccountry').value || null;
+  const grade_id=parseInt(document.getElementById('cgrade').value,10)||null;
+  if(!name){ err.textContent='أدخل اسم الطفل.'; return; }
+  if(!grade_id){ err.textContent='اختر الصف المستهدف.'; return; }
+  if(!document.getElementById('cconsent').checked){ err.textContent='يجب الموافقة على شروط حماية البيانات.'; return; }
+  try{
+    const kid = await api('/api/students',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,country,grade_id,consent_version:CONSENT.version})});
+    confirmChild(kid);
+  }catch(e){ err.textContent = e.detail || 'تعذّر إنشاء الملف.'; }
+}
+
+// ---------- 4) confirm → 5) prepare device ----------
+function confirmChild(kid){
+  V.innerHTML = `<div class="card">
+    <div class="steps"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+    <div class="empty"><div class="em">🎉</div><h2>تمّ إنشاء ملف ${kid.name}</h2>
+      <div class="muted">بقيت خطوة: تهيئة جهاز الطفل ليبدأ مغامرته.</div></div>
+    <button class="btn orange big" onclick="setup(${kid.id},'${(kid.name||'').replace(/'/g,'')}')">هيّئ جهاز الطفل</button>
+    <div class="toplink"><a onclick="home()" style="cursor:pointer">لاحقاً — للوحة</a></div></div>`;
+}
+function setup(id, name){
+  V.innerHTML = `<div class="card"><h2>هيّئ جهاز ${name}</h2>
+    <div class="muted">اختر طريقة لجعل ${name} يدخل على جهازه بأمان (دون كشف حسابك).</div>
+    <div class="setup">
+      <button onclick="soon()"><div class="t">رمز ربط <span class="rec">موصى</span></div><div class="d">رمز مؤقّت من ٤ أرقام تُدخله على جهاز الطفل — لا يكشف حسابك.</div></button>
+      <button onclick="soon()"><div class="t">تهيئة مباشرة</div><div class="d">تدخل بحسابك مرّةً على جهاز الطفل ثم تحوّله لوضع الطفل.</div></button>
+      <button onclick="soon()"><div class="t">جهاز مشترك</div><div class="d">يفتح على «اختر نفسك» ليتشارك الأطفال الجهاز.</div></button>
+    </div>
+    <div class="muted" style="margin-top:12px;text-align:center">⚙️ تُفعّل هذه الطرق في الخطوة التالية.</div>
+    <div class="toplink"><a onclick="home()" style="cursor:pointer">رجوع للّوحة</a></div></div>`;
+}
+function soon(){ alert('قريباً — تُفعّل تهيئة الجهاز في الخطوة التالية (ب).'); }
+
+boot();
+</script>
+</body>
+</html>

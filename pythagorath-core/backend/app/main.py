@@ -718,6 +718,12 @@ def landing_page():
     return FileResponse(_STATIC / "landing.html")
 
 
+@app.get("/account")
+def account_page():
+    """The guardian onboarding journey: sign up → add child (with consent) → prepare device."""
+    return FileResponse(_STATIC / "account.html")
+
+
 @app.get("/parent")
 def parent_page():
     return FileResponse(_STATIC / "parent.html")

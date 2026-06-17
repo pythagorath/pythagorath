@@ -273,6 +273,11 @@ class Student(Base):
     coins: Mapped[int] = mapped_column(
         Integer, nullable=False, default=0, server_default="0"
     )
+    # When this child profile was created (accounts step 6) — for "when did each child
+    # join" + platform-growth views. Display/analytics only; never read by the engine.
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=_utcnow
+    )
 
 
 class CoinEvent(Base):
