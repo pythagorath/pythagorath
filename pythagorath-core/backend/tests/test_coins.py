@@ -121,3 +121,53 @@ def test_diagnostic_grants_no_coins(db, h):
     assert _balance(db, stu.id) == 0
     assert db.execute(select(func.count(CoinEvent.id)).where(
         CoinEvent.student_id == stu.id)).scalar_one() == 0
+
+
+# ---- endpoint reporting: /api/answers returns the REAL granted coins (for the UI moments) ----
+def _node(admin_client, code):
+    return next(n for n in admin_client.get("/api/admin/nodes").json() if n["code"] == code)
+
+
+def _new_child(guardian_client, name):
+    from app import consent
+    gid = [g["id"] for g in guardian_client.get("/api/grades").json() if g["order"] == 2][0]
+    return guardian_client.post("/api/students", json={
+        "name": name, "country": None, "consent_version": consent.CURRENT_VERSION, "grade_id": gid,
+    }).json()
+
+
+def test_endpoint_reports_real_coins(guardian_client, admin_client):
+    """The celebration/feedback layer reads coins_awarded/mastery_bonus/coin_balance from the
+    server — the REAL granted amounts: +2 correct, 0 wrong, +52 at the mastery answer
+    (2 + 50), and +2 only when re-answering an already-mastered node (idempotent big award)."""
+    node = _node(admin_client, "B3")
+    ans = {q["id"]: q["answer"] for q in node["questions"]}
+    stu = _new_child(guardian_client, "coins_e2e")
+
+    def submit(qid, answer, ms=1000):
+        return guardian_client.post("/api/answers", json={
+            "student_id": stu["id"], "question_id": qid, "answer": answer, "elapsed_ms": ms}).json()
+
+    qids = [q["id"] for q in node["questions"]]
+    fams = {}
+    for q in node["questions"]:
+        fams.setdefault(q["family"], q)
+    ff = list(fams.values())
+
+    r = submit(ff[0]["id"], ans[ff[0]["id"]])                       # first correct
+    assert r["coins_awarded"] == 2 and r["mastery_bonus"] == 0 and r["coin_balance"] == 2
+    w = submit(ff[0]["id"], ans[ff[0]["id"]] + "X")                 # wrong
+    assert w["coins_awarded"] == 0 and w["coin_balance"] == 2       # no coins, balance unchanged
+
+    submit(ff[1]["id"], ans[ff[1]["id"]])                          # 2nd family → understood
+    mastery_hits = []
+    for i in range(6):                                             # fluency phase → mastery
+        res = submit(qids[i % len(qids)], ans[qids[i % len(qids)]], ms=1200)
+        if res["mastery_bonus"] > 0:
+            mastery_hits.append(res)
+    assert len(mastery_hits) == 1                                  # the big prize fires exactly once
+    assert mastery_hits[0]["mastery_bonus"] == 50
+    assert mastery_hits[0]["coins_awarded"] == 52                  # its +2 plus the +50 prize
+
+    again = submit(qids[0], ans[qids[0]], ms=1200)                 # re-answer the mastered node
+    assert again["mastery_bonus"] == 0 and again["coins_awarded"] == 2   # +2 only, no second +50

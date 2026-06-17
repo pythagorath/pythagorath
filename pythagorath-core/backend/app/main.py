@@ -619,13 +619,20 @@ def submit_answer(payload: schemas.AnswerRequest,
     # COINS — a reward SIDE-EFFECT of the gate result (never an input to it): a small award
     # per correct answer, a big one at the mastery transition. Quality only — no coins for a
     # wrong answer or for speed. recompute/the gates are untouched.
+    coins_before = student.coins or 0
     if is_correct:
         coins.award_correct(db, student, question.skill_id, ans.id)
+    before_mastery = student.coins or 0
     if snap["mastered"] and not prior_mastered:
         coins.award_mastery(db, student, question.skill_id)
+    mastery_bonus = (student.coins or 0) - before_mastery   # read-back: the big prize portion
+    coins_awarded = (student.coins or 0) - coins_before     # read-back: total for this answer
 
     db.commit()
-    return schemas.AnswerResult(is_correct=is_correct, **snap)
+    return schemas.AnswerResult(
+        is_correct=is_correct, coins_awarded=coins_awarded, mastery_bonus=mastery_bonus,
+        coin_balance=student.coins or 0, **snap,
+    )
 
 
 # ---- UI pages ----

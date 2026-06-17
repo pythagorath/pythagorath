@@ -202,6 +202,12 @@ class Progress(BaseModel):
 
 class AnswerResult(Progress):
     is_correct: bool
+    # REPORTING ONLY (the celebration/feedback layer): what the coins system actually
+    # granted for THIS answer + the new real balance. Read-back of students.coins around
+    # the award — the coins LOGIC (coins.py) and the gates are untouched.
+    coins_awarded: int = 0      # total granted by THIS answer (e.g. 2, 0, or 52 at mastery)
+    mastery_bonus: int = 0      # the big mastery prize portion (0, or COINS_PER_MASTERY)
+    coin_balance: int = 0       # the new real balance after this answer
 
 
 # ----- skill map -----

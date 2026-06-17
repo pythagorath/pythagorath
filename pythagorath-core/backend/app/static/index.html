@@ -89,6 +89,35 @@
   .rod.removable, .cube.removable{ cursor:pointer; }
   .rod.removable:hover{ outline:2px solid var(--no); }
   .cube.removable:hover{ outline:2px solid var(--no); }
+
+  /* ---- motivation moments (temporary look; Claude Design beautifies later) ---- */
+  .coinbadge{ float:left; display:inline-flex; align-items:center; gap:6px; background:var(--gold-l,#FFF4D8);
+              color:#8A5A00; border:1px solid #F0D58A; border-radius:999px; padding:6px 13px; font-weight:800; font-size:16px; }
+  .coinbadge.bump{ animation:coinbump .5s ease; }
+  @keyframes coinbump{ 0%{transform:scale(1)} 40%{transform:scale(1.28)} 100%{transform:scale(1)} }
+  .cf{ display:inline-block; margin-right:8px; color:#8A5A00; font-weight:800; animation:cfrise .9s ease; }
+  @keyframes cfrise{ 0%{opacity:0;transform:translateY(6px)} 30%{opacity:1} 100%{opacity:1;transform:translateY(0)} }
+  .skillglow{ animation:skglow 1.6s ease; }
+  @keyframes skglow{ 0%,100%{box-shadow:var(--sh)} 50%{box-shadow:0 0 0 4px var(--gold,#FFC23C),0 16px 34px rgba(255,194,60,.55)} }
+  .encourage{ display:inline-flex; align-items:center; gap:8px; }
+  .encourage .m img{ width:30px; vertical-align:middle; }
+  .hint{ background:var(--cyan-l,#E4F3FB); border-right:4px solid var(--cyan,#29A9E0); border-radius:10px;
+         padding:8px 12px; margin-top:8px; color:var(--cyan-d,#1B7FB0); font-size:14.5px; font-weight:600; }
+  .celebrate{ position:fixed; inset:0; background:rgba(18,42,54,.5); display:flex; align-items:center; justify-content:center;
+              padding:20px; z-index:200; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .celebrate.show{ opacity:1; pointer-events:auto; }
+  .celebrate .cbox{ background:#fff; border-radius:24px; padding:26px 24px; text-align:center; max-width:340px; width:100%;
+                    box-shadow:0 30px 60px -18px rgba(217,126,10,.6); transform:translateY(10px) scale(.96); transition:transform .22s; }
+  .celebrate.show .cbox{ transform:none; }
+  .celebrate .joy{ width:92px; height:92px; margin:0 auto 8px; animation:joyb 1.2s ease-in-out infinite; }
+  .celebrate .joy img{ width:92px; height:92px; }
+  @keyframes joyb{ 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-8px) rotate(3deg)} }
+  .celebrate h3{ font-family:var(--fun,'Baloo Bhaijaan 2'); font-weight:800; font-size:23px; color:var(--deep,#155E7D); margin:4px 0 6px; }
+  .celebrate .cskill{ color:#8A8178; font-size:15px; margin-bottom:10px; }
+  .celebrate .c50{ font-family:var(--fun,'Baloo Bhaijaan 2'); font-weight:800; font-size:34px; color:var(--orange-d,#D97E0A); }
+  .celebrate .cmuted{ color:#8A8178; font-size:14px; margin:8px 0 16px; }
+  .celebrate .cbtn{ font-family:var(--fun,'Baloo Bhaijaan 2'); font-weight:800; font-size:18px; color:#fff;
+                    background:linear-gradient(135deg,var(--orange,#F39A1F),#E8833A); border:0; border-radius:16px; padding:12px 28px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -203,7 +232,8 @@
   </div>
 
   <div id="practiceView" style="display:none">
-    <div class="card">
+    <div class="card" id="practiceCard">
+      <span class="coinbadge" id="coinBadge" style="display:none">🪙 <b id="coinBal">٠</b></span>
       <button class="sec" onclick="backToMap()">‹ رجوع للخريطة</button>
       <div style="font-weight:800; font-size:18px; margin-top:10px" id="skillName"></div>
       <div id="gateNeed" style="margin-top:6px"></div>
@@ -218,6 +248,18 @@
   </div>
 </main>
 <div class="toast" id="toast"></div>
+
+<!-- mastery celebration (temporary look — Claude Design will beautify) -->
+<div class="celebrate" id="celebrate" onclick="hideCelebrate()">
+  <div class="cbox">
+    <div class="joy" id="cjoy"><img src="/static/mascot.svg" alt=""></div>
+    <h3>🎉 أتقنتَ المهارة!</h3>
+    <div class="cskill" id="cskill"></div>
+    <div class="c50"><span id="c50n">+٥٠</span> 🪙</div>
+    <div class="cmuted">رائع! واصِل إلى المحطّة التالية.</div>
+    <button class="cbtn" onclick="event.stopPropagation();hideCelebrate()">رائع! ›</button>
+  </div>
+</div>
 
 <script src="/static/widgets.js"></script>
 <script>
@@ -271,17 +313,64 @@ function toast(html, big){
   t.className='toast'+(big?' big':'')+' show';
   clearTimeout(_toastTimer); _toastTimer=setTimeout(()=>{ t.className='toast'+(big?' big':''); }, 2400);
 }
-function reactToAnswer(qid, res){
-  const fb=document.getElementById('fb-'+qid);
+// ---- coins badge (shows the REAL balance from the server; bumps on each answer) ----
+function updateCoinBadge(balance, awarded){
+  const b=document.getElementById('coinBadge'), n=document.getElementById('coinBal');
+  if(!b || balance==null) return;
+  b.style.display=''; n.textContent=toHindi(balance);
+  if(awarded>0){ b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
+}
+
+// ---- structure-based hint (helps, never gives the answer); by widget kind / family ----
+const HINTS={
+  'number-line':'عُدّ بالخطوات على الخطّ، خطوةً خطوة.',
+  'ten-frame':'جرّب أن تُكمل العشرة أولاً.',
+  'decomposition':'فكّر: أيّ عددين معاً يُكوّنان المطلوب؟',
+  'base-ten-blocks':'ابدأ بالآحاد ثم العشرات.',
+  'subtract-blocks':'انزع من الآحاد أولاً، ثم العشرات.',
+  'regroup-blocks':'إن لم تكفِ الآحاد، فُكّ عشرةً واحدة.',
+  'sequence':'ما القاعدة؟ كم يزيد العدد في كل مرّة؟',
+  'fraction':'كم جزءاً ملوّناً، ومن كم جزءاً متساوياً؟',
+  'angle':'ضع صفر المنقلة على الضلع، واقرأ حيث ينتهي الضلع الآخر.',
+  'chart':'اقرأ كل عمود/قطاع وقارن قبل أن تختار.',
+};
+function hintFor(q){
+  const kind=(q && q.visual && q.visual.kind) || null;
+  let text=kind ? HINTS[kind] : null;
+  if(!text && q){                                  // non-visual families (e.g. mixed fractions)
+    if(q.family==='mixed') text='حوّل: العدد الصحيح × المقام، ثم أضِف البسط.';
+  }
+  return text ? `<div class="hint">💡 ${stackFrac(text)}</div>` : '';   // none → encouragement only
+}
+
+// ---- the mastery celebration (the grand prize moment) ----
+function celebrateMastery(masteryBonus){
+  const card=document.getElementById('practiceCard'); if(card){ card.classList.remove('skillglow'); void card.offsetWidth; card.classList.add('skillglow'); }
+  document.getElementById('cskill').textContent = (skill && skill.name) ? skill.name : '';
+  document.getElementById('c50n').textContent = '+'+toHindi(masteryBonus || 0);
+  document.getElementById('celebrate').classList.add('show');
+}
+function hideCelebrate(){ document.getElementById('celebrate').classList.remove('show'); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') hideCelebrate(); });
+
+function reactToAnswer(q, res){
+  const fb=document.getElementById('fb-'+q.id);
+  updateCoinBadge(res.coin_balance, res.coins_awarded);          // real balance, always
+  const smallCoins = (res.coins_awarded||0) - (res.mastery_bonus||0);   // the per-answer +2 part
   if(fb){
-    if(res.is_correct){ fb.textContent='أحسنت ✓'; fb.className='fb ok'; }
-    else { fb.textContent='لا بأس — فكّر وحاول مرّة أخرى 🙂'; fb.className='fb soft'; }
+    if(res.is_correct){
+      const flash = smallCoins>0 ? `<span class="cf">+${toHindi(smallCoins)} 🪙</span>` : '';
+      fb.innerHTML='أحسنت ✓'+flash; fb.className='fb ok';
+    } else {
+      fb.innerHTML=`<span class="encourage">${MASCOT}<b>لا بأس، حاول مرّة أخرى!</b></span>`+hintFor(q);
+      fb.className='fb soft';
+    }
   }
   if(prevSnap){
     if(res.understood && !prevSnap.understood){ toast(MASCOT+' 🎉 فهمتَ المهارة!', false); speak('أحسنت، فهمتها'); }
-    else if(res.mastered && !prevSnap.mastered){ toast(MASCOT+' 🏆 أتقنتَ المهارة!', true); speak('رائع، أتقنتها'); }
+    else if(res.mastered && !prevSnap.mastered){ celebrateMastery(res.mastery_bonus); speak('رائع، أتقنتها'); }
     else if(!res.understood && res.understanding.families_passed.length > prevSnap.understanding.families_passed.length){
-      if(fb){ fb.textContent='طريقة جديدة، أحسنت ✓'; }   // quiet positive (a step, not a feat)
+      if(fb && res.is_correct){ fb.innerHTML='طريقة جديدة، أحسنت ✓'+(smallCoins>0?` <span class="cf">+${toHindi(smallCoins)} 🪙</span>`:''); }
     }
   }
   prevSnap = res;
@@ -499,6 +588,8 @@ async function openSkill(id, name){
   renderGate(progress);
   renderCurrent();
   show('practiceView');
+  // seed the coins badge with the REAL balance on entry (read-only; bumps on later answers)
+  try{ const a=await api(`/api/students/${student.id}/adventure`); updateCoinBadge(a.coins, 0); }catch(e){}
 }
 
 // Show exactly ONE question. The per-question timer (qShownAt) starts HERE, so
@@ -582,7 +673,7 @@ async function sendAns(q, ans){
     if(e.status===403 && e.reason==='locked'){ alert(e.message); return; }      // prerequisite unmet
     throw e;
   }
-  reactToAnswer(q.id, res);   // quiet confirm / gentle guidance / celebration (reads res)
+  reactToAnswer(q, res);   // quiet confirm / gentle guidance / celebration (reads res)
   renderGate(res);
   showNext();
 }
