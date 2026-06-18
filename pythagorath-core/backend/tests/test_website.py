@@ -33,6 +33,17 @@ def test_public_plans_hides_inactive(admin_client, client):
     assert "موقوفة" not in names
 
 
+def test_term_debt_is_admin_only_not_in_parent_payload(admin_client, guardian_client):
+    """The term-coverage debt is an OWNER metric: served on the admin endpoint, and the
+    guardian endpoint is forbidden (it must never appear in a customer payload)."""
+    r = admin_client.get("/api/admin/term-debt")
+    assert r.status_code == 200
+    body = r.json()
+    assert "uncovered" in body and "total" in body and isinstance(body["uncovered"], list)
+    # a guardian cannot reach the admin endpoint
+    assert guardian_client.get("/api/admin/term-debt").status_code == 403
+
+
 def test_how_video_managed_from_admin(admin_client, client):
     """The 'how it works' video is owner-managed: blank by default (→ animated fallback on
     the landing), and once set in admin it appears in the public /api/site feed."""

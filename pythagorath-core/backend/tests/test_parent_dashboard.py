@@ -86,8 +86,17 @@ def test_dashboard_writes_nothing(db, h):
 
 
 def test_g4_path_has_no_term_debt(db, h):
-    """Every skill a Saudi G4 child sees (path + surfaced) HAS a parent-friendly term —
-    no bare curriculum term leaks to this parent."""
+    """Every skill a Saudi G4 child sees on their path HAS a parent-friendly term — no bare
+    curriculum term would leak to this parent. (Coverage is checked directly via
+    parent_terms; the debt metric itself is OWNER-only, never in the parent payload.)"""
     stu = _g4(db, h)
     diagnostic.record_placement(db, stu.id, _sk(db, "g4PVM"))
-    assert _build(db, stu)["_term_debt"] == []
+    path_codes = [s.code for s in _path_skills(db, stu)]
+    assert parent_terms.uncovered(path_codes) == []
+
+
+def test_dashboard_has_no_internal_term_debt_field(db, h):
+    """The internal term-coverage debt must NOT leak into the customer-facing payload."""
+    stu = _g4(db, h)
+    diagnostic.record_placement(db, stu.id, _sk(db, "g4PVM"))
+    assert "_term_debt" not in _build(db, stu)

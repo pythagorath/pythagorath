@@ -197,6 +197,15 @@ def admin_set_theme(body: schemas.ThemeRequest, db: Session = Depends(get_db)):
     return {"theme": body.theme}
 
 
+@router.get("/term-debt")
+def admin_term_debt(db: Session = Depends(get_db)):
+    """OWNER-only term-coverage debt: skills (with a code) that lack a parent-friendly term.
+    A pre-launch QA aid. Moved here OUT of the parent dashboard payload — internal only."""
+    codes = [s.code for s in db.execute(select(Skill)).scalars().all() if s.code]
+    missing = parent_terms.uncovered(codes)
+    return {"total": len(set(codes)), "uncovered": missing, "missing_count": len(missing)}
+
+
 @router.get("/subscriptions")
 def admin_list_subscriptions(db: Session = Depends(get_db)):
     emails = {u.id: u.email for u in db.execute(select(User)).scalars().all()}

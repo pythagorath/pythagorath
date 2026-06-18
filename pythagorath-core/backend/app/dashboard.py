@@ -128,8 +128,7 @@ def build(db: Session, student, next_skill_fn, path_skills) -> dict:
         "struggle": struggle,
         "last_mastered": [{"skill": desc(s)} for s in last],
         "next": {"skill": desc(nxt_skill), "reason": _REASON_AR.get(nxt["reason"], nxt["reason"])},
-        # debt: visible skills with no parent-friendly term (NOT shown to the parent) —
-        # the child's path + the nodes surfaced now (next + the struggling root)
-        "_term_debt": parent_terms.uncovered(
-            [s.code for s in skills] + [s.code for s in (nxt_skill, struggling) if s is not None]),
+        # NOTE: term-coverage debt is an INTERNAL (owner) metric — it is intentionally NOT
+        # part of this customer-facing payload. It lives on the admin-only endpoint
+        # GET /api/admin/term-debt (platform-wide), never in a parent's response.
     }
