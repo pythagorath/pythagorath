@@ -22,6 +22,30 @@ def _questions(client, skill_id):
     return client.get(f"/api/students/{cid}/skills/{skill_id}/questions")
 
 
+# ---------- the marketing funnel: diagnosis FREE, treatment PAID ----------
+def test_diagnosis_is_free_treatment_is_paid(unsubscribed_client, admin_client):
+    """The new-visitor contract: an account (with consent) can DIAGNOSE a child and SEE the
+    result with NO subscription, but continuous treatment (skill questions + answers) is
+    walled (402). The wall sits ONLY on treatment — never on the diagnostic."""
+    child = _child(unsubscribed_client, "حديث")
+    cid = child["id"]
+    # session entry routes a never-diagnosed child to the diagnostic — FREE (no 402)
+    s = unsubscribed_client.get(f"/api/students/{cid}/session")
+    assert s.status_code == 200 and s.json()["needs_diagnostic"] is True
+    # the diagnostic itself — probes + an adaptive step + the batch placement — all FREE
+    assert unsubscribed_client.get(f"/api/students/{cid}/diagnostic/probes").status_code == 200
+    step = unsubscribed_client.post(f"/api/students/{cid}/diagnostic/adaptive", json={"answers": []})
+    assert step.status_code == 200 and step.json()["done"] is False    # a probe, not a paywall
+    placed = unsubscribed_client.post(f"/api/students/{cid}/diagnostic", json={"answers": []})
+    assert placed.status_code == 200                                    # result visible, free
+    # …but TREATMENT is walled: questions for a paid skill → 402
+    paid_id, q = _skill_q(admin_client, "B3")
+    assert unsubscribed_client.get(f"/api/students/{cid}/skills/{paid_id}/questions").status_code == 402
+    ans = unsubscribed_client.post("/api/answers", json={
+        "student_id": cid, "question_id": q["id"], "answer": q["answer"], "elapsed_ms": 1000})
+    assert ans.status_code == 402
+
+
 # ---------- paywall ----------
 def test_unsubscribed_is_blocked_402(unsubscribed_client, admin_client):
     skill_id, q = _skill_q(admin_client, "B3")        # unlocked base node, not free

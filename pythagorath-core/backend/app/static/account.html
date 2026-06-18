@@ -104,6 +104,7 @@
   <div id="view"><div class="card"><p class="muted">… جارٍ التحميل</p></div></div>
 </div>
 <script src="/static/site.js"></script>
+<script src="/static/widgets.js"></script>
 <script>
 const H = n => String(n==null?'':n).replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[+d]);
 const CO = [["SA","السعودية"],["AE","الإمارات"],["QA","قطر"],["KW","الكويت"],["OM","عُمان"],["BH","البحرين"]];
@@ -148,22 +149,33 @@ async function doAuth(){
 async function logout(){ try{ await api('/api/auth/logout',{method:'POST'}); }catch(e){} AUTH_TAB='login'; showAuth(); }
 
 // ---------- 2) home: empty or children ----------
-let SUB=null, RECEIPTS=[];
+let SUB=null, RECEIPTS=[], KIDS=[];
 async function home(){
   let kids=[]; try{ kids = await api('/api/students'); }catch(e){ return showAuth(); }
+  KIDS = kids;
   try{ SUB = await api('/api/subscription'); }catch(e){ SUB=null; }
   try{ RECEIPTS = await api('/api/receipts'); }catch(e){ RECEIPTS=[]; }
+  // per-child journey state (free read): never-diagnosed → offer the free diagnostic first
+  const states = await Promise.all(kids.map(k=>api(`/api/students/${k.id}/session`).catch(()=>null)));
+  const undiag = {}; kids.forEach((k,i)=>{ undiag[k.id] = states[i] ? states[i].needs_diagnostic : false; });
   if(!kids.length){
     V.innerHTML = `${subBanner()}<div class="card"><div class="empty"><div class="em">👶</div>
-      <h2>أهلاً بك!</h2><div class="muted">لم تُضِف طفلاً بعد. لنبدأ بإضافة طفلك الأول.</div>
-      <button class="btn orange big" style="margin-top:18px" onclick="addChild()">＋ أضف طفلك الأول</button></div>
+      <h2>أهلاً بك!</h2><div class="muted">أضِف طفلك ثم اكتشف <b>مجّاناً</b> أين يتعثّر — قبل أيّ اشتراك.</div>
+      <button class="btn orange big" style="margin-top:18px" onclick="addChild()">＋ أضف طفلك واكتشف أين يبدأ</button></div>
       <div class="toplink"><a onclick="logout()" style="cursor:pointer">تسجيل الخروج</a></div></div>`;
     return;
   }
+  const hasAccess = SUB && SUB.has_access;
+  const kidCTA = (k)=>{
+    const nm=(k.name||'').replace(/'/g,'');
+    if(undiag[k.id]) return `<button class="btn orange" style="margin:0;width:auto;padding:10px 16px;font-size:15px" onclick="diagIntro({id:${k.id},name:'${nm}'})">🔍 التشخيص المجّاني</button>`;
+    if(hasAccess) return `<button class="ghost" onclick="setup(${k.id},'${nm}')">هيّئ جهازه</button>`;
+    return `<button class="btn orange" style="margin:0;width:auto;padding:10px 16px;font-size:15px" onclick="plans()">اشترك لبدء العلاج</button>`;
+  };
   V.innerHTML = `${subBanner()}<div class="card"><h2>أطفالك</h2><div class="muted">${H(kids.length)} ${kids.length===1?'طفل':'أطفال'}.</div>
     ${kids.map(k=>`<div class="kid"><span class="av">${(k.name||'؟').trim()[0]}</span>
-      <div class="nm">${k.name}<div class="meta">${gradeName(k.grade_id)||''} · ${coName(k.country)||'—'}</div></div>
-      <button class="ghost" onclick="setup(${k.id},'${(k.name||'').replace(/'/g,'')}')">هيّئ جهازه</button></div>`).join('')}
+      <div class="nm">${k.name}<div class="meta">${gradeName(k.grade_id)||''} · ${coName(k.country)||'—'}${undiag[k.id]?' · لم يُشخَّص بعد':''}</div></div>
+      ${kidCTA(k)}</div>`).join('')}
     <button class="btn" style="margin-top:14px" onclick="addChild()">＋ أضف طفلاً</button>
     <div class="toplink"><a href="/parent">لوحة المتابعة ↗</a> · <a onclick="logout()" style="cursor:pointer">خروج</a></div></div>`;
 }
@@ -249,19 +261,82 @@ async function createChild(){
   try{
     const kid = await api('/api/students',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({name,country,grade_id,consent_version:CONSENT.version})});
-    confirmChild(kid);
+    diagIntro(kid);                       // → التشخيص المجاني فوراً (لا تهيئة جهاز قبل الاشتراك)
   }catch(e){ err.textContent = e.detail || 'تعذّر إنشاء الملف.'; }
 }
 
-// ---------- 4) confirm → 5) prepare device ----------
-function confirmChild(kid){
+// ---------- 4) free diagnostic (on the parent's device, right after adding the child) ----------
+let DIAG=null, PROBE_ANS=null;
+function diagIntro(kid){
+  DIAG={kid, answers:[]};
   V.innerHTML = `<div class="card">
     <div class="steps"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
-    <div class="empty"><div class="em">🎉</div><h2>تمّ إنشاء ملف ${kid.name}</h2>
-      <div class="muted">بقيت خطوة: تهيئة جهاز الطفل ليبدأ مغامرته.</div></div>
-    <button class="btn orange big" onclick="setup(${kid.id},'${(kid.name||'').replace(/'/g,'')}')">هيّئ جهاز الطفل</button>
+    <div class="empty"><div class="em">🔍</div><h2>تشخيص مجّاني لـ${kid.name}</h2></div>
+    <div class="muted" style="text-align:center">أسئلة قصيرة تكشف أين يبدأ ${kid.name} وما الفكرة التي يحتاج تقويتها — <b>مجّاناً، بلا اشتراك</b>. اجلس معه وساعده عند الحاجة.</div>
+    <button class="btn orange big" style="margin-top:18px" onclick="diagNext()">ابدأ التشخيص</button>
     <div class="toplink"><a onclick="home()" style="cursor:pointer">لاحقاً — للوحة</a></div></div>`;
 }
+async function diagNext(){
+  let step;
+  try{ step = await api(`/api/students/${DIAG.kid.id}/diagnostic/adaptive`,{method:'POST',
+        headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:DIAG.answers})}); }
+  catch(e){ V.innerHTML=`<div class="card"><p class="err">تعذّر التشخيص. <a onclick="home()" style="cursor:pointer;color:#178FC9">رجوع</a></p></div>`; return; }
+  if(step.done) return diagResult(step);
+  DIAG.current = step.next;
+  renderProbe(step.next, step.questions_asked);
+}
+function renderProbe(p, asked){
+  PROBE_ANS=null;
+  V.innerHTML = `<div class="card">
+    <div class="muted">سؤال ${H((asked||0)+1)}</div>
+    <h2 style="font-size:20px;margin-top:4px">${stackFrac(p.prompt)}</h2>
+    <div id="probeHost" style="margin-top:10px"></div>
+    <div class="err" id="derr"></div>
+    <button class="btn orange" id="dnext" onclick="submitProbe()">التالي</button>
+    <div class="toplink"><a onclick="home()" style="cursor:pointer">إنهاء لاحقاً</a></div></div>`;
+  const host=document.getElementById('probeHost');
+  if(p.visual){
+    const w=document.createElement('div'); w.className='widget'; host.appendChild(w);
+    const fb=document.createElement('div'); fb.className='muted'; fb.style.marginTop='6px'; host.appendChild(fb);
+    mountWidget(w, {id:p.question_id, family:p.family, prompt:p.prompt, visual:p.visual},
+      (ans)=>{ PROBE_ANS=String(ans); fb.innerHTML='اخترت: '+stackFrac(String(ans)); });
+  } else {
+    const inp=document.createElement('input'); inp.id='ptext'; inp.inputMode='decimal';
+    inp.placeholder='إجابة '+DIAG.kid.name; inp.oninput=()=>{ PROBE_ANS=inp.value; };
+    host.appendChild(inp);
+    setTimeout(()=>inp.focus(),50);
+  }
+}
+async function submitProbe(){
+  const err=document.getElementById('derr'); err.textContent='';
+  const ans=(PROBE_ANS==null?'':String(PROBE_ANS)).trim();
+  if(!ans){ err.textContent='اكتب إجابة '+DIAG.kid.name+'، أو اختر على الشكل.'; return; }
+  DIAG.answers.push({question_id:DIAG.current.question_id, answer:ans});
+  const b=document.getElementById('dnext'); if(b) b.disabled=true;
+  await diagNext();
+}
+function diagResult(step){
+  const name=DIAG.kid.name, pl=step.placement;
+  const body = pl
+    ? `<div class="statc pend" style="text-align:right">
+         <div class="muted" style="margin-bottom:4px">أنسب نقطة بداية لـ${name}:</div>
+         <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;color:#155E7D;font-size:20px">«${pl.name}»</div>
+         <div class="muted" style="margin-top:6px">هنا الفكرة التي يحتاج ${name} تقويتها في الأساس — ومنها نصعد خطوة خطوة.</div></div>`
+    : `<div class="statc ok" style="text-align:right">
+         <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;color:#1E945B;font-size:18px">أحسن ${name}! 🎉</div>
+         <div class="muted" style="margin-top:6px">أثبت فهم الشبكة المتاحة — نبدأ معه بالطلاقة والمراجعة.</div></div>`;
+  V.innerHTML = `<div class="card">
+    <div class="empty" style="padding-bottom:6px"><div class="em">🔍</div><h2>نتيجة تشخيص ${name}</h2>
+      <div class="muted">أجبنا ${H(step.questions_asked)} ${step.questions_asked===1?'سؤالاً':'أسئلة'} — هذا ما اكتشفناه:</div></div>
+    ${body}
+    <div class="trial-hl" style="margin-top:16px"><span class="ic">${IC.gift}</span>
+      <div><div class="t">ابدأ رحلة العلاج الآن</div>
+        <div class="d">التشخيص مجّاني — وبالاشتراك يبدأ ${name} المسار والجلسات اليومية لتقوية الأساس والصعود.</div></div></div>
+    <button class="btn orange big" onclick="plans()">اشترك لتبدأ رحلة العلاج</button>
+    <div class="toplink"><a onclick="home()" style="cursor:pointer">لاحقاً — للوحة</a></div></div>`;
+}
+
+// ---------- 5) prepare device (AFTER subscription — for daily treatment) ----------
 function setup(id, name){
   V.innerHTML = `<div class="card"><h2>هيّئ جهاز ${name}</h2>
     <div class="muted">اختر طريقة ليدخل ${name} على جهازه بأمان (دون كشف حسابك).</div>
