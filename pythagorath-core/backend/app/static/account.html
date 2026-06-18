@@ -40,6 +40,62 @@
   .setup .t .rec{ font-size:11px; background:#E8F7EE; color:#1E945B; border-radius:999px; padding:2px 8px; margin-inline-start:6px; }
   .setup .d{ color:#8A8178; font-size:13px; margin-top:3px; }
   .toplink{ text-align:center; margin-top:10px; } .toplink a{ color:#178FC9; font-weight:700; text-decoration:none; font-size:14px; }
+
+  /* ===== subscription UI (Claude Design) ===== */
+  .pay-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .secbadge{ display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:#1E945B; background:#EAF7F0; border:1px solid #CBEBD7; padding:5px 10px; border-radius:999px; }
+  .backbtn{ display:inline-flex; align-items:center; gap:5px; background:#fff; border:1px solid #EFE7DA; color:#155E7D; font-family:inherit; font-weight:600; font-size:12.5px; padding:7px 12px; border-radius:11px; cursor:pointer; }
+  .trial-hl{ display:flex; align-items:center; gap:12px; background:linear-gradient(135deg,#FFF3E0,#FFEAD0); border:1px solid #F6D9AE; border-radius:18px; padding:13px 15px; margin:14px 0; box-shadow:0 12px 26px -22px rgba(243,154,31,.7); }
+  .trial-hl .ic{ flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:13px; background:linear-gradient(135deg,#F8A93A,#F39A1F); box-shadow:0 6px 14px -6px rgba(217,126,10,.8); }
+  .trial-hl .t{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:15px; color:#9A6B00; line-height:1.3; }
+  .trial-hl .d{ font-size:11.5px; color:#B07A1A; margin-top:2px; }
+  .seg{ display:flex; gap:4px; background:#F1EBE0; border:1px solid #EAE0D0; padding:5px; border-radius:14px; margin-bottom:14px; }
+  .seg button{ flex:1; border:none; cursor:pointer; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:13.5px; padding:10px; border-radius:10px; background:transparent; color:#9A8F82; }
+  .seg button.on{ background:#fff; color:#155E7D; box-shadow:0 2px 8px -2px rgba(21,94,125,.4); }
+  .plan{ position:relative; background:#fff; border:1.5px solid #EFE7DA; border-radius:20px; padding:15px 16px; margin-bottom:12px; box-shadow:0 14px 30px -26px rgba(21,94,125,.5); }
+  .plan.rec{ border:2px solid #F39A1F; padding-top:18px; box-shadow:0 18px 38px -24px rgba(243,154,31,.85); }
+  .plan .ribbon{ position:absolute; top:-12px; right:18px; display:inline-flex; align-items:center; gap:5px; background:linear-gradient(135deg,#F8A93A,#F39A1F); color:#fff; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:11px; padding:5px 12px; border-radius:999px; box-shadow:0 6px 12px -5px rgba(217,126,10,.9); }
+  .plan .ph{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .plan .ico{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:11px; flex:0 0 auto; }
+  .plan .nm2{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:16px; color:#163E52; }
+  .plan .seat{ font-size:11px; color:#9A8F82; }
+  .plan .price{ display:flex; align-items:baseline; gap:6px; margin:2px 0 8px; }
+  .plan .price b{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:28px; color:#155E7D; direction:ltr; }
+  .plan .price span{ font-size:12px; color:#9A8F82; }
+  .trialchip{ display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:#1E945B; background:#EAF7F0; border-radius:999px; padding:3px 10px; margin-bottom:10px; }
+  .feat{ display:flex; align-items:center; gap:8px; font-size:12px; color:#5A5249; margin:4px 0; }
+  .pbtn{ width:100%; border:none; cursor:pointer; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; border-radius:13px; padding:12px; font-size:14px; }
+  .pbtn.solid{ background:linear-gradient(180deg,#F8A93A,#F39A1F); color:#fff; box-shadow:0 5px 0 #D97E0A; font-size:15px; }
+  .pbtn.solid:active{ transform:translateY(3px); box-shadow:0 2px 0 #D97E0A; }
+  .pbtn.outline{ background:#fff; border:1.5px solid #155E7D; color:#155E7D; }
+  .pbtn.outline:hover{ background:#F4F9FB; }
+  .footnote{ display:flex; align-items:center; justify-content:center; gap:6px; font-size:11px; color:#9A8F82; margin-top:16px; }
+  .osum{ display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg,#163E52,#1B6E97); border-radius:18px; padding:15px 17px; margin-bottom:18px; box-shadow:0 16px 32px -22px rgba(21,94,125,.9); }
+  .osum .lbl{ font-size:11.5px; color:rgba(255,255,255,.78); margin-bottom:3px; }
+  .osum .pn{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:16px; color:#fff; }
+  .osum .amt{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:24px; color:#fff; direction:ltr; }
+  .mtabs{ display:flex; gap:8px; margin-bottom:16px; }
+  .mtab{ flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; font-family:inherit; font-weight:600; font-size:11.5px; padding:11px 6px; border-radius:14px; background:#FBF9F4; border:1.5px solid #EFE7DA; color:#9A8F82; }
+  .mtab.on{ background:#fff; border:1.5px solid #155E7D; color:#155E7D; box-shadow:0 8px 18px -12px rgba(21,94,125,.6); }
+  .infocard{ display:flex; gap:11px; background:#EAF6FC; border:1px solid #CBE9F7; border-radius:16px; padding:14px; margin-bottom:14px; font-size:12px; color:#2A6079; line-height:1.6; }
+  .detrow{ display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed #EAE0D0; gap:10px; }
+  .detrow:last-child{ border-bottom:none; }
+  .detrow .k{ font-size:11.5px; color:#9A8F82; flex:0 0 auto; }
+  .detrow .v{ font-size:13px; font-weight:700; color:#2C2620; text-align:left; word-break:break-word; }
+  .phonebox{ background:#FBF9F4; border:1px solid #EEE6D8; border-radius:14px; padding:16px; margin-bottom:14px; text-align:center; }
+  .phonebox .num{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:23px; color:#155E7D; direction:ltr; letter-spacing:1px; }
+  .drop{ width:100%; display:flex; align-items:center; justify-content:center; min-height:80px; border:2px dashed #CBE9F7; border-radius:16px; padding:14px; background:#F8FBFD; cursor:pointer; text-align:center; }
+  .drop.filled{ border:1.5px solid #CBEBD7; background:#F4FBF6; }
+  .drop input{ display:none; }
+  /* status cards */
+  .statc{ border-radius:18px; padding:16px; margin:16px 0; }
+  .statc.ok{ background:#F1FAF4; border:1px solid #CBEBD7; box-shadow:0 12px 26px -24px rgba(30,148,91,.7); }
+  .statc.pend{ background:#FFF7EC; border:1px solid #F6E3C2; box-shadow:0 12px 26px -24px rgba(217,126,10,.6); }
+  .statc.rej{ background:#FDECEC; border:1px solid #F3C9C9; box-shadow:0 12px 26px -24px rgba(192,57,43,.5); }
+  .statc .row{ display:flex; align-items:flex-start; gap:11px; }
+  .statc .sic{ flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:13px; }
+  .statc .ttl{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:16px; }
+  .reason{ display:flex; gap:8px; background:#fff; border:1px solid #F3C9C9; border-radius:12px; padding:10px 12px; margin-top:12px; font-size:12px; color:#9E4A40; line-height:1.6; }
 </style>
 </head>
 <body>
@@ -98,7 +154,7 @@ async function home(){
   try{ SUB = await api('/api/subscription'); }catch(e){ SUB=null; }
   try{ RECEIPTS = await api('/api/receipts'); }catch(e){ RECEIPTS=[]; }
   if(!kids.length){
-    V.innerHTML = `${receiptBanner()}<div class="card"><div class="empty"><div class="em">👶</div>
+    V.innerHTML = `${subBanner()}<div class="card"><div class="empty"><div class="em">👶</div>
       <h2>أهلاً بك!</h2><div class="muted">لم تُضِف طفلاً بعد. لنبدأ بإضافة طفلك الأول.</div>
       <button class="btn orange big" style="margin-top:18px" onclick="addChild()">＋ أضف طفلك الأول</button></div>
       <div class="toplink"><a onclick="logout()" style="cursor:pointer">تسجيل الخروج</a></div></div>`;
@@ -112,36 +168,55 @@ async function home(){
     <div class="toplink"><a href="/parent">لوحة المتابعة ↗</a> · <a onclick="logout()" style="cursor:pointer">خروج</a></div></div>`;
 }
 const SUB_AR = {trial:'تجربة مجانية', active:'اشتراك فعّال', expired:'منتهٍ', canceled:'ملغى'};
+// status-card icons (Claude Design)
+const SIC = {
+  ok:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 3v6c0 4.5-3 8.3-7 9.5C8 19.3 5 15.5 5 11V5l7-3z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 11.5l2 2 4-4.5" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  clock:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#fff" stroke-width="1.8"/><path d="M12 7.5V12l3 1.8" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  x:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#fff" stroke-width="1.8"/><path d="M9 9l6 6M15 9l-6 6" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg>',
+  warn:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex:0 0 auto;margin-top:1px"><path d="M12 3l9.5 16.5H2.5L12 3z" stroke="#C0392B" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 10v4M12 17h.01" stroke="#C0392B" stroke-width="1.8" stroke-linecap="round"/></svg>',
+};
+// Gregorian date in Arabic (e.g. ١٤ يوليو ٢٠٢٦)
+const _MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+function arDate(iso){ if(!iso) return ''; const d=new Date(iso); if(isNaN(d)) return H(String(iso).slice(0,10));
+  return `${H(d.getDate())} ${_MONTHS[d.getMonth()]} ${H(d.getFullYear())}`; }
+
 function receiptBanner(){
   // surface the latest manual-payment receipt status (pending / rejected) when not active
   const r=(RECEIPTS||[])[0];
   if(!r) return '';
   if(r.status==='pending'){
-    return `<div class="card" style="background:#FFF7EC;border-color:#F6E3C2">
-      <h2 style="color:#D97E0A">🧾 إيصالك قيد المراجعة</h2>
-      <div class="muted">استلمنا إيصال «${r.method}» للخطّة ${r.plan||''}. سنفعّل اشتراكك بعد المراجعة.</div></div>`;
+    return `<div class="statc pend"><div class="row">
+      <span class="sic" style="background:linear-gradient(135deg,#F8B24A,#E08A14);box-shadow:0 6px 14px -6px rgba(217,126,10,.8)">${SIC.clock}</span>
+      <div style="flex:1"><div class="ttl" style="color:#D97E0A">إيصالك قيد المراجعة</div>
+        <div style="font-size:12px;color:#9A7634;margin-top:3px;line-height:1.6">استلمنا إيصال «${r.method}» للخطّة ${r.plan||''}. سنفعّل اشتراكك بعد المراجعة — عادةً خلال ٢٤ ساعة.</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#D97E0A;background:#FFEFD6;border-radius:999px;padding:4px 11px;margin-top:9px"><span style="width:6px;height:6px;border-radius:50%;background:#E08A14"></span>قيد المعالجة</div>
+      </div></div></div>`;
   }
   if(r.status==='rejected'){
-    return `<div class="card" style="background:#FDECEC;border-color:#F3C9C9">
-      <h2 style="color:#C0392B">لم يُقبل الإيصال</h2>
-      <div class="muted">${r.note||'يرجى المحاولة بإيصال صحيح.'}</div>
-      <button class="btn orange" onclick="plans()">حاوِل مجدّداً</button></div>`;
+    return `<div class="statc rej"><div class="row" style="margin-bottom:11px">
+      <span class="sic" style="background:linear-gradient(135deg,#E5645A,#C0392B);box-shadow:0 6px 14px -6px rgba(192,57,43,.7)">${SIC.x}</span>
+      <div style="flex:1"><div class="ttl" style="color:#C0392B">لم يُقبل الإيصال</div>
+        <div style="font-size:12px;color:#9E4A40;margin-top:3px;line-height:1.6">يرجى المحاولة بإيصال صحيح وواضح.</div></div></div>
+      <div class="reason">${SIC.warn}<div><strong style="color:#C0392B">السبب:</strong> ${r.note||'لم يُقبل الإيصال.'}</div></div>
+      <button class="pbtn solid" style="margin-top:12px" onclick="plans()">حاوِل مجدّداً</button></div>`;
   }
   return '';
 }
 function subBanner(){
   if(SUB && SUB.has_access){
-    return `<div class="card" style="background:#F1FAF4;border-color:#CBEBD7">
-      <h2 style="color:#1E945B">✓ ${SUB_AR[SUB.status]||'فعّال'}</h2>
-      <div class="muted">وصول مفتوح${SUB.access_until?` حتى ${H(SUB.access_until.slice(0,10))}`:''} — لك ولأطفالك.</div>
-      <button class="ghost" style="margin-top:12px;width:auto;padding:8px 16px" onclick="plans()">تغيير الخطّة</button></div>`;
+    return `<div class="statc ok"><div class="row" style="margin-bottom:10px">
+      <span class="sic" style="background:linear-gradient(135deg,#34C07D,#1E945B);box-shadow:0 6px 14px -6px rgba(30,148,91,.8)">${SIC.ok}</span>
+      <div style="flex:1"><div style="display:flex;align-items:center;gap:7px"><span class="ttl" style="color:#1E945B">${SUB_AR[SUB.status]||'فعّال'}</span><span style="width:8px;height:8px;border-radius:50%;background:#27B16E"></span></div>
+        <div style="font-size:12px;color:#5A6F62;margin-top:2px">وصول مفتوح${SUB.access_until?` حتى ${arDate(SUB.access_until)}`:''} — لك ولأطفالك.</div></div></div>
+      <button style="background:#fff;border:1px solid #CBEBD7;color:#1E945B;font-family:inherit;font-weight:700;font-size:12.5px;padding:9px 16px;border-radius:11px;cursor:pointer" onclick="plans()">تغيير الخطّة</button></div>`;
   }
   // a pending/rejected receipt takes the banner when there's no active access
   const rb=receiptBanner(); if(rb) return rb;
-  return `<div class="card" style="background:#FFF7EC;border-color:#F6E3C2">
-    <h2 style="color:#D97E0A">افتح التعلّم الكامل</h2>
-    <div class="muted">${SUB&&SUB.status==='expired'?'انتهى وصولك. ':''}اشترك ليبدأ أطفالك رحلتهم بلا حدود.</div>
-    <button class="btn orange" onclick="plans()">عرض الخطط والاشتراك</button></div>`;
+  return `<div class="statc pend"><div class="row">
+    <span class="sic" style="background:linear-gradient(135deg,#F8A93A,#F39A1F);box-shadow:0 6px 14px -6px rgba(217,126,10,.8)">${IC.gift}</span>
+    <div style="flex:1"><div class="ttl" style="color:#D97E0A">افتح التعلّم الكامل</div>
+      <div style="font-size:12px;color:#9A7634;margin-top:3px;line-height:1.6">${SUB&&SUB.status==='expired'?'انتهى وصولك. ':''}اشترك ليبدأ أطفالك رحلتهم بلا حدود.</div></div></div>
+    <button class="pbtn solid" style="margin-top:12px" onclick="plans()">عرض الخطط والاشتراك</button></div>`;
 }
 function coName(c){ const f=CO.find(x=>x[0]===c); return f?f[1]:null; }
 function gradeName(id){ if(!GRADES) return null; const g=GRADES.find(x=>x.id===id); return g?g.name:null; }
@@ -212,10 +287,39 @@ async function directDevice(){
   catch(e){ alert('تعذّر تهيئة الجهاز'); }
 }
 
-// ---------- 6) plans + subscribe (التجربة / فيزا) ----------
+// ---------- 6) plans + subscribe (Claude Design — real data, full function) ----------
 const omr = b => H((Number(b||0)/1000).toFixed(3));
 const PERIOD = {monthly:'شهري', yearly:'سنوي'};
-let PLANS=null, PAYINFO=null;
+const PERIOD_UNIT = {monthly:'شهر', yearly:'سنة'};
+// inline icons (the design's look)
+const IC = {
+  shield:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2l7 3v6c0 4.5-3 8.3-7 9.5C8 19.3 5 15.5 5 11V5l7-3z" stroke="#1E945B" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 11.5l2 2 4-4.5" stroke="#1E945B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  back:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="#155E7D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  gift:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20 12v8H4v-8M2 7h20v5H2V7zM12 7v13M12 7S10.5 3 8 3.5 8 7 8 7h4zM12 7s1.5-4 4-3.5S16 7 16 7h-4z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  check:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" fill="#EAF7F0"/><path d="M8 12.3l2.6 2.6L16 9" stroke="#1E945B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  lock:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="11" rx="2.5" stroke="#9A8F82" stroke-width="1.8"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#9A8F82" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  star:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 17l-5.8 3.3 1.6-6.6L2.6 8.8l6.8-.5L12 2z" fill="#fff"/></svg>',
+  up:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 16V5M12 5L8 9M12 5l4 4" stroke="#178FC9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3" stroke="#178FC9" stroke-width="2" stroke-linecap="round"/></svg>',
+  fileok:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 12.5l3.5 3.5L18 7.5" stroke="#1E945B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  one:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.4" stroke="#178FC9" stroke-width="1.8"/><path d="M5.5 19.5c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5" stroke="#178FC9" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  fam:'<svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="3" stroke="#fff" stroke-width="1.8"/><circle cx="16.5" cy="9" r="2.4" stroke="#fff" stroke-width="1.8"/><path d="M2.5 19c0-3.2 2.5-5 5.5-5s5.5 1.8 5.5 5M14 19c0-2.6 2-4.2 4.5-4.2S22.5 16 22.5 18.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  grp:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="8" r="2.4" stroke="#7B5BC0" stroke-width="1.7"/><circle cx="12" cy="7" r="2.4" stroke="#7B5BC0" stroke-width="1.7"/><circle cx="17" cy="8" r="2.4" stroke="#7B5BC0" stroke-width="1.7"/><path d="M3 18c0-2.6 1.8-4 4-4M21 18c0-2.6-1.8-4-4-4M8 18.5c0-2.8 1.8-4.5 4-4.5s4 1.7 4 4.5" stroke="#7B5BC0" stroke-width="1.7" stroke-linecap="round"/></svg>',
+};
+function methodIconSvg(kind, color){
+  const inner = {
+    visa:`<rect x="2.5" y="5" width="19" height="14" rx="2.5" stroke="${color}" stroke-width="1.8"/><path d="M2.5 9.5h19" stroke="${color}" stroke-width="1.8"/><path d="M6 15.5h4" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>`,
+    bank:`<path d="M3 9.5L12 4l9 5.5M4.5 9.5h15M5.5 9.5v8M18.5 9.5v8M9 9.5v8M14 9.5v8M3.5 20.5h17" stroke="${color}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>`,
+    phone:`<rect x="6.5" y="2.5" width="11" height="19" rx="2.5" stroke="${color}" stroke-width="1.8"/><path d="M10.5 18.5h3" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>`,
+  }[kind] || '';
+  return `<svg width="20" height="20" viewBox="0 0 24 24" fill="none">${inner}</svg>`;
+}
+function tierIcon(n){
+  if(n<=1) return `<span class="ico" style="background:#E4F3FB">${IC.one}</span>`;
+  if(n>=5) return `<span class="ico" style="background:#EDE7F7">${IC.grp}</span>`;
+  return `<span class="ico" style="background:linear-gradient(135deg,#FFE7C2,#F8B24A)">${IC.fam}</span>`;
+}
+
+let PLANS=null, PAYINFO=null, PLAN_PERIOD=null;
 async function plans(){
   V.innerHTML = `<div class="card"><p class="muted">… جارٍ تحميل الخطط</p></div>`;
   try{ [PLANS, PAYINFO] = await Promise.all([api('/api/plans'), api('/api/payment-info')]); }
@@ -226,34 +330,58 @@ async function plans(){
       <div class="toplink"><a onclick="home()" style="cursor:pointer">رجوع</a></div></div>`;
     return;
   }
-  const pi=PAYINFO||{visa:true,bank:{},phone:{}};
-  V.innerHTML = `<div class="card"><h2>اختر خطّتك</h2>
-    <div class="muted">السعر بالريال العُماني. الوصول يفتح لك ولأطفالك فوراً.</div>
-    ${PLANS.map(p=>`<div class="kid" style="display:block;padding:16px">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="nm" style="font-size:17px">${p.name}</div>
-        <span class="meta">${PERIOD[p.period]||p.period} · حتى ${H(p.max_children)} ${p.max_children==1?'طفل':'أطفال'}</span></div>
-      <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;color:#155E7D;font-size:24px;margin:6px 0">
-        ${omr(p.price)} <span style="font-size:13px;color:#9A8F82">ر.ع. / ${PERIOD[p.period]||p.period}</span></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        ${p.trial_days>0?`<button class="btn orange" style="flex:1;margin-top:0" onclick="startTrial(${p.id})">ابدأ التجربة (${H(p.trial_days)} يوم)</button>`:''}
-        ${pi.visa?`<button class="btn" style="flex:1;margin-top:0" onclick="payVisa(${p.id})">اشترك — فيزا</button>`:''}
-        ${pi.bank&&pi.bank.on?`<button class="ghost" style="flex:1" onclick="manualPay(${p.id},'bank')">تحويل بنكي</button>`:''}
-        ${pi.phone&&pi.phone.on?`<button class="ghost" style="flex:1" onclick="manualPay(${p.id},'phone')">تحويل لرقم هاتف</button>`:''}
-      </div>
-    </div>`).join('')}
+  const periods = [...new Set(PLANS.map(p=>p.period))];
+  if(PLAN_PERIOD===null || !periods.includes(PLAN_PERIOD)) PLAN_PERIOD = periods.includes('monthly')?'monthly':periods[0];
+  const shown = periods.length>1 ? PLANS.filter(p=>p.period===PLAN_PERIOD) : PLANS;
+  const maxKids = Math.max(...shown.map(p=>p.max_children));
+  const maxTrial = Math.max(0, ...PLANS.map(p=>p.trial_days||0));
+
+  const toggle = periods.length>1 ? `<div class="seg">
+    ${periods.includes('monthly')?`<button class="${PLAN_PERIOD==='monthly'?'on':''}" onclick="PLAN_PERIOD='monthly';plans()">شهري</button>`:''}
+    ${periods.includes('yearly')?`<button class="${PLAN_PERIOD==='yearly'?'on':''}" onclick="PLAN_PERIOD='yearly';plans()">سنوي</button>`:''}
+  </div>` : '';
+
+  const trialHL = maxTrial>0 ? `<div class="trial-hl">
+    <span class="ic">${IC.gift}</span>
+    <div><div class="t">ابدأ بتجربة مجّانية ${H(maxTrial)} ${maxTrial===1?'يوم':'أيام'}</div>
+      <div class="d">دون بطاقة — وألغِ متى شئت قبل انتهائها.</div></div></div>` : '';
+
+  const card = (p)=>{
+    const rec = p.max_children===maxKids && maxKids>=2 && shown.length>1;
+    return `<div class="plan${rec?' rec':''}">
+      ${rec?`<span class="ribbon">${IC.star} الأنسب للعائلات</span>`:''}
+      <div class="ph">${tierIcon(p.max_children)}
+        <div style="flex:1"><div class="nm2">${p.name}</div>
+          <div class="seat">${p.max_children===1?'ملفّ طفل واحد':'حتى '+H(p.max_children)+' أطفال'} · كل المهارات</div></div></div>
+      <div class="price"><b>${omr(p.price)}</b><span>ر.ع. / ${PERIOD_UNIT[p.period]||PERIOD[p.period]}</span></div>
+      ${p.trial_days>0?`<span class="trialchip">${IC.check} تجربة ${H(p.trial_days)} ${p.trial_days===1?'يوم':'أيام'} مجّانية</span>`:''}
+      <div class="feat">${IC.check} كل المهارات والوحدات بلا حدود</div>
+      <div class="feat">${IC.check} تقارير وليّ الأمر الكاملة</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+        ${p.trial_days>0?`<button class="pbtn solid" onclick="startTrial(${p.id})">ابدأ التجربة المجّانية</button>`:''}
+        <button class="pbtn ${p.trial_days>0?'outline':'solid'}" onclick="payScreen(${p.id})">${p.trial_days>0?'أو اشترك مباشرةً':'اشترك الآن'}</button>
+      </div></div>`;
+  };
+
+  V.innerHTML = `<div class="card">
+    <div class="pay-head">
+      <button class="backbtn" onclick="home()">${IC.back} رجوع</button>
+      <span class="secbadge">${IC.shield} دفع آمن</span></div>
+    <h2 style="text-align:center;margin-top:8px">اختر خطّتك</h2>
+    <p class="muted" style="text-align:center">اشتراك واحد يفتح التعلّم لك ولكل أطفالك. السعر بالريال العُماني.</p>
+    ${trialHL}${toggle}
+    ${shown.map(card).join('')}
     <div class="err" id="perr"></div>
-    <div class="toplink"><a onclick="home()" style="cursor:pointer">رجوع</a></div></div>`;
+    <div class="footnote">${IC.lock} إلغاء في أيّ وقت · بياناتك محميّة</div></div>`;
 }
 async function startTrial(id){
-  const err=document.getElementById('perr'); if(err) err.textContent='';
   try{ await api('/api/subscription/trial',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan_id:id})}); subscribed(); }
-  catch(e){ if(err) err.textContent = e.detail || 'تعذّر بدء التجربة.'; }
+  catch(e){ const err=document.getElementById('perr')||document.getElementById('payerr'); if(err) err.textContent = e.detail || 'تعذّر بدء التجربة.'; }
 }
 async function payVisa(id){
-  const err=document.getElementById('perr'); if(err) err.textContent='';
+  const err=document.getElementById('payerr');
   try{ const r=await api('/api/subscription/checkout',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan_id:id})});
-    if(r.has_access){ subscribed(); } else { if(err) err.textContent='تعذّر إتمام الدفع.'; } }
+    if(r.has_access){ subscribed(); } else if(err){ err.textContent='تعذّر إتمام الدفع.'; } }
   catch(e){ if(err) err.textContent = e.detail || 'تعذّر إتمام الدفع.'; }
 }
 function subscribed(){
@@ -262,46 +390,98 @@ function subscribed(){
     <button class="btn orange big" onclick="home()">إلى لوحتك</button></div>`;
 }
 
-// ---------- 7) manual payment (تحويل بنكي / هاتف + رفع إيصال) ----------
-let RECEIPT_FILE=null, RECEIPT_NAME=null;
-function manualPay(planId, method){
-  const p=(PLANS||[]).find(x=>x.id===planId); if(!p) return home();
+// ---------- 7) payment screen (method tabs + transfer details + receipt upload) ----------
+let PAY_PLAN=null, PAY_METHOD=null, RECEIPT_FILE=null, RECEIPT_NAME=null;
+function payScreen(planId, fresh=true){
+  const p=(PLANS||[]).find(x=>x.id===planId); if(!p) return plans();
+  PAY_PLAN=planId;
+  if(fresh){ RECEIPT_FILE=null; RECEIPT_NAME=null; }
+  const pi=PAYINFO||{visa:true,bank:{},phone:{}};
+  const enabled=[]; if(pi.visa) enabled.push('visa'); if(pi.bank&&pi.bank.on) enabled.push('bank'); if(pi.phone&&pi.phone.on) enabled.push('phone');
+  if(!enabled.length){
+    V.innerHTML = `<div class="card"><div class="pay-head"><button class="backbtn" onclick="plans()">${IC.back} للخطط</button></div>
+      <div class="empty"><div class="em">💳</div><h2>لا طرق دفع متاحة</h2>
+      <div class="muted">لم يُفعّل المالك أيّ طريقة دفع بعد.</div></div></div>`;
+    return;
+  }
+  if(!enabled.includes(PAY_METHOD)) PAY_METHOD=enabled[0];
+  const M_AR={visa:'فيزا',bank:'تحويل بنكي',phone:'هاتف'};
+  const tab=(k)=>{ const on=PAY_METHOD===k; const col=on?'#155E7D':'#A99F90';
+    return `<button class="mtab ${on?'on':''}" onclick="setPayMethod('${k}')">${methodIconSvg(k,col)}<span>${M_AR[k]}</span></button>`; };
+
+  V.innerHTML = `<div class="card">
+    <div class="pay-head"><button class="backbtn" onclick="plans()">${IC.back} للخطط</button>
+      <h2 style="font-size:19px;margin:0">إتمام الاشتراك</h2></div>
+    <div class="osum"><div><div class="lbl">الخطّة المختارة</div>
+        <div class="pn">${p.name} · ${PERIOD[p.period]||p.period}</div></div>
+      <div style="text-align:left"><div class="amt">${omr(p.price)}</div><div class="lbl">ر.ع.</div></div></div>
+    <div style="font-size:13px;font-weight:700;color:#155E7D;margin-bottom:9px">طريقة الدفع</div>
+    <div class="mtabs">${enabled.map(tab).join('')}</div>
+    <div id="payPanel">${payPanel(p)}</div>
+    <div class="err" id="payerr"></div>
+    <div class="footnote">${IC.lock} دفع آمن · المراجعة اليدويّة عادةً خلال ٢٤ ساعة</div></div>`;
+}
+function setPayMethod(k){ PAY_METHOD=k; payScreen(PAY_PLAN, false); }
+function payPanel(p){
   const pi=PAYINFO||{bank:{},phone:{}};
-  RECEIPT_FILE=null; RECEIPT_NAME=null;
-  const details = method==='bank'
-    ? `<div class="muted">حوّل المبلغ إلى الحساب التالي:</div>
-       <div class="consent" style="white-space:pre-wrap">${(pi.bank.details||'').replace(/</g,'&lt;')||'لم تُضَف تفاصيل الحساب بعد.'}</div>`
-    : `<div class="muted">حوّل المبلغ إلى الرقم التالي:</div>
-       <div class="consent" style="text-align:center;font-size:18px;font-weight:700">${H((pi.phone.number||'').replace(/</g,'&lt;'))||'لم يُضَف الرقم بعد.'}</div>`;
-  V.innerHTML = `<div class="card"><h2>${method==='bank'?'تحويل بنكي':'تحويل لرقم هاتف'}</h2>
-    <div class="muted">الخطّة: ${p.name} — المبلغ: ${omr(p.price)} ر.ع.</div>
-    ${details}
-    <label>ارفع صورة الإيصال أو ملفّ PDF</label>
-    <input id="rfile" type="file" accept="image/*,application/pdf" onchange="pickReceipt(this)">
-    <div id="rprev" class="muted" style="margin-top:6px"></div>
-    <div class="err" id="merr"></div>
-    <button class="btn orange" onclick="submitReceipt(${p.id},'${method}')">أرسل الإيصال للمراجعة</button>
-    <div class="toplink"><a onclick="plans()" style="cursor:pointer">رجوع للخطط</a></div></div>`;
+  if(PAY_METHOD==='visa'){
+    return `<div class="infocard">
+        <span style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:11px;background:#fff;border:1px solid #CBE9F7">${IC.shield.replace(/#1E945B/g,'#178FC9')}</span>
+        <div>سننقلك إلى <strong>بوّابة دفع آمنة</strong> لإدخال بيانات بطاقتك. لا نحفظ رقم بطاقتك، وتُفعَّل الخطّة فور نجاح الدفع.</div></div>
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:14px">
+        <span style="display:inline-flex;align-items:center;height:26px;padding:0 9px;border-radius:6px;background:#1A1F71;color:#fff;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:12px;letter-spacing:.5px">VISA</span>
+        <span style="display:inline-flex;align-items:center;height:26px;padding:0 9px;border-radius:6px;background:#fff;border:1px solid #EFE7DA"><span style="width:13px;height:13px;border-radius:50%;background:#EB001B;display:inline-block;margin-left:-5px"></span><span style="width:13px;height:13px;border-radius:50%;background:#F79E1B;display:inline-block;opacity:.85"></span></span>
+        <span style="font-size:11px;color:#9A8F82">وبطاقات مدى المحلّية</span></div>
+      <button class="pbtn solid" onclick="payVisa(${p.id})">ادفع ${omr(p.price)} ر.ع. بأمان</button>`;
+  }
+  if(PAY_METHOD==='bank'){
+    const details=(pi.bank.details||'').trim();
+    return `<div class="muted" style="margin-bottom:8px">حوّل المبلغ إلى الحساب التالي، ثم ارفع صورة الإيصال.</div>
+      <div style="background:#FBF9F4;border:1px solid #EEE6D8;border-radius:14px;padding:14px;margin-bottom:14px;white-space:pre-wrap;font-size:13px;color:#2C2620;line-height:1.7">${details?H(details.replace(/</g,'&lt;')):'لم تُضَف تفاصيل الحساب بعد.'}</div>
+      ${dropZone()}
+      <button class="pbtn solid" style="margin-top:14px" onclick="submitReceipt(${p.id},'bank')">أرسل الإيصال للمراجعة</button>`;
+  }
+  // phone
+  const num=(pi.phone.number||'').trim();
+  return `<div class="muted" style="margin-bottom:8px">حوّل المبلغ إلى الرقم التالي، ثم ارفع الإيصال.</div>
+    <div class="phonebox"><div style="font-size:11.5px;color:#9A8F82;margin-bottom:5px">رقم التحويل (محفظة الهاتف)</div>
+      <div class="num">${num?H(num.replace(/</g,'&lt;')):'لم يُضَف الرقم بعد.'}</div></div>
+    ${dropZone()}
+    <button class="pbtn solid" style="margin-top:14px" onclick="submitReceipt(${p.id},'phone')">أرسل الإيصال للمراجعة</button>`;
+}
+function dropZone(){
+  const body = RECEIPT_NAME
+    ? `<div style="display:flex;align-items:center;gap:10px;width:100%">
+        <span style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:#EAF7F0">${IC.fileok}</span>
+        <div style="flex:1;text-align:right"><div style="font-size:12.5px;font-weight:700;color:#163E52">${RECEIPT_NAME}</div><div style="font-size:10.5px;color:#1E945B">تمّ الاختيار · جاهز للإرسال</div></div>
+        <span style="font-size:11px;color:#9A8F82">تغيير</span></div>`
+    : `<div style="display:flex;flex-direction:column;align-items:center;gap:7px">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#EAF6FC">${IC.up}</span>
+        <div style="font-size:12.5px;font-weight:600;color:#155E7D">اضغط لاختيار صورة الإيصال</div>
+        <div style="font-size:10.5px;color:#9A8F82">صورة أو PDF · حتى ٢ ميجابايت</div></div>`;
+  return `<label class="drop${RECEIPT_NAME?' filled':''}">
+    <input type="file" accept="image/*,application/pdf" onchange="pickReceipt(this)">${body}</label>`;
 }
 function pickReceipt(input){
-  const f=input.files&&input.files[0]; const prev=document.getElementById('rprev'); const err=document.getElementById('merr'); err.textContent='';
-  if(!f){ RECEIPT_FILE=null; prev.textContent=''; return; }
-  if(f.size > 2*1024*1024){ err.textContent='حجم الملفّ كبير — الحدّ ٢ ميجابايت.'; input.value=''; RECEIPT_FILE=null; prev.textContent=''; return; }
+  const err=document.getElementById('payerr'); if(err) err.textContent='';
+  const f=input.files&&input.files[0];
+  if(!f){ RECEIPT_FILE=null; RECEIPT_NAME=null; payScreen(PAY_PLAN,false); return; }
+  if(f.size > 2*1024*1024){ if(err) err.textContent='حجم الملفّ كبير — الحدّ ٢ ميجابايت.'; input.value=''; RECEIPT_FILE=null; RECEIPT_NAME=null; payScreen(PAY_PLAN,false); return; }
   const r=new FileReader();
-  r.onload=()=>{ RECEIPT_FILE=r.result; RECEIPT_NAME=f.name; prev.textContent='تمّ اختيار: '+f.name; };
-  r.onerror=()=>{ err.textContent='تعذّر قراءة الملفّ.'; };
+  r.onload=()=>{ RECEIPT_FILE=r.result; RECEIPT_NAME=f.name; payScreen(PAY_PLAN,false); };
+  r.onerror=()=>{ if(err) err.textContent='تعذّر قراءة الملفّ.'; };
   r.readAsDataURL(f);
 }
 async function submitReceipt(planId, method){
-  const err=document.getElementById('merr'); err.textContent='';
-  if(!RECEIPT_FILE){ err.textContent='ارفع صورة الإيصال أو ملفّ PDF أولاً.'; return; }
+  const err=document.getElementById('payerr'); if(err) err.textContent='';
+  if(!RECEIPT_FILE){ if(err) err.textContent='ارفع صورة الإيصال أو ملفّ PDF أولاً.'; return; }
   try{
     await api('/api/receipts',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({plan_id:planId, method, file:RECEIPT_FILE, filename:RECEIPT_NAME})});
     V.innerHTML = `<div class="card"><div class="empty"><div class="em">🧾</div>
       <h2>إيصالك قيد المراجعة</h2><div class="muted">سنراجع التحويل ونفعّل اشتراكك قريباً. ستظهر الحالة في صفحتك.</div></div>
       <button class="btn orange big" onclick="home()">إلى لوحتك</button></div>`;
-  }catch(e){ err.textContent = e.detail || 'تعذّر إرسال الإيصال.'; }
+  }catch(e){ if(err) err.textContent = e.detail || 'تعذّر إرسال الإيصال.'; }
 }
 
 boot();
