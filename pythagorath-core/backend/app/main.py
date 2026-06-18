@@ -624,6 +624,13 @@ def list_plans(user=Depends(auth.current_user), db: Session = Depends(get_db)):
     return db.execute(select(Plan).where(Plan.is_active.is_(True)).order_by(Plan.id)).scalars().all()
 
 
+@app.get("/api/public/plans", response_model=list[schemas.PlanRead])
+def public_plans(db: Session = Depends(get_db)):
+    """Active plans for the PUBLIC pricing page (no auth) — so a visitor sees the real,
+    owner-managed prices before signing up. Read-only; identical to the authed list."""
+    return db.execute(select(Plan).where(Plan.is_active.is_(True)).order_by(Plan.id)).scalars().all()
+
+
 @app.get("/api/subscription", response_model=schemas.SubscriptionRead)
 def my_subscription(user=Depends(auth.current_user), db: Session = Depends(get_db)):
     return _sub_response(db, user)
@@ -838,6 +845,21 @@ def admin_editor_page():
 @app.get("/landing")
 def landing_page():
     return FileResponse(_STATIC / "landing.html")
+
+
+@app.get("/about")
+def about_page():
+    return FileResponse(_STATIC / "about.html")
+
+
+@app.get("/pricing")
+def pricing_page():
+    return FileResponse(_STATIC / "pricing.html")
+
+
+@app.get("/contact")
+def contact_page():
+    return FileResponse(_STATIC / "contact.html")
 
 
 @app.get("/account")

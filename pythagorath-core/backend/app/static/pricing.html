@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الأسعار — فيثاغورث</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Readex+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;} body{background:#FFFBF4;}
+  @keyframes floatA{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-16px) rotate(5deg)}}
+  @keyframes floatB{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(14px) rotate(-6deg)}}
+  ::selection{background:#F39A1F;color:#fff;}
+  .seg button{display:flex;align-items:center;justify-content:center;gap:5px;border:none;cursor:pointer;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:15px;padding:10px 22px;border-radius:10px;background:transparent;color:#CBF3F4;}
+  .seg button.on{background:#fff;color:#0C5E61;}
+  @media(max-width:860px){ .navlinks{display:none !important;} #plans .grid{grid-template-columns:1fr !important;} .faq{grid-template-columns:1fr !important;} }
+</style>
+</head>
+<body>
+<div dir="rtl" lang="ar" style="font-family:'Readex Pro',sans-serif;color:#125B5E;background:#FFFBF4;overflow-x:hidden;">
+
+  <section style="position:relative;background:linear-gradient(160deg,#15999E 0%,#0C7376 55%,#095A5E 100%);padding:22px 28px 150px;overflow:hidden;">
+    <span style="position:absolute;top:150px;left:10%;font-family:'Baloo Bhaijaan 2',cursive;font-size:38px;font-weight:800;color:#F8B24A;opacity:.5;animation:floatB 7s ease-in-out infinite;">٪</span>
+    <span style="position:absolute;bottom:170px;right:12%;font-family:'Baloo Bhaijaan 2',cursive;font-size:32px;font-weight:800;color:#89F5FB;opacity:.4;animation:floatA 8s ease-in-out infinite;">＋</span>
+
+    <nav style="position:relative;z-index:5;max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:24px;padding:8px 0 0;">
+      <a href="/landing" style="display:flex;align-items:center;"><img src="/static/assets/logo-white.png" alt="فيثاغورث" style="height:36px;width:auto;display:block;" /></a>
+      <div style="flex:1;"></div>
+      <div class="navlinks" style="display:flex;align-items:center;gap:26px;font-size:16.5px;font-weight:500;color:#CBF3F4;">
+        <a href="/landing" style="text-decoration:none;color:inherit;">الرئيسية</a>
+        <a href="/about" style="text-decoration:none;color:inherit;">من نحن</a>
+        <a href="/pricing" style="text-decoration:none;color:#fff;font-weight:700;border-bottom:2px solid #F8B24A;padding-bottom:3px;">الأسعار</a>
+        <a href="/contact" style="text-decoration:none;color:inherit;">تواصل معنا</a>
+      </div>
+      <a href="/account" style="text-decoration:none;color:#CBF3F4;font-size:16px;font-weight:600;">دخول</a>
+      <a href="/account" style="text-decoration:none;background:linear-gradient(180deg,#F8A93A,#F39A1F);color:#fff;font-weight:700;font-size:16.5px;padding:11px 22px;border-radius:999px;box-shadow:0 10px 22px -8px rgba(243,154,31,.7);">ابدأ مجاناً</a>
+    </nav>
+
+    <div style="position:relative;z-index:4;max-width:760px;margin:0 auto;text-align:center;padding-top:44px;">
+      <span style="display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:15px;padding:8px 16px;border-radius:999px;backdrop-filter:blur(4px);">الأسعار</span>
+      <h1 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:50px;line-height:1.2;color:#fff;margin:18px 0 0;letter-spacing:-.5px;text-wrap:balance;">خطّة واحدة تكفي العائلة</h1>
+      <p style="font-size:19px;line-height:1.85;color:#CDF2F3;margin:18px auto 0;max-width:520px;">اشتراك واحد يفتح التعلّم لكل أطفالك. ابدأ بتجربة مجّانية، وألغِ متى شئت.</p>
+
+      <div style="display:inline-flex;align-items:center;gap:11px;background:rgba(248,178,74,.16);border:1px solid rgba(248,178,74,.45);border-radius:16px;padding:12px 20px;margin-top:24px;">
+        <span style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#F8A93A,#F39A1F);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.6" stroke="#fff" stroke-width="1.8"/><path d="M16 16l5 5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+        <span style="font-size:15px;font-weight:700;color:#fff;text-align:right;">ابدأ بالتشخيص المجاني — اعرف أين يتعثّر ابنك قبل أن تشترك.</span>
+      </div>
+
+      <div id="billRow" style="margin-top:24px;"></div>
+    </div>
+
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style="position:absolute;bottom:-1px;left:0;width:100%;height:120px;" fill="none"><path d="M0 120 L0 56 Q360 0 720 40 Q1080 80 1440 24 L1440 120 Z" fill="#FFFBF4"/></svg>
+  </section>
+
+  <section id="plans" style="background:#FFFBF4;padding:8px 28px 56px;">
+    <div class="grid" id="plansGrid" style="max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;">
+      <div style="grid-column:1/-1;text-align:center;color:#7DA2A4;padding:30px;">… جارٍ تحميل الخطط</div>
+    </div>
+    <p style="text-align:center;font-size:13px;color:#7DA2A4;margin:26px auto 0;max-width:620px;line-height:1.8;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#7DA2A4" stroke-width="1.7"/><path d="M12 11v5M12 8h.01" stroke="#7DA2A4" stroke-width="1.8" stroke-linecap="round"/></svg>الأسعار تُحدَّد من لوحة الإدارة وتظهر هنا تلقائياً · إلغاء في أي وقت · بياناتك محمية.</p>
+  </section>
+
+  <section style="background:#fff;padding:56px 28px;border-top:1px solid #F0E7D8;">
+    <div style="max-width:980px;margin:0 auto;">
+      <h2 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:30px;color:#0C5E61;margin:0 0 28px;text-align:center;">أسئلة شائعة</h2>
+      <div class="faq" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        <div style="background:#FFFBF4;border:1px solid #F0E7D8;border-radius:18px;padding:22px;"><h4 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:16px;color:#0C7376;margin:0 0 7px;">هل التشخيص مجاني فعلاً؟</h4><p style="font-size:14px;color:#5A8487;line-height:1.75;margin:0;">نعم — تعرف أين يتعثّر طفلك قبل أن تدفع أي شيء، وبلا بطاقة.</p></div>
+        <div style="background:#FFFBF4;border:1px solid #F0E7D8;border-radius:18px;padding:22px;"><h4 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:16px;color:#0C7376;margin:0 0 7px;">هل أقدر أغيّر الخطّة؟</h4><p style="font-size:14px;color:#5A8487;line-height:1.75;margin:0;">نعم، ترقّي أو تنزّل الخطّة في أي وقت من لوحتك.</p></div>
+        <div style="background:#FFFBF4;border:1px solid #F0E7D8;border-radius:18px;padding:22px;"><h4 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:16px;color:#0C7376;margin:0 0 7px;">كيف أدفع؟</h4><p style="font-size:14px;color:#5A8487;line-height:1.75;margin:0;">فيزا، تحويل بنكي، أو تحويل عبر رقم الهاتف — ثم رفع الإيصال.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:#07464A;padding:40px 28px 30px;">
+    <div style="max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:22px;">
+      <img src="/static/assets/logo-white.png" alt="فيثاغورث" style="height:32px;width:auto;" />
+      <div style="flex:1;"></div>
+      <div style="display:flex;gap:24px;font-size:15.5px;color:#A6D4D7;font-weight:500;flex-wrap:wrap;">
+        <a href="/landing" style="text-decoration:none;color:inherit;">الرئيسية</a>
+        <a href="/about" style="text-decoration:none;color:inherit;">من نحن</a>
+        <a href="/pricing" style="text-decoration:none;color:inherit;">الأسعار</a>
+        <a href="/contact" style="text-decoration:none;color:inherit;">تواصل معنا</a>
+      </div>
+    </div>
+    <div style="max-width:1120px;margin:22px auto 0;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);color:#6BA6A9;font-size:14px;">© ٢٠٢٦ فيثاغورث — موطن التعليم. صُنع بحبّ لأطفال الخليج.</div>
+  </footer>
+
+</div>
+<script src="/static/site.js"></script>
+<script>
+  const H = n => String(n==null?'':n).replace(/[0-9]/g, d=>'٠١٢٣٤٥٦٧٨٩'[+d]);
+  const omr = b => H((Number(b||0)/1000).toFixed(3));
+  const PERIOD_UNIT = {monthly:'شهر', yearly:'سنة'};
+  let PLANS=[], PERIOD=null;
+  const ICONS = {
+    one:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="#0E9C93" stroke-width="1.8"/><path d="M5.5 19.5c0-3.7 3-5.6 6.5-5.6s6.5 1.9 6.5 5.6" stroke="#0E9C93" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    fam:'<svg width="27" height="27" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="8" r="3" stroke="#fff" stroke-width="1.8"/><circle cx="16.5" cy="9" r="2.4" stroke="#fff" stroke-width="1.8"/><path d="M2.5 19c0-3.2 2.5-5 5.5-5s5.5 1.8 5.5 5M14 19c0-2.6 2-4.2 4.5-4.2S22.5 16 22.5 18.6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    grp:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="7" cy="8" r="2.4" stroke="#0C7376" stroke-width="1.7"/><circle cx="12" cy="7" r="2.4" stroke="#0C7376" stroke-width="1.7"/><circle cx="17" cy="8" r="2.4" stroke="#0C7376" stroke-width="1.7"/><path d="M3 18c0-2.6 1.8-4 4-4M21 18c0-2.6-1.8-4-4-4M8 18.5c0-2.8 1.8-4.5 4-4.5s4 1.7 4 4.5" stroke="#0C7376" stroke-width="1.7" stroke-linecap="round"/></svg>',
+  };
+  const check = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.5" fill="#E9F7EF"/><path d="M8 12.3l2.6 2.6L16 9" stroke="#1E8E54" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const star = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 17l-5.8 3.3 1.6-6.6L2.6 8.8l6.8-.5L12 2z" fill="#fff"/></svg>';
+  function tierIcon(n){
+    if(n<=1) return '<div style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:15px;background:#DEF1ED;color:#0E9C93;margin-bottom:14px;">'+ICONS.one+'</div>';
+    if(n>=5) return '<div style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:15px;background:#EAF3F3;color:#0C7376;margin-bottom:14px;">'+ICONS.grp+'</div>';
+    return '<div style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,#FFE7C2,#F8B24A);color:#fff;margin-bottom:14px;">'+ICONS.fam+'</div>';
+  }
+  function feat(t){ return '<li style="display:flex;align-items:center;gap:8px;font-size:14px;color:#3F6A6C;">'+check+t+'</li>'; }
+
+  function render(){
+    const grid = document.getElementById('plansGrid');
+    if(!PLANS.length){
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#7DA2A4;padding:30px;background:#fff;border:1px solid #F0E7D8;border-radius:24px;">لا خطط متاحة بعد — تُضبط من لوحة الإدارة.</div>';
+      document.getElementById('billRow').innerHTML='';
+      return;
+    }
+    const periods = [...new Set(PLANS.map(p=>p.period))];
+    if(PERIOD===null || !periods.includes(PERIOD)) PERIOD = periods.includes('yearly')?'yearly':periods[0];
+    // billing toggle (only when both periods exist)
+    document.getElementById('billRow').innerHTML = periods.length>1
+      ? '<div class="seg" style="display:inline-flex;gap:5px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);padding:5px;border-radius:14px;">'
+        + (periods.includes('monthly')?'<button class="'+(PERIOD==='monthly'?'on':'')+'" onclick="setPeriod(\'monthly\')">شهري</button>':'')
+        + (periods.includes('yearly')?'<button class="'+(PERIOD==='yearly'?'on':'')+'" onclick="setPeriod(\'yearly\')">سنوي <span style="font-size:11px;font-weight:700;color:#0C5E61;background:#F8B24A;padding:2px 8px;border-radius:999px;margin-right:5px;">وفّر أكثر</span></button>':'')
+        + '</div>'
+      : '';
+    const shown = periods.length>1 ? PLANS.filter(p=>p.period===PERIOD) : PLANS;
+    const maxKids = Math.max(...shown.map(p=>p.max_children));
+    grid.innerHTML = shown.map(p=>{
+      const rec = p.max_children===maxKids && maxKids>=2 && shown.length>1;
+      const seat = p.max_children===1 ? 'ملفّ طفل واحد · كل المهارات' : ('حتى '+H(p.max_children)+' أطفال — مسار لكلٍّ منهم');
+      const feats = feat('تشخيص مجاني للبداية') + feat('كل المهارات والوحدات')
+        + (p.max_children>1 ? feat('حتى '+H(p.max_children)+' ملفّات أطفال') : '')
+        + (p.trial_days>0 ? feat('تجربة '+H(p.trial_days)+' '+(p.trial_days===1?'يوم':'أيام')+' مجّانية') : '');
+      const btn = p.trial_days>0 ? 'ابدأ التجربة' : 'اشترك الآن';
+      const btnStyle = rec
+        ? 'background:linear-gradient(180deg,#F8A93A,#F39A1F);color:#fff;box-shadow:0 12px 24px -10px rgba(243,154,31,.7);'
+        : 'background:#fff;border:1.5px solid #028B84;color:#028B84;';
+      return '<div style="position:relative;display:flex;flex-direction:column;background:#fff;border:'+(rec?'2px solid #F39A1F':'1px solid #F0E7D8')+';border-radius:24px;padding:'+(rec?'32px 26px 30px':'30px 26px')+';box-shadow:'+(rec?'0 26px 50px -28px rgba(243,154,31,.7)':'0 20px 44px -34px rgba(17,70,92,.45)')+';">'
+        + (rec?'<span style="position:absolute;top:-13px;right:24px;display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#F8A93A,#F39A1F);color:#fff;font-family:\'Baloo Bhaijaan 2\',cursive;font-weight:800;font-size:11px;padding:5px 13px;border-radius:999px;box-shadow:0 6px 12px -5px rgba(217,126,10,.9);">'+star+'الأنسب للعائلات</span>':'')
+        + tierIcon(p.max_children)
+        + '<h3 style="font-family:\'Baloo Bhaijaan 2\',cursive;font-weight:800;font-size:'+(rec?'22px':'21px')+';color:#0C5E61;margin:0 0 4px;">'+p.name+'</h3>'
+        + '<p style="font-size:13px;color:#7DA2A4;margin:0 0 18px;">'+seat+'</p>'
+        + '<div style="display:flex;align-items:flex-end;gap:8px;border-bottom:1px dashed #E0D4C0;padding-bottom:16px;">'
+        +   '<span style="font-family:\'Baloo Bhaijaan 2\',cursive;font-weight:800;font-size:'+(rec?'36px':'30px')+';color:#0C5E61;direction:ltr;">'+omr(p.price)+'</span>'
+        +   '<span style="font-size:13px;color:#7DA2A4;padding-bottom:6px;">ر.ع. / '+(PERIOD_UNIT[p.period]||p.period)+'</span></div>'
+        + '<ul style="list-style:none;margin:16px 0 22px;padding:0;display:flex;flex-direction:column;gap:9px;">'+feats+'</ul>'
+        + '<a href="/account" style="margin-top:auto;text-decoration:none;text-align:center;font-family:\'Baloo Bhaijaan 2\',cursive;font-weight:800;font-size:'+(rec?'16px':'15px')+';padding:'+(rec?'15px':'13px')+';border-radius:14px;'+btnStyle+'">'+btn+'</a>'
+        + '</div>';
+    }).join('');
+  }
+  function setPeriod(p){ PERIOD=p; render(); }
+  (async function(){
+    try{ PLANS = await (await fetch('/api/public/plans')).json(); }catch(e){ PLANS=[]; }
+    if(!Array.isArray(PLANS)) PLANS=[];
+    render();
+  })();
+</script>
+</body>
+</html>

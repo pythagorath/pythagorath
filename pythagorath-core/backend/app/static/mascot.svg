@@ -1,50 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 260" width="200" height="260" role="img" aria-label="فيثاغورث — الطفل العُماني">
-  <!-- SVG re-creation of the brand character (Omani boy waving). Replace this file
-       with the official PNG/SVG illustration to use the exact brand art. -->
-  <ellipse cx="100" cy="248" rx="56" ry="9" fill="#15324a" opacity="0.10"/>
-  <!-- waving arm (his right / our left-top) -->
-  <g stroke="#2f2a26" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M70,118 C50,108 38,86 36,62" fill="none" stroke="#ffffff" stroke-width="15"/>
-    <circle cx="34" cy="56" r="12" fill="#F3C9A0"/>
-    <path d="M28,52 l-3,-9 M34,49 l0,-10 M40,51 l4,-9" stroke="#F3C9A0" stroke-width="6"/>
-  </g>
-  <!-- dishdasha -->
-  <path d="M68,112 C49,150 45,208 49,238 L151,238 C155,208 151,150 132,112 C124,128 76,128 68,112 Z"
-        fill="#ffffff" stroke="#E2E6EA" stroke-width="2.5"/>
-  <path d="M100,120 L100,236" stroke="#EAEDF0" stroke-width="2"/>
-  <path d="M90,118 q10,9 20,0" fill="none" stroke="#EAEDF0" stroke-width="2"/>
-  <!-- backpack straps -->
-  <path d="M78,116 C74,150 74,180 76,206" fill="none" stroke="#F39A1F" stroke-width="9" stroke-linecap="round"/>
-  <path d="M122,116 C126,150 126,180 124,206" fill="none" stroke="#F39A1F" stroke-width="9" stroke-linecap="round"/>
-  <!-- holding arm + book (his left / our right) -->
-  <path d="M134,122 C150,134 156,150 150,166" fill="none" stroke="#ffffff" stroke-width="15" stroke-linecap="round"/>
-  <rect x="138" y="150" width="40" height="30" rx="5" fill="#29A9E0" stroke="#1B7FB0" stroke-width="2.5"/>
-  <path d="M158,150 L158,180" stroke="#1B7FB0" stroke-width="2.5"/>
-  <circle cx="150" cy="168" r="11" fill="#F3C9A0" stroke="#2f2a26" stroke-width="2"/>
-  <!-- shoes -->
-  <ellipse cx="80" cy="240" rx="15" ry="8" fill="#E08A3C" stroke="#C2741F" stroke-width="2"/>
-  <ellipse cx="120" cy="240" rx="15" ry="8" fill="#E08A3C" stroke="#C2741F" stroke-width="2"/>
-  <!-- head -->
-  <circle cx="100" cy="80" r="35" fill="#F3C9A0" stroke="#E3B488" stroke-width="1.5"/>
-  <!-- ears -->
-  <circle cx="65" cy="82" r="7" fill="#F3C9A0"/><circle cx="135" cy="82" r="7" fill="#F3C9A0"/>
-  <!-- kummah (Omani cap) -->
-  <path d="M64,70 C66,40 134,40 136,70 C112,60 88,60 64,70 Z" fill="#C9A36A" stroke="#A6824B" stroke-width="2"/>
-  <g fill="#A6824B" opacity="0.8">
-    <circle cx="80" cy="58" r="2"/><circle cx="92" cy="53" r="2"/><circle cx="104" cy="52" r="2"/>
-    <circle cx="116" cy="55" r="2"/><circle cx="98" cy="62" r="2"/><circle cx="86" cy="64" r="2"/><circle cx="112" cy="63" r="2"/>
-  </g>
-  <path d="M64,70 C88,60 112,60 136,70" fill="none" stroke="#A6824B" stroke-width="2.5"/>
-  <!-- glasses -->
-  <g stroke="#3A3A3A" stroke-width="3" fill="#ffffff" fill-opacity="0.35">
-    <circle cx="86" cy="84" r="12"/><circle cx="114" cy="84" r="12"/>
-    <path d="M98,84 h4" /><path d="M74,82 l-9,-2" fill="none"/><path d="M126,82 l9,-2" fill="none"/>
-  </g>
-  <!-- happy closed eyes -->
-  <path d="M81,84 q5,-6 10,0 M109,84 q5,-6 10,0" fill="none" stroke="#3A3A3A" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- cheeks -->
-  <circle cx="74" cy="96" r="5" fill="#F6A98B" opacity="0.6"/><circle cx="126" cy="96" r="5" fill="#F6A98B" opacity="0.6"/>
-  <!-- big smile -->
-  <path d="M84,98 Q100,118 116,98 Q100,108 84,98 Z" fill="#7a3b2e"/>
-  <path d="M88,100 Q100,110 112,100 Z" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none" role="img" aria-label="نُمَيْر — رفيق فيثاغورث">
+  <defs>
+    <radialGradient id="numBody" cx="38%" cy="30%" r="78%"><stop offset="0%" stop-color="#FFD27E"/><stop offset="38%" stop-color="#F9AC36"/><stop offset="78%" stop-color="#F1991F"/><stop offset="100%" stop-color="#DD7E05"/></radialGradient>
+    <radialGradient id="numCap" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#86D8CE"/><stop offset="100%" stop-color="#0E9C93"/></radialGradient>
+  </defs>
+  <g><line x1="160" y1="40" x2="146" y2="22" stroke="#8FDACF" stroke-width="3" stroke-linecap="round"/><line x1="160" y1="40" x2="182" y2="28" stroke="#8FDACF" stroke-width="3" stroke-linecap="round"/><circle cx="144" cy="20" r="5" fill="#11A79C"/><circle cx="184" cy="26" r="5" fill="#11A79C"/><path d="M150 66 Q150 48 160 40" stroke="#EE9420" stroke-width="6" stroke-linecap="round" fill="none"/><circle cx="160" cy="38" r="11" fill="url(#numCap)"/></g>
+  <path d="M76 156 Q46 126 42 96" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><path d="M224 158 Q254 178 256 204" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/>
+  <ellipse cx="150" cy="180" rx="112" ry="116" fill="url(#numBody)"/><ellipse cx="112" cy="120" rx="56" ry="38" fill="#FFFFFF" opacity=".22"/>
+  <circle cx="42" cy="92" r="17" fill="#F6A92F"/><circle cx="256" cy="208" r="17" fill="#F6A92F"/>
+  <ellipse cx="92" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="208" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/>
+  <ellipse cx="120" cy="160" rx="29" ry="33" fill="#fff"/><ellipse cx="190" cy="160" rx="29" ry="33" fill="#fff"/><circle cx="127" cy="168" r="15" fill="#045D6D"/><circle cx="183" cy="168" r="15" fill="#045D6D"/><circle cx="122" cy="162" r="6" fill="#fff"/><circle cx="178" cy="162" r="6" fill="#fff"/>
+  <path d="M102 130 Q120 122 138 129" stroke="#045D6D" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M172 129 Q190 122 208 130" stroke="#045D6D" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M128 196 Q150 204 172 196 Q167 220 150 222 Q133 220 128 196 Z" fill="#0A3942"/>
 </svg>

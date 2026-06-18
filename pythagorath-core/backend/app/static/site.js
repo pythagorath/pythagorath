@@ -17,6 +17,16 @@
   "use strict";
   var safe = function (fn) { try { fn(); } catch (e) { /* never break the page */ } };
   var sid = function () { try { return new URLSearchParams(location.search).get("student"); } catch (e) { return null; } };
+  // The CHILD surface is ISOLATED — no external contact (no whatsapp, no marketing
+  // announcements). Detected by the page marker or the /child route. Brand + tracking
+  // (internal, harmless) still apply.
+  var isChild = function () {
+    try {
+      if (document.body && document.body.getAttribute("data-surface") === "child") return true;
+      var p = location.pathname.replace(/\/+$/, "");
+      return p === "/child";
+    } catch (e) { return false; }
+  };
 
   // ---------- brand ----------
   var BRAND = null;
@@ -124,8 +134,13 @@
   async function init() {
     var site = null;
     try { site = await (await fetch("/api/site")).json(); } catch (e) {}
-    if (site) { safe(function () { applyBrand(site.brand); }); safe(function () { applyTracking(site.integrations); }); safe(function () { applyWhatsapp(site.whatsapp); }); }
-    safe(loadAnnouncements);
+    var child = isChild();
+    if (site) {
+      safe(function () { applyBrand(site.brand); });
+      safe(function () { applyTracking(site.integrations); });
+      if (!child) safe(function () { applyWhatsapp(site.whatsapp); });   // child is isolated
+    }
+    if (!child) safe(loadAnnouncements);                                  // no external contact for the child
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
