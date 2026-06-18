@@ -224,6 +224,7 @@ def site_config(db: Session = Depends(get_db)):
                   "primary": g("brand_primary"), "secondary": g("brand_secondary")},
         "integrations": {"ga": g("integration_ga"), "fbpixel": g("integration_fbpixel")},
         "whatsapp": {"enabled": g("whatsapp_enabled") == "1", "number": g("whatsapp_number")},
+        "video": g("how_video_url"),   # marketing "how it works" — link/path; blank → animated fallback
         "defaults": _BRAND_DEFAULTS,
     }
 

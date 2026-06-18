@@ -681,6 +681,8 @@ SETTINGS_KEYS = {
     "whatsapp_number", "whatsapp_enabled",
     # payment config (step 7 part B) — which methods show to customers + transfer details
     "pay_visa_on", "pay_bank_on", "pay_phone_on", "pay_bank", "pay_phone",
+    # marketing "how it works" video — a link OR an uploaded-file path (e.g. /static/assets/how-it-works.mp4)
+    "how_video_url",
 }
 ANN_FORMATS = {"popup", "banner"}
 ANN_TARGETS = {"all", "unsubscribed", "grade", "country"}

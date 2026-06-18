@@ -31,3 +31,12 @@ def test_public_plans_hides_inactive(admin_client, client):
     admin_client.patch(f"/api/admin/plans/{p['id']}", json={"is_active": False})
     names = [x["name"] for x in client.get("/api/public/plans").json()]
     assert "موقوفة" not in names
+
+
+def test_how_video_managed_from_admin(admin_client, client):
+    """The 'how it works' video is owner-managed: blank by default (→ animated fallback on
+    the landing), and once set in admin it appears in the public /api/site feed."""
+    site = client.get("/api/site").json()
+    assert "video" in site and site["video"] == ""        # default blank → fallback
+    admin_client.put("/api/admin/settings", json={"how_video_url": "https://youtu.be/abc123"})
+    assert client.get("/api/site").json()["video"] == "https://youtu.be/abc123"

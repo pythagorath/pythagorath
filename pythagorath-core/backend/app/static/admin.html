@@ -465,6 +465,12 @@ async function secSettings(c){
       <button class="savebtn" onclick="saveSettings({whatsapp_number:val('wnum'),whatsapp_enabled:document.getElementById('wen').checked?'1':'0'},'wa')">حفظ</button>
       <span id="wa-msg" class="okmsg"></span>
     </div>
+    <div class="panel"><h3>فيديو «كيف يعمل» (صفحة الهبوط)</h3>
+      <div class="frow"><label>رابط الفيديو أو مسار ملفّ مرفوع</label><input id="hvid" value="${s.how_video_url||''}" placeholder="https://youtu.be/… أو /static/assets/how-it-works.mp4"></div>
+      <div class="muted">يظهر في «شاهد كيف تعمل» على الهبوط. اتركه فارغاً ليظهر الشرح المتحرّك بدلاً منه. يدعم يوتيوب/فيميو أو ملفّ MP4 مباشر.</div>
+      <button class="savebtn" onclick="saveSettings({how_video_url:val('hvid')},'hv')">حفظ الفيديو</button>
+      <span id="hv-msg" class="okmsg"></span>
+    </div>
     <div class="panel"><h3>سمة العرض</h3><div class="tctrl">
       ${['mutadarrij','ameen','mutawwar'].map(x=>`<button class="linkbtn" style="${x===t?'background:#155E7D;color:#fff':''}" onclick="setTheme('${x}')">${({mutadarrij:'متدرّج',ameen:'أمين',mutawwar:'مطوّر'})[x]}</button>`).join('')}
     </div></div>`;

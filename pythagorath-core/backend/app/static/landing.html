@@ -202,7 +202,7 @@
         <a href="#" aria-label="إغلاق" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:#F0E7D8;color:#095A5E;font-size:18px;font-weight:800;flex:0 0 auto;">✕</a>
       </div>
       <div style="padding:18px 22px 22px;">
-        <div style="position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:radial-gradient(120% 110% at 50% 0%,#0E8C86,#06343B);">
+        <div id="howMedia" style="position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:radial-gradient(120% 110% at 50% 0%,#0E8C86,#06343B);">
           <div style="position:absolute;top:14px;right:16px;z-index:6;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:5px 12px;font-size:12px;color:#fff;font-weight:600;"><span style="width:7px;height:7px;border-radius:50%;background:#F39A1F;"></span>مقطع توضيحي</div>
 
           <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:28px;opacity:0;animation:vsc1 18s ease-in-out infinite;">
@@ -275,5 +275,21 @@
 
 </div>
 <script src="/static/site.js"></script>
+<script>
+  // "how it works" video — owner-managed. If a URL/path is set in admin, swap the animated
+  // explainer for the real player; otherwise the animated explainer stays (never broken/empty).
+  (async function(){
+    var url=''; try{ var s=await (await fetch('/api/site')).json(); url=(s&&s.video||'').trim(); }catch(e){}
+    if(!url) return;
+    var box=document.getElementById('howMedia'); if(!box) return;
+    var yt=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{6,})/);
+    var vimeo=url.match(/vimeo\.com\/(\d+)/);
+    var inner;
+    if(yt){ inner='<iframe src="https://www.youtube.com/embed/'+yt[1]+'" title="كيف يعمل فيثاغورث" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; }
+    else if(vimeo){ inner='<iframe src="https://player.vimeo.com/video/'+vimeo[1]+'" title="كيف يعمل فيثاغورث" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>'; }
+    else { inner='<video controls playsinline preload="metadata" style="position:absolute;inset:0;width:100%;height:100%;background:#000;object-fit:contain"><source src="'+url.replace(/"/g,'&quot;')+'"></video>'; }
+    box.innerHTML=inner;
+  })();
+</script>
 </body>
 </html>
