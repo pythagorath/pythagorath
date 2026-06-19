@@ -774,7 +774,7 @@ function _shapeSVG(name, px){
 function _optBtn(label, svg){
   const b=document.createElement('button'); b.className='sec';
   b.style='display:inline-flex;flex-direction:column;align-items:center;gap:4px;min-width:72px;margin:4px;padding:8px';
-  b.innerHTML=(svg?`<span>${svg}</span>`:'')+`<span style="font-weight:800">${label}</span>`;
+  b.innerHTML=(svg?`<span>${svg}</span>`:'')+`<span style="font-weight:800">${stackFrac(label)}</span>`;
   return b;
 }
 

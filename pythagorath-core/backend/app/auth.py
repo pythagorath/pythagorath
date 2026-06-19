@@ -307,6 +307,15 @@ def device_logout(response: Response):
     return {"ok": True}
 
 
+@router.post("/child-logout")
+def child_logout(response: Response):
+    """The CHILD finishes/steps away: clear ONLY the child cookie (pyth_child). The DEVICE
+    cookie stays, so the device remains paired — returning to /device shows «اختر نفسك» for a
+    quick child switch (no re-pairing). Distinct from device-logout (which unpairs)."""
+    clear_child_cookie(response)
+    return {"ok": True}
+
+
 @router.post("/password-reset/request", status_code=204)
 def password_reset_request(body: schemas.PasswordResetRequest, db: Session = Depends(get_db)):
     u = db.execute(select(User).where(User.email == body.email)).scalars().first()
