@@ -39,3 +39,22 @@ COOKIE_SECURE: bool = os.environ.get("COOKIE_SECURE", "0") == "1"
 # Optional bootstrap admin (created on startup if set and absent).
 ADMIN_EMAIL: str | None = os.environ.get("ADMIN_EMAIL")
 ADMIN_PASSWORD: str | None = os.environ.get("ADMIN_PASSWORD")
+
+# ---- registration OTP (email verification) ----
+# The pending-registration cookie holds the (signed) registration data + OTP until the
+# email is verified — no user row is created until then. Short-lived.
+PENDING_COOKIE: str = "pyth_pending"
+OTP_TTL_MINUTES: int = int(os.environ.get("OTP_TTL_MINUTES", "15"))
+OTP_LENGTH: int = int(os.environ.get("OTP_LENGTH", "6"))
+
+# ---- email provider (OTP + password-reset delivery) ----
+# Pluggable: if SMTP is configured (SMTP_HOST set) the real sender is used; otherwise a
+# DEV console provider PRINTS the message+code to the server log so the flow is testable
+# now and a real service is wired later by setting the env vars below. Supported out of the
+# box: console (dev) and SMTP (works with Gmail, SendGrid, Mailgun, Amazon SES, etc.).
+EMAIL_FROM: str = os.environ.get("EMAIL_FROM", "فيثاغورث <no-reply@pythagorath.local>")
+SMTP_HOST: str | None = os.environ.get("SMTP_HOST")          # set this to enable real email
+SMTP_PORT: int = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_USER: str | None = os.environ.get("SMTP_USER")
+SMTP_PASSWORD: str | None = os.environ.get("SMTP_PASSWORD")
+SMTP_STARTTLS: bool = os.environ.get("SMTP_STARTTLS", "1") == "1"

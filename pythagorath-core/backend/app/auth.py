@@ -21,6 +21,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import config, schemas
+from app import email as mailer
 from app.db import get_db
 from app.models import PairingCode, Student, User
 
@@ -68,6 +69,26 @@ def create_reset_token(user: User) -> str:
     # signed AND short-lived — never valid forever, so it can't become a backdoor
     return _encode({"sub": str(user.id)}, "reset",
                    timedelta(minutes=config.RESET_TTL_MINUTES))
+
+
+# ---------- registration OTP (pending account held in a signed httpOnly cookie) ----------
+def _gen_otp() -> str:
+    return "".join(secrets.choice("0123456789") for _ in range(config.OTP_LENGTH))
+
+
+def create_pending_token(payload: dict) -> str:
+    # holds {email, pw_hash, name, whatsapp, code} until the email is verified — signed +
+    # short-lived; carried ONLY in an httpOnly cookie, so JS never sees the password hash.
+    return _encode(payload, "pending", timedelta(minutes=config.OTP_TTL_MINUTES))
+
+
+def set_pending_cookie(resp: Response, token: str) -> None:
+    resp.set_cookie(config.PENDING_COOKIE, token, httponly=True, secure=config.COOKIE_SECURE,
+                    samesite="lax", max_age=config.OTP_TTL_MINUTES * 60, path="/")
+
+
+def clear_pending_cookie(resp: Response) -> None:
+    resp.delete_cookie(config.PENDING_COOKIE, path="/")
 
 
 def set_session_cookie(resp: Response, token: str) -> None:
@@ -208,12 +229,69 @@ def ensure_admin(db: Session) -> None:
 # ---------- endpoints ----------
 @router.post("/register", response_model=schemas.UserRead)
 def register(body: schemas.RegisterRequest, db: Session = Depends(get_db)):
+    """Legacy DIRECT registration (no OTP) — kept for programmatic/admin use and the test
+    suite. The public registration PAGE uses the OTP flow below."""
     if db.execute(select(User).where(User.email == body.email)).scalars().first():
         raise HTTPException(409, "البريد مستخدم")
     u = User(email=body.email, password_hash=hash_password(body.password), role="guardian")
     db.add(u)
     db.commit()
     db.refresh(u)
+    return u
+
+
+# ---------- OTP registration (the public page): start → verify, with resend ----------
+@router.post("/register/start")
+def register_start(body: schemas.RegisterStartRequest, response: Response,
+                   db: Session = Depends(get_db)):
+    """Step 1: validate the guardian's details, email a 6-digit OTP, and stash the pending
+    account (incl. the password HASH, never the plaintext) in a signed httpOnly cookie. NO
+    user row is created yet — the account exists only after the code is verified."""
+    if db.execute(select(User).where(User.email == body.email)).scalars().first():
+        raise HTTPException(409, "البريد مستخدم")
+    code = _gen_otp()
+    token = create_pending_token({
+        "email": body.email, "pw_hash": hash_password(body.password),
+        "name": body.name, "whatsapp": body.whatsapp, "code": code,
+    })
+    set_pending_cookie(response, token)
+    mailer.send_otp(body.email, code)        # real email if SMTP set, else DEV log
+    return {"ok": True, "email": body.email, "ttl_minutes": config.OTP_TTL_MINUTES}
+
+
+@router.post("/register/resend")
+def register_resend(request: Request, response: Response):
+    """Re-issue a fresh OTP for the SAME pending account (new code, refreshed cookie+TTL)."""
+    data = _decode(request.cookies.get(config.PENDING_COOKIE, ""), "pending")
+    if data is None:
+        raise HTTPException(400, "انتهت الجلسة — أعد إدخال بياناتك.")
+    code = _gen_otp()
+    token = create_pending_token({**data, "code": code})
+    set_pending_cookie(response, token)
+    mailer.send_otp(data["email"], code)
+    return {"ok": True, "email": data["email"], "ttl_minutes": config.OTP_TTL_MINUTES}
+
+
+@router.post("/register/verify", response_model=schemas.UserRead)
+def register_verify(body: schemas.RegisterVerifyRequest, request: Request,
+                    response: Response, db: Session = Depends(get_db)):
+    """Step 2: check the code against the pending cookie → create the guardian (with name +
+    whatsapp), clear the pending cookie, and log them in (session cookie)."""
+    data = _decode(request.cookies.get(config.PENDING_COOKIE, ""), "pending")
+    if data is None:
+        raise HTTPException(400, "انتهت صلاحية الرمز — أعد المحاولة.")
+    if (body.code or "") != data.get("code"):
+        raise HTTPException(400, "الرمز غير صحيح.")
+    if db.execute(select(User).where(User.email == data["email"])).scalars().first():
+        clear_pending_cookie(response)
+        raise HTTPException(409, "البريد مستخدم")
+    u = User(email=data["email"], password_hash=data["pw_hash"], role="guardian",
+             name=data.get("name"), whatsapp=data.get("whatsapp"))
+    db.add(u)
+    db.commit()
+    db.refresh(u)
+    clear_pending_cookie(response)
+    set_session_cookie(response, create_session_token(u))   # verified → logged in
     return u
 
 
@@ -321,8 +399,7 @@ def password_reset_request(body: schemas.PasswordResetRequest, db: Session = Dep
     u = db.execute(select(User).where(User.email == body.email)).scalars().first()
     if u is not None:
         token = create_reset_token(u)
-        # TODO(provider): email this token. For now it is logged server-side only.
-        print(f"[password-reset] {u.email}: {token}")
+        mailer.send_reset(u.email, token)   # real email if SMTP set, else DEV console log
     return Response(status_code=204)      # always 204 → no account enumeration
 
 

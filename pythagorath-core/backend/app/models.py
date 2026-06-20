@@ -225,6 +225,10 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True, index=True)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     role: Mapped[str] = mapped_column(String(20), nullable=False, default="guardian")
+    # Guardian profile (collected at registration). Nullable so existing rows + the legacy
+    # direct-register path are unaffected; the new OTP registration flow always fills them.
+    name: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    whatsapp: Mapped[str | None] = mapped_column(String(24), nullable=True)   # E.164-ish, digits only
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=_utcnow
     )

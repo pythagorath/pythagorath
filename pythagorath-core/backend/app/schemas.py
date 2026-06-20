@@ -16,6 +16,26 @@ def _valid_password(v: str) -> str:
     return v
 
 
+_AR_DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+
+
+def _valid_name(v: str) -> str:
+    v = (v or "").strip()
+    if len(v) < 2:
+        raise ValueError("أدخل اسم وليّ الأمر")
+    return v
+
+
+def _valid_whatsapp(v: str) -> str:
+    """Normalise to digits only (accepts Arabic-Indic digits, +, spaces, dashes) and check a
+    plausible international length. The client composes country-code + number."""
+    raw = (v or "").translate(_AR_DIGITS)
+    digits = "".join(ch for ch in raw if ch.isdigit())
+    if not (8 <= len(digits) <= 15):
+        raise ValueError("رقم الواتساب غير صحيح")
+    return digits
+
+
 class RegisterRequest(BaseModel):
     email: str
     password: str
@@ -29,6 +49,48 @@ class RegisterRequest(BaseModel):
     @classmethod
     def _p(cls, v):
         return _valid_password(v)
+
+
+class RegisterStartRequest(BaseModel):
+    """Step 1 of OTP registration: collect the guardian profile + credentials. No user row
+    is created yet — an OTP is emailed and held (with this data) until verified."""
+    email: str
+    password: str
+    name: str
+    whatsapp: str
+
+    @field_validator("email")
+    @classmethod
+    def _e(cls, v):
+        return _valid_email(v)
+
+    @field_validator("password")
+    @classmethod
+    def _p(cls, v):
+        return _valid_password(v)
+
+    @field_validator("name")
+    @classmethod
+    def _n(cls, v):
+        return _valid_name(v)
+
+    @field_validator("whatsapp")
+    @classmethod
+    def _w(cls, v):
+        return _valid_whatsapp(v)
+
+
+class RegisterVerifyRequest(BaseModel):
+    """Step 2: the 6-digit code from the email (pending data is in the httpOnly cookie)."""
+    code: str
+
+    @field_validator("code")
+    @classmethod
+    def _c(cls, v):
+        v = (v or "").translate(_AR_DIGITS).strip()
+        if not v.isdigit():
+            raise ValueError("الرمز أرقام فقط")
+        return v
 
 
 class PairRequest(BaseModel):
@@ -50,6 +112,7 @@ class UserRead(BaseModel):
     id: int
     email: str
     role: str
+    name: str | None = None
 
 
 class PasswordResetRequest(BaseModel):
