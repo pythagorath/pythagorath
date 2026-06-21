@@ -113,6 +113,7 @@ class UserRead(BaseModel):
     email: str
     role: str
     name: str | None = None
+    whatsapp: str | None = None
 
 
 class PasswordResetRequest(BaseModel):
@@ -132,6 +133,60 @@ class PasswordResetConfirm(BaseModel):
     @classmethod
     def _p(cls, v):
         return _valid_password(v)
+
+
+# ----- account self-service (authenticated guardian, from inside the session) -----
+class ProfileUpdate(BaseModel):
+    """Edit the guardian's own display name / WhatsApp. Email is NOT here — it is the login
+    identity and is changed only through the OTP flow below."""
+    name: str | None = None
+    whatsapp: str | None = None
+
+    @field_validator("name")
+    @classmethod
+    def _n(cls, v):
+        return _valid_name(v) if v is not None else v
+
+    @field_validator("whatsapp")
+    @classmethod
+    def _w(cls, v):
+        return _valid_whatsapp(v) if v is not None else v
+
+
+class ChangePasswordRequest(BaseModel):
+    """Change password from within the session — the CURRENT password must be verified first."""
+    current_password: str
+    new_password: str
+
+    @field_validator("new_password")
+    @classmethod
+    def _p(cls, v):
+        return _valid_password(v)
+
+
+class EmailChangeStart(BaseModel):
+    """Step 1 of changing the login email: prove the password, then an OTP is sent to the NEW
+    address. The email is not touched until that code is verified."""
+    new_email: str
+    password: str
+
+    @field_validator("new_email")
+    @classmethod
+    def _e(cls, v):
+        return _valid_email(v)
+
+
+class EmailChangeVerify(BaseModel):
+    """Step 2: the 6-digit code emailed to the new address (the rest is in the httpOnly cookie)."""
+    code: str
+
+    @field_validator("code")
+    @classmethod
+    def _c(cls, v):
+        v = (v or "").translate(_AR_DIGITS).strip()
+        if not v.isdigit():
+            raise ValueError("الرمز أرقام فقط")
+        return v
 
 
 # ----- commercial -----

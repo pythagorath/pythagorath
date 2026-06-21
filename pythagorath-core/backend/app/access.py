@@ -45,11 +45,14 @@ def grant_subscription(db: Session, user_id: int, plan: Plan,
 
 
 def has_access(db: Session, user_id: int, now: datetime | None = None) -> bool:
+    # 'canceled' is included on purpose: cancelling stops the RENEWAL, but the guardian keeps
+    # the access they already paid for until access_until passes (then it simply expires). So
+    # the policy "الوصول يبقى حتى نهاية المدة المدفوعة ثم يتوقّف التجديد" is enforced here.
     now = now or datetime.now(timezone.utc)
     sub = db.execute(
         select(Subscription).where(
             Subscription.user_id == user_id,
-            Subscription.status.in_(("trial", "active")),
+            Subscription.status.in_(("trial", "active", "canceled")),
             Subscription.access_until.is_not(None),
             Subscription.access_until > now,
         )

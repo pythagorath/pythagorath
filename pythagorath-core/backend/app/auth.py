@@ -315,6 +315,76 @@ def me(user: User = Depends(current_user)):
     return user
 
 
+# ---------- account self-service (from inside the guardian's own session) ----------
+@router.patch("/me", response_model=schemas.UserRead)
+def update_me(body: schemas.ProfileUpdate, user: User = Depends(current_user),
+              db: Session = Depends(get_db)):
+    """Edit own name / WhatsApp. Only the fields sent are changed. Email is NOT editable here
+    (it is the login identity — see the OTP flow below). Validators reuse the registration ones."""
+    if body.name is not None:
+        user.name = body.name
+    if body.whatsapp is not None:
+        user.whatsapp = body.whatsapp
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+@router.post("/change-password", status_code=204)
+def change_password(body: schemas.ChangePasswordRequest, user: User = Depends(current_user),
+                    db: Session = Depends(get_db)):
+    """Change the password from within the session — the CURRENT password is verified first,
+    so a hijacked-but-unlocked session still can't silently swap the password."""
+    if not verify_password(user.password_hash, body.current_password):
+        raise HTTPException(400, "كلمة السر الحالية غير صحيحة")
+    user.password_hash = hash_password(body.new_password)
+    db.commit()
+    return Response(status_code=204)
+
+
+@router.post("/email-change/start")
+def email_change_start(body: schemas.EmailChangeStart, response: Response,
+                       user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Step 1 of changing the login email: prove the password, ensure the new address is free,
+    then email a 6-digit OTP to the NEW address. The current email is NOT touched yet — the
+    signed {sub,new_email,code} lives in a short-lived httpOnly cookie until verification."""
+    if not verify_password(user.password_hash, body.password):
+        raise HTTPException(400, "كلمة السر غير صحيحة")
+    if body.new_email == user.email:
+        raise HTTPException(400, "هذا هو بريدك الحالي")
+    if db.execute(select(User).where(User.email == body.new_email)).scalars().first():
+        raise HTTPException(409, "البريد مستخدم")
+    code = _gen_otp()
+    token = _encode({"sub": str(user.id), "new_email": body.new_email, "code": code},
+                    "emailchg", timedelta(minutes=config.OTP_TTL_MINUTES))
+    response.set_cookie(config.EMAILCHG_COOKIE, token, httponly=True,
+                        secure=config.COOKIE_SECURE, samesite="lax",
+                        max_age=config.OTP_TTL_MINUTES * 60, path="/")
+    mailer.send_otp(body.new_email, code)        # real email if SMTP set, else DEV log
+    return {"ok": True, "email": body.new_email, "ttl_minutes": config.OTP_TTL_MINUTES}
+
+
+@router.post("/email-change/verify", response_model=schemas.UserRead)
+def email_change_verify(body: schemas.EmailChangeVerify, request: Request, response: Response,
+                        user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Step 2: check the code against the email-change cookie (and that it belongs to THIS
+    user) → apply the new email. Re-checks the address is still free at commit time."""
+    data = _decode(request.cookies.get(config.EMAILCHG_COOKIE, ""), "emailchg")
+    if data is None or str(data.get("sub")) != str(user.id):
+        raise HTTPException(400, "انتهت صلاحية الرمز — أعد المحاولة.")
+    if (body.code or "") != data.get("code"):
+        raise HTTPException(400, "الرمز غير صحيح.")
+    new_email = data["new_email"]
+    if db.execute(select(User).where(User.email == new_email)).scalars().first():
+        response.delete_cookie(config.EMAILCHG_COOKIE, path="/")
+        raise HTTPException(409, "البريد مستخدم")
+    user.email = new_email
+    db.commit()
+    db.refresh(user)
+    response.delete_cookie(config.EMAILCHG_COOKIE, path="/")
+    return user
+
+
 # ---------- child-device pairing (accounts step 6 part B) ----------
 def _children_of(db: Session, guardian_id: int) -> list[dict]:
     rows = db.execute(select(Student).where(Student.owner_user_id == guardian_id)

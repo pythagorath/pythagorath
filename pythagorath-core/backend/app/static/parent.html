@@ -58,6 +58,31 @@
   .modal p{ font-size:14.5px; color:#5A5249; line-height:1.7; margin:0 0 18px; }
   .modal .ok{ font-family:'Readex Pro',sans-serif; font-weight:700; font-size:15px; color:#fff;
               background:linear-gradient(135deg,#163E52,#1B6E97); border:0; border-radius:13px; padding:11px 26px; cursor:pointer; }
+  /* ---------- self-service views (subscription / account) ---------- */
+  .navlink.active{ background:linear-gradient(135deg,#163E52,#1B6E97); color:#fff; border-color:transparent; }
+  .brandgrp .logo{ cursor:pointer; }
+  .fld{ display:block; margin:12px 0; }
+  .fld label{ display:block; font-size:13.5px; font-weight:600; color:#5A5249; margin:0 0 6px; }
+  .fld input{ width:100%; font-family:'Readex Pro',sans-serif; font-size:15px; color:#2C2620; background:#FCFAF6;
+              border:1.5px solid #E9DFD0; border-radius:12px; padding:11px 13px; }
+  .fld input:focus{ outline:none; border-color:#37B6E6; background:#fff; }
+  .fld input[readonly]{ background:#F4EFE7; color:#8A8178; }
+  .btnrow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:14px; }
+  .btn-primary{ font-family:'Readex Pro',sans-serif; font-weight:700; font-size:15px; color:#fff;
+                background:linear-gradient(135deg,#163E52,#1B6E97); border:0; border-radius:13px; padding:11px 22px; cursor:pointer; }
+  .btn-primary:disabled{ opacity:.55; cursor:default; }
+  .btn-ghost{ font-family:'Readex Pro',sans-serif; font-weight:700; font-size:14px; color:#155E7D;
+              background:#fff; border:1.5px solid #EFE7DA; border-radius:13px; padding:10px 18px; cursor:pointer; }
+  .btn-danger{ font-family:'Readex Pro',sans-serif; font-weight:700; font-size:14px; color:#C2402B;
+               background:#fff; border:1.5px solid #F0C9C0; border-radius:13px; padding:10px 18px; cursor:pointer; }
+  .btn-danger:hover{ background:#FDF2F0; }
+  .banner{ border-radius:12px; padding:10px 13px; font-size:13.5px; font-weight:600; margin:10px 0 0; line-height:1.7; }
+  .banner.ok{ background:#E8F7EE; color:#1E7A4C; }
+  .banner.bad{ background:#FCEEEA; color:#C2402B; }
+  .banner.info{ background:#E6F4FB; color:#178FC9; }
+  .kv{ display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px dashed #EFE7DA; font-size:14.5px; }
+  .kv:last-child{ border-bottom:0; }
+  .kv .k{ color:#8A8178; } .kv .v{ color:#2C3A43; font-weight:700; }
 </style>
 </head>
 <body>
@@ -112,10 +137,10 @@ let currentSid = null;
 
 function shellHTML(){
   return `<div class="topnav">
-      <div class="brandgrp"><span class="logo" data-brand>فيثاغورث</span><span class="tag">لوحة وليّ الأمر</span></div>
+      <div class="brandgrp"><span class="logo" data-brand onclick="goView('board')" title="لوحة الطفل">فيثاغورث</span><span class="tag">لوحة وليّ الأمر</span></div>
       <div class="navgrp">
-        <button class="navlink" onclick="comingSoon('اشتراكي')">${SVG.card} اشتراكي</button>
-        <button class="navlink" onclick="comingSoon('حسابي')">${SVG.user} حسابي</button>
+        <button class="navlink" id="nav-sub" onclick="goView('sub')">${SVG.card} اشتراكي</button>
+        <button class="navlink" id="nav-account" onclick="goView('account')">${SVG.user} حسابي</button>
       </div>
     </div>
     <div class="switcher" id="switcher"></div>
@@ -138,14 +163,15 @@ function renderSwitcher(){
     h += '<span class="swlabel">الأبناء</span>';
     h += STUDENTS.map(k=>`<button class="chip-child${String(k.id)===String(currentSid)?' active':''}" onclick="switchChild(${k.id})">${k.name}</button>`).join('');
   }
-  h += `<button class="addchild" onclick="comingSoon('إضافة طفل')">${SVG.plus} إضافة طفل</button>`;
+  h += `<button class="addchild" onclick="addChild()">${SVG.plus} إضافة طفل</button>`;
   sw.innerHTML = h;
 }
 
 function switchChild(sid){
-  if(String(sid) === String(currentSid)) return;
+  if(String(sid) === String(currentSid) && VIEW==='board') return;
   currentSid = sid;
   const u = new URL(location); u.searchParams.set('student', sid); history.replaceState(null,'',u);
+  VIEW='board'; setNav();
   renderSwitcher();
   loadBoard(sid);
 }
@@ -159,6 +185,214 @@ function comingSoon(feature){
 }
 function closeModal(){ const o = document.getElementById('overlay'); if(o) o.classList.remove('show'); }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+// ===================== self-service views (اشتراكي / حسابي / إضافة طفل) =====================
+// All three reuse existing backend flows — no engine/content/child logic is touched here.
+let VIEW = 'board';
+let _emailStep = null;        // {email} while waiting for the email-change OTP
+
+function setNav(){
+  const s=document.getElementById('nav-sub'), a=document.getElementById('nav-account');
+  if(s) s.classList.toggle('active', VIEW==='sub');
+  if(a) a.classList.toggle('active', VIEW==='account');
+}
+
+function goView(v){
+  VIEW = v;
+  setNav();
+  if(v==='sub')      return showSubscription();
+  if(v==='account')  return showAccount();
+  // 'board' → the educational dashboard (or the empty state)
+  const board=document.getElementById('board');
+  if(!currentSid){ board.innerHTML='<div class="err">لا يوجد أطفال بعد. أضِف طفلاً للبدء. 🌱</div>'; return; }
+  loadBoard(currentSid);
+}
+
+// إضافة طفل — reuse the FULL add-child journey on /account (consent + per-plan child limit
+// are enforced there + by POST /api/students; the limit message is shown by that flow).
+function addChild(){ location.href = '/account'; }
+
+function banner(kind, text){ return `<div class="banner ${kind}">${text}</div>`; }
+function slot(id, flash){ return `<div id="${id}">${flash?banner(flash.kind, flash.text):''}</div>`; }
+function arDate(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  if(isNaN(d)) return '—';
+  return H(d.getDate()) + ' / ' + H(d.getMonth()+1) + ' / ' + H(d.getFullYear());
+}
+async function detail(r, fallback){ try{ const j=await r.json(); return j.detail || fallback; }catch(e){ return fallback; } }
+function say(id, kind, text){ const el=document.getElementById(id); if(el) el.innerHTML = banner(kind, text); }
+function val(id){ const el=document.getElementById(id); return el ? el.value.trim() : ''; }
+
+// ----------------------------- اشتراكي -----------------------------
+async function showSubscription(flash){
+  const board=document.getElementById('board'); if(!board) return;
+  board.innerHTML='<div class="err">… جارٍ التحميل</div>';
+  let sub, plans;
+  try{
+    const sr=await fetch('/api/subscription');
+    if(sr.status===401){ board.innerHTML='<div class="err">سجّل الدخول لعرض اشتراكك.</div>'; return; }
+    if(!sr.ok){ board.innerHTML='<div class="err">تعذّر تحميل الاشتراك.</div>'; return; }
+    sub=await sr.json();
+    plans=await (await fetch('/api/plans')).json();
+  }catch(e){ board.innerHTML='<div class="err">تعذّر الاتصال بالخادم.</div>'; return; }
+
+  const plan=(Array.isArray(plans)?plans:[]).find(p=>p.id===sub.plan_id);
+  const STATUS={trial:'تجربة مجانية',active:'اشتراك فعّال',canceled:'مُلغى (مستمرّ حتى الانتهاء)',expired:'منتهٍ'};
+  let html = H2('#155E7D', SVG.card, 'اشتراكي');
+  if(flash) html += banner(flash.kind, flash.text);
+
+  if(sub.has_access){
+    const canceled = sub.status==='canceled';
+    html += `<div style="${CARD}">
+        ${H2(canceled?'#B5701A':'#1E945B', canceled?SVG.compass:SVG.mastery, canceled?'اشتراكك مُلغى — لكنّه ما زال سارياً':'اشتراكك فعّال')}
+        <div class="kv"><span class="k">الباقة</span><span class="v">${plan?plan.name:'—'}</span></div>
+        <div class="kv"><span class="k">الحالة</span><span class="v">${STATUS[sub.status]||sub.status||'—'}</span></div>
+        <div class="kv"><span class="k">ساري حتى</span><span class="v">${arDate(sub.access_until)}</span></div>`;
+    if(canceled){
+      html += banner('info','تمّ إيقاف التجديد. يبقى وصولك إلى المحتوى حتى التاريخ أعلاه، ثمّ يتوقّف تلقائياً. يمكنك التجديد في أيّ وقت.');
+      html += `<div class="btnrow"><button class="btn-primary" onclick="location.href='/account'">تجديد الاشتراك</button></div>`;
+    } else {
+      html += `<div class="btnrow">
+          <button class="btn-primary" onclick="location.href='/account'">تجديد / ترقية</button>
+          <button class="btn-danger" onclick="askCancel()">إلغاء الاشتراك</button>
+        </div>
+        <div id="cancelBox"></div>`;
+    }
+    html += `</div>`;
+  } else {
+    html += `<div style="${CARD}">
+        ${H2('#178FC9', SVG.clock, 'لا يوجد اشتراك فعّال')}
+        ${banner('info','اشترك للوصول إلى خطة العلاج الكاملة لطفلك. يمكنك اختيار الباقة وطريقة الدفع من صفحة الحساب.')}
+        <div class="btnrow"><button class="btn-primary" onclick="location.href='/account'">اشترك الآن</button></div>
+      </div>`;
+  }
+  board.innerHTML = html;
+}
+
+function askCancel(){
+  const box=document.getElementById('cancelBox'); if(!box) return;
+  box.innerHTML = `<div style="background:#FFF6EC;border:1px solid #F3CF97;border-radius:14px;padding:14px;margin-top:13px;">
+      <div style="font-size:14px;color:#5A4421;line-height:1.8;font-weight:600;">
+        هل أنت متأكّد من إلغاء الاشتراك؟<br>سيتوقّف <b>التجديد</b> فقط — ويبقى وصول طفلك إلى المحتوى حتى نهاية المدة المدفوعة، ثمّ يتوقّف تلقائياً.
+      </div>
+      <div id="cancel-msg"></div>
+      <div class="btnrow">
+        <button class="btn-danger" onclick="doCancel(this)">نعم، ألغِ التجديد</button>
+        <button class="btn-ghost" onclick="document.getElementById('cancelBox').innerHTML='';">تراجع</button>
+      </div>
+    </div>`;
+}
+
+async function doCancel(btn){
+  btn.disabled=true;
+  try{
+    const r=await fetch('/api/subscription/cancel',{method:'POST'});
+    if(r.ok){ showSubscription({kind:'ok',text:'تمّ إلغاء التجديد. يبقى وصولك حتى نهاية المدة المدفوعة.'}); }
+    else { btn.disabled=false; say('cancel-msg','bad', await detail(r,'تعذّر إلغاء الاشتراك.')); }
+  }catch(e){ btn.disabled=false; say('cancel-msg','bad','تعذّر الاتصال بالخادم.'); }
+}
+
+// ----------------------------- حسابي -----------------------------
+async function showAccount(flash){
+  const board=document.getElementById('board'); if(!board) return;
+  board.innerHTML='<div class="err">… جارٍ التحميل</div>';
+  let me;
+  try{
+    const r=await fetch('/api/auth/me');
+    if(r.status===401){ board.innerHTML='<div class="err">سجّل الدخول لعرض حسابك.</div>'; return; }
+    if(!r.ok){ board.innerHTML='<div class="err">تعذّر تحميل الحساب.</div>'; return; }
+    me=await r.json();
+  }catch(e){ board.innerHTML='<div class="err">تعذّر الاتصال بالخادم.</div>'; return; }
+
+  let html = H2('#155E7D', SVG.user, 'حسابي');
+  if(flash) html += banner(flash.kind, flash.text);
+
+  // 1 · profile (name + whatsapp)
+  html += `<div style="${CARD}">
+      ${H2('#155E7D', SVG.user, 'بياناتي')}
+      <div class="kv"><span class="k">بريد الدخول</span><span class="v" dir="ltr">${me.email||'—'}</span></div>
+      <div class="fld"><label>اسم وليّ الأمر</label><input id="pf-name" value="${(me.name||'').replace(/"/g,'&quot;')}" placeholder="الاسم الكامل"></div>
+      <div class="fld"><label>رقم الواتساب</label><input id="pf-wa" dir="ltr" value="${(me.whatsapp||'').replace(/"/g,'&quot;')}" placeholder="مثال: ٩٦٨٩٢..."></div>
+      ${slot('pf-msg')}
+      <div class="btnrow"><button class="btn-primary" onclick="saveProfile(this)">حفظ التعديلات</button></div>
+    </div>`;
+
+  // 2 · change password (current verified first)
+  html += `<div style="${CARD}">
+      ${H2('#178FC9', SVG.card, 'تغيير كلمة السر')}
+      <div class="fld"><label>كلمة السر الحالية</label><input id="pw-cur" type="password" autocomplete="current-password"></div>
+      <div class="fld"><label>كلمة السر الجديدة</label><input id="pw-new" type="password" autocomplete="new-password" placeholder="٨ أحرف على الأقل"></div>
+      ${slot('pw-msg')}
+      <div class="btnrow"><button class="btn-primary" onclick="changePassword(this)">تغيير كلمة السر</button></div>
+    </div>`;
+
+  // 3 · change login email (OTP to the NEW address)
+  html += `<div style="${CARD}">
+      ${H2('#D97E0A', SVG.compass, 'تغيير بريد الدخول')}
+      ${banner('info','بريدك هو وسيلة دخولك. لحمايته لا يُغيَّر مباشرةً — نرسل رمز تحقّق إلى البريد الجديد ونتأكّد منه أولاً.')}`;
+  if(_emailStep){
+    html += `<div class="fld"><label>الرمز المُرسل إلى <span dir="ltr">${_emailStep.email}</span></label><input id="em-code" inputmode="numeric" placeholder="######"></div>
+      ${slot('em-msg')}
+      <div class="btnrow">
+        <button class="btn-primary" onclick="emailVerify(this)">تأكيد الرمز</button>
+        <button class="btn-ghost" onclick="_emailStep=null; showAccount();">إلغاء</button>
+      </div>`;
+  } else {
+    html += `<div class="fld"><label>البريد الجديد</label><input id="em-new" dir="ltr" type="email" placeholder="new@email.com"></div>
+      <div class="fld"><label>كلمة السر الحالية (للتأكيد)</label><input id="em-pw" type="password" autocomplete="current-password"></div>
+      ${slot('em-msg')}
+      <div class="btnrow"><button class="btn-primary" onclick="emailStart(this)">إرسال رمز التحقّق</button></div>`;
+  }
+  html += `</div>`;
+  board.innerHTML = html;
+}
+
+async function saveProfile(btn){
+  btn.disabled=true;
+  try{
+    const r=await fetch('/api/auth/me',{method:'PATCH',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name:val('pf-name'), whatsapp:val('pf-wa')})});
+    if(r.ok){ showAccount({kind:'ok',text:'تمّ حفظ بياناتك.'}); }
+    else { btn.disabled=false; say('pf-msg','bad', await detail(r,'تعذّر الحفظ — تحقّق من البيانات.')); }
+  }catch(e){ btn.disabled=false; say('pf-msg','bad','تعذّر الاتصال بالخادم.'); }
+}
+
+async function changePassword(btn){
+  const cur=val('pw-cur'), nw=val('pw-new');
+  if(!cur || !nw){ say('pw-msg','bad','أدخل كلمة السر الحالية والجديدة.'); return; }
+  btn.disabled=true;
+  try{
+    const r=await fetch('/api/auth/change-password',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({current_password:cur, new_password:nw})});
+    if(r.status===204){ showAccount({kind:'ok',text:'تمّ تغيير كلمة السر بنجاح.'}); }
+    else { btn.disabled=false; say('pw-msg','bad', await detail(r,'تعذّر التغيير.')); }
+  }catch(e){ btn.disabled=false; say('pw-msg','bad','تعذّر الاتصال بالخادم.'); }
+}
+
+async function emailStart(btn){
+  const ne=val('em-new'), pw=val('em-pw');
+  if(!ne || !pw){ say('em-msg','bad','أدخل البريد الجديد وكلمة السر الحالية.'); return; }
+  btn.disabled=true;
+  try{
+    const r=await fetch('/api/auth/email-change/start',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({new_email:ne, password:pw})});
+    if(r.ok){ const j=await r.json(); _emailStep={email:j.email}; showAccount({kind:'info',text:`أرسلنا رمز تحقّق إلى ${j.email}. أدخله للاعتماد.`}); }
+    else { btn.disabled=false; say('em-msg','bad', await detail(r,'تعذّر الإرسال.')); }
+  }catch(e){ btn.disabled=false; say('em-msg','bad','تعذّر الاتصال بالخادم.'); }
+}
+
+async function emailVerify(btn){
+  const code=val('em-code');
+  if(!code){ say('em-msg','bad','أدخل الرمز.'); return; }
+  btn.disabled=true;
+  try{
+    const r=await fetch('/api/auth/email-change/verify',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code})});
+    if(r.ok){ _emailStep=null; showAccount({kind:'ok',text:'تمّ تحديث بريد الدخول بنجاح.'}); }
+    else { btn.disabled=false; say('em-msg','bad', await detail(r,'الرمز غير صحيح أو منتهٍ.')); }
+  }catch(e){ btn.disabled=false; say('em-msg','bad','تعذّر الاتصال بالخادم.'); }
+}
 
 // ---------- data load (live, unchanged bindings) ----------
 async function load(){

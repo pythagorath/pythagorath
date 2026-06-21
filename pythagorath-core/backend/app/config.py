@@ -46,6 +46,9 @@ ADMIN_PASSWORD: str | None = os.environ.get("ADMIN_PASSWORD")
 PENDING_COOKIE: str = "pyth_pending"
 OTP_TTL_MINUTES: int = int(os.environ.get("OTP_TTL_MINUTES", "15"))
 OTP_LENGTH: int = int(os.environ.get("OTP_LENGTH", "6"))
+# Email-CHANGE OTP (self-service, authenticated): holds the signed {sub,new_email,code}
+# until the code sent to the NEW address is verified. Same short TTL as registration.
+EMAILCHG_COOKIE: str = "pyth_emailchg"
 
 # ---- email provider (OTP + password-reset delivery) ----
 # Pluggable: if SMTP is configured (SMTP_HOST set) the real sender is used; otherwise a

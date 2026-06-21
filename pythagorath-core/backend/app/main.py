@@ -647,6 +647,28 @@ def my_subscription(user=Depends(auth.current_user), db: Session = Depends(get_d
     return _sub_response(db, user)
 
 
+@app.post("/api/subscription/cancel", response_model=schemas.SubscriptionRead)
+def cancel_subscription(user=Depends(auth.current_user), db: Session = Depends(get_db)):
+    """Stop the RENEWAL of the current subscription. We do NOT revoke access: the guardian
+    keeps what they already paid for until access_until passes (then it expires naturally) —
+    this is the "الوصول يبقى حتى نهاية المدة المدفوعة ثم يتوقّف التجديد" policy. Only a live
+    trial/active subscription can be cancelled; an already-canceled/expired one 404s."""
+    now = datetime.now(timezone.utc)
+    sub = db.execute(
+        select(Subscription).where(
+            Subscription.user_id == user.id,
+            Subscription.status.in_(("trial", "active")),
+            Subscription.access_until.is_not(None),
+            Subscription.access_until > now,
+        ).order_by(Subscription.access_until.desc())
+    ).scalars().first()
+    if sub is None:
+        raise HTTPException(404, "لا يوجد اشتراك فعّال لإلغائه")
+    sub.status = "canceled"
+    db.commit()
+    return _sub_response(db, user)
+
+
 @app.post("/api/subscription/trial", response_model=schemas.SubscriptionRead)
 def start_trial(body: schemas.SubscribeRequest, user=Depends(auth.current_user), db: Session = Depends(get_db)):
     plan = db.get(Plan, body.plan_id)
