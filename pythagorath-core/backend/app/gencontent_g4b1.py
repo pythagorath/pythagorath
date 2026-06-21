@@ -66,7 +66,7 @@ def _compose(rng: random.Random, lo: int, hi: int):
         "parts": [{"value": v, "place_name": _PLACE_NAMES[i]} for i, v in parts],
         "blank_index": bi,
     }
-    return (f"فكِّك العدد {_h(n)} إلى صيغته التحليلية، وأوجد قيمة المنزلة الناقصة (؟).",
+    return (f"أكمل تفكيك العدد {_h(n)} — ما قيمة المنزلة الناقصة؟",
             _h(parts[bi][1]), vis)
 
 
