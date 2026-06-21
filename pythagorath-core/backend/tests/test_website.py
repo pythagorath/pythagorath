@@ -1,5 +1,6 @@
 """The public marketing website — pages serve, and the pricing page reads REAL plans
 from a public (no-auth) endpoint. Presentation layer only; the engine is untouched."""
+from sqlalchemy import select
 
 
 def test_public_pages_serve(client):
@@ -42,6 +43,40 @@ def test_term_debt_is_admin_only_not_in_parent_payload(admin_client, guardian_cl
     assert "uncovered" in body and "total" in body and isinstance(body["uncovered"], list)
     # a guardian cannot reach the admin endpoint
     assert guardian_client.get("/api/admin/term-debt").status_code == 403
+
+
+def test_countries_default_all_enabled(guardian_client):
+    """No setting → all six GCC curricula show in the add-child picker."""
+    cs = guardian_client.get("/api/countries")
+    assert cs.status_code == 200
+    codes = [c["code"] for c in cs.json()]
+    assert set(codes) == {"SA", "AE", "QA", "KW", "OM", "BH"}
+    assert all(c.get("name") for c in cs.json())          # Arabic names present
+
+
+def test_admin_disable_country_hides_it_from_picker(admin_client, guardian_client):
+    """Owner disables QA + KW → the add-child picker drops them; the rest remain. Content is
+    untouched (only the picker hides them)."""
+    admin_client.put("/api/admin/settings", json={"countries_disabled": "QA,KW"})
+    codes = [c["code"] for c in guardian_client.get("/api/countries").json()]
+    assert "QA" not in codes and "KW" not in codes
+    assert {"SA", "AE", "OM", "BH"}.issubset(set(codes))
+    # re-enabling restores the full list
+    admin_client.put("/api/admin/settings", json={"countries_disabled": ""})
+    assert len(guardian_client.get("/api/countries").json()) == 6
+
+
+def test_countries_requires_auth(client):
+    assert client.get("/api/countries").status_code == 401
+
+
+def test_disable_country_does_not_delete_curriculum(admin_client, guardian_client, db):
+    """Disabling a country must NOT remove its SkillCountry rows (content preserved)."""
+    from app.models import SkillCountry
+    before = db.execute(select(SkillCountry).where(SkillCountry.country == "QA")).scalars().all()
+    admin_client.put("/api/admin/settings", json={"countries_disabled": "QA"})
+    after = db.execute(select(SkillCountry).where(SkillCountry.country == "QA")).scalars().all()
+    assert len(before) == len(after) and len(before) > 0   # rows untouched
 
 
 def test_how_video_managed_from_admin(admin_client, client):

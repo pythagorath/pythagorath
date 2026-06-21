@@ -365,11 +365,14 @@ function gradeName(id){ if(!GRADES) return null; const g=GRADES.find(x=>x.id===i
 async function addChild(){
   if(!GRADES){ try{ GRADES = await api('/api/grades'); }catch(e){ GRADES=[]; } }
   if(!CONSENT){ try{ CONSENT = await api('/api/consent'); }catch(e){ CONSENT={text:'',version:null}; } }
+  // ENABLED countries (owner-controlled). Array (even empty) → use as-is; fetch error → full list.
+  let CES=null; try{ CES = await api('/api/countries'); }catch(e){ CES=null; }
+  const coOpts = Array.isArray(CES) ? CES.map(c=>[c.code,c.name]) : CO;
   V.innerHTML = `<div class="card">
     <div class="steps"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
     <h2>إضافة طفل</h2><div class="muted">معلومات بسيطة لنبدأ مساره المناسب.</div>
     <label>اسم الطفل</label><input id="cname" placeholder="مثال: سالم">
-    <label>الدولة (المنهج)</label><select id="ccountry">${CO.map(c=>`<option value="${c[0]}">${c[1]}</option>`).join('')}</select>
+    <label>الدولة (المنهج)</label><select id="ccountry">${coOpts.map(c=>`<option value="${c[0]}">${c[1]}</option>`).join('')}</select>
     <label>الصف المستهدف</label><select id="cgrade"><option value="">— اختر الصف —</option>${GRADES.map(g=>`<option value="${g.id}">${g.name}</option>`).join('')}</select>
     <label>شروط حماية بيانات الطفل</label>
     <div class="consent">${(CONSENT.text||'').replace(/</g,'&lt;')}</div>

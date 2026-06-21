@@ -162,6 +162,10 @@ class Question(Base):
 
 # The six GCC countries the phrasing layer may target.
 GCC_COUNTRIES = ("SA", "AE", "QA", "KW", "OM", "BH")
+# Arabic display names — the SINGLE server-side source (the admin "countries" toggle + the
+# add-child picker both read these, so names never drift between surfaces).
+GCC_COUNTRY_NAMES = {"SA": "السعودية", "AE": "الإمارات", "QA": "قطر",
+                     "KW": "الكويت", "OM": "عُمان", "BH": "البحرين"}
 _COUNTRY_LIST = ", ".join(f"'{c}'" for c in GCC_COUNTRIES)
 
 

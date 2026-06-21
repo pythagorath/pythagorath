@@ -692,6 +692,9 @@ SETTINGS_KEYS = {
     "pay_visa_on", "pay_bank_on", "pay_phone_on", "pay_bank", "pay_phone",
     # marketing "how it works" video — a link OR an uploaded-file path (e.g. /static/assets/how-it-works.mp4)
     "how_video_url",
+    # which curriculum COUNTRIES are hidden from the add-child picker — CSV of disabled codes.
+    # Empty/absent = none disabled = all six enabled (the default, unchanged behaviour).
+    "countries_disabled",
 }
 ANN_FORMATS = {"popup", "banner"}
 ANN_TARGETS = {"all", "unsubscribed", "grade", "country"}

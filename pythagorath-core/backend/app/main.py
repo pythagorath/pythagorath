@@ -36,9 +36,9 @@ from app import gencontent_g4b8  # noqa: F401 — G4 batch 8 (final): patterns/a
 from app.db import SessionLocal, get_db
 from app.gate import grade, read_snapshot, recompute
 from app.models import (
-    Announcement, AppSetting, GCC_COUNTRIES, Answer, ConsentRecord, Grade, Payment, Plan,
-    Question, QuestionInstance, Receipt, Skill, SkillCountry, SkillMastery, SkillPrerequisite,
-    Student, Subscription, Unit,
+    Announcement, AppSetting, GCC_COUNTRIES, GCC_COUNTRY_NAMES, Answer, ConsentRecord, Grade,
+    Payment, Plan, Question, QuestionInstance, Receipt, Skill, SkillCountry, SkillMastery,
+    SkillPrerequisite, Student, Subscription, Unit,
 )
 
 
@@ -281,6 +281,16 @@ def list_grades(user=Depends(auth.current_user), db: Session = Depends(get_db)):
     """The seeded grades — to populate the MANDATORY target-grade picker on the
     child-creation form. Only grades that exist (have content) appear; today: الصف الثاني."""
     return db.execute(select(Grade).order_by(Grade.order, Grade.id)).scalars().all()
+
+
+@app.get("/api/countries")
+def list_countries(user=Depends(auth.current_user), db: Session = Depends(get_db)):
+    """The ENABLED curriculum countries for the add-child picker (owner-controlled in admin).
+    Disabling a country only HIDES it here — its content/SkillCountry data is untouched.
+    Default (no setting) = all six enabled."""
+    row = db.get(AppSetting, "countries_disabled")
+    disabled = {c for c in (row.value.split(",") if row and row.value else []) if c}
+    return [{"code": c, "name": GCC_COUNTRY_NAMES[c]} for c in GCC_COUNTRIES if c not in disabled]
 
 
 @app.post("/api/students", response_model=schemas.StudentRead)

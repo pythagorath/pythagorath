@@ -109,7 +109,7 @@ let ME=null, OV=null, STUDENTS=[], PARENTS=[], NODES=null, NOTIFS=[], CURRENT='o
 const SECTIONS = [
   {grp:'الإدارة', items:[{id:'overview',ic:'🏠',name:'الرئيسية'},{id:'students',ic:'🧒',name:'الطلّاب'},{id:'parents',ic:'👪',name:'أولياء الأمور'}]},
   {grp:'المحتوى والجودة', items:[{id:'questions',ic:'❓',name:'الأسئلة'},{id:'skills',ic:'🗂️',name:'المهارات'},{id:'reports',ic:'📊',name:'التقارير'}]},
-  {grp:'التحكّم بالمنصّة', items:[{id:'integrations',ic:'🔌',name:'التكاملات'},{id:'ads',ic:'📣',name:'الإعلانات'}]},
+  {grp:'التحكّم بالمنصّة', items:[{id:'integrations',ic:'🔌',name:'التكاملات'},{id:'ads',ic:'📣',name:'الإعلانات'},{id:'countries',ic:'🌍',name:'الدول / المناهج'}]},
   {grp:'الاشتراك والتسعير', items:[{id:'pricing',ic:'💳',name:'التسعير والخطط'},{id:'paymethods',ic:'🏦',name:'طرق الدفع'},{id:'receipts',ic:'🧾',name:'الإيصالات'},{id:'subs',ic:'🔁',name:'الاشتراكات'}]},
   {grp:'', items:[{id:'settings',ic:'⚙️',name:'الإعدادات'}]},
 ];
@@ -183,7 +183,7 @@ function go(id){
   CURRENT=id; closeDrops();
   document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
   const c=document.getElementById('content'); c.innerHTML='<p class="muted">… جارٍ التحميل</p>';
-  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,integrations:secIntegrations,ads:secAds,pricing:secPricing,paymethods:secPayMethods,receipts:secReceipts,subs:secSubs,settings:secSettings}[id])(c);
+  ({overview:secOverview,students:secStudents,parents:secParents,questions:secQuestions,skills:secSkills,reports:secReports,integrations:secIntegrations,ads:secAds,countries:secCountries,pricing:secPricing,paymethods:secPayMethods,receipts:secReceipts,subs:secSubs,settings:secSettings}[id])(c);
 }
 function closeModal(){ document.getElementById('modal').classList.remove('show'); }
 function modal(html){ document.getElementById('modalBox').innerHTML=`<button class="x" onclick="closeModal()">✕</button>`+html; document.getElementById('modal').classList.add('show'); }
@@ -544,6 +544,27 @@ async function secSubs(c){
 
 // ---------- طرق الدفع (تحكّم المالك بالطرق الظاهرة + تفاصيل التحويل) ----------
 const onbox = (id,on,lbl)=>`<label class="frow" style="flex-direction:row;align-items:center;gap:8px"><input type="checkbox" id="${id}" ${on?'checked':''} style="width:auto"> ${lbl}</label>`;
+
+// ---------- الدول / المناهج (التحكّم بالدول الظاهرة لوليّ الأمر) ----------
+const GCC = [["SA","السعودية"],["AE","الإمارات"],["QA","قطر"],["KW","الكويت"],["OM","عُمان"],["BH","البحرين"]];
+async function secCountries(c){
+  let s; try{ s=await api('/api/admin/settings'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
+  const disabled = new Set((s.countries_disabled||'').split(',').filter(Boolean));
+  c.innerHTML = `<h2 class="sec">الدول / المناهج</h2>
+    <div class="muted">اختر الدول (المناهج) التي تظهر لوليّ الأمر عند إضافة طفل. تعطيل دولة يُخفيها من قائمة الاختيار فقط — لا يحذف أي محتوى أو منهج.</div>
+    <div class="panel"><h3>الدول الظاهرة لوليّ الأمر</h3>
+      ${GCC.map(([code,name])=>onbox('co_'+code, !disabled.has(code), name)).join('')}
+    </div>
+    <button class="savebtn" onclick="saveCountries()">حفظ</button>
+    <span id="co-msg" class="okmsg"></span>`;
+}
+async function saveCountries(){
+  const disabled = GCC.filter(([code])=>!document.getElementById('co_'+code).checked).map(([code])=>code).join(',');
+  try{ await api('/api/admin/settings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({countries_disabled:disabled})});
+    const m=document.getElementById('co-msg'); m.textContent='تم الحفظ ✓'; setTimeout(()=>m.textContent='',2000);
+  }catch(e){ alert('تعذّر الحفظ'); }
+}
+
 async function secPayMethods(c){
   let s; try{ s=await api('/api/admin/settings'); }catch(e){ c.innerHTML='<p class="err">تعذّر التحميل</p>'; return; }
   c.innerHTML = `<h2 class="sec">طرق الدفع</h2>
