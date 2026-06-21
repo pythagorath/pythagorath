@@ -480,11 +480,21 @@ function setup(id, name){
 }
 async function genCode(){
   try{ const r=await api('/api/auth/pairing-code',{method:'POST'});
-    document.getElementById('setupOut').innerHTML = `<div class="card" style="text-align:center;background:#FBF9F4">
-      <div class="muted">على جهاز الطفل، افتح <b>صفحة جهاز الطفل</b> وأدخل هذا الرمز:</div>
-      <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:44px;letter-spacing:10px;color:#155E7D;margin:10px 0">${H(r.code)}</div>
-      <div class="muted">ينتهي خلال ${H(r.ttl_minutes)} دقائق · استعمال واحد</div>
-      <a class="btn" style="display:block;text-decoration:none;margin-top:12px" href="/device" target="_blank">افتح صفحة جهاز الطفل ↗</a></div>`;
+    // قسمان واضحان لإزالة الالتباس: (أ) جهاز آخر بالرمز، (ب) تحويل هذا الجهاز — منطق ومسارات كما هي.
+    document.getElementById('setupOut').innerHTML = `
+      <div class="card" style="border:1.5px solid #BFE0F0;background:#F5FAFD">
+        <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;color:#155E7D;font-size:17px;margin-bottom:4px">جهاز الطفل جهاز آخر؟</div>
+        <div class="muted">على جهاز الطفل، افتح <b>صفحة جهاز الطفل</b> وأدخل هذا الرمز:</div>
+        <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:44px;letter-spacing:10px;color:#155E7D;margin:10px 0;text-align:center">${H(r.code)}</div>
+        <div class="muted" style="text-align:center">ينتهي خلال ${H(r.ttl_minutes)} دقائق · استعمال واحد</div>
+        <a class="btn" style="display:block;text-decoration:none;margin-top:12px" href="/device" target="_blank">افتح صفحة جهاز الطفل ↗</a>
+      </div>
+      <div style="text-align:center;color:#9A8F82;font-weight:700;margin:10px 0">— أو —</div>
+      <div class="card" style="border:1.5px solid #E9C48B;background:#FFF9F0">
+        <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;color:#C77A12;font-size:17px;margin-bottom:4px">هذا الجهاز هو جهاز الطفل؟</div>
+        <div class="muted">حوّل هذا الجهاز إلى وضع الطفل («اختر نفسك») مباشرةً — <b>ستُمسح جلستك من هذا الجهاز</b>.</div>
+        <button class="btn" style="display:block;width:100%;margin-top:12px;background:linear-gradient(135deg,#E88A2A,#D97311)" onclick="directDevice()">حوّل هذا الجهاز لوضع الطفل</button>
+      </div>`;
   }catch(e){ alert('تعذّر توليد الرمز'); }
 }
 async function directDevice(){

@@ -45,12 +45,22 @@ def _half_up(n, ref):
 # ---------------- place value (g4PVM / g4PV4 share these acts) ----------------
 
 def v_compose(pr, ans, vis):
-    ns = _nums(pr)
-    n = ns[0]
-    if ns[-1] != n:                         # «العدد n … = n —» bookends the parts
+    # The analytical form now lives in a STRUCTURED visual (expanded-form widget). Verify the
+    # decomposition INDEPENDENTLY: parts sum to n, blank index valid, and the answer = the
+    # blanked place value. (Display moved out of the prompt; the maths/answer are unchanged.)
+    n = _nums(pr)[0]                        # «فكِّك العدد n …»
+    if not vis or vis.get("kind") != "expanded-form" or vis.get("number") != n:
         return False
-    shown = ns[1:-1]
-    return _n1(ans) == n - sum(shown) and vis is None
+    parts = vis.get("parts") or []
+    bi = vis.get("blank_index")
+    if not isinstance(bi, int) or not (0 <= bi < len(parts)):
+        return False
+    if sum(p["value"] for p in parts) != n:           # a faithful decomposition
+        return False
+    # every part is a single-place value (digit × 10^k) with its Arabic place name
+    for p in parts:
+        assert p["place_name"] in _PLACES
+    return _n1(ans) == parts[bi]["value"]
 
 
 def v_place(pr, ans, vis):
@@ -161,6 +171,45 @@ def test_500_samples_verified_and_capped():
                 blob += " " + json.dumps(vis, ensure_ascii=False)
             over = [n for n in _nums(blob) if n > CAPS[code]]
             assert not over, (code, family, pr, over)
+
+
+def test_compose_attaches_expanded_form_visual():
+    """البند ١٢: compose now ships a STRUCTURED `expanded-form` visual (place cards + one blank)
+    — and the answer is still exactly the blanked place value. Display change only."""
+    rng = random.Random(1212)
+    for code in ("g4PVM", "g4PV4"):
+        gen = generators.REGISTRY[code]["compose"]
+        saw_multi_digit = False
+        for _ in range(300):
+            pr, ans, vis = gen(rng, {})
+            # visual shape
+            assert vis and vis["kind"] == "expanded-form", (code, pr, vis)
+            assert isinstance(vis["number"], int)
+            parts = vis["parts"]
+            assert len(parts) >= 2                      # «one place blanked» needs ≥2 parts
+            assert all(set(p) == {"value", "place_name"} for p in parts)
+            assert all(p["place_name"] in _PLACES for p in parts)
+            bi = vis["blank_index"]
+            assert 0 <= bi < len(parts)
+            # decomposition is faithful and the answer is byte-exact the blanked part value
+            assert sum(p["value"] for p in parts) == vis["number"]
+            assert _n1(ans) == parts[bi]["value"]
+            # each part is a pure place value: digit(1..9) × 10^k
+            for p in parts:
+                v = p["value"]
+                assert v > 0 and str(v).rstrip("0").__len__() == 1
+            if len(parts) >= 4:
+                saw_multi_digit = True
+        assert saw_multi_digit, code          # adapts to many places (4+), not just 2
+
+
+def test_compose_prompt_has_no_inline_form_but_number_present():
+    """The redundant inline «a + ؟ + b = n» text is gone (it's in the widget now), yet the
+    number to decompose is still in the prompt so the question reads on its own."""
+    rng = random.Random(99)
+    pr, ans, vis = generators.REGISTRY["g4PVM"]["compose"](rng, {})
+    assert "بالصيغة التحليلية:" not in pr          # no inline expanded string anymore
+    assert vis["number"] in _nums(pr)             # the number itself is still stated
 
 
 def test_rounding_tier_ceiling_never_leaks():

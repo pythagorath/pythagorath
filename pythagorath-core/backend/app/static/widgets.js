@@ -56,6 +56,49 @@ function mountWidget(host, q, onAnswer){
   if(v.kind==='coord-grid') return widgetCoordGrid(host, v, onAnswer);
   // ---- protractor (G4 batch 7) — the ONLY new G4 widget; angle measure/draw ----
   if(v.kind==='protractor') return widgetProtractor(host, v, onAnswer);
+  // ---- expanded form (الصيغة التحليلية) — place-value decomposition, one place blanked ----
+  if(v.kind==='expanded-form') return widgetExpandedForm(host, v, onAnswer);
+}
+
+// EXPANDED FORM — «الصيغة التحليلية»: a number decomposed into place-value parts, with ONE place
+// blanked for the child to type. This is the PRESENTATION of _compose (gencontent_g4b1); the gate
+// grades the typed string exactly as the old plain-input version did — answer logic untouched.
+// Adapts to any number of places and any blank position; place names come from the visual.
+function widgetExpandedForm(host, v, onAnswer){
+  const wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:8px;direction:rtl;margin:6px 0;';
+  const op=(s)=>{ const d=document.createElement('div'); d.textContent=s;
+    d.style.cssText='font-weight:800;font-size:24px;color:#e88a2a;align-self:center;padding-bottom:20px;'; return d; };
+  const valBox=(txt)=>`<div style="min-width:62px;text-align:center;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:22px;color:#1f5e7a;background:#F5FAFD;border:2px solid #BFE0F0;border-radius:12px;padding:10px 12px;">${txt}</div>`;
+  const stack=(boxHTML,label,color)=>{ const d=document.createElement('div');
+    d.style.cssText='display:flex;flex-direction:column;align-items:center;gap:5px;';
+    d.innerHTML=boxHTML+`<div style="font-size:12px;color:${color};font-weight:700">${label}</div>`; return d; };
+  (v.parts||[]).forEach((p,j)=>{
+    if(j>0) wrap.appendChild(op('+'));
+    if(j===v.blank_index){
+      const col=document.createElement('div');
+      col.style.cssText='display:flex;flex-direction:column;align-items:center;gap:5px;';
+      const box=document.createElement('div');
+      box.style.cssText='text-align:center;background:#FFF7EC;border:2px dashed #e88a2a;border-radius:12px;padding:6px 8px;';
+      const field=document.createElement('input');
+      field.type='text'; field.inputMode='numeric'; field.placeholder='؟'; field.className='exp-blank';
+      field.style.cssText='width:72px;text-align:center;font-family:"Baloo Bhaijaan 2",cursive;font-weight:800;font-size:22px;color:#e88a2a;border:0;background:transparent;outline:none;';
+      field.oninput=()=>onAnswer(field.value);
+      box.appendChild(field); col.appendChild(box);
+      const lab=document.createElement('div'); lab.style.cssText='font-size:12px;color:#C77A12;font-weight:700'; lab.textContent=p.place_name;
+      col.appendChild(lab);
+      wrap.appendChild(col);
+      setTimeout(()=>{ try{ field.focus(); }catch(e){} },50);
+    } else {
+      wrap.appendChild(stack(valBox(toHindi(p.value)), p.place_name, '#8A8178'));
+    }
+  });
+  wrap.appendChild(op('='));
+  wrap.appendChild(stack(valBox(toHindi(v.number)), 'العدد', '#8A8178'));
+  const hint=document.createElement('div');
+  hint.style.cssText='text-align:center;margin-top:8px;color:#8A8178;font-size:13px;';
+  hint.textContent='اكتب قيمة المنزلة الناقصة (؟).';
+  host.appendChild(wrap); host.appendChild(hint);
 }
 
 // COORDINATE GRID — the ordered pair (Bahrain ch12-7), the one genuinely new G3

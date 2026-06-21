@@ -57,9 +57,17 @@ def _compose(rng: random.Random, lo: int, hi: int):
         if len(parts) >= 2:
             break
     bi = rng.randrange(len(parts))
-    shown = " + ".join("؟" if j == bi else _h(v) for j, (_, v) in enumerate(parts))
-    return (f"فكِّك العدد {_h(n)} بالصيغة التحليلية: {shown} = {_h(n)} — ما قيمة المنزلة الناقصة؟",
-            _h(parts[bi][1]), None)
+    # The analytical form moves into a STRUCTURED visual (the «expanded-form» widget renders the
+    # place cards + the blank). The ANSWER is byte-identical to before — only the DISPLAY changes;
+    # the gate still grades the typed place value. The widget adapts to any digit count / blank pos.
+    vis = {
+        "kind": "expanded-form",
+        "number": n,
+        "parts": [{"value": v, "place_name": _PLACE_NAMES[i]} for i, v in parts],
+        "blank_index": bi,
+    }
+    return (f"فكِّك العدد {_h(n)} إلى صيغته التحليلية، وأوجد قيمة المنزلة الناقصة (؟).",
+            _h(parts[bi][1]), vis)
 
 
 def _place(rng: random.Random, lo: int, hi: int):

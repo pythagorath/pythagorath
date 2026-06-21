@@ -125,7 +125,34 @@ async function boot(){
 }
 function showGate(){ document.getElementById('app').innerHTML = `<div class="gate"><h1>لوحة الإدارة</h1><p>هذه اللوحة للمالك فقط. سجّل الدخول.</p>
   <input id="ge" type="email" placeholder="البريد"><input id="gp" type="password" placeholder="كلمة السر"><div class="err" id="gerr"></div>
-  <button onclick="doLogin()">دخول</button></div>`; }
+  <button onclick="doLogin()">دخول</button>
+  <div style="text-align:center;margin-top:12px"><a onclick="showResetReq()" style="cursor:pointer;color:#178FC9;font-size:13.5px">نسيت كلمة السر؟</a></div></div>`; }
+
+// ---- استعادة كلمة سر المالك (يستعمل نفس آلية password-reset القائمة — المالك مستخدم بدور admin) ----
+function showResetReq(){ document.getElementById('app').innerHTML = `<div class="gate"><h1>نسيت كلمة السر؟</h1>
+  <p>أدخل بريد المالك، وسنرسل رمز إعادة التعيين.</p>
+  <input id="re" type="email" placeholder="البريد"><div class="err" id="rerr"></div>
+  <button onclick="reqReset()">أرسل الرمز</button>
+  <div style="text-align:center;margin-top:12px"><a onclick="showGate()" style="cursor:pointer;color:#178FC9;font-size:13.5px">رجوع للدخول</a></div>
+  <p style="font-size:12px;color:#8A8178;margin:12px 0 0;text-align:center">إن لم يُضبط بريد الخادم (SMTP)، يُطبع الرمز في سجلّ الخادم (وضع التطوير).</p></div>`; }
+function showResetConfirm(){ document.getElementById('app').innerHTML = `<div class="gate"><h1>تعيين كلمة سر جديدة</h1>
+  <p>أدخل الرمز الذي وصل بريدك وكلمة السر الجديدة.</p>
+  <input id="rtok" placeholder="الرمز من البريد"><input id="rpw" type="password" placeholder="كلمة السر الجديدة (٨ أحرف على الأقل)">
+  <div class="err" id="rerr2"></div>
+  <button onclick="confirmReset()">تعيين كلمة السر</button>
+  <div style="text-align:center;margin-top:12px"><a onclick="showGate()" style="cursor:pointer;color:#178FC9;font-size:13.5px">رجوع للدخول</a></div></div>`; }
+async function reqReset(){ const err=document.getElementById('rerr'); err.textContent='';
+  const email=document.getElementById('re').value.trim(); if(!email){ err.textContent='أدخل بريدك.'; return; }
+  try{ await api('/api/auth/password-reset/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})}); }
+  catch(e){}                              // always proceed (no account enumeration)
+  showResetConfirm(); }
+async function confirmReset(){ const err=document.getElementById('rerr2'); err.textContent='';
+  const token=document.getElementById('rtok').value.trim(), new_password=document.getElementById('rpw').value;
+  if(!token){ err.textContent='أدخل الرمز.'; return; }
+  if((new_password||'').length<8){ err.textContent='كلمة السر ٨ أحرف على الأقل.'; return; }
+  try{ await api('/api/auth/password-reset/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,new_password})});
+    showGate(); const g=document.getElementById('gerr'); if(g){ g.style.color='#1E945B'; g.textContent='تم تغيير كلمة السر — سجّل الدخول.'; }
+  }catch(e){ err.textContent = e.detail || 'الرمز غير صالح أو منتهٍ.'; } }
 function showForbidden(email){ document.getElementById('app').innerHTML = `<div class="gate"><h1>غير مصرَّح</h1><p>الحساب «${email||''}» ليس مالكاً. هذه اللوحة للمالك فقط.</p><button onclick="logout()">تسجيل الخروج</button></div>`; }
 async function doLogin(){ const email=document.getElementById('ge').value.trim(), password=document.getElementById('gp').value;
   try{ await api('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})}); boot(); }
