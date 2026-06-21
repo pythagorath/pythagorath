@@ -101,6 +101,40 @@
   .dot.treasure{ background:#EDF1EE; border-color:#DCE3DD; color:#A9B4AC; width:58px; height:58px; }
   .twink{ position:absolute; right:8px; top:-2px; color:#F0A82B; animation:twinkle 2.4s ease-in-out infinite; }
   .twink svg{ width:16px; height:16px; }
+
+  /* ===================== responsive adventure map (VISUAL layout only) =====================
+     phone (<768): vertical trail (default above). tablet (768–1024): vertical, roomier.
+     laptop/desktop (>1024): the trail becomes a horizontal WAVY ROAD — stations ride a gentle
+     wave and scroll horizontally if they overflow. Station order/states/colours are unchanged
+     (all data-driven from the server); this only re-orients the layout. CSS-only, no JS. */
+  @media (min-width:768px){
+    .wrap{ max-width:720px; }
+    .srow{ min-height:96px; }
+  }
+  @media (min-width:1025px){
+    .wrap{ max-width:1000px; }                                   /* roomier header/CTA */
+    .trail{
+      width:100vw; max-width:100vw;
+      margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw);  /* full-bleed road */
+      display:flex; flex-direction:row; flex-wrap:nowrap; align-items:center; justify-content:flex-start;
+      overflow-x:auto; overflow-y:hidden; scroll-behavior:smooth; -webkit-overflow-scrolling:touch;
+      gap:0; padding:60px 48px 52px; min-height:300px;
+      /* the wavy road; background-attachment:local so it scrolls WITH the stations */
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='160' viewBox='0 0 260 160'%3E%3Cpath d='M0 120 Q65 40 130 120 T260 120' fill='none' stroke='%23E4EDE7' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x left center;
+      background-attachment:local; background-size:260px 160px;
+    }
+    .srow{ flex:0 0 130px; flex-direction:column; align-items:center; justify-content:center;
+           min-height:0; gap:12px; text-align:center; position:relative; z-index:1; }
+    .srow:nth-child(odd){ transform:translateY(28px); }          /* gentle wave — down */
+    .srow:nth-child(even){ transform:translateY(-28px); }        /* gentle wave — up */
+    .rail{ flex:0 0 auto; align-self:center; width:auto; }
+    .conn{ display:none; }                                        /* the wavy background IS the road here */
+    .lab{ flex:0 0 auto; max-width:130px; }
+    .labcard{ display:inline-block; }
+    .namir{ width:58px; margin:6px 0 0; }
+    .namir svg{ width:58px; height:58px; }
+    .namir .bubble{ right:auto; left:50%; transform:translateX(-50%); top:-20px; white-space:nowrap; }
+  }
 </style>
 </head>
 <body data-surface="child">
