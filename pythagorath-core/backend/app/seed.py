@@ -3,7 +3,7 @@ the floor E3/F1 are assumed inputs and NOT built). Questions are the family-
 tagged items from question_bank_g2_s1 (multi-part answers adapted to a single
 unambiguous value, family preserved). Idempotent.
 """
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from app.models import (
@@ -4736,6 +4736,41 @@ G4_LOWER_CROSSGRADE_EDGES = [
 # =================== end LOWER-GRADE CROSS-GRADE EDGES ===================
 
 
+def _assign_semester_terms(db: Session) -> None:
+    """Phase ب — split each (country × grade) path into two semesters by HALVES.
+
+    For every country, and every grade, take that path's skills (grade ∩ country) in the SAME
+    order ``_path_skills`` serves them — ``(Skill.order, Skill.id)`` — and label the first
+    ceil(n/2) as term 1 (الفصل الأول) and the rest as term 2 (الفصل الثاني). Computed here
+    (not hand-written per node) so the split has ONE source of truth and can never drift from
+    the membership. Display/scoping only — it sets SkillCountry.term, read solely by the
+    (already backward-compatible) `_path_skills` filter. A child with term=NULL is unaffected.
+
+    Idempotent shape: runs only inside ``seed`` (a fresh DB); existing seeded DBs are skipped
+    by the seed guard, so a live DB's values are never silently rewritten."""
+    countries = db.execute(select(SkillCountry.country).distinct()).scalars().all()
+    grades = db.execute(select(Grade.id)).scalars().all()
+    for country in countries:
+        for grade_id in grades:
+            skill_ids = db.execute(
+                select(Skill.id)
+                .join(Unit, Skill.unit_id == Unit.id)
+                .join(SkillCountry, SkillCountry.skill_id == Skill.id)
+                .where(Unit.grade_id == grade_id, SkillCountry.country == country)
+                .order_by(Skill.order, Skill.id)
+            ).scalars().all()
+            n = len(skill_ids)
+            if n == 0:
+                continue
+            first_half = (n + 1) // 2          # ceil → الفصل الأول يأخذ الزائدة عند الفردي
+            for i, sid in enumerate(skill_ids):
+                db.execute(
+                    update(SkillCountry)
+                    .where(SkillCountry.skill_id == sid, SkillCountry.country == country)
+                    .values(term=1 if i < first_half else 2)
+                )
+
+
 def seed(db: Session) -> None:
     if db.execute(select(Skill).limit(1)).scalars().first() is not None:
         return  # already seeded
@@ -4823,4 +4858,6 @@ def seed(db: Session) -> None:
     for code, countries in NODE_COUNTRIES.items():
         for country in countries:
             db.add(SkillCountry(skill_id=code_to_id[code], country=country))
+    db.flush()
+    _assign_semester_terms(db)   # Phase ب: equal half/half split per (country × grade)
     db.commit()
