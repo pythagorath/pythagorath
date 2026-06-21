@@ -24,6 +24,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    SmallInteger,
     String,
     Text,
     UniqueConstraint,
@@ -214,6 +215,12 @@ class SkillCountry(Base):
         ForeignKey("skills.id", ondelete="CASCADE"), primary_key=True
     )
     country: Mapped[str] = mapped_column(String(2), primary_key=True)
+    # The SEMESTER this node sits in WITHIN this country's path: 1 (الفصل الأول) | 2 (الفصل
+    # الثاني). NULL = unclassified → the node is visible in BOTH semesters (never hidden by a
+    # missing classification). Per-country on purpose: the same shared node can fall in a
+    # different semester for different countries. Validated (∈{1,2}|None) in the app layer,
+    # no DB CHECK (keeps the migration purely additive). Display/scoping only — engine-blind.
+    term: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
 
 
 class User(Base):
@@ -261,6 +268,11 @@ class Student(Base):
     grade_id: Mapped[int | None] = mapped_column(
         ForeignKey("grades.id", ondelete="RESTRICT"), nullable=True, index=True
     )
+    # The child's CURRENT semester (the THIRD curriculum-path dimension): 1 | 2. NULL = not
+    # set → no semester filter, so the child sees their WHOLE grade (the current behaviour,
+    # preserved exactly). The guardian sets this later (phase ج). Validated (∈{1,2}|None) in
+    # the app layer; the filter is in `_path_skills` (country + grade + term).
+    term: Mapped[int | None] = mapped_column(SmallInteger, nullable=True)
     # The owning guardian. The data-isolation boundary: every child-scoped endpoint
     # checks this against the authenticated user. NULL-owner children (only creatable
     # by direct DB access, never the API) are unreachable via the API — fail-closed.

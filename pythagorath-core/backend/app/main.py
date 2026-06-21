@@ -43,13 +43,17 @@ from app.models import (
 
 
 def _path_skills(db: Session, student) -> list[Skill]:
-    """The skills VISIBLE to this child = the INTERSECTION of their TARGET grade and their
-    country path. Two dimensions:
+    """The skills VISIBLE to this child = the INTERSECTION of their TARGET grade, their
+    country path, and (when set) their semester. Three dimensions:
       * GRADE — only the child's target grade's units (skill→unit.grade_id). Today one
         grade is seeded, so this is a no-op in practice; it's the structural seam for
         multi-grade. (Target grade, NOT a locked level — the diagnostic may later descend
         below it once lower grades + cross-grade edges exist.)
       * COUNTRY — intersect with the country curriculum path (NULL country → whole grade).
+      * TERM (الفصل الدراسي) — keep a node iff: the child has NO term set, OR the node has
+        NO term in this country (unclassified), OR the two match. So a child without a term
+        sees their WHOLE grade exactly as before — fully backward-compatible. The term lives
+        per-country on SkillCountry; read it alongside the membership.
     Scoping/display only — the gate and lock are untouched; each path is prerequisite-closed."""
     q = select(Skill).order_by(Skill.order, Skill.id)
     if student.grade_id is not None:
@@ -57,10 +61,20 @@ def _path_skills(db: Session, student) -> list[Skill]:
     skills = db.execute(q).scalars().all()
     if not student.country:
         return skills
-    allowed = set(db.execute(
-        select(SkillCountry.skill_id).where(SkillCountry.country == student.country)
-    ).scalars().all())
-    return [s for s in skills if s.id in allowed]
+    # skill_id → term (NULL term stored as None) for this country's path
+    allowed = {sid: term for sid, term in db.execute(
+        select(SkillCountry.skill_id, SkillCountry.term).where(
+            SkillCountry.country == student.country)
+    ).all()}
+    child_term = getattr(student, "term", None)
+    out = []
+    for s in skills:
+        if s.id not in allowed:
+            continue
+        node_term = allowed[s.id]
+        if child_term is None or node_term is None or node_term == child_term:
+            out.append(s)
+    return out
 
 
 # ---- country-path MEMBERSHIP guard (structural, distinct from lock + paywall) ----
