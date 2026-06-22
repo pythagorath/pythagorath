@@ -94,12 +94,15 @@ def g1cmpq(rng: random.Random, p: dict):
             ans, _pick2(rng, ans, other))
 
 
-EST_EMOJI = ["🍎", "⭐", "🐤", "⚽", "🌙"]
+EST_EMOJI = ["🍎", "⭐", "🐤", "⚽", "🌙", "🌸", "🐠", "🎈", "🦋", "🍪"]
 # the FINITE reasonableness bank — declared honestly (scenario, good, absurd)
 EST_SCENES = [("عدد تلاميذ صفّك", 20, 200), ("عدد أصابع يديك", 10, 100),
               ("عدد عجلات السيارة", 4, 40), ("عدد كتب حقيبتك", 6, 60),
               ("عدد أرجل القطة", 4, 44), ("عدد أيام الأسبوع", 7, 70),
-              ("عدد أبواب الصف", 2, 20), ("عدد عيون الإنسان", 2, 22)]
+              ("عدد أبواب الصف", 2, 20), ("عدد عيون الإنسان", 2, 22),
+              ("عدد لاعبي فريق كرة القدم", 11, 90), ("عدد أشهر السنة", 12, 120),
+              ("عدد ألوان قوس قزح", 7, 77), ("عدد نوافذ بيتك", 8, 80),
+              ("عدد أصابع يدٍ واحدة", 5, 50), ("عدد فصول السنة", 4, 40)]
 
 
 @register("g1EST", "estimation")
@@ -108,7 +111,10 @@ def g1est_estimation(rng: random.Random, p: dict):
     # the distractor stays PERCEPTUALLY far (≥10 away) — for small n the downward
     # distractor would collapse toward n (the verifier caught this), so go up
     far = n + rng.randrange(10, 16) if n < 16 else n + rng.choice([-1, 1]) * rng.randrange(10, 16)
-    return ("قدِّر دون عدّ: كم تقريباً؟", _h(n),
+    prompt = rng.choice(["قدِّر دون عدّ: كم تقريباً؟",
+                         "بنظرةٍ سريعة دون عدّ: كم العدد تقريباً؟",
+                         "خمِّن العدد تقريباً (دون أن تعدّ):"])
+    return (prompt, _h(n),
             {"kind": "element-count", "objects": rng.choice(EST_EMOJI), "n": n,
              "notap": True, "options": rng.sample([_h(n), _h(far)], 2)})
 

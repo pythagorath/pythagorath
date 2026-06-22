@@ -39,7 +39,10 @@ ROLLERS = {"sphere", "cylinder", "cone"}
 POLY_N = {"triangle": 3, "square": 4, "rectangle": 4, "pentagon": 5, "hexagon": 6}
 EST_SCENES = {"عدد تلاميذ صفّك": 20, "عدد أصابع يديك": 10, "عدد عجلات السيارة": 4,
               "عدد كتب حقيبتك": 6, "عدد أرجل القطة": 4, "عدد أيام الأسبوع": 7,
-              "عدد أبواب الصف": 2, "عدد عيون الإنسان": 2}
+              "عدد أبواب الصف": 2, "عدد عيون الإنسان": 2,
+              "عدد لاعبي فريق كرة القدم": 11, "عدد أشهر السنة": 12,
+              "عدد ألوان قوس قزح": 7, "عدد نوافذ بيتك": 8,
+              "عدد أصابع يدٍ واحدة": 5, "عدد فصول السنة": 4}
 SYM_BANK = {"🦋 الفراشة": True, "🧤 قفّازٌ واحد": False, "⭕ الحلقة": True,
             "🔺 المثلث المتساوي": True, "🌙 الهلال": False, "⬛ المربع": True,
             "👞 حذاءٌ واحد": False, "➰ الوشاح الملتفّ": False}
@@ -371,14 +374,14 @@ VERIFIERS = {
 }
 
 # per-node numeral cap (the range law) — every numeral in prompt+answer+visual
-CAPS = {"g1CAL": 28, "g1CMPQ": 9, "g1EST": 250, "g1ESTR": 100, "g1EVEN": 20,
+CAPS = {"g1CAL": 28, "g1CMPQ": 9, "g1EST": 380, "g1ESTR": 100, "g1EVEN": 20,
         "g1FRSET": 12, "g1MONEY": 100, "g1PAT": 6, "g1SHP3": 6,
         "G4": 6, "G5": 6, "G6": 32, "G7": 6, "G8": 6, "R1": 6, "R2": 6, "V4": 81, "Z": 20,
         "g3CMP4": 9999, "g3CMP10": 999, "g3EST3": 1000, "g3EVENM": 99}
 
 # the variation-guard floors: ≥40 computational; HONEST declared floors for the
 # finite/geometric families (no fake infinity — owner-ratified)
-THRESHOLDS = {"g1CAL": 30, "g1CMPQ": 35, "g1EST": 25, "g1ESTR": 40, "g1EVEN": 25,
+THRESHOLDS = {"g1CAL": 30, "g1CMPQ": 35, "g1EST": 38, "g1ESTR": 40, "g1EVEN": 25,
               "g1FRSET": 27,   # «خذ» finite by source (halves/quarters of ≤8 → 6 combos)
               "g1MONEY": 22, "g1PAT": 25, "g1SHP3": 25,
               "G4": 9, "G5": 25, "G6": 22, "G7": 11, "G8": 18, "R1": 25, "R2": 35,

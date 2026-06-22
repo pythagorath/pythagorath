@@ -508,15 +508,21 @@ def da4_lineplot(rng: random.Random, p: dict):
 
 # ---------------- صف١ ----------------
 
-N10_EMOJI = [("🍎", "التفاحات"), ("🐤", "العصافير"), ("⭐", "النجوم"), ("⚽", "الكرات")]
+N10_EMOJI = [("🍎", "التفاحات"), ("🐤", "العصافير"), ("⭐", "النجوم"), ("⚽", "الكرات"),
+             ("🌸", "الورود"), ("🐠", "الأسماك"), ("🎈", "البالونات"), ("🦋", "الفراشات"),
+             ("🍪", "البسكويتات"), ("🚗", "السيّارات")]
 NUM_WORDS = ["صفر", "واحد", "اثنان", "ثلاثة", "أربعة", "خمسة", "ستة", "سبعة", "ثمانية", "تسعة", "عشرة"]
 
 
 @register("g1N10", "aggregative")
 def g1n10_count(rng: random.Random, p: dict):
-    n = rng.randrange(2, 10)
+    # widened to the full 0–10 range + a larger object bank (cap=10). Two prompt phrasings
+    # break the monotony; the verifier reads only v["n"], so the wording is free to vary.
+    n = rng.randrange(1, 11)
     e, label = rng.choice(N10_EMOJI)
-    return (f"عُدَّ {label} بالنقر على كلٍّ منها: كم عددها؟", _h(n),
+    prompt = rng.choice([f"عُدَّ {label} بالنقر على كلٍّ منها: كم عددها؟",
+                         f"كم عدد {label}؟ انقر كلَّ واحدةٍ لتعدّها."])
+    return (prompt, _h(n),
             {"kind": "element-count", "objects": e, "label": label, "n": n})
 
 
@@ -528,7 +534,7 @@ def g1n10_symbol(rng: random.Random, p: dict):
 
 @register("g1N10", "comparative")
 def g1n10_compare(rng: random.Random, p: dict):
-    a, b = rng.sample(range(1, 11), 2)
+    a, b = rng.sample(range(0, 11), 2)              # widened to include 0
     big = rng.random() < 0.5
     ans = (max if big else min)(a, b)
     return (f"اكتب العدد {'الأكبر' if big else 'الأصغر'}: {_h(a)} أم {_h(b)}؟", _h(ans), None)
@@ -536,12 +542,30 @@ def g1n10_compare(rng: random.Random, p: dict):
 
 @register("g1N20", "aggregative")
 def g1n20_frame(rng: random.Random, p: dict):
-    k = rng.randrange(1, 10)
-    return (f"املأ الإطار: أضِف {_h(k)} إلى ١٠.", _h(10 + k),
-            {"kind": "ten-frame", "start": 10, "add": k})
+    # two interaction patterns over the teen range (11–20): "fill from ten" and "how many
+    # added to reach the sum" — both ten-frame, both passed by v_tenframe.
+    k = rng.randrange(1, 11)                        # widened 1..10 → reaches 20
+    if rng.random() < 0.5:
+        return (f"املأ الإطار: أضِف {_h(k)} إلى ١٠.", _h(10 + k),
+                {"kind": "ten-frame", "start": 10, "add": k})
+    return (f"في الإطار ١٠ ملوّنة — املأ حتى يصير المجموع {_h(10 + k)}: كم أضفت؟", _h(k),
+            {"kind": "ten-frame", "start": 10, "ask": "added"})
 
 
-seq_node("g1N20", "sequential", lambda r: (lambda s: ([s, s + 1, s + 2], s + 3, "التتابع"))(r.randrange(11, 18)))
+def _g1n20_seq(r: random.Random):
+    """Teen sequences in three patterns (forward / backward / skip-by-2), all inside 11–20."""
+    mode = r.choice(["up", "down", "skip2"])
+    if mode == "up":
+        s = r.randrange(11, 18)
+        return ([s, s + 1, s + 2], s + 3, "التتابع")
+    if mode == "down":
+        s = r.randrange(14, 21)
+        return ([s, s - 1, s - 2], s - 3, "التتابع التنازلي")
+    s = r.randrange(11, 15)
+    return ([s, s + 2, s + 4], s + 6, "العدّ بالقفز ٢")
+
+
+seq_node("g1N20", "sequential", _g1n20_seq)
 seq_node("g1N100", "sequential", lambda r: (lambda s: ([s, s + 1, s + 2], s + 3, "التتابع"))(r.randrange(21, 96)))
 seq_node("g1N120", "sequential", lambda r: (lambda s: ([s, s + 1, s + 2], s + 3, "التتابع"))(r.randrange(96, 117)))
 seq_node("g1SKIP", "sequential", lambda r: (lambda d: (lambda s: ([s, s + d, s + 2 * d], s + 3 * d, f"العدّ بالقفز {_h(d)}"))(d * r.randrange(1, 3)))(r.choice([2, 5, 10])))
@@ -615,16 +639,24 @@ def g1bond_complete(rng: random.Random, p: dict):
 
 @register("g1REL", "inverse")
 def g1rel_inverse(rng: random.Random, p: dict):
-    a, b = rng.randrange(2, 7), rng.randrange(2, 7)
+    a = rng.randrange(2, 9)
+    b = rng.randrange(2, min(9, 12 - a) + 1)        # widened; keep the whole ≤ 12 (cap)
     c = a + b
-    return (f"بما أنّ {_h(a)} + {_h(b)} = {_h(c)}، فما ناتج {_h(c)} − {_h(b)}؟", _h(a), None)
+    # half the time show it as a part-whole bar (a NEW interaction pattern for this node,
+    # which was text-only): whole c, one part b → the missing part is a. Verifier parses
+    # the prompt only, so the visual is free to attach.
+    vis = ({"kind": "decomposition", "mode": "part-whole", "whole": c, "part": b}
+           if rng.random() < 0.5 else None)
+    return (f"بما أنّ {_h(a)} + {_h(b)} = {_h(c)}، فما ناتج {_h(c)} − {_h(b)}؟", _h(a), vis)
 
 
 @register("g1REL", "family")
 def g1rel_family(rng: random.Random, p: dict):
-    a, b = rng.randrange(2, 6), rng.randrange(2, 6)
+    a, b = rng.randrange(2, 8), rng.randrange(2, 8)
     if a == b:
         b += 1
+    if a + b > 12:                                  # keep within cap 12
+        a, b = min(a, b), 12 - min(a, b)
     c = a + b
     return (f"عائلة الحقائق ({_h(a)}، {_h(b)}، {_h(c)}): {_h(a)} + {_h(b)} = {_h(c)} · "
             f"{_h(b)} + {_h(a)} = {_h(c)} · {_h(c)} − {_h(a)} = {_h(b)} · {_h(c)} − {_h(b)} = ؟",
@@ -633,19 +665,20 @@ def g1rel_family(rng: random.Random, p: dict):
 
 @register("g1REL", "missing")
 def g1rel_missing(rng: random.Random, p: dict):
-    c = rng.randrange(6, 11)
+    c = rng.randrange(6, 13)                         # widened up to the cap (12)
     a = rng.randrange(2, c - 1)
-    first = rng.random() < 0.5
-    if first:
-        return (f"أوجد الحدّ المفقود: ؟ + {_h(a)} = {_h(c)}", _h(c - a), None)
-    return (f"أوجد الحدّ المفقود: {_h(a)} + ؟ = {_h(c)}", _h(c - a), None)
+    vis = ({"kind": "decomposition", "mode": "part-whole", "whole": c, "part": a}
+           if rng.random() < 0.5 else None)
+    if rng.random() < 0.5:
+        return (f"أوجد الحدّ المفقود: ؟ + {_h(a)} = {_h(c)}", _h(c - a), vis)
+    return (f"أوجد الحدّ المفقود: {_h(a)} + ؟ = {_h(c)}", _h(c - a), vis)
 
 
 # strategy nodes — each family keeps its ACT, sampled
 @register("g1ADDSTR", "counting")
 def g1addstr_count(rng: random.Random, p: dict):
     a = rng.randrange(7, 15)
-    b = rng.randrange(2, 5)
+    b = rng.randrange(2, 6)                          # widened 2..5 (a+b ≤ 19 ≤ cap 20)
     if rng.random() < 0.5:
         return (f"على الخطّ: ابدأ من {_h(a)} وعُدّ {_h(b)} للأمام.", _h(a + b),
                 {"kind": "number-line", "min": 0, "max": 20, "start": a, "jump": b})
@@ -667,9 +700,13 @@ def g1addstr_bridge(rng: random.Random, p: dict):
 
 @register("g1ADDSTR", "derived")
 def g1addstr_derived(rng: random.Random, p: dict):
-    n = rng.randrange(4, 10)
     if rng.random() < 0.5:
-        return (f"الشفع: {_h(n)} + {_h(n)} = ؟", _h(2 * n), None)
+        n = rng.randrange(3, 11)                     # double: 2n ≤ 20 (cap)
+        # show the double on a ten-frame (overflow past 10) — a visual pattern for what was
+        # text-only; v_addstr's ten-frame branch checks start+add == 2n.
+        return (f"الشفع: {_h(n)} + {_h(n)} = ؟", _h(2 * n),
+                {"kind": "ten-frame", "start": n, "add": n})
+    n = rng.randrange(3, 10)                         # near-double: 2n+1 ≤ 19 (cap)
     return (f"بما أنّ {_h(n)} + {_h(n)} = {_h(2*n)}، فما {_h(n)} + {_h(n+1)}؟", _h(2 * n + 1), None)
 
 
@@ -687,7 +724,7 @@ def g1addstr_property(rng: random.Random, p: dict):
 @register("g1SUBSTR", "counting")
 def g1substr_count(rng: random.Random, p: dict):
     m = rng.randrange(9, 18)
-    s = rng.randrange(2, 4)
+    s = rng.randrange(2, 6)                          # widened 2..5 (count back further)
     if rng.random() < 0.5:
         return (f"على الخطّ: ابدأ من {_h(m)} وعُدّ {_h(s)} للخلف.", _h(m - s),
                 {"kind": "number-line", "min": 0, "max": 20, "start": m, "jump": s, "back": True})
@@ -704,8 +741,12 @@ def g1substr_bridge(rng: random.Random, p: dict):
 
 @register("g1SUBSTR", "derived")
 def g1substr_derived(rng: random.Random, p: dict):
-    n = rng.randrange(5, 10)
-    return (f"بما أنّ {_h(n)} + {_h(n)} = {_h(2*n)}، فما {_h(2*n)} − {_h(n)}؟", _h(n), None)
+    n = rng.randrange(5, 11)                         # widened 5..10 (2n ≤ 20 cap)
+    # show the "take half from the double" on blocks — a visual pattern for what was text-only;
+    # v_substr's subtract-blocks branch checks minuend − subtract == n.
+    vis = ({"kind": "subtract-blocks", "minuend": 2 * n, "subtract": n}
+           if rng.random() < 0.5 else None)
+    return (f"بما أنّ {_h(n)} + {_h(n)} = {_h(2*n)}، فما {_h(2*n)} − {_h(n)}؟", _h(n), vis)
 
 
 @register("g1SUBSTR", "inverse")
