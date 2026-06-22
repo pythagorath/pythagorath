@@ -136,7 +136,7 @@ VERIFIERS = {
 }
 
 CAPS = {"g3FRAC": 8, "g3FRLINE": 16, "g3FREQ": 16, "g3FRSET3": 10, "g3DEC": 100}
-FLOORS = {"g3DEC": 30, "g3FRAC": 26, "g3FREQ": 30, "g3FRLINE": 18, "g3FRSET3": 30}   # worst-over-20-seeds
+FLOORS = {"g3DEC": 30, "g3FRAC": 26, "g3FREQ": 30, "g3FRLINE": 24, "g3FRSET3": 30}   # FRLINE raised (phase-1 enrichment)
 
 
 def test_batch7_registered():

@@ -53,7 +53,7 @@ def frac_whole(rng: random.Random, p: dict):
 
 @register("g3FRLINE", "below")
 def frline_below(rng: random.Random, p: dict):
-    n = rng.choice([3, 4, 6, 8])
+    n = rng.choice([2, 3, 4, 5, 6, 8])             # widened (+2, +5) — more denominators
     k = rng.randrange(1, n)
     return (f"انقر موضع {_fr(k, n)} على الخطّ.", _fr(k, n),
             {"kind": "number-line", "den": n, "maxWhole": 1})
@@ -61,7 +61,7 @@ def frline_below(rng: random.Random, p: dict):
 
 @register("g3FRLINE", "above")
 def frline_above(rng: random.Random, p: dict):
-    n = rng.choice([3, 4, 6])                       # den 8 above 1 → too many ticks
+    n = rng.choice([3, 4, 5, 6])                    # widened (+5); den 8 above 1 → too many ticks
     k = rng.randrange(n + 1, 2 * n)
     return (f"انقر موضع {_fr(k, n)} على الخطّ (أكبر من ١).", _fr(k, n),
             {"kind": "number-line", "den": n, "maxWhole": 2})

@@ -1285,14 +1285,19 @@ def g3mul_modeling(rng: random.Random, p: dict):
 @register("g3MULF1", "skip")
 def g3mulf1_skip(rng: random.Random, p: dict):
     f = rng.choice([2, 5, 10])
-    k = rng.randrange(2, 10)
+    k = rng.randrange(2, 11)                         # widened 2..10
     hint = {2: "بقفز الاثنين", 5: "بنمط الخمسة (٥، ١٠، ١٥، ...)", 10: "بنمط العشرة"}[f]
+    # NEW visual pattern (this node was text-only): a tappable array for SMALL products —
+    # the canonical multiplication picture. v_g3_mul_fact verifies via v_array (rows×cols).
+    if f <= 5 and k <= 5:
+        return (f"عُدّ {hint}: انقر الشبكة لإيجاد {_h(k)} × {_h(f)}.", _h(k * f),
+                {"kind": "array", "rows": k, "cols": f})
     return (f"{hint}: {_h(k)} × {_h(f)} = ؟", _h(k * f), None)
 
 
 @register("g3MULF1", "zero-one")
 def g3mulf1_zeroone(rng: random.Random, p: dict):
-    n = rng.randrange(2, 10)
+    n = rng.randrange(2, 13)                         # widened 2..12
     if rng.random() < 0.5:
         return (f"{_h(n)} × ١ = ؟", _h(n), None)
     return (f"٠ × {_h(n)} = ؟", "٠", None)
@@ -1300,7 +1305,7 @@ def g3mulf1_zeroone(rng: random.Random, p: dict):
 
 @register("g3MULF1", "nine")
 def g3mulf1_nine(rng: random.Random, p: dict):
-    k = rng.randrange(2, 10)
+    k = rng.randrange(2, 11)                         # widened 2..10 (9×10=90 ≤ cap 100)
     if rng.random() < 0.5:
         return (f"نمط التسعة: ٩ × {_h(k)} = (١٠ × {_h(k)}) − {_h(k)} = ؟", _h(9 * k), None)
     return (f"٩ × {_h(k)} = ؟ (لاحظ: رقما الناتج يجمعان إلى ٩)", _h(9 * k), None)
@@ -1344,13 +1349,17 @@ def g3mulf2_pattern(rng: random.Random, p: dict):
 
 @register("g3F12", "eleven")
 def g3f12_eleven(rng: random.Random, p: dict):
-    k = rng.randrange(2, 10)
-    return (f"نمط الأحد عشر (الرقم يتكرر): {_h(k)} × ١١ = ؟", _h(11 * k), None)
+    k = rng.randrange(2, 11)                         # widened 2..10 (×11 → up to 110)
+    # two strategy phrasings (repeat-digit pattern vs partition by ten) — the second pattern
+    # for a node where a tap-array of 11 columns would be impractical at this tier.
+    if rng.random() < 0.5:
+        return (f"نمط الأحد عشر (الرقم يتكرر): {_h(k)} × ١١ = ؟", _h(11 * k), None)
+    return (f"بالتوزيع: {_h(k)} × ١١ = ({_h(k)} × ١٠) + {_h(k)} = ؟", _h(11 * k), None)
 
 
 @register("g3F12", "distribute")
 def g3f12_distribute(rng: random.Random, p: dict):
-    k = rng.randrange(3, 13)
+    k = rng.randrange(2, 13)                         # widened 2..12 (max 12×12 = 144, the tier ceiling)
     return (f"بالتوزيع: {_h(k)} × ١٢ = ({_h(k)} × ١٠) + ({_h(k)} × ٢) = ؟", _h(12 * k), None)
 
 

@@ -86,7 +86,7 @@ VERIFIERS = {
 }
 
 CAPS = {"g3DATAR": 50, "g3DATAB": 60, "g3PROB": 9}
-FLOORS = {"g3DATAR": 35, "g3DATAB": 17, "g3PROB": 30}
+FLOORS = {"g3DATAR": 35, "g3DATAB": 30, "g3PROB": 30}
 
 
 def test_batch10_registered():

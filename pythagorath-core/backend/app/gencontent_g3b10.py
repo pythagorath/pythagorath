@@ -56,8 +56,8 @@ def datar_interpret(rng: random.Random, p: dict):
 
 @register("g3DATAB", "symbols")
 def datab_symbols(rng: random.Random, p: dict):
-    key = rng.choice([2, 5, 10])
-    n = rng.randrange(2, 7)
+    key = rng.choice([2, 3, 4, 5, 10])              # widened scale set
+    n = rng.randrange(2, min(9, 60 // key + 1))     # keep value = key·n ≤ 60 (cap)
     value = key * n
     return (f"كلُّ رمزٍ يمثّل {_h(key)} — كم رمزاً تحتاج لتمثيل القيمة {_h(value)}؟",
             _h(n), None)
@@ -66,8 +66,9 @@ def datab_symbols(rng: random.Random, p: dict):
 @register("g3DATAB", "choose")
 def datab_choose(rng: random.Random, p: dict):
     if rng.random() < 0.75:
-        key = rng.choice([2, 5, 10])
-        vals = "، ".join(_h(key * i) for i in range(1, 5))
+        key = rng.choice([2, 3, 4, 5, 10])          # widened scale set
+        start = rng.randrange(1, 4)                  # vary which multiples are listed
+        vals = "، ".join(_h(key * i) for i in range(start, start + 4))
         good = f"مضاعفات {_h(key)}"
         bad = "آحاد" if key > 2 else f"مضاعفات {_h(key + 3)}"
         return (f"لتمثيل القيم {vals} — أيُّ تدريجٍ أنسب؟", good, _pick2(rng, good, bad))
