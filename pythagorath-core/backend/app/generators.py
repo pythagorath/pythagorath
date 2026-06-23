@@ -64,7 +64,19 @@ def _params_by_family(db: Session, skill_id: int) -> dict[str, dict]:
     return out
 
 
-def _recent_signatures(db: Session, student_id: int, skill_id: int, n: int = 10) -> set[str]:
+# ---- recent-repeat avoidance (tracking only — never touches grading/mastery) ----
+# How many of the child's most-recent draws to steer away from. 28 ≈ three-and-a-half
+# 8-question runs, so a sitting of a few short practices stays fresh — clearly better than
+# the old 10 (~1.25 runs). Going higher gives little: the medium nodes' own space (~25–40)
+# becomes the binding limit, not the window, and the lookback query grows.
+_AVOID_WINDOW = 28
+# Hard cap on resamples per draw — THE infinite-loop guard. Work stays bounded at
+# ≤ _MAX_RESAMPLE generator calls per draw regardless of the window or a node's space.
+_MAX_RESAMPLE = 8
+
+
+def _recent_signatures(db: Session, student_id: int, skill_id: int,
+                       n: int = _AVOID_WINDOW) -> set[str]:
     rows = db.execute(
         select(QuestionInstance.prompt, QuestionInstance.answer)
         .join(Question, QuestionInstance.question_id == Question.id)
@@ -102,19 +114,30 @@ def draw_batch(db: Session, skill: Skill, student_id: int,
     if not families:
         return []
     params = _params_by_family(db, skill.id)
-    avoid = _recent_signatures(db, student_id, skill.id)
+    avoid = _recent_signatures(db, student_id, skill.id, _AVOID_WINDOW)
     out: list[QuestionInstance] = []
     fam_cycle = (families * ((total // len(families)) + 1))[:total]
     for fam in fam_cycle:
         fn = gens[fam]
         p = params.get(fam, {})
         prompt, answer, visual = fn(rng, p)
-        for _ in range(8):                       # resample away from recent repeats
-            sig = prompt + "" + answer
-            if sig not in avoid:
-                break
-            prompt, answer, visual = fn(rng, p)
-        avoid.add(prompt + "" + answer)
+        sig = prompt + "" + answer
+        if sig in avoid:
+            # Resample for a fresh draw, bounded TWO ways so a node whose space is smaller
+            # than the window can never spin: (1) the hard _MAX_RESAMPLE cap, and (2) a
+            # self-collision exit — once the generator re-emits a draw already seen THIS
+            # turn its space is exhausted, so we stop and ACCEPT the inevitable repeat
+            # (least harm). Effective window is thus min(_AVOID_WINDOW, node space), free.
+            tried = {sig}
+            for _ in range(_MAX_RESAMPLE):
+                prompt, answer, visual = fn(rng, p)
+                sig = prompt + "" + answer
+                if sig not in avoid:
+                    break                        # fresh draw found
+                if sig in tried:
+                    break                        # space exhausted → accept the repeat
+                tried.add(sig)
+        avoid.add(sig)
         inst = QuestionInstance(
             question_id=templates[fam].id, student_id=student_id,
             family=fam, prompt=prompt, answer=answer, visual=visual,
