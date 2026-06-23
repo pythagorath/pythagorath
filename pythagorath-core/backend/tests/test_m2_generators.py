@@ -281,12 +281,12 @@ CAPS = {"M1": 49, "M4": 81, "V1": 40, "V2": 40, "V3": 30, "DA1": 8, "DA2": 10,
         "P": 30, "Ord": 4, "G1": 9, "G2": 9, "G3": 12, "A2": 100, "B2": 20,
         "B3": 20, "B4": 100, "F12": 20, "g1ADD": 10, "g1HALF": 4, "g1QRT": 4}
 
-THRESHOLDS = {"M1": 26,  # small source totals bound the space
+THRESHOLDS = {"M1": 35,  # raised (phase-1 enrichment: products to the node's 49 ceiling)
               "M4": 40,
               "V1": 20, "V2": 28, "V3": 20,    # 4×7 share combos bound V1's space
               "DA1": 40, "DA2": 14,            # build targets bounded by the widget (3–10)
               "DA3": 30, "Fr2": 21, "Fr3": 13,  # source-bounded fraction spaces
-              "Q1": 17, "Q5": 28, "S1": 40, "S2": 40, "P": 28, "Ord": 22,
+              "Q1": 17, "Q5": 25, "S1": 40, "S2": 40, "P": 28, "Ord": 22,  # Q5 cap-7 bounded; floor follows the shared-rng stream after M1 widening
               "G1": 16, "G2": 20,
               "G3": 6,                          # the HONEST space: two source solids × 3 elements
               "A2": 40, "B2": 25, "B3": 22,     # crossing-ten pairs are few by nature

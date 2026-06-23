@@ -60,7 +60,9 @@ def angletype_classify(rng, p):
 
 # ============================ g4ANGLE (QA+SA — protractor) ============================
 
-_ANGLES = [20, 30, 40, 50, 60, 70, 80, 100, 110, 120, 130, 140, 150, 160]
+# widened from 14 to all 17 multiples of 10 in (0,180) — adds 10°, 90°, 170° (the source
+# keeps angles to the nearest 10°, enforced by test_angle_degrees_in_range).
+_ANGLES = list(range(10, 171, 10))
 
 
 @register("g4ANGLE", "measure")

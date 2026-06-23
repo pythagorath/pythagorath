@@ -105,8 +105,8 @@ VERIFIERS = {
 }
 
 CODES = ("g4LINES", "g4ANGLE", "g4SHAPES", "g4SYMM", "g4COORD", "g4LOC")
-FLOORS = {"g4LINES": 8, "g4ANGLE": 24, "g4SHAPES": 11, "g4SYMM": 12,
-          "g4COORD": 24, "g4LOC": 10}   # bank-bounded nodes have small finite spaces
+FLOORS = {"g4LINES": 8, "g4ANGLE": 28, "g4SHAPES": 11, "g4SYMM": 12,
+          "g4COORD": 24, "g4LOC": 10}   # g4ANGLE raised 24→28 (phase-1: 17 angles, ×10 only); others finite
 
 
 def test_batch_registered():

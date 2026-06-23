@@ -45,7 +45,10 @@ def v_convert(pr, ans, vis):
 
 _CHOOSE_KEY = {"طول الملعب": "متر", "طول القلم": "سنتيمتر", "كتلة التفاحة": "غرام",
                "كتلة الطالب": "كيلوغرام", "سعة كوب الماء": "مللتر", "سعة الخزّان": "لتر",
-               "المسافة بين مدينتين": "كيلومتر"}
+               "المسافة بين مدينتين": "كيلومتر",
+               "طول النملة": "ملمتر", "ارتفاع الباب": "متر", "كتلة الحافلة": "كيلوغرام",
+               "كتلة الريشة": "غرام", "سعة قطرة الدواء": "مللتر", "سعة حوض السباحة": "لتر",
+               "طول السبّورة": "متر", "كتلة حبّة الأرز": "غرام"}
 
 
 def v_choose(pr, ans, vis):
@@ -116,7 +119,7 @@ VERIFIERS = {
 CODES = ("g4METRIC", "g4PERIM", "g4AREA", "g4TIME", "g4VOL")
 # integer ceilings per node (every served numeral stays inside)
 CAP = {"g4METRIC": 9000, "g4PERIM": 300, "g4AREA": 400, "g4TIME": 60, "g4VOL": 1000}
-FLOORS = {c: 24 for c in CODES}
+FLOORS = {**{c: 24 for c in CODES}, "g4METRIC": 38}   # g4METRIC raised (phase-1: wider choose bank)
 
 
 def test_batch_registered():

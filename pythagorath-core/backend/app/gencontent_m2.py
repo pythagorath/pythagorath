@@ -18,9 +18,9 @@ from app.gencontent import _h, _pick2
 
 @register("M1", "خطّي")
 def m1_linear(rng: random.Random, p: dict):
-    g = rng.randrange(2, 7)
-    per = rng.randrange(2, 8)
-    while g * per > p.get("cap", 30):
+    g = rng.randrange(2, 8)                          # widened 2..7
+    per = rng.randrange(2, 9)                        # widened 2..8
+    while g * per > p.get("cap", 49):               # to the node's real ceiling (was 30)
         per -= 1
     return (f"كوّن {_h(g)} مجموعات في كلٍّ منها {_h(per)}. كم الإجمالي؟", _h(g * per),
             {"kind": "groups", "mode": "form", "groups": g, "per": per})
@@ -28,9 +28,9 @@ def m1_linear(rng: random.Random, p: dict):
 
 @register("M1", "مصفوفة")
 def m1_array(rng: random.Random, p: dict):
-    r = rng.randrange(2, 6)
-    c = rng.randrange(2, 7)
-    while r * c > p.get("cap", 30):
+    r = rng.randrange(2, 8)                          # widened 2..5 → 2..7
+    c = rng.randrange(2, 8)                          # widened 2..6 → 2..7
+    while r * c > p.get("cap", 49):                 # to the node's real ceiling (was 30)
         c -= 1
     return (f"صفّ مصفوفة: {_h(r)} صفوف × {_h(c)} أعمدة. كم الإجمالي؟", _h(r * c),
             {"kind": "array", "rows": r, "cols": c})
