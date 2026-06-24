@@ -374,6 +374,9 @@ async function addChild(){
     <label>اسم الطفل</label><input id="cname" placeholder="مثال: سالم">
     <label>الدولة (المنهج)</label><select id="ccountry">${coOpts.map(c=>`<option value="${c[0]}">${c[1]}</option>`).join('')}</select>
     <label>الصف المستهدف</label><select id="cgrade"><option value="">— اختر الصف —</option>${GRADES.map(g=>`<option value="${g.id}">${g.name}</option>`).join('')}</select>
+    <label>الفصل الدراسي الحالي</label>
+    <select id="cterm"><option value="">الصف كاملاً</option><option value="1">الفصل الأول</option><option value="2">الفصل الثاني</option></select>
+    <div class="muted" style="font-size:13px;margin-top:4px">اختر فصل طفلك الحالي ليرى ما يناسب مرحلته، أو «الصف كاملاً». يمكنك تغييره لاحقاً.</div>
     <label>شروط حماية بيانات الطفل</label>
     <div class="consent">${(CONSENT.text||'').replace(/</g,'&lt;')}</div>
     <label class="chk"><input type="checkbox" id="cconsent"><span>أوافق على شروط حماية بيانات طفلي (إلزاميّ).</span></label>
@@ -386,12 +389,13 @@ async function createChild(){
   const name=document.getElementById('cname').value.trim();
   const country=document.getElementById('ccountry').value || null;
   const grade_id=parseInt(document.getElementById('cgrade').value,10)||null;
+  const term=parseInt(document.getElementById('cterm').value,10)||null;   // 1|2|null (whole grade)
   if(!name){ err.textContent='أدخل اسم الطفل.'; return; }
   if(!grade_id){ err.textContent='اختر الصف المستهدف.'; return; }
   if(!document.getElementById('cconsent').checked){ err.textContent='يجب الموافقة على شروط حماية البيانات.'; return; }
   try{
     const kid = await api('/api/students',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name,country,grade_id,consent_version:CONSENT.version})});
+      body:JSON.stringify({name,country,grade_id,term,consent_version:CONSENT.version})});
     diagIntro(kid);                       // → التشخيص المجاني فوراً (لا تهيئة جهاز قبل الاشتراك)
   }catch(e){ err.textContent = e.detail || 'تعذّر إنشاء الملف.'; }
 }
@@ -572,6 +576,7 @@ async function plans(){
       <div class="price"><b>${omr(p.price)}</b><span>ر.ع. / ${PERIOD_UNIT[p.period]||PERIOD[p.period]}</span></div>
       ${p.trial_days>0?`<span class="trialchip">${IC.check} تجربة ${H(p.trial_days)} ${p.trial_days===1?'يوم':'أيام'} مجّانية</span>`:''}
       <div class="feat">${IC.check} كل المهارات والوحدات بلا حدود</div>
+      <div class="feat">${IC.check} يشمل الفصل الأول والثاني كاملَين</div>
       <div class="feat">${IC.check} تقارير وليّ الأمر الكاملة</div>
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
         ${p.trial_days>0?`<button class="pbtn solid" onclick="startTrial(${p.id})">ابدأ التجربة المجّانية</button>`:''}

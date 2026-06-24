@@ -84,6 +84,20 @@ def build(db: Session, student, next_skill_fn, path_skills) -> dict:
             "visual": _visual(status, unlocked, is_current),
         })
 
+    # current semester (display only): stations are ALREADY term-filtered (via _path_skills),
+    # so "completed" = every visible station mastered. The child can't change the term — when a
+    # term is done we just nudge them to ask the guardian to open the next one.
+    term = getattr(student, "term", None)
+    term_block = None
+    if term in (1, 2):
+        completed = len(stations) > 0 and all(st["mastered"] for st in stations)
+        term_block = {
+            "value": term,
+            "label": "الفصل الأول" if term == 1 else "الفصل الثاني",
+            "completed": completed,
+            "has_next": term == 1,                  # a الفصل الثاني exists to move to
+        }
+
     return {
         "child": {"name": student.name},
         "coins": student.coins or 0,                # the REAL persisted balance (coins.py)
@@ -91,4 +105,5 @@ def build(db: Session, student, next_skill_fn, path_skills) -> dict:
         "needs_diagnostic": needs_diagnostic,
         "current": current,                         # None only while needs_diagnostic
         "stations": stations,
+        "term": term_block,                         # None when the child sees the whole grade
     }

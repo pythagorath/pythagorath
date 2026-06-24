@@ -231,6 +231,18 @@ function render(d){
       </div>
     </div>`;
 
+  // current semester badge (only when the child is scoped to a term) + a gentle nudge when done
+  if(d.term){
+    html += `<div style="display:flex;align-items:center;justify-content:center;margin:4px 0 2px;">
+        <span style="background:#FFF1DA;color:#C77A12;border-radius:999px;padding:6px 16px;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:14px;">📚 ${d.term.label}</span>
+      </div>`;
+    if(d.term.completed){
+      html += `<div style="background:linear-gradient(180deg,#EFF9F1,#E4F4E9);border:1px solid #BFE3CA;border-radius:18px;padding:14px 16px;margin:8px 0;text-align:center;color:#2F5B43;font-weight:700;font-size:15px;line-height:1.7;">
+          🎉 أحسنت! أكملتَ ${d.term.label} كاملاً.${d.term.has_next ? ' اطلب من والدك فتح <b>الفصل الثاني</b> لتبدأ مغامرةً جديدة!' : ''}
+        </div>`;
+    }
+  }
+
   // big CTA — what to do right now
   if(d.needs_diagnostic){
     html += `<div class="cta"><div class="pi" aria-hidden="true">&pi;</div>

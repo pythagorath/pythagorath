@@ -430,6 +430,18 @@ async function loadBoard(sid){
   }catch(e){ board.innerHTML='<div class="err">تعذّر الاتصال بالخادم.</div>'; }
 }
 
+// change the child's current semester (guardian-only PATCH) → re-filter the board
+async function setTerm(v){
+  const term = (v==='') ? null : parseInt(v,10);
+  try{
+    const r = await fetch(`/api/students/${currentSid}`, {method:'PATCH',
+      headers:{'Content-Type':'application/json'}, body:JSON.stringify({term})});
+    if(!r.ok) throw new Error();
+    const k = STUDENTS.find(s=>String(s.id)===String(currentSid)); if(k) k.term = term;
+    loadBoard(currentSid);                 // reload with the new scope applied
+  }catch(e){ alert('تعذّر تغيير الفصل الدراسي.'); }
+}
+
 function statCard(bg, color, icon, big, lbl){
   return `<div style="background:#fff;border:1px solid #EFE7DA;border-radius:18px;padding:16px 10px;text-align:center;box-shadow:0 14px 30px -26px rgba(21,94,125,.5);">
       <span style="display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:13px;background:${bg};color:${color};margin-bottom:9px;">${icon}</span>
@@ -455,6 +467,18 @@ function render(d){
         ${SVG.flame}
         <span style="font-weight:800;font-size:16px;color:#fff;white-space:nowrap;">${streakLabel(d.streak_days)}</span>
       </div>
+    </div>`;
+
+  // 1b · current semester (term) — the guardian can switch what the child sees
+  const meStu = STUDENTS.find(k=>String(k.id)===String(currentSid)) || {};
+  const curTerm = (meStu.term==null) ? '' : String(meStu.term);
+  const termOpt = (v,t)=>`<option value="${v}"${curTerm===v?' selected':''}>${t}</option>`;
+  html += `<div style="${CARD}display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+      <div>${H2('#155E7D', SVG.clock, 'الفصل الدراسي الحالي')}
+        <div style="color:#8A8178;font-size:13px;">يحدّد ما يراه طفلك: فصلاً بعينه أو الصف كاملاً. غيّره عند انتقاله للفصل التالي.</div></div>
+      <select onchange="setTerm(this.value)" style="font-family:'Readex Pro',sans-serif;font-size:15px;color:#155E7D;background:#FCFAF6;border:1.5px solid #E9DFD0;border-radius:12px;padding:10px 13px;min-width:140px;">
+        ${termOpt('','الصف كاملاً')}${termOpt('1','الفصل الأول')}${termOpt('2','الفصل الثاني')}
+      </select>
     </div>`;
 
   // 2 · three stats

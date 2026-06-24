@@ -342,10 +342,28 @@ def create_student(payload: schemas.StudentCreate,
                 raise HTTPException(403, f"خطّتك تسمح بـ{count_ar} "
                                     f"{'طفل' if plan.max_children == 1 else 'أطفال'} — رقِّ خطّتك لإضافة المزيد.")
     country = payload.country if payload.country in GCC_COUNTRIES else None
-    st = Student(name=name, grade_id=grade.id, country=country, owner_user_id=user.id)
+    st = Student(name=name, grade_id=grade.id, country=country,
+                 term=payload.term, owner_user_id=user.id)   # term: 1|2|None (whole grade)
     db.add(st)
     db.flush()                       # assign st.id for the consent record
     db.add(ConsentRecord(user_id=user.id, student_id=st.id, version=consent.CURRENT_VERSION))
+    db.commit()
+    db.refresh(st)
+    return st
+
+
+@app.patch("/api/students/{student_id}", response_model=schemas.StudentRead)
+def update_student(student_id: int, payload: schemas.StudentUpdate,
+                   user=Depends(auth.current_user), db: Session = Depends(get_db)):
+    """Guardian-only edit of a child's settings (currently the semester). PARENT session only
+    (not a child token): a child can't change its own scope. Display/scoping only — the gate,
+    the engine, mastery are untouched; the new term just re-filters `_path_skills`."""
+    st = db.get(Student, student_id)
+    if st is None:
+        raise HTTPException(404, "الطفل غير موجود")
+    if st.owner_user_id != user.id:
+        raise HTTPException(403, "ليس من أطفالك")
+    st.term = payload.term                       # authoritative: 1 | 2 | None (whole grade)
     db.commit()
     db.refresh(st)
     return st

@@ -310,13 +310,41 @@ class GradeRead(BaseModel):
     order: int
 
 
+def _valid_term(v):
+    """The child's current semester: 1 (الفصل الأول) | 2 (الفصل الثاني) | None (whole grade)."""
+    if v is None:
+        return None
+    if v not in (1, 2):
+        raise ValueError("الفصل الدراسي ١ أو ٢")
+    return v
+
+
 class StudentCreate(BaseModel):
     name: str
     # the child's TARGET (school) grade — MANDATORY (enforced in the handler → 400, so the
     # message is explicit rather than a raw 422). Optional here only for that clean error.
     grade_id: int | None = None
     country: str | None = None   # GCC code (SA/AE/QA/KW/OM/BH) or None → default
+    # the child's current SEMESTER (display-scope only): 1 | 2 | None = whole grade (default).
+    term: int | None = None
     consent_version: str | None = None   # the guardian's accepted consent version (required)
+
+    @field_validator("term")
+    @classmethod
+    def _t(cls, v):
+        return _valid_term(v)
+
+
+class StudentUpdate(BaseModel):
+    """Guardian-editable child settings (parent dashboard). Currently the semester only —
+    so a child can move from الفصل الأول to الثاني during the year. The request is
+    authoritative: the term is set to exactly the value sent (including None = whole grade)."""
+    term: int | None = None
+
+    @field_validator("term")
+    @classmethod
+    def _t(cls, v):
+        return _valid_term(v)
 
 
 class StudentRead(BaseModel):
@@ -325,6 +353,7 @@ class StudentRead(BaseModel):
     name: str
     grade_id: int | None = None
     country: str | None = None
+    term: int | None = None
 
 
 class QuestionRead(BaseModel):
