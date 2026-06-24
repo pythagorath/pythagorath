@@ -86,8 +86,36 @@ def freq_equiv(rng: random.Random, p: dict):
     return (f"أكمل التكافؤ: {_fr(a, b)} = {_h(c)}/؟", _h(d), None)
 
 
+def _distinct_value_fractions(rng: random.Random, k: int):
+    """k proper fractions (dens from DENS) with PAIRWISE-DISTINCT VALUES — so ordering by
+    value is unambiguous (no ١/٢ vs ٢/٤ ties)."""
+    pool, seen = [], set()
+    for d in DENS:
+        for num in range(1, d):
+            v = num / d
+            if round(v, 6) not in seen:
+                seen.add(round(v, 6))
+                pool.append((num, d, v))
+    return rng.sample(pool, k)
+
+
 @register("g3FREQ", "rulecmp")
 def freq_rulecmp(rng: random.Random, p: dict):
+    if rng.random() < 0.5:
+        # NEW interaction: drag-to-order fractions BY VALUE (the skill's «مقارنة» act). Three
+        # distinct-valued proper fractions; correct order is by k/n, not by appearance. Answer =
+        # the sequence joined by «،» (the drag-order widget renders/keeps fraction strings) —
+        # graded as a plain string. No engine/mastery change.
+        chosen = _distinct_value_fractions(rng, 3)
+        asc = rng.random() < 0.5
+        correct = sorted(chosen, key=lambda t: t[2], reverse=not asc)
+        shown = chosen[:]
+        while [(n, d) for n, d, _ in shown] == [(n, d) for n, d, _ in correct]:
+            rng.shuffle(shown)                      # never show it already ordered
+        return (f"رتّب الكسور {'تصاعدياً' if asc else 'تنازلياً'} بسحبها إلى أماكنها.",
+                "،".join(_fr(n, d) for n, d, _ in correct),
+                {"kind": "drag-order", "items": [_fr(n, d) for n, d, _ in shown],
+                 "direction": "asc" if asc else "desc"})
     n = rng.choice([3, 4, 6, 8])
     if rng.random() < 0.5:                          # same denominator
         k1, k2 = rng.sample(range(1, n), 2)

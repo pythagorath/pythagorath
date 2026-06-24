@@ -71,6 +71,15 @@ def v_freq_equiv(pr, ans, vis):
 
 
 def v_freq_rulecmp(pr, ans, vis):
+    if vis and vis.get("kind") == "drag-order":
+        fracs = []
+        for it in vis["items"]:
+            k, n = [int(x) for x in it.translate(_W).split("/")]
+            fracs.append((k, n, k / n))
+        expected = sorted(fracs, key=lambda t: t[2], reverse=(vis["direction"] == "desc"))
+        exp_str = "،".join(f"{k}/{n}" for k, n, _ in expected)
+        # value-ordered AND every value distinct (a real, unambiguous ordering task)
+        return ans.translate(_W) == exp_str and len({round(v, 6) for *_, v in fracs}) == len(fracs)
     a, b = vis["a"], vis["b"]
     va = a["shaded"] / a["parts"]
     vb = b["shaded"] / b["parts"]
