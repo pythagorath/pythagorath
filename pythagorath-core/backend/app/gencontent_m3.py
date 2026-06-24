@@ -270,6 +270,20 @@ def n9_compare(rng: random.Random, p: dict):
 
 @register("N10", "decompositional")
 def n10_order(rng: random.Random, p: dict):
+    if rng.random() < 0.5:
+        # NEW interaction: drag-to-order. Four numbers scattered; the child drags them into
+        # order. Answer = the correct sequence joined by «،» (the widget emits the same shape);
+        # the gate grades it as a plain string — no engine/mastery change.
+        nums = rng.sample(range(12, 99), 4)
+        asc = rng.random() < 0.5
+        correct = sorted(nums, reverse=not asc)
+        shown = nums[:]
+        while shown == correct:                       # ensure there's something to arrange
+            rng.shuffle(shown)
+        return (f"رتّب الأعداد {'تصاعدياً' if asc else 'تنازلياً'} بسحبها إلى أماكنها.",
+                "،".join(_h(n) for n in correct),
+                {"kind": "drag-order", "items": [_h(n) for n in shown],
+                 "direction": "asc" if asc else "desc"})
     nums = rng.sample(range(12, 99), 3)
     big = rng.random() < 0.5
     ans = max(nums) if big else min(nums)

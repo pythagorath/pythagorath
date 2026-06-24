@@ -58,6 +58,63 @@ function mountWidget(host, q, onAnswer){
   if(v.kind==='protractor') return widgetProtractor(host, v, onAnswer);
   // ---- expanded form (الصيغة التحليلية) — place-value decomposition, one place blanked ----
   if(v.kind==='expanded-form') return widgetExpandedForm(host, v, onAnswer);
+  // ---- drag-order (الترتيب بالسحب) — arrange numbers/fractions into asc/desc order ----
+  if(v.kind==='drag-order') return widgetDragOrder(host, v, onAnswer);
+}
+
+// DRAG-ORDER — the child drags the scattered cards into the asked order (ascending /
+// descending). Pointer Events → works on touch AND mouse (captured pointer = a robust
+// sortable). The emitted answer is the left→right sequence joined by «،»; the gate grades
+// it as a plain string (digits normalised) — no engine/mastery involvement.
+function widgetDragOrder(host, v, onAnswer){
+  const asc = (v.direction !== 'desc');
+  const hint = document.createElement('div');
+  hint.style.cssText = 'text-align:center;margin-bottom:10px;color:#5A5249;font-size:14px;font-weight:600;';
+  hint.textContent = 'اسحب البطاقات لترتيبها ' + (asc ? 'تصاعدياً' : 'تنازلياً') + ' — من اليسار إلى اليمين.';
+  const row = document.createElement('div');
+  row.style.cssText = 'direction:ltr;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:12px;min-height:70px;background:#FBF7F0;border:2px dashed #E9DFD0;border-radius:16px;';
+  const legend = document.createElement('div');
+  legend.style.cssText = 'display:flex;justify-content:space-between;max-width:320px;margin:6px auto 0;color:#8A8178;font-size:12px;font-weight:700;direction:ltr;';
+  legend.innerHTML = '<span>' + (asc ? 'الأصغر ⟸' : 'الأكبر ⟸') + '</span><span>' + (asc ? '⟹ الأكبر' : '⟹ الأصغر') + '</span>';
+  host.appendChild(hint); host.appendChild(row); host.appendChild(legend);
+
+  let grabbed = null;
+  const emit = () => onAnswer([...row.children].map(c => c.dataset.val).join('،'));
+  function afterEl(x){
+    let best = {off: -Infinity, el: null};
+    for(const el of row.querySelectorAll('.dchip')){
+      if(el === grabbed) continue;
+      const b = el.getBoundingClientRect();
+      const off = x - (b.left + b.width / 2);
+      if(off < 0 && off > best.off) best = {off, el};
+    }
+    return best.el;
+  }
+  (v.items || []).forEach(val => {
+    const chip = document.createElement('div');
+    chip.className = 'dchip'; chip.dataset.val = val;
+    chip.innerHTML = stackFrac(val);
+    chip.style.cssText = 'touch-action:none;cursor:grab;user-select:none;min-width:54px;text-align:center;font-family:"Baloo Bhaijaan 2",cursive;font-weight:800;font-size:22px;color:#1f5e7a;background:#F5FAFD;border:2px solid #BFE0F0;border-radius:14px;padding:12px 14px;';
+    chip.addEventListener('pointerdown', e => {
+      grabbed = chip; chip.setPointerCapture(e.pointerId);
+      chip.style.opacity = '0.65'; chip.style.cursor = 'grabbing';
+      chip.style.boxShadow = '0 8px 20px -6px rgba(31,94,122,.5)';
+    });
+    chip.addEventListener('pointermove', e => {
+      if(grabbed !== chip) return;
+      const a = afterEl(e.clientX);
+      if(a == null) row.appendChild(grabbed); else row.insertBefore(grabbed, a);
+    });
+    const drop = () => {
+      if(grabbed !== chip) return;
+      chip.style.opacity = ''; chip.style.cursor = 'grab'; chip.style.boxShadow = '';
+      grabbed = null; emit();
+    };
+    chip.addEventListener('pointerup', drop);
+    chip.addEventListener('pointercancel', drop);
+    row.appendChild(chip);
+  });
+  emit();                              // seed the pending answer with the initial arrangement
 }
 
 // EXPANDED FORM — «الصيغة التحليلية»: a number decomposed into place-value parts, with ONE place

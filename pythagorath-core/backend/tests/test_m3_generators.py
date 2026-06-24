@@ -232,6 +232,11 @@ def v_n9(pr, ans, vis):
 
 
 def v_n10(pr, ans, vis):
+    if vis and vis.get("kind") == "drag-order":
+        items = [int(x.translate(_W)) for x in vis["items"]]
+        expected = sorted(items, reverse=(vis["direction"] == "desc"))
+        got = [int(x) for x in ans.translate(_W).split("،")]
+        return got == expected and len(items) >= 2
     ns = _nums(pr)[:3]
     want = max(ns) if "الأكبر" in pr else min(ns)
     return _n1(ans) == want
