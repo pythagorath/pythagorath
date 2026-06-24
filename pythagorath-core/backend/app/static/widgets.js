@@ -60,6 +60,69 @@ function mountWidget(host, q, onAnswer){
   if(v.kind==='expanded-form') return widgetExpandedForm(host, v, onAnswer);
   // ---- drag-order (الترتيب بالسحب) — arrange numbers/fractions into asc/desc order ----
   if(v.kind==='drag-order') return widgetDragOrder(host, v, onAnswer);
+  // ---- match (المطابقة) — link each left item to its partner on the right ----
+  if(v.kind==='match') return widgetMatch(host, v, onAnswer);
+}
+
+// MATCH — two columns; tap a left item then its partner on the right to link them (a coloured
+// connector is drawn). Bijective (each right used once). Touch + mouse via clicks. The emitted
+// answer is, for each LEFT item in order, the value it's linked to, joined by «،» — graded as a
+// plain string by the gate (no engine/mastery involvement).
+function widgetMatch(host, v, onAnswer){
+  const left = v.left || [], right = v.right || [];
+  const COLORS = ['#1f5e7a', '#e88a2a', '#1E945B', '#9B5DE5', '#C2402B', '#178FC9'];
+  const NS = 'http://www.w3.org/2000/svg';
+  let sel = null;                       // currently-selected left index
+  const links = {};                     // leftIdx -> rightIdx
+  const hint = document.createElement('div');
+  hint.style.cssText = 'text-align:center;margin-bottom:12px;color:#5A5249;font-size:14px;font-weight:600;';
+  hint.textContent = 'اربط كلَّ عنصرٍ بما يقابله: انقر عنصراً من عمود ثم ما يطابقه في العمود الآخر.';
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;display:flex;gap:64px;justify-content:center;direction:rtl;padding:8px;';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
+  const colL = document.createElement('div'), colR = document.createElement('div');
+  colL.style.cssText = colR.style.cssText = 'display:flex;flex-direction:column;gap:14px;z-index:1;';
+  wrap.appendChild(svg); wrap.appendChild(colL); wrap.appendChild(colR);
+  host.appendChild(hint); host.appendChild(wrap);
+
+  const mk = txt => {
+    const d = document.createElement('div');
+    d.innerHTML = stackFrac(txt);
+    d.style.cssText = 'cursor:pointer;user-select:none;min-width:66px;text-align:center;font-family:"Baloo Bhaijaan 2",cursive;font-weight:800;font-size:21px;color:#1f5e7a;background:#F5FAFD;border:2px solid #BFE0F0;border-radius:14px;padding:11px 14px;transition:border-color .1s,box-shadow .1s;';
+    return d;
+  };
+  const lC = left.map(mk), rC = right.map(mk);
+  lC.forEach((d, i) => { colL.appendChild(d); d.onclick = () => { sel = i; paint(); }; });
+  rC.forEach((d, j) => { colR.appendChild(d); d.onclick = () => {
+    if(sel == null) return;
+    for(const k in links) if(links[k] === j) delete links[k];   // keep it bijective
+    links[sel] = j; sel = null; paint(); emit();
+  }; });
+  const color = i => COLORS[i % COLORS.length];
+  const emit = () => onAnswer(left.map((_, i) => (i in links) ? right[links[i]] : '').join('،'));
+  function paint(){
+    lC.forEach((d, i) => {
+      d.style.borderColor = (i === sel) ? '#e88a2a' : ((i in links) ? color(i) : '#BFE0F0');
+      d.style.boxShadow = (i === sel) ? '0 0 0 3px rgba(232,138,42,.25)' : '';
+    });
+    rC.forEach((d, j) => {
+      const li = Object.keys(links).find(k => links[k] === j);
+      d.style.borderColor = (li != null) ? color(+li) : '#BFE0F0';
+    });
+    const wb = wrap.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${wb.width} ${wb.height}`);
+    svg.innerHTML = '';
+    for(const k in links){
+      const a = lC[+k].getBoundingClientRect(), b = rC[links[k]].getBoundingClientRect();
+      const ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('x1', a.left + a.width / 2 - wb.left); ln.setAttribute('y1', a.top + a.height / 2 - wb.top);
+      ln.setAttribute('x2', b.left + b.width / 2 - wb.left); ln.setAttribute('y2', b.top + b.height / 2 - wb.top);
+      ln.setAttribute('stroke', color(+k)); ln.setAttribute('stroke-width', '3'); ln.setAttribute('stroke-linecap', 'round');
+      svg.appendChild(ln);
+    }
+  }
+  paint(); emit();
 }
 
 // DRAG-ORDER — the child drags the scattered cards into the asked order (ascending /

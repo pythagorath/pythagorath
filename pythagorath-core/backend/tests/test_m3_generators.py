@@ -440,6 +440,16 @@ def v_g3_props(family):
 
 def v_g3_mul_fact(pr, ans, vis):
     ns = _nums(pr)
+    if vis and vis.get("kind") == "match":
+        prods = []
+        for l in vis["left"]:
+            a, b = [int(x) for x in l.translate(_W).split("×")]
+            prods.append(a * b)
+        expected = "،".join(str(p) for p in prods)
+        rights = [int(x.translate(_W)) for x in vis["right"]]
+        return (ans.translate(_W) == expected            # left-order products
+                and sorted(rights) == sorted(prods)      # right column = the products, permuted
+                and len(set(prods)) == len(prods))       # distinct → unambiguous matching
     if vis and vis.get("kind") in ("groups", "array"):
         return v_groups(pr, ans, vis) if vis["kind"] == "groups" else v_array(pr, ans, vis)
     if "×" in pr:

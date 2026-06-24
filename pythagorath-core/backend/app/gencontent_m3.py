@@ -1298,11 +1298,33 @@ def g3mul_modeling(rng: random.Random, p: dict):
 
 @register("g3MULF1", "skip")
 def g3mulf1_skip(rng: random.Random, p: dict):
+    if rng.random() < 0.34:
+        # NEW interaction: MATCH each ×2/×5/×10 fact to its product. Three facts with DISTINCT
+        # products (so matching is unambiguous); the right column is the products, shuffled.
+        # Answer = products in LEFT order joined by «،» (the widget emits the linked value per
+        # left item). Graded as a plain string — no engine/mastery change.
+        facts, seen = [], set()
+        while len(facts) < 3:
+            f = rng.choice([2, 5, 10])
+            k = rng.randrange(2, 11)
+            prod = k * f
+            if prod in seen:
+                continue
+            seen.add(prod)
+            facts.append((k, f, prod))
+        rights = [_h(prod) for _, _, prod in facts]
+        shown = rights[:]
+        while shown == rights:
+            rng.shuffle(shown)
+        return ("اربط كلَّ عمليةٍ بناتجها.",
+                "،".join(_h(prod) for _, _, prod in facts),
+                {"kind": "match",
+                 "left": [f"{_h(k)} × {_h(f)}" for k, f, _ in facts],
+                 "right": shown})
     f = rng.choice([2, 5, 10])
     k = rng.randrange(2, 11)                         # widened 2..10
     hint = {2: "بقفز الاثنين", 5: "بنمط الخمسة (٥، ١٠، ١٥، ...)", 10: "بنمط العشرة"}[f]
-    # NEW visual pattern (this node was text-only): a tappable array for SMALL products —
-    # the canonical multiplication picture. v_g3_mul_fact verifies via v_array (rows×cols).
+    # tappable array for SMALL products — the canonical multiplication picture.
     if f <= 5 and k <= 5:
         return (f"عُدّ {hint}: انقر الشبكة لإيجاد {_h(k)} × {_h(f)}.", _h(k * f),
                 {"kind": "array", "rows": k, "cols": f})
