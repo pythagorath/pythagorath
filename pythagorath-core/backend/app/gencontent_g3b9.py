@@ -155,7 +155,8 @@ def geo_analyze(rng: random.Random, p: dict):
 # ============================ g3SYMM ============================
 
 SYM_SHAPES = {"square": True, "rectangle": True, "circle": True, "triangle-iso": True,
-              "triangle-scalene": False, "l-shape": False}
+              "star": True, "heart": True, "plus": True, "trapezoid": True,
+              "triangle-scalene": False, "l-shape": False, "flag": False, "lightning": False}
 
 
 @register("g3SYMM", "symmetry")

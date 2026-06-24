@@ -930,6 +930,15 @@ function _shapeSVG(name, px){
     'triangle-scalene': `<polygon points="10,52 58,52 22,16" style="${f}"/>`,
     pentagon:  `<polygon points="32,8 55,25 46,53 18,53 9,25" style="${f}"/>`,
     hexagon:   `<polygon points="20,11 44,11 56,32 44,53 20,53 8,32" style="${f}"/>`,
+    // visual-enrichment shapes for symmetry (g3SYMM). The four below HAVE a line of symmetry
+    // (vertical), the two after them do NOT — so «نعم/لا» both stay real. Symmetry labels are
+    // pinned in the generator's SYM_SHAPES (and the test's SYM table).
+    star:      `<polygon points="32,6 39,24 58,24 43,36 48,55 32,43 16,55 21,36 6,24 25,24" style="${f}"/>`,
+    heart:     `<path d="M32,53 C7,35 13,11 32,25 C51,11 57,35 32,53 Z" style="${f}"/>`,
+    plus:      `<polygon points="26,9 38,9 38,26 55,26 55,38 38,38 38,55 26,55 26,38 9,38 9,26 26,26" style="${f}"/>`,
+    trapezoid: `<polygon points="19,17 45,17 57,47 7,47" style="${f}"/>`,
+    flag:      `<g><line x1="15" y1="9" x2="15" y2="55" style="stroke:#9c5e07;stroke-width:3"/><polygon points="15,11 50,19 15,31" style="${f}"/></g>`,
+    lightning: `<polygon points="35,7 16,37 29,37 25,57 48,27 34,27 41,7" style="${f}"/>`,
   };
   return wrap(lib[name] || `<text x="32" y="36" text-anchor="middle">${name}</text>`);
 }

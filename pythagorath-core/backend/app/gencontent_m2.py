@@ -594,10 +594,18 @@ def g1half_name(rng: random.Random, p: dict):
              "options": opts})
 
 
+# real-world CONTEXTS for the half/quarter «shade» act — same fraction bar, varied scene so
+# the question feels fresh each time (visual/contextual enrichment; the answer never changes).
+HALF_SCENES = [("الشريط", ""), ("لوح الشوكولاتة", "🍫"), ("الكعكة", "🍰"), ("البيتزا", "🍕"),
+               ("الرغيف", "🥖"), ("الورقة", "📄"), ("الحديقة", "🌳"), ("اللوح", "🍫")]
+
+
 @register("g1HALF", "shade")
 def g1half_shade(rng: random.Random, p: dict):
-    prompt = rng.choice(["ظلِّل ١ من ٢ أجزاء متساوية.",
-                         "شارِك زميلك بالتساوي: ظلِّل نصيبه — نصف الشريط."])
+    scene, emoji = rng.choice(HALF_SCENES)
+    obj = (scene + " " + emoji).strip()
+    prompt = (f"شارِك زميلك بالتساوي: ظلِّل نصف {obj}." if rng.random() < 0.5
+              else f"ظلِّل نصف {obj} — جزءاً واحداً من جزأين متساويين.")
     return (prompt, "١/٢", {"kind": "fraction", "mode": "shade", "parts": 2, "target": 1})
 
 
@@ -615,6 +623,8 @@ def g1qrt_name(rng: random.Random, p: dict):
 def g1qrt_shade(rng: random.Random, p: dict):
     parts = rng.choice([4, 4, 3])
     target = rng.randrange(1, parts)
-    return (f"ظلِّل {_h(target)} من {_h(parts)} أجزاء متساوية.",
+    scene, emoji = rng.choice(HALF_SCENES)
+    obj = (scene + " " + emoji).strip()
+    return (f"ظلِّل {_h(target)} من {_h(parts)} أجزاء متساوية من {obj}.",
             f"{_h(target)}/{_h(parts)}",
             {"kind": "fraction", "mode": "shade", "parts": parts, "target": target})

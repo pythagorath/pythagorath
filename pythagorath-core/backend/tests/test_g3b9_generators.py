@@ -115,7 +115,8 @@ def v_geo_analyze(pr, ans, vis):
 
 
 SYM = {"square": True, "rectangle": True, "circle": True, "triangle-iso": True,
-       "triangle-scalene": False, "l-shape": False}
+       "star": True, "heart": True, "plus": True, "trapezoid": True,
+       "triangle-scalene": False, "l-shape": False, "flag": False, "lightning": False}
 
 
 def v_symm_symmetry(pr, ans, vis):
