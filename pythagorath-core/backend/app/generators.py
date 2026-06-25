@@ -99,23 +99,28 @@ def draw_batch(db: Session, skill: Skill, student_id: int,
     gens = REGISTRY.get(skill.code, {})
     if not gens:
         return []
-    # one representative published template per family — the Answer-log anchor
-    templates: dict[str, Question] = {}
+    # ALL published templates per family — the Answer-log anchors. Instances ROTATE across
+    # them (round-robin) so a family's draws don't all key to ONE template: the understanding
+    # gate counts DISTINCT answered question_ids, so single-family nodes can now reach the
+    # 2-distinct threshold (they were stuck at 1, never understood/mastered). Multi-family is
+    # unaffected — its gate counts distinct FAMILIES, and `family` below is unchanged.
+    templates_by_fam: dict[str, list[Question]] = {}
     for fam in gens:
-        t = db.execute(
+        ts = db.execute(
             select(Question)
             .where(Question.skill_id == skill.id, Question.status == "published",
                    Question.family == fam)
-            .order_by(Question.id).limit(1)
-        ).scalars().first()
-        if t is not None:
-            templates[fam] = t
-    families = [f for f in gens if f in templates]
+            .order_by(Question.id)
+        ).scalars().all()
+        if ts:
+            templates_by_fam[fam] = ts
+    families = [f for f in gens if f in templates_by_fam]
     if not families:
         return []
     params = _params_by_family(db, skill.id)
     avoid = _recent_signatures(db, student_id, skill.id, _AVOID_WINDOW)
     out: list[QuestionInstance] = []
+    rot: dict[str, int] = {}                      # per-family round-robin over its templates
     fam_cycle = (families * ((total // len(families)) + 1))[:total]
     for fam in fam_cycle:
         fn = gens[fam]
@@ -138,8 +143,11 @@ def draw_batch(db: Session, skill: Skill, student_id: int,
                     break                        # space exhausted → accept the repeat
                 tried.add(sig)
         avoid.add(sig)
+        tmpls = templates_by_fam[fam]
+        anchor = tmpls[rot.get(fam, 0) % len(tmpls)]   # rotate the anchor within THIS family
+        rot[fam] = rot.get(fam, 0) + 1
         inst = QuestionInstance(
-            question_id=templates[fam].id, student_id=student_id,
+            question_id=anchor.id, student_id=student_id,
             family=fam, prompt=prompt, answer=answer, visual=visual,
         )
         db.add(inst)
