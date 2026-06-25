@@ -22,6 +22,7 @@ Guarantees carried by THIS layer (each enforced in tests):
 """
 from __future__ import annotations
 
+import inspect
 import random
 from typing import Callable
 
@@ -30,8 +31,23 @@ from sqlalchemy.orm import Session
 
 from app.models import Question, QuestionInstance, Skill
 
-# (prompt, answer, visual) produced from a seeded rng and the template's params
-GenFn = Callable[[random.Random, dict], tuple[str, str, dict | None]]
+# A generator: (rng, params) -> (prompt, answer, visual). It MAY declare an optional THIRD
+# parameter — a READ-ONLY mastery context {status, understood, mastered} — to ramp difficulty
+# by the child's progress. draw_batch passes that context ONLY to 3-arg generators; the many
+# 2-arg generators are called exactly as before (full backward compatibility).
+GenFn = Callable[..., tuple[str, str, dict | None]]
+
+
+def _invoke(fn, rng, p, ctx):
+    """Call a generator, handing it the read-only mastery `ctx` only if it OPTS IN by declaring a
+    parameter literally named ``ctx``. Arity alone is unsafe — many generators curry via a
+    defaulted third param (e.g. ``def gen(rng, p, make=make)``), so matching the NAME avoids
+    clobbering those. Pure dispatch — NO student state is ever written here."""
+    try:
+        wants_ctx = "ctx" in inspect.signature(fn).parameters
+    except (TypeError, ValueError):
+        wants_ctx = False
+    return fn(rng, p, ctx=ctx) if wants_ctx else fn(rng, p)
 
 # skill_code -> family -> generator
 REGISTRY: dict[str, dict[str, GenFn]] = {}
@@ -119,13 +135,22 @@ def draw_batch(db: Session, skill: Skill, student_id: int,
         return []
     params = _params_by_family(db, skill.id)
     avoid = _recent_signatures(db, student_id, skill.id, _AVOID_WINDOW)
+    # READ-ONLY mastery snapshot for this (child, skill) — handed to generators that opt in
+    # (3-arg) so they can ramp difficulty by the child's progress. read_snapshot NEVER writes
+    # (no recompute, no status change): the gate/heart is untouched; generation only READS the
+    # ladder. New/never-seen child → status "in_progress" (the scaffolded start).
+    from app import gate                            # local import — no module-load cycle
+    _snap = gate.read_snapshot(db, student_id, skill.id)
+    ctx = {"status": _snap.get("status", "in_progress"),
+           "understood": bool(_snap.get("understood")),
+           "mastered": bool(_snap.get("mastered"))}
     out: list[QuestionInstance] = []
     rot: dict[str, int] = {}                      # per-family round-robin over its templates
     fam_cycle = (families * ((total // len(families)) + 1))[:total]
     for fam in fam_cycle:
         fn = gens[fam]
         p = params.get(fam, {})
-        prompt, answer, visual = fn(rng, p)
+        prompt, answer, visual = _invoke(fn, rng, p, ctx)
         sig = prompt + "" + answer
         if sig in avoid:
             # Resample for a fresh draw, bounded TWO ways so a node whose space is smaller
@@ -135,7 +160,7 @@ def draw_batch(db: Session, skill: Skill, student_id: int,
             # (least harm). Effective window is thus min(_AVOID_WINDOW, node space), free.
             tried = {sig}
             for _ in range(_MAX_RESAMPLE):
-                prompt, answer, visual = fn(rng, p)
+                prompt, answer, visual = _invoke(fn, rng, p, ctx)
                 sig = prompt + "" + answer
                 if sig not in avoid:
                     break                        # fresh draw found

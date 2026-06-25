@@ -193,6 +193,36 @@ function widgetExpandedForm(host, v, onAnswer){
   const stack=(boxHTML,label,color)=>{ const d=document.createElement('div');
     d.style.cssText='display:flex;flex-direction:column;align-items:center;gap:5px;';
     d.innerHTML=boxHTML+`<div style="font-size:12px;color:${color};font-weight:700">${label}</div>`; return d; };
+  const blankField=()=>{ const f=document.createElement('input');
+    f.type='text'; f.inputMode='numeric'; f.placeholder='؟'; f.className='exp-blank';
+    f.style.cssText='width:72px;text-align:center;font-family:"Baloo Bhaijaan 2",cursive;font-weight:800;font-size:22px;color:#e88a2a;border:0;background:transparent;outline:none;';
+    return f; };
+  const blankBox=(f)=>{ const b=document.createElement('div');
+    b.style.cssText='text-align:center;background:#FFF7EC;border:2px dashed #e88a2a;border-radius:12px;padding:6px 8px;';
+    b.appendChild(f); return b; };
+  // FULL decomposition (mastery progression): EVERY place is an input — the child decomposes
+  // the whole number. Emits "v + v + …" in v.parts order (high→low), byte-matching the
+  // generator's answer after the gate normalises digits. (COMPLETE one-blank path is below.)
+  if(v.full){
+    const fields=[];
+    const emit=()=>onAnswer(fields.map(f=>f.value.trim()).join(' + '));
+    (v.parts||[]).forEach((p,j)=>{
+      if(j>0) wrap.appendChild(op('+'));
+      const f=blankField(); f.oninput=emit; fields.push(f);
+      const col=document.createElement('div');
+      col.style.cssText='display:flex;flex-direction:column;align-items:center;gap:5px;';
+      col.appendChild(blankBox(f));
+      const lab=document.createElement('div'); lab.style.cssText='font-size:12px;color:#C77A12;font-weight:700'; lab.textContent=p.place_name;
+      col.appendChild(lab); wrap.appendChild(col);
+    });
+    wrap.appendChild(op('=')); wrap.appendChild(stack(valBox(toHindi(v.number)), 'العدد', '#8A8178'));
+    const hint=document.createElement('div');
+    hint.style.cssText='text-align:center;margin-top:8px;color:#8A8178;font-size:13px;';
+    hint.textContent='اكتب قيمة كل منزلة لتفكيك العدد كاملاً.';
+    host.appendChild(wrap); host.appendChild(hint);
+    setTimeout(()=>{ try{ fields[0].focus(); }catch(e){} },50);
+    return;
+  }
   (v.parts||[]).forEach((p,j)=>{
     if(j>0) wrap.appendChild(op('+'));
     if(j===v.blank_index){

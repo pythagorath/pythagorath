@@ -48,24 +48,35 @@ def _unique_digit_position(rng: random.Random, n: int):
 
 # ============================ القيمة المنزلية ============================
 
-def _compose(rng: random.Random, lo: int, hi: int):
-    """«التكوين/التفكيك» — expanded form with ONE place blanked (the analytical form
-    is a REPRESENTATION of decomposition, never a separate family)."""
+def _compose(rng: random.Random, lo: int, hi: int, ctx: dict | None = None):
+    """«التكوين/التفكيك» — expanded form, with a MASTERY-GATED progression (read-only ctx):
+
+      * in_progress  → COMPLETE: all parts shown, ONE place blanked, the child supplies it
+                       (the scaffolded start — unchanged behaviour);
+      * understood/mastered → FULL: the child decomposes the WHOLE number, filling EVERY place.
+
+    Both grade through the same text gate (gate.grade on a string); only the task/display change.
+    For FULL the answer is the canonical "v + v + …" of the nonzero parts (high→low, the
+    `_expanded_parts` order); the widget joins the child's place inputs the same way, so after
+    digit-normalisation the two strings match. The analytical form is a REPRESENTATION of
+    decomposition, never a separate family. ctx is READ-ONLY — nothing here touches the gate."""
     while True:
         n = rng.randrange(lo, hi + 1)
         parts = _expanded_parts(n)
         if len(parts) >= 2:
             break
+    full = bool(ctx and ctx.get("understood"))     # understood OR mastered → full decomposition
+    base_parts = [{"value": v, "place_name": _PLACE_NAMES[i]} for i, v in parts]
+    if full:
+        # FULL: every place is an input. Canonical answer = nonzero place values, high→low,
+        # joined by " + " (the widget emits the identical join → byte-match after normalise).
+        answer = " + ".join(_h(v) for _, v in parts)
+        vis = {"kind": "expanded-form", "number": n, "parts": base_parts, "full": True}
+        return (f"فكّك العدد {_h(n)} إلى منازله كاملةً — اكتب قيمة كل منزلة.", answer, vis)
     bi = rng.randrange(len(parts))
-    # The analytical form moves into a STRUCTURED visual (the «expanded-form» widget renders the
-    # place cards + the blank). The ANSWER is byte-identical to before — only the DISPLAY changes;
-    # the gate still grades the typed place value. The widget adapts to any digit count / blank pos.
-    vis = {
-        "kind": "expanded-form",
-        "number": n,
-        "parts": [{"value": v, "place_name": _PLACE_NAMES[i]} for i, v in parts],
-        "blank_index": bi,
-    }
+    # COMPLETE: the analytical form in the «expanded-form» widget with ONE blank. The ANSWER is
+    # byte-identical to the original — only the display changes; the gate grades the typed value.
+    vis = {"kind": "expanded-form", "number": n, "parts": base_parts, "blank_index": bi}
     return (f"أكمل تفكيك العدد {_h(n)} — ما قيمة المنزلة الناقصة؟",
             _h(parts[bi][1]), vis)
 
@@ -87,8 +98,8 @@ def _place(rng: random.Random, lo: int, hi: int):
 
 
 @register("g4PVM", "compose")
-def pvm_compose(rng, p):
-    return _compose(rng, p.get("lo", 100000), p.get("hi", 9999999))
+def pvm_compose(rng, p, ctx=None):
+    return _compose(rng, p.get("lo", 100000), p.get("hi", 9999999), ctx)
 
 
 @register("g4PVM", "place")
@@ -111,8 +122,8 @@ def pvm_relate(rng, p):
 
 
 @register("g4PV4", "compose")
-def pv4_compose(rng, p):
-    return _compose(rng, p.get("lo", 1000), p.get("hi", 9999))
+def pv4_compose(rng, p, ctx=None):
+    return _compose(rng, p.get("lo", 1000), p.get("hi", 9999), ctx)
 
 
 @register("g4PV4", "place")
