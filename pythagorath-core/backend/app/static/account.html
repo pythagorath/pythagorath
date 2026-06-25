@@ -123,6 +123,24 @@ async function api(path, opts){
   return r.status===204?null:r.json();
 }
 
+// ---------- audio (TTS) — same Web-Speech approach as the child solver (index.html), so a
+// non-reading young child can HEAR the diagnostic question on the PARENT's device too. It
+// speaks the displayed prompt (already country-resolved). Silent where speech is unavailable.
+let ACC_VOICE=null;
+function _accPickVoice(){ try{ ACC_VOICE = speechSynthesis.getVoices().find(v=>/^ar/i.test(v.lang))||null; }catch(e){} }
+if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=_accPickVoice; _accPickVoice(); }
+function audioOn(){ return 'speechSynthesis' in window; }
+function speak(text){
+  if(!audioOn() || text==null) return;
+  try{
+    speechSynthesis.cancel();
+    const t=String(text).replace(/\+/g,' زائد ').replace(/[−–-]/g,' ناقص ').replace(/=/g,' يساوي ').replace(/؟/g,' ');
+    const u=new SpeechSynthesisUtterance(t);
+    u.lang='ar-SA'; if(ACC_VOICE) u.voice=ACC_VOICE; u.rate=0.95;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
 async function boot(){
   try{ await api('/api/auth/me'); await home(); }
   catch(e){ showAuth(); }
@@ -423,12 +441,18 @@ async function diagNext(){
 function renderProbe(p, asked){
   PROBE_ANS=null;
   V.innerHTML = `<div class="card">
-    <div class="muted">سؤال ${H((asked||0)+1)}</div>
-    <h2 style="font-size:20px;margin-top:4px">${stackFrac(p.prompt)}</h2>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <div class="muted">سؤال ${H((asked||0)+1)}</div>
+      <button type="button" onclick="speak(document.getElementById('probePromptA').dataset.raw)"
+        style="background:#EAF4F8;color:#155E7D;border:1px solid #CFE3EC;border-radius:9px;padding:5px 12px;cursor:pointer;font-size:14px;font-weight:700">🔊 استمع</button>
+    </div>
+    <h2 id="probePromptA" style="font-size:20px;margin-top:4px">${stackFrac(p.prompt)}</h2>
     <div id="probeHost" style="margin-top:10px"></div>
     <div class="err" id="derr"></div>
     <button class="btn orange" id="dnext" onclick="submitProbe()">التالي</button>
     <div class="toplink"><a onclick="home()" style="cursor:pointer">إنهاء لاحقاً</a></div></div>`;
+  const pa=document.getElementById('probePromptA'); if(pa) pa.dataset.raw=p.prompt;   // raw text for TTS
+  speak(p.prompt);                                                                    // auto-narrate on show
   const host=document.getElementById('probeHost');
   if(p.visual){
     const w=document.createElement('div'); w.className='widget'; host.appendChild(w);

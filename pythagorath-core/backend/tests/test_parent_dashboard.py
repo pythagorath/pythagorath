@@ -95,6 +95,14 @@ def test_g4_path_has_no_term_debt(db, h):
     assert parent_terms.uncovered(path_codes) == []
 
 
+def test_every_grade_has_no_term_debt(db):
+    """Platform-wide: EVERY skill in EVERY grade (G1–G4) has a parent-friendly term — zero
+    debt, not just on the G4 path. A grade-1 or grade-2 child's parent never sees a bare
+    curriculum term. Guards against a future node shipping uncovered."""
+    codes = [s.code for s in db.execute(select(Skill)).scalars().all()]
+    assert parent_terms.uncovered(codes) == []
+
+
 def test_dashboard_has_no_internal_term_debt_field(db, h):
     """The internal term-coverage debt must NOT leak into the customer-facing payload."""
     stu = _g4(db, h)
