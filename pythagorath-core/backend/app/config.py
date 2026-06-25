@@ -18,9 +18,20 @@ DB_MAX_OVERFLOW: int = int(os.environ.get("DB_MAX_OVERFLOW", "10"))
 
 IS_SQLITE: bool = DATABASE_URL.startswith("sqlite")
 
+# ---- runtime environment (production hardening) ----
+# Set ENV=production on the real server. Used ONLY for startup safety checks/warnings — it
+# never changes app behaviour. In production the app refuses to boot with the default
+# SECRET_KEY and warns if cookies aren't HTTPS-only. (See main._security_check.)
+ENV: str = os.environ.get("ENV", "development")
+IS_PRODUCTION: bool = ENV.lower() in ("production", "prod")
+
 # ---- auth / sessions ----
-# MUST be overridden in production with a strong random secret (env SECRET_KEY).
-SECRET_KEY: str = os.environ.get("SECRET_KEY", "dev-insecure-change-me-0123456789-abcdef")
+# MUST be overridden in production with a strong random secret (env SECRET_KEY). It signs the
+# session JWT, the OTP/pending cookies, and the password-reset token — so a leaked/default key
+# lets anyone forge them. `SECRET_KEY_IS_DEFAULT` drives the startup safety check.
+_DEFAULT_SECRET_KEY = "dev-insecure-change-me-0123456789-abcdef"
+SECRET_KEY: str = os.environ.get("SECRET_KEY", _DEFAULT_SECRET_KEY)
+SECRET_KEY_IS_DEFAULT: bool = SECRET_KEY == _DEFAULT_SECRET_KEY
 SESSION_COOKIE: str = "pyth_session"
 SESSION_TTL_HOURS: int = int(os.environ.get("SESSION_TTL_HOURS", "24"))
 RESET_TTL_MINUTES: int = int(os.environ.get("RESET_TTL_MINUTES", "30"))
@@ -46,9 +57,18 @@ ADMIN_PASSWORD: str | None = os.environ.get("ADMIN_PASSWORD")
 PENDING_COOKIE: str = "pyth_pending"
 OTP_TTL_MINUTES: int = int(os.environ.get("OTP_TTL_MINUTES", "15"))
 OTP_LENGTH: int = int(os.environ.get("OTP_LENGTH", "6"))
-# Email-CHANGE OTP (self-service, authenticated): holds the signed {sub,new_email,code}
+# Email-CHANGE OTP (self-service, authenticated): holds the signed {sub,new_email,code_hash}
 # until the code sent to the NEW address is verified. Same short TTL as registration.
 EMAILCHG_COOKIE: str = "pyth_emailchg"
+
+# ---- auth anti-abuse rate limits (the email-sending OTP routes + verify brute-force) ----
+# SEND limit (register start/resend, email-change, password-reset) per (email+IP) over a
+# window — caps inbox-bombing a victim and runaway provider cost. VERIFY limit = wrong-code
+# attempts per pending cookie — caps OTP brute force. All tunable; limiter is in-process
+# (see ratelimit.py); the verify cap is stateless (a counter inside the signed cookie).
+OTP_SEND_MAX: int = int(os.environ.get("OTP_SEND_MAX", "5"))
+OTP_SEND_WINDOW_MINUTES: int = int(os.environ.get("OTP_SEND_WINDOW_MINUTES", "15"))
+OTP_MAX_VERIFY_ATTEMPTS: int = int(os.environ.get("OTP_MAX_VERIFY_ATTEMPTS", "5"))
 
 # ---- email provider (OTP + password-reset delivery) ----
 # Pluggable: if SMTP is configured (SMTP_HOST set) the real sender is used; otherwise a

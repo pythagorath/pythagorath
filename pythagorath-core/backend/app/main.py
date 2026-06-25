@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app import access, admin, auth, consent, diagnostic, gate, generators, payments, phrasing, schemas, seed
+from app import access, admin, auth, config, consent, diagnostic, gate, generators, payments, phrasing, schemas, seed
 from app import path as learning_path
 from app import dashboard as parent_dashboard
 from app import adventure as child_adventure
@@ -152,8 +152,29 @@ def _alembic_config() -> Config:
     return cfg
 
 
+def _security_check() -> list[str]:
+    """Startup safety net for the production secrets. Returns the list of warnings (also printed);
+    in PRODUCTION it REFUSES to boot with the insecure default SECRET_KEY (which signs sessions +
+    OTP/reset cookies — a default key lets anyone forge them). Pure check — touches nothing else.
+    Set in production: SECRET_KEY=<strong random>, COOKIE_SECURE=1 (HTTPS), and the SMTP_* vars."""
+    warnings: list[str] = []
+    if config.SECRET_KEY_IS_DEFAULT:
+        warnings.append("SECRET_KEY is the INSECURE DEFAULT — set a strong random SECRET_KEY env var "
+                        "(it signs the session, OTP and password-reset cookies).")
+    if config.IS_PRODUCTION and not config.COOKIE_SECURE:
+        warnings.append("COOKIE_SECURE is OFF in production — set COOKIE_SECURE=1 so auth cookies "
+                        "are only sent over HTTPS.")
+    for w in warnings:
+        print("WARNING: [security] " + w, flush=True)
+    if config.IS_PRODUCTION and config.SECRET_KEY_IS_DEFAULT:
+        raise RuntimeError("Refusing to start in production with the default SECRET_KEY — "
+                           "set a strong random SECRET_KEY environment variable.")
+    return warnings
+
+
 @app.on_event("startup")
 def _startup() -> None:
+    _security_check()              # warn (dev) / refuse to boot (prod) on unsafe secrets
     # Schema is managed by versioned Alembic migrations (not create_all) — the same
     # path in dev and on Oman Data Park. `upgrade head` is idempotent.
     command.upgrade(_alembic_config(), "head")

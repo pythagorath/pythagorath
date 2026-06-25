@@ -24,6 +24,16 @@ from app.models import Answer, Question, Skill, Student, Subscription, User
 from app import gate
 
 
+@pytest.fixture(autouse=True)
+def _reset_ratelimit():
+    """The OTP send-limiter is in-process (module-level state); clear it around every test so the
+    fixed window never leaks counts between cases."""
+    from app import ratelimit
+    ratelimit.reset()
+    yield
+    ratelimit.reset()
+
+
 @pytest.fixture()
 def db_setup(tmp_path):
     """A fresh seeded database for one test. Returns a sessionmaker bound to it."""

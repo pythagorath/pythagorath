@@ -12,15 +12,18 @@ constitutional core.
 """
 from datetime import datetime, timedelta, timezone
 
+import hashlib
+import hmac
 import secrets
 
 import jwt
 from argon2 import PasswordHasher
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app import config, schemas
+from app import config, ratelimit, schemas
 from app import email as mailer
 from app.db import get_db
 from app.models import PairingCode, Student, User
@@ -76,9 +79,33 @@ def _gen_otp() -> str:
     return "".join(secrets.choice("0123456789") for _ in range(config.OTP_LENGTH))
 
 
+def _hash_code(code: str) -> str:
+    """Keyed (HMAC-SHA256) digest of an OTP. The signed cookie stores this DIGEST, never the code
+    itself, so a registrant can't read their own code out of the cookie to bypass the email — and
+    the digest is meaningless without SECRET_KEY. Compared with hmac.compare_digest (constant-time)."""
+    return hmac.new(config.SECRET_KEY.encode(), (code or "").encode(), hashlib.sha256).hexdigest()
+
+
+def _code_matches(code: str, code_hash: str) -> bool:
+    return hmac.compare_digest(_hash_code(code), code_hash or "")
+
+
+def _client_ip(request: Request) -> str:
+    return request.client.host if request and request.client else "?"
+
+
+def _enforce_send_limit(request: Request, email: str) -> None:
+    """Rate-limit the email-SENDING routes per (email + client IP) — caps inbox-bombing a victim
+    and runaway provider cost. Raises 429 with a clear Arabic message once the window is full."""
+    key = f"otp-send:{(email or '').strip().lower()}:{_client_ip(request)}"
+    if not ratelimit.allow(key, config.OTP_SEND_MAX, config.OTP_SEND_WINDOW_MINUTES * 60):
+        raise HTTPException(429, "محاولات كثيرة جداً. الرجاء المحاولة بعد قليل.")
+
+
 def create_pending_token(payload: dict) -> str:
-    # holds {email, pw_hash, name, whatsapp, code} until the email is verified — signed +
-    # short-lived; carried ONLY in an httpOnly cookie, so JS never sees the password hash.
+    # holds {email, pw_hash, name, whatsapp, code_hash, attempts?} until the email is verified —
+    # signed + short-lived; carried ONLY in an httpOnly cookie. Stores the OTP's HASH (not the
+    # code) so the cookie can't be read to skip the email, and never the plaintext password.
     return _encode(payload, "pending", timedelta(minutes=config.OTP_TTL_MINUTES))
 
 
@@ -242,17 +269,19 @@ def register(body: schemas.RegisterRequest, db: Session = Depends(get_db)):
 
 # ---------- OTP registration (the public page): start → verify, with resend ----------
 @router.post("/register/start")
-def register_start(body: schemas.RegisterStartRequest, response: Response,
+def register_start(body: schemas.RegisterStartRequest, request: Request, response: Response,
                    db: Session = Depends(get_db)):
     """Step 1: validate the guardian's details, email a 6-digit OTP, and stash the pending
-    account (incl. the password HASH, never the plaintext) in a signed httpOnly cookie. NO
-    user row is created yet — the account exists only after the code is verified."""
+    account (incl. the password HASH, never the plaintext; and the OTP's HASH, never the code)
+    in a signed httpOnly cookie. NO user row is created yet — the account exists only after the
+    code is verified. Rate-limited per email+IP to prevent inbox-bombing."""
     if db.execute(select(User).where(User.email == body.email)).scalars().first():
         raise HTTPException(409, "البريد مستخدم")
+    _enforce_send_limit(request, body.email)
     code = _gen_otp()
     token = create_pending_token({
         "email": body.email, "pw_hash": hash_password(body.password),
-        "name": body.name, "whatsapp": body.whatsapp, "code": code,
+        "name": body.name, "whatsapp": body.whatsapp, "code_hash": _hash_code(code),
     })
     set_pending_cookie(response, token)
     mailer.send_otp(body.email, code)        # real email if SMTP set, else DEV log
@@ -261,13 +290,16 @@ def register_start(body: schemas.RegisterStartRequest, response: Response,
 
 @router.post("/register/resend")
 def register_resend(request: Request, response: Response):
-    """Re-issue a fresh OTP for the SAME pending account (new code, refreshed cookie+TTL)."""
+    """Re-issue a fresh OTP for the SAME pending account (new code, reset attempts, refreshed
+    cookie+TTL). Rate-limited per email+IP like /start."""
     data = _decode(request.cookies.get(config.PENDING_COOKIE, ""), "pending")
     if data is None:
         raise HTTPException(400, "انتهت الجلسة — أعد إدخال بياناتك.")
+    _enforce_send_limit(request, data["email"])
     code = _gen_otp()
-    token = create_pending_token({**data, "code": code})
-    set_pending_cookie(response, token)
+    payload = {k: data[k] for k in ("email", "pw_hash", "name", "whatsapp") if k in data}
+    payload["code_hash"] = _hash_code(code)           # store the digest; attempts reset to 0
+    set_pending_cookie(response, create_pending_token(payload))
     mailer.send_otp(data["email"], code)
     return {"ok": True, "email": data["email"], "ttl_minutes": config.OTP_TTL_MINUTES}
 
@@ -276,12 +308,25 @@ def register_resend(request: Request, response: Response):
 def register_verify(body: schemas.RegisterVerifyRequest, request: Request,
                     response: Response, db: Session = Depends(get_db)):
     """Step 2: check the code against the pending cookie → create the guardian (with name +
-    whatsapp), clear the pending cookie, and log them in (session cookie)."""
+    whatsapp), clear the pending cookie, and log them in (session cookie). Wrong codes are
+    counted IN the signed cookie; after OTP_MAX_VERIFY_ATTEMPTS the code is burned (brute-force
+    cap, stateless across workers)."""
     data = _decode(request.cookies.get(config.PENDING_COOKIE, ""), "pending")
     if data is None:
         raise HTTPException(400, "انتهت صلاحية الرمز — أعد المحاولة.")
-    if (body.code or "") != data.get("code"):
-        raise HTTPException(400, "الرمز غير صحيح.")
+    attempts = int(data.get("attempts", 0))
+    # The attempt counter lives in the cookie, so the (re)set MUST ride the ERROR response — a
+    # cookie set on the injected `response` is dropped when we raise. Hence JSONResponse returns.
+    if attempts >= config.OTP_MAX_VERIFY_ATTEMPTS:
+        resp = JSONResponse(status_code=429, content={"detail": "محاولات كثيرة خاطئة — اطلب رمزاً جديداً."})
+        clear_pending_cookie(resp)                    # burn the code → a fresh one must be requested
+        return resp
+    if not _code_matches(body.code or "", data.get("code_hash", "")):
+        payload = {k: data[k] for k in ("email", "pw_hash", "name", "whatsapp", "code_hash") if k in data}
+        payload["attempts"] = attempts + 1            # count the wrong try inside the cookie
+        resp = JSONResponse(status_code=400, content={"detail": "الرمز غير صحيح."})
+        set_pending_cookie(resp, create_pending_token(payload))
+        return resp
     if db.execute(select(User).where(User.email == data["email"])).scalars().first():
         clear_pending_cookie(response)
         raise HTTPException(409, "البريد مستخدم")
@@ -342,24 +387,30 @@ def change_password(body: schemas.ChangePasswordRequest, user: User = Depends(cu
     return Response(status_code=204)
 
 
+def _set_emailchg_cookie(response: Response, payload: dict) -> None:
+    token = _encode(payload, "emailchg", timedelta(minutes=config.OTP_TTL_MINUTES))
+    response.set_cookie(config.EMAILCHG_COOKIE, token, httponly=True,
+                        secure=config.COOKIE_SECURE, samesite="lax",
+                        max_age=config.OTP_TTL_MINUTES * 60, path="/")
+
+
 @router.post("/email-change/start")
-def email_change_start(body: schemas.EmailChangeStart, response: Response,
+def email_change_start(body: schemas.EmailChangeStart, request: Request, response: Response,
                        user: User = Depends(current_user), db: Session = Depends(get_db)):
     """Step 1 of changing the login email: prove the password, ensure the new address is free,
     then email a 6-digit OTP to the NEW address. The current email is NOT touched yet — the
-    signed {sub,new_email,code} lives in a short-lived httpOnly cookie until verification."""
+    signed {sub,new_email,code_hash} lives in a short-lived httpOnly cookie (digest, not the
+    code) until verification. Rate-limited per new-email+IP."""
     if not verify_password(user.password_hash, body.password):
         raise HTTPException(400, "كلمة السر غير صحيحة")
     if body.new_email == user.email:
         raise HTTPException(400, "هذا هو بريدك الحالي")
     if db.execute(select(User).where(User.email == body.new_email)).scalars().first():
         raise HTTPException(409, "البريد مستخدم")
+    _enforce_send_limit(request, body.new_email)
     code = _gen_otp()
-    token = _encode({"sub": str(user.id), "new_email": body.new_email, "code": code},
-                    "emailchg", timedelta(minutes=config.OTP_TTL_MINUTES))
-    response.set_cookie(config.EMAILCHG_COOKIE, token, httponly=True,
-                        secure=config.COOKIE_SECURE, samesite="lax",
-                        max_age=config.OTP_TTL_MINUTES * 60, path="/")
+    _set_emailchg_cookie(response, {"sub": str(user.id), "new_email": body.new_email,
+                                    "code_hash": _hash_code(code)})
     mailer.send_otp(body.new_email, code)        # real email if SMTP set, else DEV log
     return {"ok": True, "email": body.new_email, "ttl_minutes": config.OTP_TTL_MINUTES}
 
@@ -368,12 +419,21 @@ def email_change_start(body: schemas.EmailChangeStart, response: Response,
 def email_change_verify(body: schemas.EmailChangeVerify, request: Request, response: Response,
                         user: User = Depends(current_user), db: Session = Depends(get_db)):
     """Step 2: check the code against the email-change cookie (and that it belongs to THIS
-    user) → apply the new email. Re-checks the address is still free at commit time."""
+    user) → apply the new email. Wrong codes are counted in the cookie (brute-force cap); the
+    address is re-checked free at commit time."""
     data = _decode(request.cookies.get(config.EMAILCHG_COOKIE, ""), "emailchg")
     if data is None or str(data.get("sub")) != str(user.id):
         raise HTTPException(400, "انتهت صلاحية الرمز — أعد المحاولة.")
-    if (body.code or "") != data.get("code"):
-        raise HTTPException(400, "الرمز غير صحيح.")
+    attempts = int(data.get("attempts", 0))
+    if attempts >= config.OTP_MAX_VERIFY_ATTEMPTS:
+        resp = JSONResponse(status_code=429, content={"detail": "محاولات كثيرة خاطئة — اطلب رمزاً جديداً."})
+        resp.delete_cookie(config.EMAILCHG_COOKIE, path="/")
+        return resp
+    if not _code_matches(body.code or "", data.get("code_hash", "")):
+        resp = JSONResponse(status_code=400, content={"detail": "الرمز غير صحيح."})
+        _set_emailchg_cookie(resp, {"sub": data["sub"], "new_email": data["new_email"],
+                                    "code_hash": data.get("code_hash", ""), "attempts": attempts + 1})
+        return resp
     new_email = data["new_email"]
     if db.execute(select(User).where(User.email == new_email)).scalars().first():
         response.delete_cookie(config.EMAILCHG_COOKIE, path="/")
@@ -465,7 +525,11 @@ def child_logout(response: Response):
 
 
 @router.post("/password-reset/request", status_code=204)
-def password_reset_request(body: schemas.PasswordResetRequest, db: Session = Depends(get_db)):
+def password_reset_request(body: schemas.PasswordResetRequest, request: Request,
+                           db: Session = Depends(get_db)):
+    # Rate-limited per email+IP (caps reset-email spam) BEFORE any DB/email work. The 429 is
+    # keyed only by email+IP — independent of whether the account exists — so it leaks nothing.
+    _enforce_send_limit(request, body.email)
     u = db.execute(select(User).where(User.email == body.email)).scalars().first()
     if u is not None:
         token = create_reset_token(u)
