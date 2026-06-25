@@ -32,12 +32,22 @@ FAMILIES_REQUIRED = 2        # multi-family: distinct families to transfer acros
 GENERALIZATION_REQUIRED = 2  # single-family: distinct correct items to generalise
 
 # ---- fluency gate (TUNABLE — calibrated by experiment, NOT final) ----
-FLUENCY_WINDOW = 5
+# Window widened 5→6: a longer window is a sturdier proof of mastery (one lucky
+# streak of 5 no longer completes a node). TUNABLE.
+FLUENCY_WINDOW = 6
 FLUENCY_THRESHOLD = 0.8
 # Per-answer speed ceiling: an answer is "fast" when it took <= this many ms from
 # the question being SHOWN to submission. Fluency now requires BOTH high accuracy
-# AND speed within the window. TUNABLE — calibrated by experiment, NOT sacred.
+# AND speed within the window. KEPT AT 8000 deliberately — drag-order/match answers
+# legitimately take longer (the timer spans the whole arranging/linking), and the
+# Answer log has no per-answer kind to exempt them, so a tighter ceiling would
+# unfairly penalise (and could brick) interactive nodes. TUNABLE — NOT sacred.
 FLUENCY_MAX_MS = 8000
+# "No recent error" — mastery also requires the MOST RECENT answers to be clean, so a
+# momentary lucky window can't complete a node while the child is still slipping. The
+# last FLUENCY_RECENT_CLEAN answers must all be correct. This tightens completion only;
+# it never touches the understanding gate (the unlock threshold). TUNABLE.
+FLUENCY_RECENT_CLEAN = 2
 
 _DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹", "01234567890123456789")
 
@@ -236,6 +246,10 @@ def _fluency_view(db: Session, student_id: int, skill_id: int, after_id: int) ->
     measured = [e for _, e in window_rows if e is not None]
     accuracy = (correct / window) if window else 0.0
     fast_ratio = (fast / window) if window else 0.0
+    # "no recent error": the most recent FLUENCY_RECENT_CLEAN answers must all be correct
+    # (window_rows is ordered most-recent-first). Requires that many answers to exist.
+    recent = window_rows[:FLUENCY_RECENT_CLEAN]
+    recent_clean = len(recent) >= FLUENCY_RECENT_CLEAN and all(c for c, _ in recent)
     return {
         "answered": len(phase),
         "window": window,
@@ -243,19 +257,23 @@ def _fluency_view(db: Session, student_id: int, skill_id: int, after_id: int) ->
         "accuracy": round(accuracy, 2),
         "fast": fast,
         "fast_ratio": round(fast_ratio, 2),
+        "recent_clean": recent_clean,
         "avg_ms": int(sum(measured) / len(measured)) if measured else None,
         "speed_ceiling_ms": FLUENCY_MAX_MS,
         "needed": FLUENCY_WINDOW,
+        "recent_clean_needed": FLUENCY_RECENT_CLEAN,
         "threshold": FLUENCY_THRESHOLD,
     }
 
 
 def _meets_fluency(f: dict) -> bool:
-    # mastery = enough answers, high ACCURACY, AND speed within the ceiling.
+    # mastery = enough answers, high ACCURACY, speed within the ceiling, AND the most
+    # recent answers clean (no recent error — real mastery, not a lucky window).
     return (
         f["window"] >= FLUENCY_WINDOW
         and f["accuracy"] >= FLUENCY_THRESHOLD
         and f["fast_ratio"] >= FLUENCY_THRESHOLD
+        and f["recent_clean"]
     )
 
 

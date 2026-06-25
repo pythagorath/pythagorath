@@ -40,7 +40,7 @@ def test_report_reflects_mastery(guardian_client, admin_client):
     submit(fl[0]["id"], 1000)
     submit(fl[1]["id"], 1000)
     qids = [q["id"] for q in node["questions"]]
-    for i in range(5):
+    for i in range(6):                       # fluency window (gate.FLUENCY_WINDOW == 6)
         submit(qids[i % len(qids)], 1200)
 
     rep = guardian_client.get(f"/api/students/{sid}/report").json()

@@ -81,7 +81,7 @@ def test_fluency_low_accuracy_stays_understood(db, h):
     qs = h.questions(db, skill.id)
     snap = None
     for i in range(gate.FLUENCY_WINDOW):
-        # fast, but two of five wrong → accuracy 0.6 < 0.8
+        # fast, but two of six wrong → accuracy ~0.67 < 0.8
         snap = h.answer(db, stu.id, qs[i % len(qs)], correct=(i >= 2), elapsed_ms=1000)
     assert snap["status"] == "understood"
 
@@ -105,3 +105,47 @@ def test_durability_schedules_review_and_due_query(db, h):
     assert gate.due_for_review(db, stu.id, h.now()) == []      # not due yet
     future = h.now() + timedelta(days=999)
     assert skill.id in gate.due_for_review(db, stu.id, future)  # due later
+
+
+# ---- Phase 5: tightened fluency (window 6 + no recent error). Speed ceiling kept at
+#      8000ms so drag/match answers are not penalised; only completion is tightened. ----
+def test_fluency_window_is_six(db, h):
+    # widened 5→6: five fast-correct answers no longer complete a node; the sixth does.
+    assert gate.FLUENCY_WINDOW == 6
+    skill = h.skill(db, "B3")
+    stu = h.student(db)
+    _understand(db, h, skill, stu)
+    qs = h.questions(db, skill.id)
+    snap = None
+    for i in range(gate.FLUENCY_WINDOW - 1):                 # 5 — one short of the window
+        snap = h.answer(db, stu.id, qs[i % len(qs)], correct=True, elapsed_ms=1000)
+    assert snap["status"] == "understood"                    # not yet — the window needs 6
+    assert snap["fluency"]["window"] == gate.FLUENCY_WINDOW - 1
+    snap = h.answer(db, stu.id, qs[0], correct=True, elapsed_ms=1000)
+    assert snap["status"] == "mastered"                      # the sixth completes it
+
+
+def test_fluency_recent_error_blocks_mastery(db, h):
+    # "no recent error": even with a full window, high accuracy, and fast answers, a slip in
+    # the last two answers withholds mastery until the recent tail is clean again.
+    skill = h.skill(db, "B3")
+    stu = h.student(db)
+    _understand(db, h, skill, stu)
+    qs = h.questions(db, skill.id)
+    for i in range(gate.FLUENCY_WINDOW - 1):                 # 5 fast-correct
+        h.answer(db, stu.id, qs[i % len(qs)], correct=True, elapsed_ms=1000)
+    # a wrong answer as the MOST RECENT → window is full + accurate, but the tail is dirty
+    snap = h.answer(db, stu.id, qs[0], correct=False, elapsed_ms=1000)
+    f = snap["fluency"]
+    assert f["window"] == gate.FLUENCY_WINDOW
+    assert f["accuracy"] >= gate.FLUENCY_THRESHOLD           # 5/6 — accuracy is NOT the blocker
+    assert f["fast_ratio"] >= gate.FLUENCY_THRESHOLD         # speed is NOT the blocker
+    assert f["recent_clean"] is False                        # the recent error IS the blocker
+    assert snap["status"] == "understood"                    # mastery withheld
+    # one clean answer: last two are now [clean, error] → tail still dirty → still withheld
+    snap = h.answer(db, stu.id, qs[0], correct=True, elapsed_ms=1000)
+    assert snap["status"] == "understood"
+    # a second clean answer pushes the error out of the recent tail → masters
+    snap = h.answer(db, stu.id, qs[0], correct=True, elapsed_ms=1000)
+    assert snap["fluency"]["recent_clean"] is True
+    assert snap["status"] == "mastered"

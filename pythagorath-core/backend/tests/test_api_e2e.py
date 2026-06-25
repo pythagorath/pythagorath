@@ -36,7 +36,7 @@ def _mastery_flow(guardian_client, admin_client, code="B3"):
     understood = submit(fam_first[1]["id"], 1000)
     qids = [q["id"] for q in node["questions"]]
     last = None
-    for i in range(5):
+    for i in range(6):                       # fluency window (gate.FLUENCY_WINDOW == 6)
         last = submit(qids[i % len(qids)], 1200)
     return stu, node, understood, last
 
