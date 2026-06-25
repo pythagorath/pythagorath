@@ -196,12 +196,11 @@
 
   <div class="card" id="diagnosticView" style="display:none">
     <div class="row" style="justify-content:space-between">
-      <h2 style="margin:0">جلسة التشخيص — أثبِت فهمك (من القمة نزولاً)</h2>
+      <h2 style="margin:0">لنكتشف أين نبدأ</h2>
       <button class="sec" onclick="backToMap()">إلغاء</button>
     </div>
-    <p class="muted">كل مهارة لها <b>مسباران من عائلتين</b> — تُجتاز فقط بإصابة الاثنين (لا بإجابة واحدة). أجِب ما تعرفه.</p>
-    <div id="probes"></div>
-    <button onclick="submitDiagnostic()" style="margin-top:8px">أنهِ التشخيص</button>
+    <p class="muted">أسئلة قصيرة وذكيّة تكشف أنسب نقطة بداية — أجِب ما تعرفه، وسنتوقّف تلقائياً.</p>
+    <div id="diagBody"></div>
   </div>
 
   <div id="practiceView" style="display:none">
@@ -562,34 +561,70 @@ async function backToMap(){
   show('mapView');
 }
 
+// ===== ADAPTIVE diagnostic (UNIFIED) — the SAME smart binary-search walk the parent
+// device uses in account.html (POST /diagnostic/adaptive). One question at a time: the
+// server picks each probe and returns the placement when the frontier is found (~8–10
+// questions). This REPLACES the old batch diagnostic so every surface — the guardian's
+// «🔍 تشخيص», the guardian preview deep-link, and the CHILD device (deep-linked here via
+// ?diagnostic=1 from child.html) — runs the one adaptive flow. Probes are graded server-
+// side in memory (no Answer rows, no coins, no fluency leak): placement only. The
+// exhaustive get_probes/place endpoints still exist for backend scoping/commerce tests;
+// no UI calls them anymore. (mountWidget/stackFrac/speak are reused from widgets.js.)
+let DIAG=null, PROBE_ANS=null;
 async function startDiagnostic(){
-  const probes=await api(`/api/students/${student.id}/diagnostic/probes`);
-  const box=document.getElementById('probes'); box.innerHTML=''; let cur=null;
-  for(const p of probes){
-    if(p.skill_id!==cur){ cur=p.skill_id; const h=document.createElement('div');
-      h.style='font-weight:800; margin:14px 0 6px; border-top:1px solid #eee; padding-top:10px';
-      h.innerHTML=`${p.skill_name} <span class="code">${p.code||''}</span>`; box.appendChild(h); }
-    const d=document.createElement('div'); d.className='q';
-    d.innerHTML=`<div class="row" style="justify-content:space-between">
-        <span class="badge fam-${p.family}">${FAM_AR[p.family]||p.family||''}</span>
-        <button class="muteBtn" type="button" onclick="speak(this.closest('.q').querySelector('.prompt').dataset.raw)">🔊</button></div>
-      <div class="prompt">${stackFrac(p.prompt)}</div>`;
-    d.querySelector('.prompt').dataset.raw = p.prompt;   // raw text for TTS (display is stacked)
-    box.appendChild(d);
-    renderQInput(d, {id:p.question_id, family:p.family, prompt:p.prompt, visual:p.visual}, 'diagnostic');
-  }
+  DIAG={answers:[]}; PROBE_ANS=null;
   show('diagnosticView');
+  document.getElementById('diagBody').innerHTML='<div class="muted">… جارٍ التحضير</div>';
+  await diagStep();
 }
-
-async function submitDiagnostic(){
-  const answers=[];
-  document.querySelectorAll('[id^=probe-]').forEach(inp=>{ const v=inp.value.trim();
-    if(v) answers.push({question_id:+inp.id.split('-')[1], answer:v}); });
-  const res=await api(`/api/students/${student.id}/diagnostic`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers})});
-  lastPlacement = res.placement
-    ? `🔍 التشخيص: أثبتَّ فهم ${toHindi(res.understood_codes.length)} مهارة. ابدأ من «${res.placement.name}». (فُهمت بالتنسيب — تبقى الطلاقة بالممارسة)`
-    : '🔍 التشخيص: أثبتَّ فهم الشبكة كلّها — مارِس للطلاقة.';
-  await backToMap();
+async function diagStep(){
+  let step;
+  try{ step=await api(`/api/students/${student.id}/diagnostic/adaptive`,{method:'POST',
+        headers:{'Content-Type':'application/json'},body:JSON.stringify({answers:DIAG.answers})}); }
+  catch(e){ document.getElementById('diagBody').innerHTML=`<p class="fb soft">تعذّر التشخيص — <a href="#" onclick="backToMap();return false">رجوع</a></p>`; return; }
+  if(step.done) return diagDone(step);
+  DIAG.current=step.next;
+  renderProbe(step.next, step.questions_asked);
+}
+function renderProbe(p, asked){
+  PROBE_ANS=null;
+  const body=document.getElementById('diagBody');
+  body.innerHTML=`<div class="q">
+      <div class="row" style="justify-content:space-between">
+        <span class="muted">سؤال ${toHindi((asked||0)+1)}</span>
+        <button class="muteBtn" type="button" onclick="speak(document.getElementById('probePrompt').dataset.raw)">🔊 استمع</button></div>
+      <div class="prompt" id="probePrompt">${stackFrac(p.prompt)}</div>
+      <div id="probeHost"></div>
+      <span class="fb soft" id="probeErr"></span>
+      <button id="probeNext" onclick="submitProbe()" style="margin-top:10px">التالي ›</button>
+    </div>`;
+  document.getElementById('probePrompt').dataset.raw = p.prompt;   // raw text for TTS (display is stacked)
+  const host=document.getElementById('probeHost');
+  if(p.visual){
+    const w=document.createElement('div'); w.className='widget'; host.appendChild(w);
+    const fb=document.createElement('span'); fb.className='fb'; host.appendChild(fb);
+    mountWidget(w, {id:p.question_id, family:p.family, prompt:p.prompt, visual:p.visual},
+      (ans)=>{ PROBE_ANS=String(ans); fb.innerHTML='اخترت: '+stackFrac(String(ans)); fb.className='fb ok'; });
+  } else {
+    const inp=document.createElement('input'); inp.type='text'; inp.id='probeText'; inp.placeholder='إجابتك';
+    inp.oninput=()=>{ PROBE_ANS=inp.value; }; host.appendChild(inp);
+    setTimeout(()=>{ try{ inp.focus(); }catch(e){} }, 50);
+  }
+  if(audioOn()) speak(p.prompt);
+}
+async function submitProbe(){
+  const err=document.getElementById('probeErr'); if(err) err.textContent='';
+  const ans=(PROBE_ANS==null?'':String(PROBE_ANS)).trim();
+  if(!ans){ if(err) err.textContent='اكتب إجابة أو اختر على الشكل.'; return; }
+  DIAG.answers.push({question_id:DIAG.current.question_id, answer:ans});
+  const b=document.getElementById('probeNext'); if(b) b.disabled=true;
+  await diagStep();
+}
+function diagDone(step){
+  lastPlacement = step.placement
+    ? `🔍 التشخيص: أنسب نقطة بداية «${step.placement.name}» — ابدأ منها، ومنها نصعد خطوة خطوة. (نقطة بداية بالتنسيب — تبقى الطلاقة بالممارسة)`
+    : '🔍 التشخيص: أثبتَّ فهم الشبكة المتاحة — مارِس للطلاقة والمراجعة.';
+  backToMap();   // child → /child adventure (re-fetches, now placed); guardian → skillmap + banner
 }
 
 // Round-robin the questions across families so consecutive questions are from
@@ -638,7 +673,7 @@ function renderCurrent(){
     <div class="prompt" id="curPrompt">${stackFrac(q.prompt)}</div>`;
   qbox.appendChild(d);
   document.getElementById('curPrompt').dataset.raw = q.prompt;   // raw text for TTS (display is stacked)
-  renderQInput(d, q, 'practice');
+  renderQInput(d, q);
   // speed timer starts at narration-end OR first interaction (whichever first) — not at
   // display — so listening time never pollutes the fluency speed measurement.
   qShownAt = performance.now(); qTimerStarted = false;
@@ -655,29 +690,21 @@ function showNext(){
   qbox.appendChild(b);
 }
 
-// Shared input renderer. Practice: the widget selects a PENDING answer; an explicit
-// «إرسال» commits it ONCE (one deliberate answer per shown question → clean timing).
-// Diagnostic is unchanged (batch list, hidden inputs, no timing).
-function renderQInput(host, q, mode){
+// Practice input renderer — the ONLY caller now is renderCurrent (the diagnostic uses its
+// own adaptive renderProbe above). The widget selects a PENDING answer; an explicit «إرسال»
+// commits it ONCE per shown question → clean one-answer-per-question timing for fluency.
+function renderQInput(host, q){
   if(q.visual){
     const w=document.createElement('div'); w.className='widget'; host.appendChild(w);
     const fb=document.createElement('span'); fb.className='fb'; fb.id='fb-'+q.id; host.appendChild(fb);
-    if(mode==='diagnostic'){
-      const hidden=document.createElement('input'); hidden.type='hidden'; hidden.id='probe-'+q.id; host.appendChild(hidden);
-      mountWidget(w, q, (ans)=>{ hidden.value=String(ans); fb.innerHTML='تم تحديد: '+stackFrac(ans); fb.className='fb ok'; });
-    } else {
-      mountWidget(w, q, (ans)=>{ pendingAns=ans; fb.innerHTML='اخترت: '+stackFrac(ans); fb.className='fb'; });
-      host.appendChild(submitButton(q, ()=>pendingAns));
-    }
-  } else if(mode==='practice'){
+    mountWidget(w, q, (ans)=>{ pendingAns=ans; fb.innerHTML='اخترت: '+stackFrac(ans); fb.className='fb'; });
+    host.appendChild(submitButton(q, ()=>pendingAns));
+  } else {
     const row=document.createElement('div'); row.className='row';
     const inp=document.createElement('input'); inp.type='text'; inp.id='ans-'+q.id; inp.placeholder='إجابتك';
     row.appendChild(inp); row.appendChild(submitButton(q, ()=>inp.value));
     const fb=document.createElement('span'); fb.className='fb'; fb.id='fb-'+q.id; row.appendChild(fb);
     host.appendChild(row);
-  } else {
-    const inp=document.createElement('input'); inp.type='text'; inp.id='probe-'+q.id;
-    inp.placeholder='إجابتك (أو اتركه فارغاً)'; host.appendChild(inp);
   }
 }
 

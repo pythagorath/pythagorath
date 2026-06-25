@@ -4,11 +4,15 @@ DAG, including the cross-grade edges). It grants NO mastery — only a START POI
 frontier's foundation marked `placed`, a lock-opener that is not understanding/mastery).
 The exhaustive diagnostic (get_probes/place) still coexists.
 """
+import pathlib
+
 from sqlalchemy import select
 
-from app import diagnostic, gate
+from app import consent, diagnostic, gate
 from app.main import _path_skills, _adaptive_path
-from app.models import Answer, Grade, Skill, SkillMastery, Unit
+from app.models import Answer, Grade, Question, Skill, SkillMastery, Unit
+
+_STATIC = pathlib.Path(__file__).resolve().parents[1] / "app" / "static"
 
 
 def _drive(db, skills, can_do):
@@ -123,3 +127,51 @@ def test_adaptive_base_is_country_scoped(db, h):
     base_ids = {s.id for s in _path_skills(db, qa)}
     all_ids = {s.id for s in db.execute(select(Skill)).scalars().all()}
     assert base_ids < all_ids
+
+
+# ---------------- UNIFICATION: every surface uses the ONE adaptive flow ----------------
+
+def test_child_device_diagnostic_is_adaptive_and_places(guardian_client, db):
+    """The child device (child.html) deep-links ?diagnostic=1 into index.html, which now runs
+    the SAME adaptive endpoint as the parent device. Drive that endpoint over HTTP to the end
+    and assert it PLACES the child and clears the needs-diagnostic flag — the exact integration
+    the child screen depends on (the binary-search/placement internals are tested above)."""
+    grade2 = [g["id"] for g in guardian_client.get("/api/grades").json() if g["order"] == 2][0]
+    cid = guardian_client.post("/api/students", json={
+        "name": "تكيّفي", "consent_version": consent.CURRENT_VERSION, "grade_id": grade2}).json()["id"]
+    # never diagnosed → the child screen shows the diagnostic, not the path
+    assert guardian_client.get(f"/api/students/{cid}/session").json()["needs_diagnostic"] is True
+
+    # walk the adaptive endpoint one question at a time (a weak child → descends to a floor).
+    answers, asked, step = [], 0, None
+    while True:
+        step = guardian_client.post(f"/api/students/{cid}/diagnostic/adaptive",
+                                    json={"answers": answers}).json()
+        if step["done"]:
+            break
+        q = db.get(Question, step["next"]["question_id"])
+        answers.append({"question_id": q.id, "answer": (q.answer or "") + "X"})   # always wrong
+        asked += 1
+        assert asked <= 12, "adaptive walk over HTTP did not converge"
+    assert step["placement"] is not None                       # placed at a real start point
+
+    # the diagnosis set the start pointer → the child now sees their path, not the diagnostic
+    assert guardian_client.get(f"/api/students/{cid}/session").json()["needs_diagnostic"] is False
+    adv = guardian_client.get(f"/api/students/{cid}/adventure").json()
+    assert adv["needs_diagnostic"] is False and adv["current"] is not None
+
+
+def test_index_diagnostic_ui_is_unified_on_adaptive():
+    """The solver UI (index.html — the page the child device loads) runs the adaptive flow and
+    no longer carries the old batch diagnostic."""
+    html = (_STATIC / "index.html").read_text(encoding="utf-8")
+    assert "/diagnostic/adaptive" in html              # the UI calls the adaptive endpoint
+    assert "submitDiagnostic" not in html              # the old batch submit handler is gone
+    assert "/diagnostic/probes" not in html            # the UI no longer calls the batch probes
+
+
+def test_child_device_routes_into_the_diagnostic():
+    """The child adventure screen still deep-links into the diagnostic when undiagnosed — that
+    destination (index.html) is now the adaptive flow (see the test above)."""
+    child_html = (_STATIC / "child.html").read_text(encoding="utf-8")
+    assert "diagnostic=1" in child_html
