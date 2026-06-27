@@ -260,6 +260,13 @@ def site_config(db: Session = Depends(get_db)):
         "integrations": {"ga": g("integration_ga"), "fbpixel": g("integration_fbpixel")},
         "whatsapp": {"enabled": g("whatsapp_enabled") == "1", "number": g("whatsapp_number")},
         "video": g("how_video_url"),   # marketing "how it works" — link/path; blank → animated fallback
+        "hero": {"align": g("hero_align")},
+        "cards": {
+            "live": {"on": g("card_live_on") == "1", "url": g("card_live_url"), "title": g("card_live_title"), "desc": g("card_live_desc"), "cta": g("card_live_cta"), "align": g("card_live_align")},
+            "recorded": {"on": g("card_recorded_on") == "1", "url": g("card_recorded_url"), "title": g("card_recorded_title"), "desc": g("card_recorded_desc"), "cta": g("card_recorded_cta"), "align": g("card_recorded_align")},
+            "math": {"on": g("card_math_on") == "1", "url": g("card_math_url"), "title": g("card_math_title"), "desc": g("card_math_desc"), "cta": g("card_math_cta"), "align": g("card_math_align")},
+            "abacus": {"on": g("card_abacus_on") == "1", "url": g("card_abacus_url"), "title": g("card_abacus_title"), "desc": g("card_abacus_desc"), "cta": g("card_abacus_cta"), "align": g("card_abacus_align")},
+        },
         "defaults": _BRAND_DEFAULTS,
     }
 

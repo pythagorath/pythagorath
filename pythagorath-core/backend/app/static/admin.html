@@ -498,9 +498,39 @@ async function secSettings(c){
       <button class="savebtn" onclick="saveSettings({how_video_url:val('hvid')},'hv')">حفظ الفيديو</button>
       <span id="hv-msg" class="okmsg"></span>
     </div>
+    <div class="panel"><h3>بطاقات المنتجات (صفحة الهبوط)</h3>
+      <div class="muted" style="margin-bottom:8px">فعّل كل بطاقة وضع رابط وجهتها. البطاقة غير المفعّلة لا تظهر للزائر.</div>
+      <div class="frow" style="border-top:1px solid #eee;padding-top:10px"><label style="font-weight:700"><input type="checkbox" id="c_live_on" ${s.card_live_on==='1'?'checked':''}> المناهج أونلاين (بث مباشر)</label><textarea id="c_live_title" placeholder="العنوان" style="margin-top:6px;width:100%;min-height:46px;font-family:inherit;font-weight:700">${s.card_live_title||''}</textarea><textarea id="c_live_desc" placeholder="الوصف" style="margin-top:6px;width:100%;min-height:54px;font-family:inherit">${s.card_live_desc||''}</textarea><input id="c_live_url" value="${s.card_live_url||''}" placeholder="الرابط" style="margin-top:6px"><input id="c_live_cta" value="${s.card_live_cta||''}" placeholder="نص الزر (مثلاً: ابدأ الآن)" style="margin-top:6px"><select id="c_live_align" style="margin-top:6px;width:100%"><option value="">محاذاة النص…</option><option value="right">يمين</option><option value="center">وسط</option><option value="left">يسار</option></select></div>
+      <div class="frow" style="border-top:1px solid #eee;padding-top:10px"><label style="font-weight:700"><input type="checkbox" id="c_recorded_on" ${s.card_recorded_on==='1'?'checked':''}> المناهج مسجّلة</label><textarea id="c_recorded_title" placeholder="العنوان" style="margin-top:6px;width:100%;min-height:46px;font-family:inherit;font-weight:700">${s.card_recorded_title||''}</textarea><textarea id="c_recorded_desc" placeholder="الوصف" style="margin-top:6px;width:100%;min-height:54px;font-family:inherit">${s.card_recorded_desc||''}</textarea><input id="c_recorded_url" value="${s.card_recorded_url||''}" placeholder="الرابط" style="margin-top:6px"><input id="c_recorded_cta" value="${s.card_recorded_cta||''}" placeholder="نص الزر (مثلاً: ابدأ الآن)" style="margin-top:6px"><select id="c_recorded_align" style="margin-top:6px;width:100%"><option value="">محاذاة النص…</option><option value="right">يمين</option><option value="center">وسط</option><option value="left">يسار</option></select></div>
+      <div class="frow" style="border-top:1px solid #eee;padding-top:10px"><label style="font-weight:700"><input type="checkbox" id="c_math_on" ${s.card_math_on==='1'?'checked':''}> الرياضيات التكيّفي (الحلقة الأولى)</label><textarea id="c_math_title" placeholder="العنوان" style="margin-top:6px;width:100%;min-height:46px;font-family:inherit;font-weight:700">${s.card_math_title||''}</textarea><textarea id="c_math_desc" placeholder="الوصف" style="margin-top:6px;width:100%;min-height:54px;font-family:inherit">${s.card_math_desc||''}</textarea><input id="c_math_url" value="${s.card_math_url||''}" placeholder="الرابط" style="margin-top:6px"><input id="c_math_cta" value="${s.card_math_cta||''}" placeholder="نص الزر (مثلاً: ابدأ الآن)" style="margin-top:6px"><select id="c_math_align" style="margin-top:6px;width:100%"><option value="">محاذاة النص…</option><option value="right">يمين</option><option value="center">وسط</option><option value="left">يسار</option></select></div>
+      <div class="frow" style="border-top:1px solid #eee;padding-top:10px"><label style="font-weight:700"><input type="checkbox" id="c_abacus_on" ${s.card_abacus_on==='1'?'checked':''}> العدّاد</label><textarea id="c_abacus_title" placeholder="العنوان" style="margin-top:6px;width:100%;min-height:46px;font-family:inherit;font-weight:700">${s.card_abacus_title||''}</textarea><textarea id="c_abacus_desc" placeholder="الوصف" style="margin-top:6px;width:100%;min-height:54px;font-family:inherit">${s.card_abacus_desc||''}</textarea><input id="c_abacus_url" value="${s.card_abacus_url||''}" placeholder="الرابط" style="margin-top:6px"><input id="c_abacus_cta" value="${s.card_abacus_cta||''}" placeholder="نص الزر (مثلاً: ابدأ الآن)" style="margin-top:6px"><select id="c_abacus_align" style="margin-top:6px;width:100%"><option value="">محاذاة النص…</option><option value="right">يمين</option><option value="center">وسط</option><option value="left">يسار</option></select></div>
+      <button class="savebtn" style="margin-top:10px" onclick="saveCards()">حفظ البطاقات</button>
+      <span id="cards-msg" class="okmsg"></span>
+    </div>
+    <div class="panel"><h3>محاذاة قسم الترحيب (أعلى صفحة الهبوط)</h3>
+      <div class="muted" style="margin-bottom:8px">محاذاة العنوان والوصف والأزرار في أعلى الصفحة.</div>
+      <select id="h_align" style="width:100%"><option value="">محاذاة النص…</option><option value="right">يمين</option><option value="center">وسط</option><option value="left">يسار</option></select>
+      <button class="savebtn" style="margin-top:10px" onclick="saveHero()">حفظ المحاذاة</button>
+      <span id="hero-msg" class="okmsg"></span>
+    </div>
     <div class="panel"><h3>سمة العرض</h3><div class="tctrl">
       ${['mutadarrij','ameen','mutawwar'].map(x=>`<button class="linkbtn" style="${x===t?'background:#155E7D;color:#fff':''}" onclick="setTheme('${x}')">${({mutadarrij:'متدرّج',ameen:'أمين',mutawwar:'مطوّر'})[x]}</button>`).join('')}
     </div></div>`;
+}
+
+async function saveHero(){
+  await saveSettings({hero_align:val('h_align')},'hero');
+}
+async function saveCards(){
+  const cb=id=>document.getElementById(id).checked?'1':'0';
+  const obj={
+    card_live_on:cb('c_live_on'),         card_live_url:val('c_live_url'),         card_live_title:val('c_live_title'),         card_live_desc:val('c_live_desc'),         card_live_cta:val('c_live_cta'),         card_live_align:val('c_live_align'),
+    card_recorded_on:cb('c_recorded_on'), card_recorded_url:val('c_recorded_url'), card_recorded_title:val('c_recorded_title'), card_recorded_desc:val('c_recorded_desc'), card_recorded_cta:val('c_recorded_cta'), card_recorded_align:val('c_recorded_align'),
+    card_math_on:cb('c_math_on'),         card_math_url:val('c_math_url'),         card_math_title:val('c_math_title'),         card_math_desc:val('c_math_desc'),         card_math_cta:val('c_math_cta'),         card_math_align:val('c_math_align'),
+    card_abacus_on:cb('c_abacus_on'),     card_abacus_url:val('c_abacus_url'),     card_abacus_title:val('c_abacus_title'),     card_abacus_desc:val('c_abacus_desc'),     card_abacus_cta:val('c_abacus_cta'),     card_abacus_align:val('c_abacus_align'),
+  };
+  await saveSettings(obj,'cards');
+  ['live','recorded','math','abacus'].forEach(function(k){var e=document.getElementById('c_'+k+'_align');});
 }
 function readLogo(inp){ const f=inp.files[0]; if(!f) return;
   if(f.size>400000){ alert('الصورة كبيرة — استخدم شعاراً صغيراً (أقل من ٤٠٠ ك.ب).'); inp.value=''; return; }

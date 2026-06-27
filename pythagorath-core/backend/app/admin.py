@@ -695,6 +695,22 @@ SETTINGS_KEYS = {
     # which curriculum COUNTRIES are hidden from the add-child picker — CSV of disabled codes.
     # Empty/absent = none disabled = all six enabled (the default, unchanged behaviour).
     "countries_disabled",
+    # product cards on the landing page - per-card show flag + destination URL
+    "card_live_on", "card_live_url",
+    "card_recorded_on", "card_recorded_url",
+    "card_math_on", "card_math_url",
+    "card_abacus_on", "card_abacus_url",
+    # editable card title + description (option B)
+    "card_live_title", "card_live_desc",
+    "card_recorded_title", "card_recorded_desc",
+    "card_math_title", "card_math_desc",
+    "card_abacus_title", "card_abacus_desc",
+    # editable button label per card
+    "card_live_cta", "card_recorded_cta", "card_math_cta", "card_abacus_cta",
+    # editable text alignment per card (right|left|center)
+    "card_live_align", "card_recorded_align", "card_math_align", "card_abacus_align",
+    # hero section text alignment (right|left|center)
+    "hero_align",
 }
 ANN_FORMATS = {"popup", "banner"}
 ANN_TARGETS = {"all", "unsubscribed", "grade", "country"}

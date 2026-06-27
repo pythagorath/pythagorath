@@ -31,11 +31,18 @@
 <div dir="rtl" lang="ar" style="font-family:'Readex Pro',sans-serif;color:#125B5E;background:#FFFBF4;overflow-x:hidden;">
 
   <!-- ===== HERO ===== -->
-  <section style="position:relative;background:linear-gradient(160deg,#15999E 0%,#0C7376 55%,#095A5E 100%);padding:22px 28px 150px;overflow:hidden;">
-    <svg viewBox="0 0 60 52" style="position:absolute;top:120px;left:7%;width:70px;opacity:.16;animation:floatA 8s ease-in-out infinite;" fill="none"><path d="M4 48 L30 4 L56 48 Z" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></svg>
-    <span style="position:absolute;top:200px;left:24%;font-family:'Baloo Bhaijaan 2',cursive;font-size:40px;font-weight:800;color:#F8B24A;opacity:.5;animation:floatB 7s ease-in-out infinite;">٧</span>
-    <span style="position:absolute;bottom:170px;left:12%;font-family:'Baloo Bhaijaan 2',cursive;font-size:34px;font-weight:800;color:#fff;opacity:.18;animation:floatA 6.5s ease-in-out infinite;">＋</span>
-    <span style="position:absolute;top:300px;right:8%;font-family:'Baloo Bhaijaan 2',cursive;font-size:30px;font-weight:800;color:#89F5FB;opacity:.4;animation:floatB 8s ease-in-out infinite;">×</span>
+  <section style="position:relative;background:#16475c;padding:22px 28px 150px;overflow:hidden;">
+    <!-- full-bleed looping background video (silent, autoplay, loop) -->
+    <video autoplay muted loop playsinline preload="auto" aria-hidden="true" poster="/static/assets/hero-poster.jpg"
+           style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;">
+      <source src="/static/assets/hero-full.mp4" type="video/mp4">
+    </video>
+    <!-- teal identity tint: strong behind the right-side text, lighter over the video on the left, plus a top scrim for the nav -->
+    <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,rgba(8,40,46,.60) 0%,rgba(8,40,46,0) 24%),linear-gradient(to left,rgba(8,52,56,.92) 0%,rgba(18,66,82,.62) 52%,rgba(18,66,82,.30) 100%);"></div>
+    <svg viewBox="0 0 60 52" style="position:absolute;top:120px;left:7%;width:70px;opacity:.16;z-index:2;animation:floatA 8s ease-in-out infinite;" fill="none"><path d="M4 48 L30 4 L56 48 Z" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></svg>
+    <span style="position:absolute;top:200px;left:24%;z-index:2;font-family:'Baloo Bhaijaan 2',cursive;font-size:40px;font-weight:800;color:#F8B24A;opacity:.5;animation:floatB 7s ease-in-out infinite;">٧</span>
+    <span style="position:absolute;bottom:170px;left:12%;z-index:2;font-family:'Baloo Bhaijaan 2',cursive;font-size:34px;font-weight:800;color:#fff;opacity:.18;animation:floatA 6.5s ease-in-out infinite;">＋</span>
+    <span style="position:absolute;top:300px;right:8%;z-index:2;font-family:'Baloo Bhaijaan 2',cursive;font-size:30px;font-weight:800;color:#89F5FB;opacity:.4;animation:floatB 8s ease-in-out infinite;">×</span>
 
     <!-- nav -->
     <nav style="position:relative;z-index:5;max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:24px;padding:8px 0 0;">
@@ -44,27 +51,28 @@
       <div class="navlinks" style="display:flex;align-items:center;gap:26px;font-size:16.5px;font-weight:500;color:#CBF3F4;">
         <a href="/landing" style="text-decoration:none;color:#fff;font-weight:700;border-bottom:2px solid #F8B24A;padding-bottom:3px;">الرئيسية</a>
         <a href="/about" style="text-decoration:none;color:inherit;">من نحن</a>
-        <a href="/pricing" style="text-decoration:none;color:inherit;">الأسعار</a>
         <a href="/contact" style="text-decoration:none;color:inherit;">تواصل معنا</a>
       </div>
-      <a href="/account" style="text-decoration:none;color:#CBF3F4;font-size:16px;font-weight:600;">دخول</a>
-      <a href="/account" style="text-decoration:none;background:linear-gradient(180deg,#F8A93A,#F39A1F);color:#fff;font-weight:700;font-size:16.5px;padding:11px 22px;border-radius:999px;box-shadow:0 10px 22px -8px rgba(243,154,31,.7);">ابدأ مجاناً</a>
     </nav>
 
     <!-- hero content -->
     <div style="position:relative;z-index:4;max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:30px;padding-top:46px;">
-      <div style="flex:1 1 440px;">
+      <div data-hero-col style="flex:1 1 440px;text-align:right;">
+        <!-- brand wordmark + short tagline overlaid on the video -->
+        <div data-hero-brand style="margin:0 0 18px;">
+          <div style="font-family:'Readex Pro',sans-serif;font-weight:600;font-size:19px;color:#e88a2a;margin-top:9px;">رياضيات · علوم · لغات — حيث يُولد الفهم</div>
+        </div>
         <span style="display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:15px;padding:8px 16px;border-radius:999px;backdrop-filter:blur(4px);">
-          <span style="width:9px;height:9px;border-radius:50%;background:#F39A1F;"></span> موطن التعليم
+          <span style="width:9px;height:9px;border-radius:50%;background:#F39A1F;"></span> ٦ سنوات · المناهج العمانية
         </span>
         <h1 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:54px;line-height:1.18;color:#fff;margin:20px 0 0;letter-spacing:-.5px;text-wrap:balance;">
-          اكتشف أين يتعثّر ابنك <span style="color:#F8B24A;">مجّاناً</span><br>ثم ابدأ رحلة العلاج
+          منصّة فيثاغورث التعليمية<br><span style="color:#F8B24A;">للصفوف ٣ إلى ١٢</span>
         </h1>
-        <p style="font-size:20px;line-height:1.85;color:#CDF2F3;margin:22px 0 0;max-width:500px;text-wrap:pretty;">
-          تشخيص مجّاني يكشف الفكرة التي يحتاج طفلك تقويتها — بلا اشتراك. ثم مسار يتكيّف مع فهمه، عبر مناهج الخليج الفعلية، في بيئة آمنة لبياناته.
+        <p data-hero-desc style="font-size:20px;line-height:1.85;color:#CDF2F3;margin:22px 0 0;max-width:500px;text-wrap:pretty;">
+          نُدرّس المنهج العماني كاملاً — لغات وعلوم ورياضيات وأكثر — بثّاً مباشراً ومسجّلاً، إضافةً إلى الرياضيات التكيّفية والعدّاد. اختر المنتج الذي يناسب ابنك.
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;">
-          <a href="/account" style="text-decoration:none;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(180deg,#F8A93A,#F39A1F);color:#fff;font-weight:700;font-size:19px;padding:16px 32px;border-radius:999px;box-shadow:0 16px 30px -10px rgba(243,154,31,.7);">جرّب فيثاغورث مجاناً <span>←</span></a>
+          <a href="#products" style="text-decoration:none;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(180deg,#F8A93A,#F39A1F);color:#fff;font-weight:700;font-size:19px;padding:16px 32px;border-radius:999px;box-shadow:0 16px 30px -10px rgba(243,154,31,.7);">تصفّح المنتجات <span>←</span></a>
           <a href="#howVideo" style="text-decoration:none;display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-weight:700;font-size:19px;padding:16px 28px;border-radius:999px;">شاهد كيف تعمل</a>
         </div>
       </div>
@@ -108,87 +116,58 @@
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style="position:absolute;bottom:-1px;left:0;width:100%;height:120px;" fill="none"><path d="M0 120 L0 56 Q360 0 720 40 Q1080 80 1440 24 L1440 120 Z" fill="#FFFBF4"/></svg>
   </section>
 
-  <!-- ===== BENTO FEATURES ===== -->
-  <section id="feats" style="background:#FFFBF4;padding:24px 28px 70px;">
+  <!-- ===== PRODUCT CARDS ===== -->
+  <section id="products" data-product-cards style="background:#FFFBF4;padding:54px 28px 30px;">
     <div style="max-width:1120px;margin:0 auto;text-align:center;margin-bottom:34px;">
-      <span style="color:#0E9C93;font-weight:700;font-size:16px;">لماذا فيثاغورث؟</span>
-      <h2 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:38px;color:#0C5E61;margin:10px 0 0;text-wrap:balance;">كل ما يهمّ طفلك — ويطمئنك</h2>
+      <span style="color:#0E9C93;font-weight:700;font-size:16px;">منتجاتنا</span>
+      <h2 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:38px;color:#0C5E61;margin:10px 0 0;text-wrap:balance;">اختر ما يناسب ابنك</h2>
     </div>
-
-    <div style="max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);gap:18px;">
-      <div style="grid-column:span 4;background:linear-gradient(150deg,#F39A1F,#E07F00);border-radius:26px;padding:32px;color:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:24px;justify-content:space-between;box-shadow:0 24px 50px -30px rgba(243,154,31,.8);">
-        <div style="flex:1 1 240px;">
-          <h3 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:27px;margin:0 0 10px;">نقيس الفهم لا الحفظ</h3>
-          <p style="font-size:16.5px;line-height:1.75;color:#FFF1DD;margin:0;">نرى كيف يفكّر طفلك — أين تعثّر فهمه بالضبط — فنعالج الجذر بدل تكرار التمرين.</p>
-        </div>
-        <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:10px;width:180px;">
-          <div style="background:rgba(255,255,255,.16);border-radius:12px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;"><span>الجمع</span><span style="color:#CFF5E0;">متمكّن</span></div>
-          <div style="background:rgba(255,255,255,.16);border-radius:12px;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:700;"><span>الكسور</span><span style="color:#FFE0DC;">فجوة</span></div>
-        </div>
-      </div>
-
-      <div style="grid-column:span 2;background:#028B84;border-radius:26px;padding:28px;color:#fff;box-shadow:0 24px 50px -32px rgba(4,93,109,.9);">
-        <div style="width:50px;height:50px;border-radius:14px;background:rgba(143,212,245,.2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#89F5FB" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></div>
-        <h3 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:21px;margin:0 0 8px;">يتكيّف لكل طفل</h3>
-        <p style="font-size:15px;line-height:1.7;color:#B8EBED;margin:0;">يتعدّل مستوى الصعوبة تلقائياً مع كل إجابة.</p>
-      </div>
-
-      <div style="grid-column:span 3;background:#DEF1ED;border-radius:26px;padding:26px;border:1px solid #D4F8FA;">
-        <h3 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:21px;color:#0C5E61;margin:0 0 12px;">مناهج الخليج الفعلية</h3>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <span style="background:#fff;border:1px solid #CBF3F6;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:700;color:#125B5E;">السعودية</span>
-          <span style="background:#fff;border:1px solid #CBF3F6;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:700;color:#125B5E;">الإمارات</span>
-          <span style="background:#fff;border:1px solid #CBF3F6;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:700;color:#125B5E;">قطر</span>
-          <span style="background:#fff;border:1px solid #CBF3F6;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:700;color:#125B5E;">الكويت</span>
-          <span style="background:#fff;border:1px solid #CBF3F6;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:700;color:#125B5E;">البحرين</span>
-          <span style="background:#fff;border:1px solid #CBF3F6;border-radius:999px;padding:7px 14px;font-size:14px;font-weight:700;color:#125B5E;">عُمان</span>
-        </div>
-      </div>
-
-      <div style="grid-column:span 3;background:#fff;border-radius:26px;padding:26px;border:1px solid #F0E7D8;display:flex;align-items:center;gap:18px;box-shadow:0 18px 40px -30px rgba(17,70,92,.4);">
-        <div style="flex:0 0 auto;width:56px;height:56px;border-radius:16px;background:#E9F7EF;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#1E8E54" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v5c0 5-3.5 9-8 11-4.5-2-8-6-8-11V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <div><h3 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:20px;color:#0C5E61;margin:0 0 5px;">آمنة لبيانات طفلك</h3><p style="font-size:14.5px;line-height:1.6;color:#5A8487;margin:0;">تشفير كامل · بلا إعلانات · لا مشاركة بيانات.</p></div>
-      </div>
+    <div id="productCards" style="max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;">
+      <div style="text-align:center;color:#5A8487;grid-column:1/-1;">جارٍ التحميل…</div>
     </div>
   </section>
 
-  <!-- ===== JOURNEY ===== -->
-  <section id="journey" style="background:#fff;padding:70px 28px;border-top:1px solid #F0E7D8;">
-    <div style="max-width:1080px;margin:0 auto;text-align:center;margin-bottom:46px;">
-      <span style="color:#D9820B;font-weight:700;font-size:16px;">رحلة طفلك</span>
-      <h2 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:36px;color:#0C5E61;margin:10px 0 0;text-wrap:balance;">يسير بإيقاعه — خطوة بخطوة</h2>
-    </div>
-    <div style="max-width:1000px;margin:0 auto;position:relative;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;">
-      <svg viewBox="0 0 900 60" preserveAspectRatio="none" style="position:absolute;top:34px;left:5%;width:90%;height:60px;z-index:0;" fill="none"><path d="M10 30 Q230 -10 450 30 Q670 70 890 30" stroke="#F8B24A" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12" style="animation:dash 1.2s linear infinite;"/></svg>
-      <div style="position:relative;z-index:1;flex:1 1 180px;text-align:center;">
-        <div style="width:72px;height:72px;border-radius:50%;background:#E9F7EF;border:3px solid #2BB673;color:#1E8E54;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:26px;">١</div>
-        <h4 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:18px;color:#125B5E;margin:0 0 6px;">تشخيص مجّاني</h4>
-        <p style="font-size:14.5px;color:#5A8487;line-height:1.6;margin:0;">يكشف أين يتعثّر طفلك خلال دقائق.</p>
-      </div>
-      <div style="position:relative;z-index:1;flex:1 1 180px;text-align:center;">
-        <div style="width:72px;height:72px;border-radius:50%;background:#FFF1DD;border:3px solid #F39A1F;color:#D9820B;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:26px;">٢</div>
-        <h4 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:18px;color:#125B5E;margin:0 0 6px;">مسار يخصّه</h4>
-        <p style="font-size:14.5px;color:#5A8487;line-height:1.6;margin:0;">يتكيّف مع كل إجابة صعوداً ونزولاً.</p>
-      </div>
-      <div style="position:relative;z-index:1;flex:1 1 180px;text-align:center;">
-        <div style="width:72px;height:72px;border-radius:50%;background:#DEF1ED;border:3px solid #11A79C;color:#0E9C93;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:26px;">٣</div>
-        <h4 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:700;font-size:18px;color:#125B5E;margin:0 0 6px;">إتقان حقيقي</h4>
-        <p style="font-size:14.5px;color:#5A8487;line-height:1.6;margin:0;">أساس متين يبقى بعد الاختبار.</p>
-      </div>
-    </div>
-  </section>
+  <script>
+  (async function(){
+    var THEMES = {
+      live:     {accent:'#F39A1F', soft:'#FFF1DD', icon:'\ud83d\udd34', cta:'سجّل الآن'},
+      recorded: {accent:'#0E9C93', soft:'#DEF1ED', icon:'\u25b6\ufe0f', cta:'ابدأ المشاهدة'},
+      math:     {accent:'#2BB673', soft:'#E9F7EF', icon:'\u2795', cta:'جرّب مجّاناً'},
+      abacus:   {accent:'#7C5CE0', soft:'#EFEAFB', icon:'\ud83e\uddee', cta:'اكتشف العدّاد'}
+    };
+    var ORDER = ['live','recorded','math','abacus'];
+    var box = document.getElementById('productCards');
+    if(!box) return;
+    var cards = {};
+    try{ var site = await (await fetch('/api/site')).json(); cards = site.cards || {}; }
+    catch(e){ box.innerHTML = '<div style="text-align:center;color:#b00;grid-column:1/-1;">تعذّر تحميل المنتجات</div>'; return; }
 
-  <!-- ===== CTA ===== -->
-  <section id="cta" style="position:relative;background:linear-gradient(160deg,#15999E,#095A5E);padding:74px 28px;overflow:hidden;text-align:center;">
-    <span style="position:absolute;top:40px;left:14%;font-family:'Baloo Bhaijaan 2',cursive;font-size:36px;font-weight:800;color:#fff;opacity:.12;animation:floatA 7s ease-in-out infinite;">＝</span>
-    <svg viewBox="0 0 60 52" style="position:absolute;bottom:40px;right:12%;width:64px;opacity:.16;animation:floatB 8s ease-in-out infinite;" fill="none"><path d="M4 48 L30 4 L56 48 Z" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></svg>
-    <div style="max-width:680px;margin:0 auto;position:relative;">
-      <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:22px;color:#F8B24A;letter-spacing:1px;margin-bottom:8px;">موطن التعليم</div>
-      <h2 style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:42px;color:#fff;margin:0 0 14px;line-height:1.25;text-wrap:balance;">ابدأ بالتشخيص المجاني اليوم</h2>
-      <p style="font-size:19px;line-height:1.8;color:#CDF2F3;margin:0 auto 28px;max-width:500px;">اعرف أين يتعثّر طفلك خلال دقائق — مجاناً وبلا بطاقة ائتمان.</p>
-      <a href="/account" style="text-decoration:none;display:inline-flex;align-items:center;gap:10px;background:linear-gradient(180deg,#F8A93A,#F39A1F);color:#fff;font-weight:700;font-size:20px;padding:17px 38px;border-radius:999px;box-shadow:0 18px 34px -10px rgba(243,154,31,.7);">سجّل طفلك مجاناً <span>←</span></a>
-    </div>
-  </section>
+    function esc(t){ var d=document.createElement('div'); d.textContent=t==null?'':t; return d.innerHTML; }
+
+    var html = '';
+    ORDER.forEach(function(key){
+      var c = cards[key];
+      if(!c || !c.on) return;                         // only enabled cards
+      var t = THEMES[key] || THEMES.math;
+      var url = (c.url||'').trim();
+      var title = (esc(c.title) || key).replace(/\n/g, '<br>');
+      var desc = esc(c.desc);
+      var ctaLabel = (c.cta||'').trim() || t.cta;
+      var alignVal = (c.align||'').trim() || 'right';
+      var btn = url
+        ? '<a href="'+esc(url)+'" style="margin-top:auto;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:'+t.accent+';color:#fff;font-weight:700;font-size:16px;padding:12px 22px;border-radius:999px;">'+esc(ctaLabel)+' <span>\u2190</span></a>'
+        : '<span style="margin-top:auto;display:inline-flex;align-items:center;justify-content:center;background:#EEE;color:#888;font-weight:700;font-size:15px;padding:12px 22px;border-radius:999px;">قريباً</span>';
+      html +=
+        '<div style="background:#fff;border:1px solid #F0E7D8;border-top:5px solid '+t.accent+';border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:12px;box-shadow:0 18px 40px -30px rgba(17,70,92,.4);text-align:'+alignVal+';">'
+        + '<div style="width:58px;height:58px;border-radius:16px;background:'+t.soft+';display:flex;align-items:center;justify-content:center;font-size:28px;">'+t.icon+'</div>'
+        + '<h3 style="font-family:\'Baloo Bhaijaan 2\',cursive;font-weight:800;font-size:21px;color:#0C5E61;margin:4px 0 0;">'+title+'</h3>'
+        + '<p style="font-size:15px;line-height:1.7;color:#5A8487;margin:0;">'+desc+'</p>'
+        + btn
+        + '</div>';
+    });
+    box.innerHTML = html || '<div style="text-align:center;color:#5A8487;grid-column:1/-1;">لا توجد منتجات معروضة حالياً.</div>';
+  })();
+  </script>
 
   <!-- ===== HOW-IT-WORKS (animated explainer; real video managed from admin — batch B) ===== -->
   <div id="howVideo" style="position:fixed;inset:0;z-index:999;display:none;align-items:center;justify-content:center;padding:24px;">
@@ -211,7 +190,7 @@
               <span style="position:absolute;top:-6px;right:-12px;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:24px;color:#FFD27E;">؟</span>
               <span style="position:absolute;bottom:-2px;left:-10px;font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:18px;color:#86D8CE;">؟</span>
             </div>
-            <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:27px;color:#fff;">هل يحفظ طفلك… دون أن يفهم؟</div>
+            <div style="font-family:'Baloo Bhaijaan 2',cursive;font-weight:800;font-size:27px;color:#fff;">هل يحفظ ابنك… دون أن يفهم؟</div>
             <div style="font-size:15px;color:#BFE6E2;">كثير من الأطفال يحفظون الخطوات فقط</div>
           </div>
 
@@ -291,5 +270,22 @@
     box.innerHTML=inner;
   })();
 </script>
+  <script>
+  (async function(){
+    try{
+      var site = await (await fetch('/api/site')).json();
+      var a = site && site.hero && (site.hero.align||'').trim();
+      if(a){
+        var el=document.querySelector('[data-hero-col]'); if(el) el.style.textAlign=a;
+        var d=document.querySelector('[data-hero-desc]');
+        if(d){
+          if(a==='center'){ d.style.marginInline='auto'; }
+          else if(a==='left'){ d.style.marginInlineStart='auto'; d.style.marginInlineEnd='0'; }
+          else { d.style.marginInlineStart='0'; d.style.marginInlineEnd='auto'; }
+        }
+      }
+    }catch(e){}
+  })();
+  </script>
 </body>
 </html>
