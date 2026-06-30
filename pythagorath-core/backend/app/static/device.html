@@ -3,39 +3,116 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>جهاز الطفل — فيثاغورث</title>
+<title>جهاز الطالب — فيثاغورث</title>
 <link rel="stylesheet" href="/static/brand.css">
 <style>
-  *{ box-sizing:border-box; } html,body{ margin:0; }
-  body{ font-family:'Readex Pro',sans-serif; color:#143A1F; background:#F4FAF6; min-height:100vh;
-    background-image:radial-gradient(58% 30% at 92% 0%,rgba(243,154,31,.12),transparent 60%),radial-gradient(54% 28% at 6% 4%,rgba(41,169,224,.12),transparent 60%); }
-  .wrap{ max-width:520px; margin:0 auto; padding:30px 18px 60px; }
-  .brand{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:22px; color:#D97E0A; text-align:center; }
-  .brand small{ display:block; color:#9DB4A6; font-size:12.5px; font-weight:400; font-family:'Readex Pro',sans-serif; }
-  .card{ background:#fff; border:1px solid #E6EFE9; border-radius:24px; padding:26px; margin:18px 0; box-shadow:0 18px 38px -26px rgba(21,94,125,.5); text-align:center; }
-  h2{ font-family:'Baloo Bhaijaan 2',cursive; color:#155E7D; font-size:23px; margin:0 0 6px; }
-  .muted{ color:#7E9488; font-size:14px; }
-  .codein{ width:100%; max-width:240px; margin:16px auto 4px; display:block; text-align:center; letter-spacing:14px;
-    font-family:'Baloo Bhaijaan 2',cursive; font-size:34px; padding:12px; border:2px solid #CDE9D8; border-radius:16px; color:#155E7D; }
-  .btn{ width:100%; margin-top:14px; border:0; border-radius:16px; padding:15px; cursor:pointer; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:18px; color:#fff; background:linear-gradient(135deg,#163E52,#1B6E97); }
-  .err{ color:#C0392B; font-size:14px; min-height:18px; margin-top:8px; }
-  .kids{ display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:14px; margin-top:18px; }
-  .kid{ background:#fff; border:2px solid #E6EFE9; border-radius:20px; padding:18px 10px; cursor:pointer; transition:all .12s; }
-  .kid:hover{ border-color:#9FD3EC; transform:translateY(-2px); }
-  .kid .av{ width:64px; height:64px; border-radius:50%; margin:0 auto 8px; display:flex; align-items:center; justify-content:center;
-    font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:28px; color:#fff; background:linear-gradient(135deg,#37B6E6,#178FC9); }
-  .kid .nm{ font-weight:800; color:#155E7D; font-size:17px; }
-  .pics{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:18px; }
-  .pic{ font-size:38px; background:#fff; border:2px solid #E6EFE9; border-radius:18px; padding:14px 6px; cursor:pointer; text-align:center; transition:all .12s; }
-  .pic:hover{ border-color:#9FD3EC; transform:translateY(-2px); }
-  .foot{ text-align:center; margin-top:14px; } .foot a{ color:#9DB4A6; font-size:13px; cursor:pointer; }
-  .empty{ padding:24px 8px; }
+  /* Visual design merged from the Claude Design "جهاز الطالب" mock (dark-teal). Colours,
+     shadows, animations, the mascot (نُمير), the 4-cell code box and the card/grid layout are
+     the design's REAL values. All behaviour is unchanged: boot/doPair/selfPick/pickChild/
+     chooseSecret/unpair, the same API paths, and the 12-emoji PICS list (mirrors the server). */
+  *{ box-sizing:border-box; } html,body{ margin:0; max-width:100%; overflow-x:hidden; }
+  body{ font-family:'Readex Pro',sans-serif; color:#16475c; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:12px 18px 34px; position:relative; overflow:hidden;
+    background:#0c4456;                                                   /* design root (dark teal) */
+    background-image:radial-gradient(125% 120% at 82% -8%,#0E9C93 0%,#155E7D 48%,#0c4d66 100%); }
+  ::selection{ background:#F39A1F; color:#fff; }
+  /* decorative blobs */
+  .blobs{ position:absolute; inset:0; pointer-events:none; }
+  .blobs i{ position:absolute; border-radius:50%; filter:blur(8px); display:block; }
+  .blobs .b1{ top:-90px; right:-70px; width:300px; height:300px; background:rgba(243,154,31,.18); animation:blobDrift 11s ease-in-out infinite; }
+  .blobs .b2{ bottom:-110px; left:-80px; width:340px; height:340px; background:rgba(46,200,150,.16); animation:blobDrift 14s ease-in-out infinite reverse; }
+  .shell{ width:100%; max-width:520px; position:relative; z-index:2; }
+  .brand{ text-align:center; margin-bottom:64px; font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:26px; color:#FFD27E; text-shadow:0 2px 12px rgba(8,40,55,.45); }
+  .brand-logo{ height:46px; width:auto; display:block; margin:0 auto; filter:drop-shadow(0 3px 14px rgba(8,40,55,.5)); }
+  .brand small{ display:block; font-family:'Readex Pro',sans-serif; font-weight:300; font-size:13px; color:#bfe9e3; margin-top:8px; letter-spacing:.5px; }
+  /* card */
+  .card-shell{ position:relative; z-index:2; width:100%; max-width:520px; margin:0 auto; background:#FFFBF4; border-radius:30px; box-shadow:0 30px 70px rgba(8,40,55,.34); animation:popIn .35s ease; }
+  .mascot{ display:flex; justify-content:center; margin-top:-54px; filter:drop-shadow(0 14px 18px rgba(8,40,55,.22)); animation:floaty 5s ease-in-out infinite; }
+  .mascot svg{ width:110px; height:110px; display:block; }
+  .card-pad{ padding:6px 40px 34px; text-align:center; }
+  h2{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:30px; color:#155E7D; margin:6px 0 0; }
+  .muted{ font-size:16px; font-weight:300; line-height:1.9; color:#3a6577; margin:10px auto 0; max-width:380px; }
+  /* code: four cells fed by a hidden input (doPair still reads #code) */
+  .code-row{ display:flex; justify-content:center; gap:14px; margin-top:26px; direction:ltr; cursor:text; }
+  .digit-cell{ width:64px; height:78px; border-radius:18px; display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:38px; color:#155E7D;
+    background:#F4EFE6; border:3px solid #e2dccf; transition:border-color .15s, box-shadow .15s, background .15s; }
+  .digit-cell.next{ border-color:#0E9C93; box-shadow:0 0 0 3px rgba(14,156,147,.12); }
+  .digit-cell.filled{ background:#fff; border-color:#F39A1F; box-shadow:0 8px 16px rgba(243,154,31,.18); }
+  .code-hidden{ position:absolute; opacity:0; width:1px; height:1px; pointer-events:none; }
+  .bigbtn{ width:100%; margin-top:24px; border:none; cursor:pointer; padding:18px; border-radius:16px;
+    font-family:'Baloo Bhaijaan 2',cursive; font-weight:700; font-size:21px; color:#fff;
+    background:linear-gradient(135deg,#F39A1F,#F8A93A); box-shadow:0 14px 30px rgba(243,154,31,.42);
+    transition:transform .15s ease, box-shadow .15s ease, filter .15s ease; }
+  .bigbtn:hover{ transform:translateY(-3px); filter:brightness(1.03); } .bigbtn:active{ transform:translateY(0); }
+  .err{ min-height:22px; margin-top:14px; color:#E0483A; font-size:14px; font-weight:500; }
+  /* student grid */
+  .child-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:26px; }
+  .opt{ cursor:pointer; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .opt:hover{ transform:translateY(-4px); }
+  .child-grid .opt{ background:#fff; border:2.5px solid #eef1ef; border-radius:22px; padding:18px 10px 16px; box-shadow:0 8px 18px rgba(21,94,125,.06); }
+  .child-grid .opt:hover{ border-color:#0E9C93; box-shadow:0 16px 30px -14px rgba(14,156,147,.32); }
+  .av{ width:70px; height:70px; margin:0 auto; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:32px; color:#fff;
+    background:linear-gradient(140deg,#0E9C93,#155E7D); box-shadow:0 8px 16px rgba(14,156,147,.32); }
+  /* the design's 4-colour avatar cycle, applied by position */
+  .child-grid .opt:nth-child(4n+1) .av{ background:linear-gradient(140deg,#F39A1F,#F8A93A); box-shadow:0 8px 16px rgba(243,154,31,.32); }
+  .child-grid .opt:nth-child(4n+2) .av{ background:linear-gradient(140deg,#0E9C93,#155E7D); box-shadow:0 8px 16px rgba(14,156,147,.32); }
+  .child-grid .opt:nth-child(4n+3) .av{ background:linear-gradient(140deg,#7C5CE0,#9B7BEA); box-shadow:0 8px 16px rgba(124,92,224,.32); }
+  .child-grid .opt:nth-child(4n+4) .av{ background:linear-gradient(140deg,#2BB673,#3ED48C); box-shadow:0 8px 16px rgba(43,182,115,.32); }
+  .nm{ font-weight:600; font-size:16px; color:#155E7D; margin-top:12px; }
+  /* secret-picture grid */
+  .pic-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:24px; }
+  .pic-grid .opt{ aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:38px;
+    border-radius:18px; background:#FFF6E8; border:3px solid #f0e7d6; box-shadow:0 6px 14px rgba(21,94,125,.07); }
+  .pic-grid .opt:nth-child(2n){ background:#fff; }
+  .pic-grid .opt:hover{ border-color:#0E9C93; box-shadow:0 12px 22px -12px rgba(14,156,147,.32); }
+  /* unlink */
+  .foot{ margin-top:24px; padding-top:20px; border-top:1px solid #ede6da; }
+  .foot a{ color:#9aa6a3; font-size:14px; font-weight:500; text-decoration:none; cursor:pointer; }
+  .foot a:hover{ color:#155E7D; } .foot a b{ color:#F39A1F; font-weight:600; }
+  .empty{ padding:8px 0 4px; } .empty .em{ font-size:54px; line-height:1; }
+  @keyframes floaty{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+  @keyframes wiggle{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(10deg); } }
+  @keyframes popIn{ 0%{ transform:scale(.96); opacity:.4; } 100%{ transform:scale(1); opacity:1; } }
+  @keyframes blobDrift{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(24px,-18px) scale(1.08); } }
+  @media (max-width:560px){
+    .card-pad{ padding:30px 22px 26px; }
+    h2{ font-size:26px; }
+    .child-grid{ grid-template-columns:repeat(2,1fr); }
+    .digit-cell{ width:58px; height:70px; font-size:34px; }
+  }
+  @media (max-width:380px){
+    .digit-cell{ width:50px; height:62px; font-size:30px; }
+    .pic-grid{ gap:10px; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="brand" data-brand>فيثاغورث<small>موطن التعليم</small></div>
-  <div id="view"><div class="card"><p class="muted">… جارٍ التحميل</p></div></div>
+<div class="blobs" aria-hidden="true"><i class="b1"></i><i class="b2"></i></div>
+<div class="shell">
+  <div class="brand"><img class="brand-logo" src="data:image/png;base64,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" alt="فيثاغورث"><small>موطن التعليم</small></div>
+  <div class="card-shell">
+    <div class="mascot" aria-hidden="true">
+      <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="dpBody" cx="38%" cy="30%" r="78%"><stop offset="0%" stop-color="#FFD27E"/><stop offset="38%" stop-color="#F9AC36"/><stop offset="78%" stop-color="#F1991F"/><stop offset="100%" stop-color="#DD7E05"/></radialGradient>
+          <radialGradient id="dpCap" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#86D8CE"/><stop offset="100%" stop-color="#0E9C93"/></radialGradient>
+        </defs>
+        <g><line x1="160" y1="40" x2="146" y2="22" stroke="#8FDACF" stroke-width="3" stroke-linecap="round"/><line x1="160" y1="40" x2="182" y2="28" stroke="#8FDACF" stroke-width="3" stroke-linecap="round"/><circle cx="144" cy="20" r="5" fill="#11A79C"/><circle cx="184" cy="26" r="5" fill="#11A79C"/><path d="M150 66 Q150 48 160 40" stroke="#EE9420" stroke-width="6" stroke-linecap="round" fill="none"/><circle cx="160" cy="38" r="11" fill="url(#dpCap)"/></g>
+        <path d="M224 158 Q254 178 256 204" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/>
+        <ellipse cx="150" cy="180" rx="112" ry="116" fill="url(#dpBody)"/><ellipse cx="112" cy="120" rx="56" ry="38" fill="#FFFFFF" opacity=".22"/>
+        <circle cx="256" cy="208" r="17" fill="#F6A92F"/>
+        <g style="transform-origin:84px 150px;animation:wiggle 1.8s ease-in-out infinite"><path d="M76 156 Q46 126 42 96" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><circle cx="42" cy="92" r="17" fill="#F6A92F"/></g>
+        <ellipse cx="92" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="208" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/>
+        <ellipse cx="120" cy="160" rx="29" ry="33" fill="#fff"/><ellipse cx="190" cy="160" rx="29" ry="33" fill="#fff"/><circle cx="127" cy="168" r="15" fill="#045D6D"/><circle cx="183" cy="168" r="15" fill="#045D6D"/><circle cx="122" cy="162" r="6" fill="#fff"/><circle cx="178" cy="162" r="6" fill="#fff"/>
+        <path d="M102 130 Q120 122 138 129" stroke="#045D6D" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M172 129 Q190 122 208 130" stroke="#045D6D" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <path d="M128 196 Q150 204 172 196 Q167 220 150 222 Q133 220 128 196 Z" fill="#0A3942"/>
+      </svg>
+    </div>
+    <div class="card-pad" id="view"><p class="muted">… جارٍ التحميل</p></div>
+  </div>
 </div>
 <script src="/static/site.js"></script>
 <script>
@@ -46,21 +123,37 @@ async function api(path, opts){
   if(!r.ok){ const e=new Error('err'); e.status=r.status; try{ e.detail=(await r.json()).detail; }catch(_){} throw e; }
   return r.status===204?null:r.json();
 }
+// the unlink footer — shared across views (design markup; behaviour = unpair, unchanged)
+function unlinkFoot(){ return `<div class="foot"><a onclick="unpair()">ليس جهازك؟ <b>فكّ الربط</b></a></div>`; }
 
 async function boot(){
   try{ const d = await api('/api/device/children'); selfPick(d.children); }   // already paired
   catch(e){ codeEntry(); }                                                     // needs a code
 }
 
+// ---- visual helpers for the 4-cell code box (the hidden #code input stays the source of truth) ----
+function renderCells(code){
+  const box=document.getElementById('cells'); if(!box) return;
+  let html='';
+  for(let i=0;i<4;i++){
+    const filled=i<code.length, next=i===code.length;
+    html += `<div class="digit-cell${filled?' filled':(next?' next':'')}">${filled?H(code[i]):''}</div>`;
+  }
+  box.innerHTML=html;
+}
+function focusCode(){ const i=document.getElementById('code'); if(i) i.focus(); }
+function onCode(){ const i=document.getElementById('code'); i.value=i.value.replace(/[^0-9]/g,''); renderCells(i.value); }
+
 function codeEntry(msg){
-  V.innerHTML = `<div class="card">
-    <h2>جهاز الطفل</h2>
-    <div class="muted">اطلب من والدك رمز الربط (٤ أرقام) وأدخله هنا.</div>
-    <input class="codein" id="code" inputmode="numeric" maxlength="4" placeholder="••••" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+  V.innerHTML = `<h2>جهاز الطالب</h2>
+    <p class="muted">اطلب رمز الربط (٤ أرقام) وأدخله هنا</p>
+    <div class="code-row" id="cells" onclick="focusCode()"></div>
+    <input class="code-hidden" id="code" inputmode="numeric" maxlength="4" oninput="onCode()">
     <div class="err" id="cerr">${msg||''}</div>
-    <button class="btn" onclick="doPair()">ربط الجهاز</button>
-  </div>`;
-  setTimeout(()=>{ const i=document.getElementById('code'); if(i) i.focus(); }, 60);
+    <button class="bigbtn" onclick="doPair()">ربط الجهاز</button>
+    ${unlinkFoot()}`;
+  renderCells('');
+  setTimeout(focusCode, 60);
 }
 async function doPair(){
   const code=(document.getElementById('code').value||'').trim();
@@ -68,28 +161,28 @@ async function doPair(){
   if(code.length<4){ err.textContent='أدخل الرمز كاملاً (٤ أرقام).'; return; }
   try{ const d=await api('/api/auth/pair',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})});
     selfPick(d.children); }
-  catch(e){ err.textContent = e.detail || 'رمز غير صالح أو منتهٍ.'; }
+  catch(e){ err.textContent = e.detail || 'رمز غير صالح أو منتهٍ.'; renderCells(code); }
 }
 
 function selfPick(kids){
   if(!kids || !kids.length){
-    V.innerHTML = `<div class="card"><div class="empty"><h2>لا يوجد أطفال بعد</h2>
-      <div class="muted">اطلب من والدك إضافة طفل أولاً.</div></div>
-      <div class="foot"><a onclick="unpair()">ليس جهازك؟ فكّ الربط</a></div></div>`;
+    V.innerHTML = `<div class="empty"><div class="em">🐣</div><h2>لا يوجد طلاب بعد</h2>
+      <p class="muted">اطلب إضافة طالب أولاً من حساب وليّ الأمر، ثم عُد للدخول من هنا.</p></div>
+      ${unlinkFoot()}`;
     return;
   }
-  V.innerHTML = `<div class="card"><h2>اختر نفسك 👋</h2><div class="muted">انقر صورتك للبدء.</div>
-    <div class="kids">${kids.map(k=>`<div class="kid" onclick="pickChild(${k.id},'${(k.name||'').replace(/'/g,'')}',${k.has_secret?1:0})">
+  V.innerHTML = `<h2>مَن أنت؟</h2><p class="muted">اختر اسمك للدخول</p>
+    <div class="child-grid">${kids.map(k=>`<div class="opt" onclick="pickChild(${k.id},'${(k.name||'').replace(/'/g,'')}',${k.has_secret?1:0})">
       <div class="av">${(k.name||'؟').trim()[0]}</div><div class="nm">${k.name}</div></div>`).join('')}</div>
-    <div class="foot"><a onclick="unpair()">ليس جهازك؟ فكّ الربط</a></div></div>`;
+    ${unlinkFoot()}`;
 }
 const PICS = ["🐶","🐱","⭐","⚽","🍎","🦋","🌙","🚗","🌸","🐠","🎈","🦁"];   // mirrors auth.SECRET_PICTURES
 function pickChild(id, name, hasSecret){
-  V.innerHTML = `<div class="card"><h2>أهلاً ${name}! 👋</h2>
-    <div class="muted">${hasSecret?'انقر صورتك السرّية للدخول.':'اختر صورتك السرّية — وتذكّرها للمرّات القادمة.'}</div>
-    <div class="pics">${PICS.map(p=>`<div class="pic" onclick="chooseSecret(${id},'${p}')">${p}</div>`).join('')}</div>
+  V.innerHTML = `<h2>أهلاً ${name}! 👋</h2>
+    <p class="muted">${hasSecret?'اختر صورتك السرّية للدخول.':'هي مفتاح دخولك — اخترها وتذكّرها.'}</p>
+    <div class="pic-grid">${PICS.map(p=>`<div class="opt" onclick="chooseSecret(${id},'${p}')">${p}</div>`).join('')}</div>
     <div class="err" id="serr"></div>
-    <div class="foot"><a onclick="boot()">رجوع</a></div></div>`;
+    ${unlinkFoot()}`;
 }
 async function chooseSecret(id, pic){
   const err=document.getElementById('serr'); if(err) err.textContent='';
