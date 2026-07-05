@@ -92,6 +92,62 @@
 
   /* motivation-moments styles live in brand.css (this <style> is media="not all" — legacy) */
 </style>
+<style id="authDesign">
+  /* Claude Design «دخول وليّ الأمر» — SCOPED to #authView so no other view is affected. */
+  #authView{ position:fixed; inset:0; z-index:60; overflow:auto; background:#0c4456;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:34px 18px; font-family:'Readex Pro',sans-serif; color:#16475c; }
+  #authView .auth-bg{ position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+  #authView .auth-glow{ position:absolute; inset:0; background:radial-gradient(125% 120% at 82% -8%,#0E9C93 0%,#155E7D 48%,#0c4d66 100%); }
+  #authView .auth-blobs i{ position:absolute; border-radius:50%; filter:blur(10px); display:block; }
+  #authView .ab1{ top:-100px; right:-80px; width:320px; height:320px; background:rgba(243,154,31,.16); animation:authBlob 12s ease-in-out infinite; }
+  #authView .ab2{ bottom:-120px; left:-90px; width:360px; height:360px; background:rgba(46,200,150,.14); animation:authBlob 15s ease-in-out infinite reverse; }
+  #authView .auth-col{ position:relative; z-index:2; width:100%; max-width:460px; display:flex; flex-direction:column; align-items:center; }
+  #authView .auth-brand{ text-align:center; margin-bottom:14px; }
+  #authView .auth-brand img{ height:40px; width:auto; display:block; margin:0 auto; filter:drop-shadow(0 3px 14px rgba(8,40,55,.5)); }
+  #authView .auth-brand small{ display:block; font-weight:300; font-size:13px; color:#bfe9e3; margin-top:7px; letter-spacing:.5px; }
+  #authView .auth-welcome{ text-align:center; margin-bottom:18px; max-width:440px; }
+  #authView .auth-mascot{ display:flex; justify-content:center; margin-bottom:4px; }
+  #authView .auth-mascot > div{ animation:authFloaty 5s ease-in-out infinite; filter:drop-shadow(0 12px 16px rgba(8,40,55,.26)); line-height:0; }
+  #authView .auth-mascot svg{ width:96px; height:96px; display:block; }
+  #authView .auth-welcome h1{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:30px; color:#fff; margin:0; line-height:1.25; }
+  #authView .auth-welcome p{ font-size:15px; font-weight:300; color:#cfeee9; margin:9px auto 0; max-width:380px; line-height:1.8; }
+  #authView .auth-card{ width:100%; max-width:460px; background:#FFFBF4; border-radius:24px; box-shadow:0 30px 70px rgba(8,40,55,.36); animation:authPop .35s ease; overflow:hidden; }
+  #authView .auth-tabs{ display:flex; background:#f0e8da; }
+  #authView .auth-tabs button{ flex:1; cursor:pointer; border:none; font-family:'Baloo Bhaijaan 2',cursive; font-weight:700; font-size:16px; padding:16px 8px; color:#155E7D; background:#FFFBF4; box-shadow:inset 0 3px 0 #F39A1F; }
+  #authView .auth-tabs button.sec{ color:rgba(21,94,125,.58); background:transparent; box-shadow:none; }
+  #authView .auth-rechead{ display:flex; align-items:center; gap:10px; padding:16px 20px; background:#FFFBF4; border-bottom:1px solid #efe6d4; }
+  #authView .auth-rechead .link{ display:inline-flex; align-items:center; gap:6px; background:none; border:none; cursor:pointer; color:#F39A1F; font-family:'Readex Pro',sans-serif; font-weight:600; font-size:14px; }
+  #authView .auth-pad{ padding:30px 34px 34px; }
+  #authView .auth-pad label{ display:block; text-align:right; font-size:14px; font-weight:500; color:#155E7D; margin-bottom:8px; }
+  #authView .fld{ width:100%; padding:15px 16px; border-radius:13px; border:2px solid #e6ddcd; background:#fffdf8; font-family:'Readex Pro',sans-serif; font-size:16px; color:#16475c; text-align:left; transition:border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+  #authView .fld:focus{ outline:none; border-color:#0E9C93; background:#fff; box-shadow:0 0 0 4px rgba(14,156,147,.13); }
+  #authView .lblrow{ display:flex; align-items:center; justify-content:space-between; margin:18px 0 8px; }
+  #authView .lblrow label{ margin:0; }
+  #authView a.link{ font-size:13px; font-weight:500; color:#F39A1F; text-decoration:none; cursor:pointer; }
+  #authView a.link:hover{ color:#155E7D; }
+  #authView .pwwrap{ position:relative; }
+  #authView .eye{ position:absolute; left:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; opacity:.55; padding:4px; line-height:0; }
+  #authView .eye:hover{ opacity:1; }
+  #authView .bigbtn{ width:100%; margin-top:18px; border:none; cursor:pointer; padding:17px; border-radius:14px; font-family:'Baloo Bhaijaan 2',cursive; font-weight:700; font-size:20px; color:#fff; background:linear-gradient(135deg,#F39A1F,#F8A93A); box-shadow:0 14px 30px rgba(243,154,31,.4); transition:transform .15s ease, filter .15s ease; }
+  #authView .bigbtn:hover{ transform:translateY(-2px); filter:brightness(1.03); }
+  #authView .bigbtn:active{ transform:translateY(0); }
+  #authView .bigbtn.alt{ background:linear-gradient(135deg,#155E7D,#0E9C93); box-shadow:0 14px 30px rgba(21,94,125,.32); }
+  #authView h2{ font-family:'Baloo Bhaijaan 2',cursive; font-weight:800; font-size:23px; color:#155E7D; margin:0 0 6px; text-align:right; }
+  #authView .sub{ font-size:14px; font-weight:300; line-height:1.85; color:#3a6577; margin:0 0 18px; text-align:right; }
+  #authView .auth-info{ display:flex; align-items:flex-start; gap:10px; margin-top:18px; padding:14px 16px; border-radius:14px; background:rgba(14,156,147,.08); border:1px solid rgba(14,156,147,.16); }
+  #authView .auth-info span{ flex:0 0 auto; margin-top:1px; line-height:0; }
+  #authView .auth-info p{ margin:0; font-size:13.5px; font-weight:300; line-height:1.8; color:#1f5a5e; text-align:right; }
+  #authView .auth-err{ min-height:22px; margin-top:12px; text-align:center; color:#E0483A; font-size:13.5px; font-weight:500; }
+  #authView #authMsg{ min-height:20px; margin-top:12px; text-align:center; color:#E0483A; font-size:13.5px; font-weight:600; }
+  #authView .bigicon{ width:74px; height:74px; margin:0 auto; border-radius:50%; display:flex; align-items:center; justify-content:center; background:rgba(43,182,115,.12); }
+  #authView .resend{ font-size:12.5px; font-weight:300; color:#8a9a98; margin:14px 0 0; text-align:center; }
+  @keyframes authFloaty{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-9px); } }
+  @keyframes authWiggle{ 0%,100%{ transform:rotate(-6deg); } 50%{ transform:rotate(9deg); } }
+  @keyframes authPop{ 0%{ transform:scale(.97); opacity:.4; } 100%{ transform:scale(1); opacity:1; } }
+  @keyframes authBlob{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(24px,-18px) scale(1.08); } }
+  @media (max-width:560px){ #authView .auth-pad{ padding:26px 22px 28px; } #authView .auth-welcome h1{ font-size:27px; } }
+</style>
 </head>
 <body>
 <div class="mathbg" aria-hidden="true">
@@ -111,33 +167,99 @@
   <button id="muteBtn" class="muteBtn" onclick="toggleMute()">🔊 الصوت</button>
 </header>
 <main>
-  <!-- guardian auth -->
+  <!-- guardian auth (Claude Design «دخول وليّ الأمر» — dark theme; +password-reset screens) -->
   <div id="authView">
-    <div class="welcome">
-      <div class="mascot"><img class="kid" src="/static/mascot.svg" alt="" width="62"></div>
-      <div><div class="nm">أهلاً بك في فيثاغورث</div><div class="tag">متعة تعلّم الرياضيات — حسابٌ بالفهم لا بالحفظ</div></div>
-    </div>
-    <div class="card">
-    <div class="row" style="gap:8px;margin-bottom:10px">
-      <button id="tabLogin" onclick="showAuthTab('login')">دخول</button>
-      <button id="tabRegister" class="sec" onclick="showAuthTab('register')">حساب ولي أمر جديد</button>
-    </div>
-    <div id="loginForm">
-      <div class="row" style="flex-wrap:wrap;gap:8px">
-        <input id="loginEmail" type="text" placeholder="البريد" />
-        <input id="loginPass" type="password" placeholder="كلمة السر" />
-        <button onclick="doLogin()">دخول</button>
+    <div class="auth-bg"><div class="auth-glow"></div><div class="auth-blobs"><i class="ab1"></i><i class="ab2"></i></div></div>
+    <div class="auth-col">
+      <div class="auth-brand"><img src="data:image/png;base64,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" alt="فيثاغورث"><small>موطن التعليم</small></div>
+      <div class="auth-welcome">
+        <div class="auth-mascot"><div><svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="plBody" cx="38%" cy="30%" r="78%"><stop offset="0%" stop-color="#FFD27E"/><stop offset="38%" stop-color="#F9AC36"/><stop offset="78%" stop-color="#F1991F"/><stop offset="100%" stop-color="#DD7E05"/></radialGradient>
+          <radialGradient id="plCap" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#86D8CE"/><stop offset="100%" stop-color="#0E9C93"/></radialGradient>
+        </defs>
+        <g><line x1="160" y1="40" x2="146" y2="22" stroke="#8FDACF" stroke-width="3" stroke-linecap="round"/><line x1="160" y1="40" x2="182" y2="28" stroke="#8FDACF" stroke-width="3" stroke-linecap="round"/><circle cx="144" cy="20" r="5" fill="#11A79C"/><circle cx="184" cy="26" r="5" fill="#11A79C"/><path d="M150 66 Q150 48 160 40" stroke="#EE9420" stroke-width="6" stroke-linecap="round" fill="none"/><circle cx="160" cy="38" r="11" fill="url(#plCap)"/></g>
+        <path d="M224 158 Q254 178 256 204" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/>
+        <ellipse cx="150" cy="180" rx="112" ry="116" fill="url(#plBody)"/><ellipse cx="112" cy="120" rx="56" ry="38" fill="#FFFFFF" opacity=".22"/>
+        <circle cx="256" cy="208" r="17" fill="#F6A92F"/>
+        <g style="transform-origin:84px 150px;animation:authWiggle 1.9s ease-in-out infinite"><path d="M76 156 Q46 126 42 96" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><circle cx="42" cy="92" r="17" fill="#F6A92F"/></g>
+        <ellipse cx="92" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="208" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/>
+        <ellipse cx="120" cy="160" rx="29" ry="33" fill="#fff"/><ellipse cx="190" cy="160" rx="29" ry="33" fill="#fff"/><circle cx="127" cy="168" r="15" fill="#045D6D"/><circle cx="183" cy="168" r="15" fill="#045D6D"/><circle cx="122" cy="162" r="6" fill="#fff"/><circle cx="178" cy="162" r="6" fill="#fff"/>
+        <path d="M102 130 Q120 122 138 129" stroke="#045D6D" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M172 129 Q190 122 208 130" stroke="#045D6D" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <path d="M128 196 Q150 204 172 196 Q167 220 150 222 Q133 220 128 196 Z" fill="#0A3942"/>
+      </svg></div></div>
+        <h1>أهلاً بك في فيثاغورث</h1>
+        <p>متعة تعلّم الرياضيات — حسابٌ بالفهم لا بالحفظ</p>
       </div>
-    </div>
-    <div id="registerForm" style="display:none">
-      <div class="row" style="flex-wrap:wrap;gap:8px">
-        <input id="regEmail" type="text" placeholder="بريد ولي الأمر" />
-        <input id="regPass" type="password" placeholder="كلمة سر (٨ أحرف فأكثر)" />
-        <button onclick="doRegister()">إنشاء حساب</button>
+      <div class="auth-card">
+        <div class="auth-tabs" id="authTabs">
+          <button id="tabLogin" onclick="showAuthTab('login')">دخول</button>
+          <button id="tabRegister" class="sec" onclick="showAuthTab('register')">حساب وليّ أمر جديد</button>
+        </div>
+        <div class="auth-rechead" id="authRecHead" style="display:none">
+          <button class="link" onclick="backToAuthLogin()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#F39A1F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg><span>رجوع للدخول</span></button>
+        </div>
+        <div class="auth-pad">
+          <!-- LOGIN -->
+          <div id="loginForm">
+            <label>البريد الإلكتروني</label>
+            <input id="loginEmail" class="fld" type="email" dir="ltr" placeholder="name@email.com">
+            <div class="lblrow"><label>كلمة السرّ</label><a class="link" href="#" onclick="goRecover(event)">نسيت كلمة السرّ؟</a></div>
+            <div class="pwwrap"><input id="loginPass" class="fld" type="password" dir="ltr" placeholder="••••••••"><button class="eye" type="button" aria-label="إظهار كلمة السرّ" onclick="pwEye('loginPass')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#155E7D" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+            <button class="bigbtn" onclick="doLogin()">دخول</button>
+          </div>
+          <!-- SIGNUP -->
+          <div id="registerForm" style="display:none">
+            <label>بريد وليّ الأمر</label>
+            <input id="regEmail" class="fld" type="email" dir="ltr" placeholder="name@email.com">
+            <label style="margin-top:18px">كلمة السرّ (٨ أحرف فأكثر)</label>
+            <div class="pwwrap"><input id="regPass" class="fld" type="password" dir="ltr" placeholder="••••••••"><button class="eye" type="button" aria-label="إظهار كلمة السرّ" onclick="pwEye('regPass')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#155E7D" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+            <button class="bigbtn" onclick="doRegister()">إنشاء حساب</button>
+            <div class="auth-info"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E9C93" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r="1" fill="#0E9C93" stroke="none"/></svg></span><p>حساب وليّ الأمر يدير ملفات أطفاله ويتابع تقدّمهم في مكان واحد.</p></div>
+          </div>
+          <!-- RECOVER (request email) -->
+          <div id="recoverForm" style="display:none">
+            <h2>استعادة كلمة السرّ</h2>
+            <p class="sub">أدخل بريد وليّ الأمر المسجّل، وسنرسل لك رابطاً لإعادة تعيين كلمة السرّ.</p>
+            <label>البريد الإلكتروني</label>
+            <input id="recoverEmail" class="fld" type="email" dir="ltr" placeholder="name@email.com">
+            <div class="auth-err" id="recoverErr"></div>
+            <button class="bigbtn" onclick="doResetRequest()">إرسال رابط الاستعادة</button>
+          </div>
+          <!-- SENT -->
+          <div id="sentScreen" style="display:none">
+            <div class="bigicon"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2BB673" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6 12 13 2 6"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg></div>
+            <h2 style="text-align:center">تحقّق من بريدك</h2>
+            <p class="sub" style="text-align:center">أرسلنا رابط إعادة تعيين كلمة السرّ إلى <span id="sentEmail" dir="ltr" style="font-weight:500;color:#155E7D"></span>. افتح الرابط لمتابعة الاستعادة.</p>
+            <button class="bigbtn" onclick="goReset()">متابعة وتعيين كلمة السرّ</button>
+            <p class="resend">لم يصلك البريد؟ <a class="link" href="#" onclick="doResetRequest(event)">أعد الإرسال</a></p>
+          </div>
+          <!-- RESET (new password) -->
+          <div id="resetForm" style="display:none">
+            <h2>تعيين كلمة سرّ جديدة</h2>
+            <p class="sub">اختر كلمة سرّ جديدة لحساب وليّ الأمر.</p>
+            <div id="resetTokenRow">
+              <label>الرمز من رابط البريد</label>
+              <input id="resetToken" class="fld" dir="ltr" placeholder="الرمز من بريدك">
+              <div style="height:18px"></div>
+            </div>
+            <label>كلمة السرّ الجديدة (٨ أحرف فأكثر)</label>
+            <div class="pwwrap"><input id="resetPw" class="fld" type="password" dir="ltr" placeholder="••••••••"><button class="eye" type="button" aria-label="إظهار كلمة السرّ" onclick="pwEye('resetPw')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#155E7D" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+            <label style="margin-top:18px">تأكيد كلمة السرّ</label>
+            <input id="resetPw2" class="fld" type="password" dir="ltr" placeholder="••••••••">
+            <div class="auth-err" id="resetErr"></div>
+            <button class="bigbtn" onclick="doResetConfirm()">حفظ كلمة السرّ</button>
+          </div>
+          <!-- DONE -->
+          <div id="doneScreen" style="display:none">
+            <div class="bigicon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2BB673" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12.5l2.5 2.5 5-5.5"/></svg></div>
+            <h2 style="text-align:center">تمّ تحديث كلمة السرّ</h2>
+            <p class="sub" style="text-align:center">يمكنك الآن الدخول بكلمة السرّ الجديدة.</p>
+            <button class="bigbtn alt" onclick="backToAuthLogin()">الذهاب للدخول</button>
+          </div>
+          <div id="authMsg"></div>
+        </div>
       </div>
-      <p class="muted" style="font-size:13px;margin:6px 0 0">حساب ولي الأمر يدير ملفات أطفاله ويتابع تقدّمهم.</p>
-    </div>
-    <div id="authMsg" style="color:#b91c1c;font-weight:700;margin-top:8px"></div>
     </div>
   </div>
 
@@ -202,6 +324,8 @@
     <p class="muted">أسئلة قصيرة وذكيّة تكشف أنسب نقطة بداية — أجِب ما تعرفه، وسنتوقّف تلقائياً.</p>
     <div id="diagBody"></div>
   </div>
+
+  <div id="lessonView" style="display:none"></div>
 
   <div id="practiceView" style="display:none">
     <div class="card" id="practiceCard">
@@ -283,7 +407,7 @@ let muted = localStorage.getItem('pyth_mute')==='1', arVoice=null;
 let account=null, consentInfo=null;   // guardian session + current consent text/version
 
 async function api(path, opts){ const r=await fetch(path,opts); if(!r.ok){ let m=await r.text(), reason=null; try{ const d=JSON.parse(m).detail; if(d&&typeof d==='object'){ reason=d.reason||null; m=d.message||m; } else if(d){ m=d; } }catch(_){} const e=new Error(m); e.status=r.status; e.reason=reason; throw e; } return r.status===204?null:r.json(); }
-function show(id){ for(const v of ['authView','childrenView','reportView','mapView','practiceView','diagnosticView']) document.getElementById(v).style.display = (v===id?'':'none'); }
+function show(id){ for(const v of ['authView','childrenView','reportView','mapView','practiceView','diagnosticView','lessonView']) document.getElementById(v).style.display = (v===id?'':'none'); }
 
 // ===== AUDIO — isolated behind speak(). Web Speech now (zero-cost, proves the
 // reading↔understanding separation for early grades); swappable later for a warmer
@@ -437,6 +561,61 @@ async function afterLogin(){
   await loadChildren();
 }
 
+// ===== password reset + auth-screen switching (authView only; server endpoints unchanged) =====
+// New screens added to the design: forgot-password (request) -> sent -> set-new-password -> done.
+// Does NOT alter showAuthTab/doLogin/doRegister/api — only toggles the new auth sub-screens.
+function _authScreens(){ return ['loginForm','registerForm','recoverForm','sentScreen','resetForm','doneScreen']; }
+function authShow(id){
+  _authScreens().forEach(function(s){ var el=document.getElementById(s); if(el) el.style.display=(s===id?'':'none'); });
+  var msg=document.getElementById('authMsg'); if(msg) msg.textContent='';
+  var isTab=(id==='loginForm'||id==='registerForm');
+  var tabs=document.getElementById('authTabs'), head=document.getElementById('authRecHead');
+  if(tabs) tabs.style.display=isTab?'':'none';
+  if(head) head.style.display=isTab?'none':'';
+}
+function pwEye(id){ var i=document.getElementById(id); if(i) i.type=(i.type==='password'?'text':'password'); }
+function goRecover(e){ if(e&&e.preventDefault)e.preventDefault();
+  var l=document.getElementById('loginEmail'), r=document.getElementById('recoverEmail');
+  if(l&&r&&l.value) r.value=l.value;
+  authShow('recoverForm'); setTimeout(function(){ try{ document.getElementById('recoverEmail').focus(); }catch(_){} },40);
+}
+function backToAuthLogin(){ authShow('loginForm'); showAuthTab('login'); }
+async function doResetRequest(e){
+  if(e&&e.preventDefault)e.preventDefault();
+  var email=(document.getElementById('recoverEmail').value||'').trim();
+  var err=document.getElementById('recoverErr'); if(err) err.textContent='';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ if(err) err.textContent='أدخل بريداً إلكترونياً صحيحاً'; return; }
+  try{ await api('/api/auth/password-reset/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})}); }
+  catch(_){ /* server always returns 204 (no account enumeration) */ }
+  var se=document.getElementById('sentEmail'); if(se) se.textContent=email;
+  authShow('sentScreen');
+}
+function goReset(){ authShow('resetForm');
+  setTimeout(function(){ try{ (document.getElementById('resetToken').value?document.getElementById('resetPw'):document.getElementById('resetToken')).focus(); }catch(_){} },40);
+}
+async function doResetConfirm(){
+  var token=(document.getElementById('resetToken').value||'').trim();
+  var pw=document.getElementById('resetPw').value, pw2=document.getElementById('resetPw2').value;
+  var err=document.getElementById('resetErr'); if(err) err.textContent='';
+  if(!token){ if(err) err.textContent='الرمز مفقود — افتح الرابط من بريدك أو الصقه.'; return; }
+  if((pw||'').length<8){ if(err) err.textContent='كلمة السرّ يجب أن تكون ٨ أحرف فأكثر'; return; }
+  if(pw!==pw2){ if(err) err.textContent='كلمتا السرّ غير متطابقتين'; return; }
+  try{ await api('/api/auth/password-reset/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:token, new_password:pw})});
+    authShow('doneScreen');
+  }catch(e2){ if(err) err.textContent=(e2&&e2.message)||'تعذّر تعيين كلمة السرّ — قد يكون الرابط منتهياً.'; }
+}
+// reset link from the email: token in a URL query param (reset / reset_token / token)
+function initResetFromURL(){
+  var p=new URLSearchParams(location.search);
+  var tok=p.get('reset')||p.get('reset_token')||p.get('token');
+  if(!tok) return false;
+  show('authView');
+  var t=document.getElementById('resetToken'); if(t) t.value=tok;
+  var row=document.getElementById('resetTokenRow'); if(row) row.style.display='none';  // came from URL → hide manual field
+  authShow('resetForm');
+  return true;
+}
+
 // ---- subscription (commercial) ----
 let subscription=null;
 async function loadSubscription(){ try{ subscription = await api('/api/subscription'); }catch(e){ subscription=null; } renderSubBanner(); }
@@ -546,7 +725,7 @@ async function backToMap(){
     b.innerHTML = `<span class="st ${cls}">${st}</span>
       <span class="nm">${s.name} <span class="code">${s.code||''}</span>
       ${(!s.unlocked && unmet.length)?`<div class="need">يحتاج: ${unmet.join('، ')}</div>`:''}</span>`;
-    if(s.unlocked) b.onclick = ()=>openSkill(s.id, s.name);
+    if(s.unlocked) b.onclick = ()=>openSkill(s.id, s.name, s.code);
     box.appendChild(b);
   }
   // celebrate newly-unlocked nodes (compare to the previous map's unlocked set — read-only)
@@ -639,7 +818,61 @@ function interleaveByFamily(qs){
   return out;
 }
 
-async function openSkill(id, name){
+
+// ===== EXPLAIN LAYER — lesson memos (shown BEFORE practice; engine untouched) =====
+// First brick: g1N10 «الأعداد حتى عشرة» (Grade 1). Content is written directly for this skill
+// (no DB table yet). openSkill branches here by skill CODE; the CTA calls back into openSkill
+// with skipMemo=true to run the EXISTING practice flow unchanged. Numerals via toHindi.
+const LM_ROWS = [
+  {c:'#E7A23C', name:'موزة',    e:'🍌'}, {c:'#12766A', name:'فيلان',   e:'🐘'},
+  {c:'#7A5AA8', name:'بيضات',   e:'🥚'}, {c:'#E27C5A', name:'زهرات',   e:'🌸'},
+  {c:'#0E5A4F', name:'طبول',    e:'🥁'}, {c:'#C9853A', name:'نجمات',   e:'⭐'},
+  {c:'#5B8C4F', name:'قوارب',   e:'⛵'}, {c:'#B5567A', name:'بالونات', e:'🎈'},
+  {c:'#2E8B8B', name:'أوراق',   e:'🍃'}, {c:'#D4913A', name:'كرات',    e:'⚽'},
+];
+const LM_NUMAIR = `<svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="lmBody" cx="38%" cy="30%" r="78%"><stop offset="0%" stop-color="#FFD27E"/><stop offset="38%" stop-color="#F9AC36"/><stop offset="78%" stop-color="#F1991F"/><stop offset="100%" stop-color="#DD7E05"/></radialGradient><radialGradient id="lmCap" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#86D8CE"/><stop offset="100%" stop-color="#0E9C93"/></radialGradient></defs><g><line x1="160" y1="40" x2="146" y2="22" stroke="#8FDACF" stroke-width="3" stroke-linecap="round"/><line x1="160" y1="40" x2="182" y2="28" stroke="#8FDACF" stroke-width="3" stroke-linecap="round"/><circle cx="144" cy="20" r="5" fill="#11A79C"/><circle cx="184" cy="26" r="5" fill="#11A79C"/><path d="M150 66 Q150 48 160 40" stroke="#EE9420" stroke-width="6" stroke-linecap="round" fill="none"/><circle cx="160" cy="38" r="11" fill="url(#lmCap)"/></g><path d="M224 158 Q254 178 256 204" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><ellipse cx="150" cy="180" rx="112" ry="116" fill="url(#lmBody)"/><ellipse cx="112" cy="120" rx="56" ry="38" fill="#FFFFFF" opacity=".22"/><circle cx="256" cy="208" r="17" fill="#F6A92F"/><path d="M76 156 Q46 126 42 96" stroke="#EE9420" stroke-width="23" stroke-linecap="round" fill="none"/><circle cx="42" cy="92" r="17" fill="#F6A92F"/><ellipse cx="92" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="208" cy="196" rx="15" ry="9" fill="#F2683C" opacity=".34"/><ellipse cx="120" cy="160" rx="29" ry="33" fill="#fff"/><ellipse cx="190" cy="160" rx="29" ry="33" fill="#fff"/><circle cx="127" cy="168" r="15" fill="#045D6D"/><circle cx="183" cy="168" r="15" fill="#045D6D"/><circle cx="122" cy="162" r="6" fill="#fff"/><circle cx="178" cy="162" r="6" fill="#fff"/><path d="M102 130 Q120 122 138 129" stroke="#045D6D" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M172 129 Q190 122 208 130" stroke="#045D6D" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M128 196 Q150 204 172 196 Q167 220 150 222 Q133 220 128 196 Z" fill="#0A3942"/></svg>`;
+const LM_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#B85C1E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const LM_HAND  = '<svg viewBox="0 0 24 24" fill="none" stroke="#E7A23C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6a1.6 1.6 0 0 1 3.2 0v4"/><path d="M12.2 10V4.4a1.6 1.6 0 0 1 3.2 0V11"/><path d="M15.4 11V7a1.6 1.6 0 0 1 3.2 0v7a6 6 0 0 1-6 6h-1.6a6 6 0 0 1-4.6-2.2L4 16a1.5 1.5 0 0 1 2.3-1.9L8 16"/></svg>';
+const LM_CHEV  = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"/></svg>';
+
+function buildMemo_g1N10(id, name){
+  const rows = LM_ROWS.map((r,i)=>{
+    const n=i+1;
+    const objs = Array.from({length:n}, (_,j)=>`<span class="lm-obj" style="animation-delay:${(j*0.09).toFixed(2)}s">${r.e}</span>`).join('');
+    return `<div class="lm-row"><div class="lm-tile" style="background:${r.c}">${toHindi(n)}</div>`
+         + `<div class="lm-objs">${objs}</div><div class="lm-name">${r.name}</div></div>`;
+  }).join('');
+  const strip = LM_ROWS.map((r,i)=>`<div class="lm-stile" style="background:${r.c}">${toHindi(i+1)}</div>`).join('');
+  return `<div class="lm-wrap">
+    <div class="lm-chiprow"><span class="lm-chip">${LM_CHECK}مهارة · الأعداد حتى عشرة</span></div>
+    <div class="lm-welcome"><div class="lm-mascot">${LM_NUMAIR}</div>
+      <div class="lm-bubble"><p class="l1">مرحباً! أنا نُمَير 🐾</p>
+        <p class="l2">اليوم نتعلّم الأعداد من <span class="one">واحد</span> إلى <span class="ten">عشرة</span>!</p></div></div>
+    <div class="lm-hint">${LM_HAND}<span>المس كل مجموعة وعُدّها معي!</span></div>
+    <div class="lm-rows">${rows}</div>
+    <div class="lm-striplabel">شريط الأعداد</div>
+    <div class="lm-strip">${strip}</div>
+    <button class="lm-cta" onclick="lessonDone(${id},'${(name||'').replace(/'/g,'')}','g1N10')">فهمت! هيّا نتدرّب ${LM_CHEV}</button>
+  </div>`;
+}
+const LESSON_MEMOS = { g1N10: buildMemo_g1N10 };
+function showLessonMemo(code, id, name){
+  const el=document.getElementById('lessonView');
+  el.innerHTML = LESSON_MEMOS[code](id, name);
+  show('lessonView'); window.scrollTo(0,0);
+}
+function lessonDone(id, name, code){ openSkill(id, name, code, true); }   // CTA -> existing practice flow
+
+async function openSkill(id, name, code, skipMemo){
+  // Show the lesson memo BEFORE practice — but ONLY while the skill is NOT yet mastered
+  // (the child sees the reminder as long as they need it; once mastered, straight to practice).
+  // Mastery is READ from the gate snapshot (/progress) — the engine itself is never touched.
+  if(!skipMemo && code && LESSON_MEMOS[code]){
+    let mastered=false;
+    try{ const snap=await api(`/api/students/${student.id}/skills/${id}/progress`); mastered=!!(snap && snap.mastered); }catch(e){}
+    if(!mastered){ showLessonMemo(code, id, name); return; }   // not mastered -> memo first
+    // mastered -> fall through to the existing practice flow, no memo
+  }
   skill={id,name};
   try{ questions=await api(`/api/students/${student.id}/skills/${id}/questions`); }
   catch(e){
@@ -683,11 +916,43 @@ function renderCurrent(){
 
 function showNext(){
   const qbox=document.getElementById('questions');
-  if(document.getElementById('nextBtn')) return;
-  const b=document.createElement('button'); b.id='nextBtn'; b.textContent='السؤال التالي ›';
-  b.style.marginTop='10px';
-  b.onclick=()=>{ qIdx++; renderCurrent(); };   // clears card (removes this button) + resets timer
-  qbox.appendChild(b);
+  if(document.getElementById('nextBtn') || document.getElementById('nextSkillBtn')) return;
+  // advance in the batch; when the batch is used up, pull a fresh one (endless live practice)
+  const advance=()=>{ qIdx++; if(qIdx>=practiceQueue.length){ refillQueue(); } else { renderCurrent(); } };
+  if(prevSnap && prevSnap.mastered){
+    // skill MASTERED → offer moving on to the next skill (primary), keep an option to practice more
+    const ns=document.createElement('button'); ns.id='nextSkillBtn'; ns.textContent='المهارة التالية ›';
+    ns.style.marginTop='10px'; ns.onclick=goNextSkill; qbox.appendChild(ns);
+    const cont=document.createElement('button'); cont.id='nextBtn'; cont.className='ghost';
+    cont.textContent='متابعة التمرّن'; cont.style.marginTop='10px'; cont.style.marginInlineStart='8px';
+    cont.onclick=advance; qbox.appendChild(cont);
+  } else {
+    const b=document.createElement('button'); b.id='nextBtn'; b.textContent='السؤال التالي ›';
+    b.style.marginTop='10px'; b.onclick=advance;   // clears card (removes this button) + resets timer
+    qbox.appendChild(b);
+  }
+}
+
+// Endless practice: the live-generation layer makes fresh instances forever, so when a batch is
+// used up (or an instance was already answered → 409) we pull a NEW batch instead of dead-ending.
+async function refillQueue(){
+  try{ questions=await api(`/api/students/${student.id}/skills/${skill.id}/questions`); }
+  catch(e){
+    if(e.status===402){ alert(e.message); showSubscribe(); return; }
+    if(e.status===403){ await backToMap(); return; }
+    throw e;
+  }
+  practiceQueue=interleaveByFamily(questions); qIdx=0;
+  renderCurrent();
+}
+
+// After mastery: route to the next skill from the child's personal path (/next). 'done' → the map.
+async function goNextSkill(){
+  try{
+    const nx=await api(`/api/students/${student.id}/next`);
+    if(nx && nx.skill && nx.skill.skill_id){ openSkill(nx.skill.skill_id, nx.skill.name||'', nx.skill.code); }
+    else{ await backToMap(); }
+  }catch(e){ await backToMap(); }
 }
 
 // Practice input renderer — the ONLY caller now is renderCurrent (the diagnostic uses its
@@ -702,6 +967,7 @@ function renderQInput(host, q){
   } else {
     const row=document.createElement('div'); row.className='row';
     const inp=document.createElement('input'); inp.type='text'; inp.id='ans-'+q.id; inp.placeholder='إجابتك';
+    inp.oninput=()=>{ inp.value = toHindi(inp.value); };   // show Arabic-Indic digits as the child types (gate still normalises on submit)
     row.appendChild(inp); row.appendChild(submitButton(q, ()=>inp.value));
     const fb=document.createElement('span'); fb.className='fb'; fb.id='fb-'+q.id; row.appendChild(fb);
     host.appendChild(row);
@@ -729,6 +995,7 @@ async function sendAns(q, ans){
     if(e.status===402){ alert(e.message); showSubscribe(); return; }            // commercial
     if(e.status===403 && e.reason==='path'){ alert(e.message); await backToMap(); return; }  // not in curriculum
     if(e.status===403 && e.reason==='locked'){ alert(e.message); return; }      // prerequisite unmet
+    if(e.status===409){ await refillQueue(); return; }   // this instance was already answered → pull a fresh batch (no dead-end)
     throw e;
   }
   reactToAnswer(q, res);   // quiet confirm / gentle guidance / celebration (reads res)
@@ -772,7 +1039,7 @@ async function tryDeepLink(){
     const kids=await api('/api/students');
     const k=kids.find(x=>String(x.id)===String(sid)); if(!k) return;
     student=k; lastPlacement=null;
-    if(skid){ await openSkill(parseInt(skid,10), nm || ''); }
+    if(skid){ await openSkill(parseInt(skid,10), nm || '', p.get('code')); }
     else if(diag){ await startDiagnostic(); }
   }catch(e){ /* leave whatever afterLogin already showed */ }
 }
@@ -789,7 +1056,7 @@ async function tryChildMode(){
   const skid=p.get('skill'), nm=p.get('name'), diag=p.get('diagnostic');
   try{
     if(diag){ await startDiagnostic(); }
-    else if(skid){ await openSkill(parseInt(skid,10), nm || child.name); }
+    else if(skid){ await openSkill(parseInt(skid,10), nm || child.name, p.get('code')); }
     else { location.href='/child'; }              // no target → back to the adventure map
   }catch(e){ location.href='/child'; }
   return true;
@@ -799,6 +1066,7 @@ async function tryChildMode(){
 updateMuteBtn();
 (async()=>{
   try{ const t=await api('/api/theme'); document.documentElement.dataset.theme=t.theme; }catch(e){}
+  if(initResetFromURL()) return;            // reset link (token in URL) → show the set-password screen
   if(await tryChildMode()) return;
   try{ await afterLogin(); await tryDeepLink(); }catch(e){ show('authView'); showAuthTab('login'); }
 })();
