@@ -176,7 +176,7 @@ function selfPick(kids){
       <div class="av">${(k.name||'؟').trim()[0]}</div><div class="nm">${k.name}</div></div>`).join('')}</div>
     ${unlinkFoot()}`;
 }
-const PICS = ["🐶","🐱","⭐","⚽","🍎","🦋","🌙","🚗","🌸","🐠","🎈","🦁"];   // mirrors auth.SECRET_PICTURES
+const PICS = ["🐰","🐱","⭐","⚽","🍎","🦋","🌙","🚗","🌸","🐠","🎈","🦁"];   // mirrors auth.SECRET_PICTURES
 function pickChild(id, name, hasSecret){
   V.innerHTML = `<h2>أهلاً ${name}! 👋</h2>
     <p class="muted">${hasSecret?'اختر صورتك السرّية للدخول.':'هي مفتاح دخولك — اخترها وتذكّرها.'}</p>

@@ -454,7 +454,7 @@ def _children_of(db: Session, guardian_id: int) -> list[dict]:
 
 # The fixed "secret picture" set a child taps to log in (a friendly per-child selector,
 # not a password — the real boundary is the device pairing). Mirrored in device.html.
-SECRET_PICTURES = {"🐶", "🐱", "⭐", "⚽", "🍎", "🦋", "🌙", "🚗", "🌸", "🐠", "🎈", "🦁"}
+SECRET_PICTURES = {"🐰", "🐱", "⭐", "⚽", "🍎", "🦋", "🌙", "🚗", "🌸", "🐠", "🎈", "🦁"}
 
 
 @router.post("/pairing-code")

@@ -34,9 +34,9 @@ def test_secret_picture_set_then_match_then_reject(guardian_client, anon_client)
     # first login CHOOSES the picture
     assert anon_client.post("/api/device/child-login",
                             json={"student_id": a["id"], "secret_picture": "⭐"}).status_code == 200
-    # a WRONG picture afterwards is rejected
+    # a WRONG picture afterwards is rejected (valid in-set picture, but not the chosen ⭐)
     assert anon_client.post("/api/device/child-login",
-                            json={"student_id": a["id"], "secret_picture": "🐶"}).status_code == 401
+                            json={"student_id": a["id"], "secret_picture": "🐱"}).status_code == 401
     # the right one matches
     assert anon_client.post("/api/device/child-login",
                             json={"student_id": a["id"], "secret_picture": "⭐"}).status_code == 200
